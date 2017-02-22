@@ -1,0 +1,43 @@
+{
+  "name": "ioBroker.megadjt",
+  "version": "0.1.10",
+  "description": "Lets control the MegaD-2561 over ethernet (http://www.ab-log.ru/smart-house/ethernet/megad-2561) from ioBroker",
+  "author": {
+    "name": "filippovsky",
+    "email": "filippovsky@inbox.ru"
+  },
+  "homepage": "https://github.com/filippovsky/ioBroker.megadjt",
+  "keywords": [
+    "ioBroker",
+    "MegaD-2561"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/filippovsky/ioBroker.megadjt.git"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "grunt": "^1.0.1",
+    "grunt-replace": "^1.0.1",
+    "grunt-contrib-jshint": "^1.0.0",
+    "grunt-jscs": "^2.8.0",
+    "grunt-http": "^2.0.1",
+    "mocha": "^2.4.5",
+    "chai": "^3.5.0",
+    "keypress": "*"
+  },
+  "bugs": {
+    "url": "https://github.com/filippovsky/ioBroker.megadjt/issues"
+  },
+  "main": "main.js",
+  "scripts": {
+    "test": "node node_modules/mocha/bin/mocha"
+  },
+  "license": "MIT",
+  "readme": "![Logo](admin/megad.png)\nioBroker MegaD-2561 JT adapter\n=================\n\n",
+  "readmeFilename": "README.md",
+  "_id": "megadjt@0.1.10",
+  "_shasum": "bd98a26285201c7913cf4f66d93c266f0b0f3ff2",
+  "_resolved": "https://github.com/filippovsky/ioBroker.megadjt/tarball/master/",
+  "_from": "https://github.com/filippovsky/ioBroker.megadjt/tarball/master/"
+}
