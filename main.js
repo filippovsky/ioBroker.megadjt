@@ -154,7 +154,7 @@ function getFirmwareVersion() {
                     //adapter.setState('fw_version', {val: version, ack: true});
                     adapter.log.debug('getFirmwareVersion сохраняем: ' + version);
                     //adapter.setState(  adapter.config.fw_version, version, true);
-                    adapter.setState( adapter.config.fw_version.id, {val: version, ack: true});
+                    adapter.setState( adapter.config.fw_version, {val: version, ack: true});
                     adapter.log.debug('getFirmwareVersion сохранили: ' + version);
 
                     // Analyse answer and updates staties
