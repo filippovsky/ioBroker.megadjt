@@ -96,12 +96,10 @@ adapter.on('message', function (obj) {
 
             case 'discover':
                 discoverMega(obj);
-                getFirmwareVersion;
                 break;
 
             case 'detectPorts':
                 detectPorts(obj);
-                getFirmwareVersion;
                 break;
 
             case 'writeConfig':
@@ -2152,6 +2150,7 @@ function main() {
         } else {
             adapter.log.info('No port specified');
         }
+        getFirmwareVersion();
     }
     syncObjects();
     adapter.subscribeStates('*');

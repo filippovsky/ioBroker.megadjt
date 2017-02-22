@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.1.14",
+        "version":                  "0.1.15",
         "news": {
             "0.1.14": {
                 "en":               "getFirmwareVersion",
@@ -46,6 +46,7 @@
         "ip":                       "",
         "name":                     "",
         "port":                     80,
+        "fw_version":               "",
         "pollInterval":             30,
         "password":                 "sec",
         "longPress":                700,
@@ -71,19 +72,6 @@
                 "read":  true,
                 "write": false,
                 "def":   false
-            },
-            "native": {}
-        },
-        {
-            "_id":    "info.fw_version",
-            "type":   "state",
-            "common": {
-                  "role": "meta.version",
-                  "name": "Версия прошивки устройства",
-                  "type": "string",
-                  "read": "true",
-                  "write": "true",
-                  "def": ""
             },
             "native": {}
         }
