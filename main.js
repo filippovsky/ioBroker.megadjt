@@ -151,11 +151,16 @@ function getFirmwareVersion() {
 
                  if (version) {
                     //adapter.config.fw_version = version;
-                    adapter.setState('fw_version', {val: version, ack: true});
-                    //adapter.setState('fw_version', version, true);
+                    //adapter.setState('fw_version', {val: version, ack: true});
+                    adapter.log.debug('getFirmwareVersion сохраняем: ' + version);
+                    //adapter.setState(  adapter.config.fw_version, version, true);
+                    adapter.setState( adapter.config.fw_version, {val: version, ack: true});
+                    adapter.log.debug('getFirmwareVersion сохранили: ' + version);
 
                     // Analyse answer and updates staties
                     // if (callback) callback(obj, version);
+                 } else {
+                    adapter.log.debug('getFirmwareVersion НЕ ПОПАЛИ: ' + version);
                  }
               } 
 

@@ -1,9 +1,9 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.1.18",
+        "version":                  "0.1.19",
         "news": {
-            "0.1.18": {
+            "0.1.19": {
                 "en":               "getFirmwareVersion",
                 "de":               "getFirmwareVersion",
                 "ru":               "добавлена функция getFirmwareVersion"
