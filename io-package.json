@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.1.30",
+        "version":                  "0.1.31",
         "news": {
             "0.1.24": {
                 "en":               "getFirmwareVersion",
@@ -40,8 +40,7 @@
             "height":    800,
             "minWidth":  600,
             "minHeight": 500
-        },
-        "fw_version_actual":  "4.09b1"
+        }
     },
     "native": {
         "ip":                       "",

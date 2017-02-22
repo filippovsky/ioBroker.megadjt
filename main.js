@@ -28,6 +28,7 @@ var ports  = {};
 ///var askInternalTemp = false;
 var ask1WireTemp = false;   //1Wire
 var connected = false;
+var fw_version_actual = "4.09b1";
 
 var adapter = utils.adapter(  'megadjt'            );
 
@@ -114,6 +115,7 @@ adapter.on('message', function (obj) {
     processMessages();
 });
 
+
 // Функция получения версии прошивки Меги ---------------------------------------------------
 function getFirmwareVersion() {
     var version = '';
@@ -159,17 +161,14 @@ function getFirmwareVersion() {
                     adapter.log.debug('getFirmwareVersion сохранили: ' + version);
                     // Analyse answer and updates staties
                     // if (callback) callback(obj, version);
-                    adapter.getState('adapter.common', function (err,state) {
-                                 adapter.log.debug('getFirmwareVersion Актуальная версия прошивки: ' + state.fw_version_actual);
-                                 if ( version == state.fw_version_actual ) {
-                                    adapter.setState( 'is_fw_version_actual', {val: "1", ack: true});
-                                    adapter.log.debug('getFirmwareVersion Текущая версия актуальна');
-                                 } else {
-                                    adapter.setState( 'is_fw_version_actual', {val: "0", ack: true});
-                                    adapter.log.debug('getFirmwareVersion Текущая версия неактуальна');
-                                 }
-                            }
-                     );
+                    adapter.log.debug('getFirmwareVersion Актуальная версия прошивки: ' + fw_version_actual);
+                    if ( version == fw_version_actual ) {
+                          adapter.setState( 'is_fw_version_actual', {val: "1", ack: true});
+                          adapter.log.debug('getFirmwareVersion Текущая версия актуальна');
+                    } else {
+                          adapter.setState( 'is_fw_version_actual', {val: "0", ack: true});
+                          adapter.log.debug('getFirmwareVersion Текущая версия неактуальна');
+                    }
 
                  } else {
                     adapter.log.debug('getFirmwareVersion НЕ ПОПАЛИ: ' + version);
