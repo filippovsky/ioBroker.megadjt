@@ -1,6 +1,6 @@
 {
   "name": "iobroker.megadjt",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "Lets control the MegaD-2561 over ethernet (http://www.ab-log.ru/smart-house/ethernet/megad-2561) from ioBroker",
   "author": {
     "name": "filippovsky",
@@ -36,7 +36,7 @@
   "license": "MIT",
   "readme": "![Logo](admin/megad.png)\nioBroker MegaD-2561 JT adapter\n=================\n\n",
   "readmeFilename": "README.md",
-  "_id": "iobroker.megadjt@0.1.13",
+  "_id": "iobroker.megadjt@0.1.14",
   "_shasum": "bd98a26285201c7913cf4f66d93c266f0b0f3ff2",
   "_resolved": "https://github.com/filippovsky/ioBroker.megadjt/tarball/master/",
   "_from": "https://github.com/filippovsky/ioBroker.megadjt/tarball/master/"
