@@ -132,10 +132,11 @@ function getFirmwareVersion() {
        http.get(options, function (res) {
           var xmldata = '';
           res.on('error', function (e) {
-              adapter.log.warn('megadjt: ' + e);
+              adapter.log.warn('getFirmwareVersion error: ' + e);
           });
           res.on('data', function (chunk) {
               xmldata += chunk;
+              adapter.log.debug('getFirmwareVersion get: ' + chunk);
           });
           res.on('end', function () {
               if (res.statusCode != 200) {
@@ -150,7 +151,8 @@ function getFirmwareVersion() {
 
                  if (version) {
                     //adapter.config.fw_version = version;
-                    adapter.setState('fw_version', version, true);
+                    adapter.setState('fw_version', {val: version, ack: true});
+                    //adapter.setState('fw_version', version, true);
 
                     // Analyse answer and updates staties
                     // if (callback) callback(obj, version);

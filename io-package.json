@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.1.16",
+        "version":                  "0.1.17",
         "news": {
             "0.1.14": {
                 "en":               "getFirmwareVersion",
@@ -46,7 +46,7 @@
         "ip":                       "",
         "name":                     "",
         "port":                     80,
-        "fw_version":               "",
+        "fw_version":               "UNKNOWN",
         "pollInterval":             30,
         "password":                 "sec",
         "longPress":                700,
