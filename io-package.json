@@ -29,10 +29,10 @@
         "loglevel":                 "info",
         "icon":                     "megad.png",
         "messagebox":               true,
-        "readme":                   "https://github.com/filippovsky/megadjt/blob/master/README.md",
+        "readme":                   "https://github.com/filippovsky/ioBroker.megadjt/blob/master/README.md",
         "keywords":                 ["MegaD-2561", "communication"],
 		"enabled":                  false,
-        "extIcon":                  "https://github.com/filippovsky/megadjt/raw/master/admin/megad.png",
+        "extIcon":                  "https://github.com/filippovsky/ioBroker.megadjt/raw/master/admin/megad.png",
         "type":                     "hardware",
         "localLink":                "http://%native_ip%/%password%",
         "config": {
