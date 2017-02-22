@@ -145,9 +145,9 @@ function getFirmwareVersion() {
               } else {
 
                  // Вырезаем из данных версию прошивки
-                 adapter.log.debug('getFirmwareVersion response for ' + adapter.config.ip + "[" + port + ']: ' + xmldata);
+                 adapter.log.debug('getFirmwareVersion response for ' + adapter.config.ip + "[" + options.port + ']: ' + xmldata);
                  version = xmldata.replace(/^(.*?)fw\:\s(.*?)\)(.*?)$/, '$2');
-                 adapter.log.debug('getFirmwareVersion for ' + adapter.config.ip + "[" + port + '] parsed as: ' + version);
+                 adapter.log.debug('getFirmwareVersion for ' + adapter.config.ip + "[" + options.port + '] parsed as: ' + version);
 
                  if (version) {
                     //adapter.config.fw_version = version;
