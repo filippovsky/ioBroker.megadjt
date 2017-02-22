@@ -29,7 +29,7 @@ var ports  = {};
 var ask1WireTemp = false;   //1Wire
 var connected = false;
 
-var adapter = utils.adapter('megadjt');
+var adapter = utils.adapter(  'megadjt'            );
 
 adapter.on('stateChange', function (id, state) {
     if (id && state && !state.ack) {
@@ -118,6 +118,7 @@ adapter.on('message', function (obj) {
 function getFirmwareVersion() {
     var version = '';
     var parts = adapter.config.ip.split(':');
+    var actual_version = '';
 
     var options = {
         host: parts[0],
@@ -156,9 +157,20 @@ function getFirmwareVersion() {
                     //adapter.setState(  adapter.config.fw_version, version, true);
                     adapter.setState( 'fw_version', {val: version, ack: true});
                     adapter.log.debug('getFirmwareVersion сохранили: ' + version);
-
                     // Analyse answer and updates staties
                     // if (callback) callback(obj, version);
+                    adapter.getState('adapter.common', function (err,state) {
+                                 adapter.log.debug('getFirmwareVersion Актуальная версия прошивки: ' + state.fw_version_actual);
+                                 if ( version == state.fw_version_actual ) {
+                                    adapter.setState( 'is_fw_version_actual', {val: "1", ack: true});
+                                    adapter.log.debug('getFirmwareVersion Текущая версия актуальна');
+                                 } else {
+                                    adapter.setState( 'is_fw_version_actual', {val: "0", ack: true});
+                                    adapter.log.debug('getFirmwareVersion Текущая версия неактуальна');
+                                 }
+                            }
+                     );
+
                  } else {
                     adapter.log.debug('getFirmwareVersion НЕ ПОПАЛИ: ' + version);
                  }
@@ -170,8 +182,6 @@ function getFirmwareVersion() {
        });
     }
 }
-
-
 //------------------------------------------------------------------------------------------------------
 function processMessages(ignore) {
     adapter.getMessage(function (err, obj) {
