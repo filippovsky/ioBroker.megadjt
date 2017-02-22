@@ -139,14 +139,14 @@ function getFirmwareVersion() {
           });
           res.on('end', function () {
               if (res.statusCode != 200) {
-                 adapter.log.warn('Response code: ' + res.statusCode + ' - ' + xmldata);
+                 adapter.log.warn('getFirmwareVersion Response code: ' + res.statusCode + ' - ' + xmldata);
 
               } else {
 
                  // Вырезаем из данных версию прошивки
-                 adapter.log.debug('response for ' + adapter.config.ip + "[" + port + ']: ' + xmldata);
+                 adapter.log.debug('getFirmwareVersion response for ' + adapter.config.ip + "[" + port + ']: ' + xmldata);
                  version = xmldata.replace(/^(.*?)fw\:\s(.*?)\)(.*?)$/, '$2');
-                 adapter.log.debug('firmware version for ' + adapter.config.ip + "[" + port + ']: ' + version);
+                 adapter.log.debug('getFirmwareVersion for ' + adapter.config.ip + "[" + port + '] parsed as: ' + version);
 
                  if (version) {
                     //adapter.config.fw_version = version;
@@ -159,7 +159,7 @@ function getFirmwareVersion() {
 
           });
        }).on('error', function (e) {
-          adapter.log.warn('Got error by request ' + e.message);
+          adapter.log.warn('Got error by getFirmwareVersion request ' + e.message);
        });
     }
 }
