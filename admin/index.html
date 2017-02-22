@@ -584,6 +584,13 @@
         socket.emit('getState', 'system.adapter.' + adapter + '.' + instance + '.alive', function (err, state) {
             active = common.enabled || (state && state.val);
         });
+
+
+        socket.emit('getState',  adapter + '.' + instance + '.fw_version', function (err, state) {
+            fw_version = state.val;
+        });
+
+
         
         $('#add').button({
             icons: {primary: 'ui-icon-plusthick'}
