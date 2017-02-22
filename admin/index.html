@@ -128,6 +128,7 @@
     var rooms    = [];
     var ports    = [];
     var active   = false;
+    var fw_version = "";
 
     function showOnePort(index, portSettings) {
         // name, room, role, pty(type), ecmd(Action), eth(net action), m(mode), d(default state), pwm(0-255), misc (threshold)
@@ -532,6 +533,8 @@
         if (!settings) return;
 
         if (settings.longPress === undefined) settings.longPress = 400;
+
+        fw_version = settings.fw_version;
 
         $('.value').each(function () {
             var key = $(this).attr('id');
@@ -966,7 +969,7 @@
 <div id="adapter-container">
 
     <table><tr><td><img src="megad.png"></td><td><h3 class="translate">MegaD-2561 adapter settings</h3></td></tr></table>
-    <table><tr><td><h3 class="translate">Firmware version</h3></td><td>{fw_version}</td></tr></table>
+    <table><tr><td><h3 class="translate">Firmware version</h3></td><td>{{fw_version.val()}}</td></tr></table>
 
     <table>
         <tr><td class="translate" style="text-align: right">IP:</td><td>                    <input  class="value" id="ip"/></select></td>
