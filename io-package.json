@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.1.32",
+        "version":                  "0.1.33",
         "news": {
             "0.1.24": {
                 "en":               "getFirmwareVersion",
@@ -48,7 +48,7 @@
         "port":                     80,
         "fw_version":               "",
         "is_fw_version_actual":     "",
-        "pollInterval":             30,
+        "pollInterval":             600,
         "password":                 "sec",
         "longPress":                700,
         "doublePress":              600,

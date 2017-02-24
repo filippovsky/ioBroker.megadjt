@@ -30,7 +30,7 @@ var ask1WireTemp = false;   //1Wire
 var connected = false;
 var fw_version_actual = "4.09b2";
 
-var adapter = utils.adapter(  'megadjt'            );
+var adapter = utils.adapter(  'megadjt' );
 
 adapter.on('stateChange', function (id, state) {
     if (id && state && !state.ack) {
@@ -1492,6 +1492,7 @@ function restApi(req, res) {
     res.end('Error: invalid input "' + req.url + '". Expected /' + (adapter.config.name || adapter.instance) + '/?pt=X', 'utf8');
 }
 
+// отправка команды Меге
 function sendCommand(port, value) {
     var data = 'cmd=' + port + ':' + value;
 
@@ -2122,7 +2123,8 @@ function syncObjects() {
 	    
 	// if 1Wire
 	for (var po = 0; po < adapter.config.ports.length; po++) {
-            if (adapter.config.ports[po].pty == 3 && adapter.config.ports[po].d == 5) {
+            if (adapter.config.ports[po].pty && // для остановки undefined
+                  adapter.config.ports[po].pty == 3 && adapter.config.ports[po].d == 5) {
                 ask1WireTemp = true;
                 break;
             }
