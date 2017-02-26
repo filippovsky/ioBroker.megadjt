@@ -1296,7 +1296,7 @@ function processPortState(_port, value) {
 // обработка полученных данных от порта 1Wire-шины ------------------------------------------------------
 function processPortStateW(_port, value) {      //1Wire
    var _ports = adapter.config.ports;
-   var _sensors1wBus = adapter.config.sensors1wbus;
+   //var _sensors1wBus = adapter.config.sensors1wbus;
    //var sensors1wBus = adapter.config.sensors1wbus;
    var q = 0;
    //var portAnswer = [];
