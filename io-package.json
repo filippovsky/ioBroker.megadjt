@@ -1,16 +1,16 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.1.35",
+        "version":                  "0.1.36",
         "news": {
             "0.1.35": {
-                "en":               "getFirmwareVersion",
-                "de":               "getFirmwareVersion",
+                "en":               "added thermosensors on 1wbus",
+                "de":               "added thermosensors on 1wbus",
                 "ru":               "добавлена поддержка термодатчиков на шине 1-wire"
             },
             "0.1.34": {
-                "en":               "getFirmwareVersion",
-                "de":               "getFirmwareVersion",
+                "en":               "corrected error with 1wbus",
+                "de":               "corrected error with 1wbus",
                 "ru":               "исправлена ошибка опроса шины 1-wire"
             },
             "0.1.33": {
@@ -62,7 +62,15 @@
         "password":                 "sec",
         "longPress":                700,
         "doublePress":              600,
-        "ports":                    []
+        "ports":                    [],
+        "sensors1wbus":             [
+              {
+                    "address1w":                 "",
+                    "temperature":                0,
+                    "room":                      "",
+                    "descr":                     ""
+              }                     
+        ]
     },
     "instanceObjects": [
         {

@@ -1296,6 +1296,8 @@ function processPortState(_port, value) {
 // обработка полученных данных от порта 1Wire-шины ------------------------------------------------------
 function processPortStateW(_port, value) {      //1Wire
    var _ports = adapter.config.ports;
+   var _sensors1wBus = adapter.config.sensors1wbus;
+   var sensors1wBus = adapter.config.sensors1wbus;
    var q = 0;
    var portAnswer = [];
 
@@ -1313,13 +1315,33 @@ function processPortStateW(_port, value) {      //1Wire
       if (typeof value == 'string') {
          var sensorsAnswers  = value.split(';');
          var oneSensor = [];
-         var parsedObj = '';
+         //var parsedObj = '';
+         var found    = false;
+         var foundedj = 0;
          for (i = 0; i < sensorsAnswers.length; i++) {
             oneSensor = sensorsAnswers[i].split(':');
             portAnswer[i].address_1w = oneSensor[0];
             portAnswer[i].value      = parseFloat(oneSensor[1]);
             //portAnswer.push( buff[offset + i] );
-            adapter.setState('tempsensor1w_'.portAnswer[i].address_1w.'_temperature', {val: portAnswer[i].value, ack: true, q: q});
+            found = false;
+            foundedj = 0;
+            for (j = 0; j < sensors1wBus.length; j++ ) {
+                if (sensors1wBus[j].address1w === portAnswer[i].address_1w) {
+                   found = true;
+                   foundedj = j;
+                }
+            }
+            if (!found) {
+               foundedj = sensors1wBus.length + 1;
+            }
+            sensors1wBus[foundedj].address1w   = portAnswer[i].address_1w;
+            sensors1wBus[foundedj].temperature = portAnswer[i].value;
+            if ( !found || _sensors1wBus[foundedj].address1w !== sensors1wBus[foundedj].address1w ) {
+               adapter.setState('sensors1wbus['.foundedj.'].address1w', {val: portAnswer[i].address_1w, ack: true, q: q});
+            }
+            if ( !found || _sensors1wBus[foundedj].temperature !== sensors1wBus[foundedj].temperature ) {
+               adapter.setState('sensors1wbus['.foundedj.'].temperature', {val: portAnswer[i].value, ack: true, q: q});
+            }
          }
 
          // If status changed
@@ -1327,9 +1349,7 @@ function processPortStateW(_port, value) {      //1Wire
             // JSON.parse(JSON.stringify(settings))
             _ports[_port].value    = value;
             _ports[_port].q        = q;
-            _ports[_port].bus1w    = JSON.stringify(portAnswer);
-            adapter.log.debug('detected new value on port [' + _port + ']: ' + value + ', bus1w= ' + _ports[_port].bus1w );
-//            adapter.setState(_ports[_port].id, {val: value, ack: true, q: q, more: _ports[_port].bus1w}); 
+            adapter.log.debug('detected new value on port [' + _port + ']: ' + value );
             adapter.setState(_ports[_port].id, {val: value, ack: true, q: q}); 
          }
       }
