@@ -1349,7 +1349,7 @@ function processPortStateW(_port, value) {      //1Wire
             */
 //            if (!_sensors1wBus.portAnswer[i].address_1w || _sensors1wBus.portAnswer[i].address_1w.temperature !== portAnswer[i].value) {
                adapter.log.debug('новое значение температуры, адрес датчика = ' + address_1w + ', температура = ' + temperature );
-               adapter.setState('sensors1wbus.'.address_1w.'.temperature', {val: temperature, ack: true, q: q}, true);            
+               //adapter.setState('sensors1wbus.'.address_1w.'.temperature', {val: temperature, ack: true, q: q}, true);            
 //            }
          }
 
