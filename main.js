@@ -1319,7 +1319,7 @@ function processPortStateW(_port, value) {      //1Wire
          //var foundedj = 0;
          var address_1w = "";
          var temperature = 0;
-         for (i = 0; i < sensorsAnswers.length; i++) {
+         for (var i = 0; i < sensorsAnswers.length; i++) {
             oneSensor    = sensorsAnswers[i].split(':');
             address_1w   = oneSensor[0];
             temperature  = parseFloat(oneSensor[1]);
