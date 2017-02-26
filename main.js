@@ -28,7 +28,7 @@ var ports  = {};
 ///var askInternalTemp = false;
 var ask1WireTemp = false;   //1Wire
 var connected = false;
-var fw_version_actual = "4.09b2";
+var fw_version_actual = "4.11b8";
 
 var adapter = utils.adapter(  'megadjt' );
 
@@ -919,7 +919,7 @@ function getPortStateW(ip, password, port, callback) {                  // 1Wire
         res.on('end', function () {
             if (res.statusCode != 200) {
                 adapter.log.warn('Response code: ' + res.statusCode + ' - ' + xmldata);
-                if (callback) callback(xmldata);
+                //if (callback) callback(xmldata);
             } else {
                 adapter.log.debug('Response for ' + ip + "[" + port + ']: ' + xmldata);
                 // Analyse answer and updates statuses
@@ -1293,62 +1293,50 @@ function processPortState(_port, value) {
     }
 }
 
+// обработка полученных данных от порта 1Wire-шины ------------------------------------------------------
 function processPortStateW(_port, value) {      //1Wire
-    var _ports = adapter.config.ports;
-    var q = 0;
+   var _ports = adapter.config.ports;
+   var q = 0;
+   var portAnswer = [];
 
-        if (!_ports[_port]) {
-                // No configuration found
-                adapter.log.warn('Unknown port: ' + _port);
-                return;
-        }
+   if (!_ports[_port]) {
+       // No configuration found
+       adapter.log.warn('Unknown port: ' + _port);
+       return;
+   }
 
-    if (value !== null) {
-        var secondary = null;
-        var f;
-        // Value can be 30c5b8000000:27.50;32c5b8000000:28.81;31c5b8000000:27.43.......
-        if (typeof value == 'string') {
-            ///var t = value.split('/');
-            var t = value.split(';');
-            ///var m = value.match(/temp:([0-9.-]+)/);
-            var m = value.match(/30c5b8000000:([0-9.-]+)/);
-            if (m) {
-                secondary = value.match(/32c5b8000000:([0-9.]+)/);
-                if (secondary) secondary = parseFloat(secondary[1]);
-                value = m[1];
-            } else {
-                value = t[0];
-            }
-            if (t[1] !== undefined && secondary === null) { // counter
-                secondary = parseInt(t[1], 10);
-            }
-	}
+   if (value !== null) {
+      var secondary = null;
+      var f;
+      // Value can be 30c5b8000000:27.50;32c5b8000000:28.81;31c5b8000000:27.43.......
+      // d0016c070000:24.43
+      if (typeof value == 'string') {
+         var sensorsAnswers  = value.split(';');
+         var oneSensor = [];
+         var parsedObj = '';
+         for (i = 0; i < sensorsAnswers.length; i++) {
+            oneSensor = sensorsAnswers[i].split(':');
+            portAnswer[i].address_1w = oneSensor[0];
+            portAnswer[i].value      = parseFloat(oneSensor[1]);
+            //portAnswer.push( buff[offset + i] );
+            adapter.setState('tempsensor1w_'.portAnswer[i].address_1w.'_temperature', {val: portAnswer[i].value, ack: true, q: q});
+         }
 
-        // If status changed
-        if (value !== _ports[_port].value || _ports[_port].q != q || (secondary !== null && _ports[_port].secondary != secondary)) {
-            _ports[_port].oldValue = _ports[_port].value;
-
-            if (_ports[_port].pty == 3 && _ports[_port].d == 5) {
-                if (_ports[_port].value != value || _ports[_port].q != q) {
-                    adapter.setState(_ports[_port].id + '_temperature1', {val: value, ack: true, q: q});
-                }
-
-                if (secondary !== null && (_ports[_port].secondary != secondary || _ports[_port].q != q)) {
-                    adapter.setState(_ports[_port].id + '_temperature2', {val: secondary, ack: true, q: q});
-                }
-            /*} else // internal temperature sensor                                      ///SUPER
-            if (_ports[_port].pty == 3 && _ports[_port].d == 5) {
-                adapter.log.debug('detected new value on port [' + _port + ']: ' + value);
-                adapter.setState(_ports[_port].id, {val: value, ack: true, q: q});*/
-            }
-
+         // If status changed
+         if ( value !== _ports[_port].value ) {
+            // JSON.parse(JSON.stringify(settings))
             _ports[_port].value    = value;
             _ports[_port].q        = q;
-            if (secondary !== null) _ports[_port].secondary = secondary;
-        }
-    }
+            _ports[_port].bus1w    = JSON.stringify(portAnswer);
+            adapter.log.debug('detected new value on port [' + _port + ']: ' + value + ', bus1w= ' + _ports[_port].bus1w );
+//            adapter.setState(_ports[_port].id, {val: value, ack: true, q: q, more: _ports[_port].bus1w}); 
+            adapter.setState(_ports[_port].id, {val: value, ack: true, q: q}); 
+         }
+      }
+   }
 }    
 
+//--------------------------------------------------------------------------------------------------------------
 function pollStatus(dev) {
     /*for (var port = 0; port < adapter.config.ports.length; port++) {
         getPortState(port, processPortState);
