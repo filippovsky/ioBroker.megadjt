@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.1.38",
+        "version":                  "0.1.39",
         "news": {
             "0.1.35": {
                 "en":               "added thermosensors on 1wbus",
@@ -62,8 +62,7 @@
         "password":                 "sec",
         "longPress":                700,
         "doublePress":              600,
-        "ports":                    [],
-        "sensors1wbus":             []
+        "ports":                    []
     },
     "instanceObjects": [
         {
