@@ -1390,13 +1390,28 @@ function pollStatus(dev) {
             }*/
 	    // process 1Wire 
             if (ask1WireTemp) {
-                getPortStateW(function (err, data) {
-                    for (var po = 0; po < adapter.config.ports.length; po++) {
-                        if (adapter.config.ports[po] && adapter.config.ports[po].pty == 3 && adapter.config.ports[po].d == 5) {
-                            processPortStateW(po, data);
-                        }
+                //getPortStateW(function (err, data) {
+                //    for (var po = 0; po < adapter.config.ports.length; po++) {
+                //        if (adapter.config.ports[po] && adapter.config.ports[po].pty == 3 && adapter.config.ports[po].d == 5) {
+                //            processPortStateW(po, data);
+                //        }
+                //    }
+                //});
+
+                for (var po = 0; po < adapter.config.ports.length; po++) {
+                    if (adapter.config.ports[po] && adapter.config.ports[po].pty == 3 && adapter.config.ports[po].d == 5) {
+                       getPortStateW( adapter.config.ip,
+                                      adapter.config.password,
+                                      po,
+                                      function (po, data) {
+                                           processPortStateW(po, data);
+                                      }
+                                    );
                     }
-                });
+                }
+
+
+
             }
         }
     });
