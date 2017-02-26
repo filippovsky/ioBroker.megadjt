@@ -1299,7 +1299,7 @@ function processPortStateW(_port, value) {      //1Wire
    var _sensors1wBus = adapter.config.sensors1wbus;
    //var sensors1wBus = adapter.config.sensors1wbus;
    var q = 0;
-   var portAnswer = [];
+   //var portAnswer = [];
 
    if (!_ports[_port]) {
        // No configuration found
@@ -1308,20 +1308,24 @@ function processPortStateW(_port, value) {      //1Wire
    }
 
    if (value !== null) {
-      var secondary = null;
-      var f;
+      //var secondary = null;
+      //var f;
       // Value can be 30c5b8000000:27.50;32c5b8000000:28.81;31c5b8000000:27.43.......
       // d0016c070000:24.43
       if (typeof value == 'string') {
          var sensorsAnswers  = value.split(';');
          var oneSensor = [];
-         var found    = false;
-         var foundedj = 0;
+         //var found    = false;
+         //var foundedj = 0;
+         var address_1w = "";
+         var temperature = 0;
          for (i = 0; i < sensorsAnswers.length; i++) {
-            oneSensor = sensorsAnswers[i].split(':');
+            oneSensor    = sensorsAnswers[i].split(':');
+            address_1w   = oneSensor[0];
+            temperature  = parseFloat(oneSensor[1]);
+            /*
             portAnswer[i].address_1w = oneSensor[0];
             portAnswer[i].value      = parseFloat(oneSensor[1]);
-            /*
             //portAnswer.push( buff[offset + i] );
             found = false;
             foundedj = 0;
@@ -1343,10 +1347,10 @@ function processPortStateW(_port, value) {      //1Wire
                adapter.setState('sensors1wbus['.foundedj.'].temperature', {val: portAnswer[i].value, ack: true, q: q});
             }
             */
-            if (!_sensors1wBus{portAnswer[i].address_1w} || _sensors1wBus{portAnswer[i].address_1w}.temperature !== portAnswer[i].value) {
-               adapter.log.debug('новое значение температуры, адрес датчика = ' + portAnswer[i].address_1w + ', температура = ' + portAnswer[i].value );
-               adapter.setState('sensors1wbus{'.portAnswer[i].address_1w.'}.temperature', {val: portAnswer[i].value, ack: true, q: q}, true);            
-            }
+//            if (!_sensors1wBus.portAnswer[i].address_1w || _sensors1wBus.portAnswer[i].address_1w.temperature !== portAnswer[i].value) {
+               adapter.log.debug('новое значение температуры, адрес датчика = ' + address_1w + ', температура = ' + temperature );
+               adapter.setState('sensors1wbus.'.address_1w.'.temperature', {val: temperature, ack: true, q: q}, true);            
+//            }
          }
 
          // If status changed
