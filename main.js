@@ -157,7 +157,33 @@ function getFirmwareVersion() {
                     //adapter.setState('fw_version', {val: version, ack: true});
                     adapter.log.debug('getFirmwareVersion сохраняем: ' + version);
                     //adapter.setState(  adapter.config.fw_version, version, true);
-                    adapter.setState( 'fw_version', {val: version, ack: true});
+
+                      //??
+		    obj = {
+                        _id: adapter.namespace + '.fw_version',
+                        common: {
+                            name: 'fw_version', //obj.common.name + '_temperature1',
+                            role: 'text',
+                            write: false,
+                            read: true,
+                            //unit: '°C',
+                            def: 0,
+                            //min: -30,
+                            //max: 30,
+                            desc: 'Версия прошивки Меги',
+                            type: 'text'
+                        },
+                        ////native: JSON.parse(JSON.stringify(settings)),
+                        native: {
+                        //port: p,
+                        //name: 'P' + p
+                        },
+                        type:   'text'
+                    };
+                    adapter.setObject(obj._id, obj);
+                    //??
+
+                    //???adapter.setState( 'fw_version', {val: version, ack: true});
                     adapter.log.debug('getFirmwareVersion сохранили: ' + version);
                     // Analyse answer and updates staties
                     // if (callback) callback(obj, version);
