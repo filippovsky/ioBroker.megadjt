@@ -122,7 +122,7 @@
         "Sensor type:":         {"en": "Sensor type:",          "de": "Sensortyp:",                 "ru": "Тип сенсора:"},
         "Dev:":                 {"en": "Sensor type:",          "de": "Sensortyp:",                 "ru": "Тип сенсора:"},
         "De-bounce:":           {"en": "De-bounce:",            "de": "Entprellen:",                "ru": "Дребезг:"},
-        "Firmware version":     {"en": "Firmware version:",     "de": "Firmware version:",          "ru": "Версия прошивки"}
+        "Firmware version:":    {"en": "Firmware version:",     "de": "Firmware version:",          "ru": "Версия прошивки:"}
     };
     var onchange = null;
     var rooms    = [];
@@ -559,6 +559,8 @@
 
         ports = settings.ports || [];
 
+        fw_version = settings.fw_version;
+
         $('#autoDetect').button({
             icons: {primary: 'ui-icon-refresh'}
         }).click(function() {
@@ -586,9 +588,9 @@
         });
 
 
-        socket.emit('getState',  adapter + '.' + instance + '.fw_version', function (err, state) {
-            fw_version = state.val;
-        });
+        //socket.emit('getState',  adapter + '.' + instance + '.fw_version', function (err, state) {
+        //    fw_version = state.val;
+        //});
 
 
         
@@ -976,13 +978,16 @@
 <div id="adapter-container">
 
     <table><tr><td><img src="megad.png"></td><td><h3 class="translate">MegaD-2561 adapter settings</h3></td></tr></table>
-    <table><tr><td><h3 class="translate">Firmware version</h3></td><td><span class="value" id="fw_version">fw_version</span></td></tr></table>
 
     <table>
         <tr><td class="translate" style="text-align: right">IP:</td><td>                    <input  class="value" id="ip"/></select></td>
             <td style="padding-left: 10px"><select id="ips" style="display:none"></select>&nbsp;<button id="discover" class="translateB">Find devices</button></td></tr>
         <tr><td class="translate" style="text-align: right">MegaD Name:</td><td>            <input  class="value" id="name"/></td>
             <td class="translate" style="text-align: right">Poll interval (sec):</td><td>   <input  class="value" id="pollInterval"  maxlength="3"/></td>
+        </tr>
+        <tr><td class="translate" style="text-align: right">Firmware version:</td><td>  $('fw_version').getState();  </td>
+            <td class="translate" style="text-align: right"> </td><td>   </td>
+        </tr>
         <tr><td class="translate" style="text-align: right">ioBroker Web Port:</td><td>     <input  class="value" id="port"          maxlength="5"/></td>
             <td class="translate" style="text-align: right">Long press detect (ms):</td><td><input  class="value" id="longPress"     maxlength="4"/></td>
         </tr>

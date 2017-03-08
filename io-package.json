@@ -1,21 +1,22 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.1.45",
+        "version":                  "0.1.46",
         "news": {
+            "0.1.46": {
+                "en":               "new states: fw_version and is_fw_version_actual",
+                "ru":               "добавлены свойства fw_version и is_fw_version_actual"
+            },
             "0.1.35": {
                 "en":               "added thermosensors on 1wbus",
-                "de":               "added thermosensors on 1wbus",
                 "ru":               "добавлена поддержка термодатчиков на шине 1-wire"
             },
             "0.1.34": {
                 "en":               "corrected error with 1wbus",
-                "de":               "corrected error with 1wbus",
                 "ru":               "исправлена ошибка опроса шины 1-wire"
             },
             "0.1.33": {
                 "en":               "getFirmwareVersion",
-                "de":               "getFirmwareVersion",
                 "ru":               "добавлена функция getFirmwareVersion"
             },
             "0.1.7": {

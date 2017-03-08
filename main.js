@@ -160,18 +160,15 @@ function getFirmwareVersion() {
 
 		    adapter.setObject('fw_version',  {
                         //_id: adapter.namespace + '.fw_version',
-                        type:   'text',
+                        type:   'state',
                         common: {
-                            name: 'fw_version', //obj.common.name + '_temperature1',
+                            name: 'fw_version', 
                             role: 'text',
                             write: false,
                             read: true,
-                            //unit: '°C',
                             def: 0,
-                            //min: -30,
-                            //max: 30,
                             desc: 'Версия прошивки Меги',
-                            type: 'text'
+                            type: 'state'
                         },
                         ////native: JSON.parse(JSON.stringify(settings)),
                         native: {
@@ -182,18 +179,15 @@ function getFirmwareVersion() {
 
 		    adapter.setObject('is_fw_version_actual',  {
                         //_id: adapter.namespace + '.fw_version',
-                        type:   'number',
+                        type:   'state',
                         common: {
-                            name: 'is_fw_version_actual', //obj.common.name + '_temperature1',
+                            name: 'is_fw_version_actual', 
                             role: 'text',
                             write: false,
                             read: true,
-                            //unit: '°C',
                             def: 0,
-                            //min: -30,
-                            //max: 30,
-                            desc: 'Версия прошивки Меги',
-                            type: 'number'
+                            desc: 'Версия прошивки Меги актуальна?',
+                            type: 'state'
                         },
                         native: {
                         }
