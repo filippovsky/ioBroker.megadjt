@@ -28,7 +28,7 @@ var ports  = {};
 ///var askInternalTemp = false;
 var ask1WireTemp = false;   //1Wire
 var connected = false;
-var fw_version_actual = "4.11b8";
+var fw_version_actual = "4.12b3";
 
 var adapter = utils.adapter(  'megadjt' );
 
@@ -153,13 +153,9 @@ function getFirmwareVersion() {
                  adapter.log.debug('getFirmwareVersion for ' + adapter.config.ip + "[" + options.port + '] parsed as: ' + version);
 
                  if (version) {
-                    //adapter.config.fw_version = version;
-                    //adapter.setState('fw_version', {val: version, ack: true});
                     adapter.log.debug('getFirmwareVersion сохраняем: ' + version);
-                    //adapter.setState(  adapter.config.fw_version, version, true);
 
 		    adapter.setObject('fw_version',  {
-                        //_id: adapter.namespace + '.fw_version',
                         type:   'state',
                         common: {
                             name: 'fw_version', 
@@ -170,15 +166,11 @@ function getFirmwareVersion() {
                             desc: 'Версия прошивки Меги',
                             type: 'state'
                         },
-                        ////native: JSON.parse(JSON.stringify(settings)),
                         native: {
-                        //port: p,
-                        //name: 'P' + p
                         }
                     });
 
 		    adapter.setObject('is_fw_version_actual',  {
-                        //_id: adapter.namespace + '.fw_version',
                         type:   'state',
                         common: {
                             name: 'is_fw_version_actual', 
