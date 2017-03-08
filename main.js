@@ -200,7 +200,7 @@ function getFirmwareVersion() {
                     });
 
 
-                    //???adapter.setState( 'fw_version', {val: version, ack: true});
+                    adapter.setState( 'fw_version', {val: version, ack: true});
                     adapter.log.debug('getFirmwareVersion сохранили: ' + version);
                     // Analyse answer and updates staties
                     // if (callback) callback(obj, version);
