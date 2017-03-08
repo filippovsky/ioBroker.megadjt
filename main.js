@@ -116,6 +116,73 @@ adapter.on('message', function (obj) {
 });
 
 
+
+// Функция получения актуальной версии прошивки Меги ---------------------------------------------------
+function getActual2561FirmwareVersion() {
+    var version = '';
+    var parts = adapter.config.ip.split(':');
+    var actual_version = '';
+    var controller_model = '';
+    var current_version = '';
+
+    var options = {
+        host: 'ab-log.ru',
+        port: 80,
+        path: '/smart-house/ethernet/megad-2561-firmware'
+    };
+    if (!options.host) {
+       adapter.log.warn('getActual2561FirmwareVersion not executed, because host is null');
+    } else {
+       adapter.log.debug('getActual2561FirmwareVersion http://' + options.host + options.path);
+
+       http.get(options, function (res) {
+          var xmldata = '';
+          res.on('error', function (e) {
+              adapter.log.warn('getActual2561FirmwareVersion error: ' + e);
+          });
+          res.on('data', function (chunk) {
+              xmldata += chunk;
+              //adapter.log.debug('getFirmwareVersion get: ' + chunk);
+          });
+          res.on('end', function () {
+              if (res.statusCode != 200) {
+                 adapter.log.warn('getActual2561FirmwareVersion Response code: ' + res.statusCode + ' - ' + xmldata);
+
+              } else {
+
+                 // Вырезаем из данных версию прошивки
+                 //adapter.log.debug('getFirmwareVersion response for ' + adapter.config.ip + "[" + options.port + ']: ' + xmldata);
+                 version = xmldata.replace(/^(.*?)Прошивки для MegaD-2561(.*?)ver\s(.*?)\s\-(.*?)$/, '$3');
+                 adapter.log.debug('Сырое значение актуальной версии:' + version);
+                 version = version.replace(/\s/g);
+                 version = version.replace(/eta/g);
+                 adapter.log.debug('Очищенное значение актуальной версии:' + version);
+
+                 if (version) {
+                    adapter.setState( 'version.firmware_last_known', {val: version, ack: true});
+                    current_version = adapter.getState('version.firmware');
+
+                    if ( version === current_version ) {
+                          adapter.setState( 'version.is_firmware_actual', {val: true, ack: true});
+                          adapter.log.debug('getFirmwareVersion Текущая версия актуальна');
+                    } else {
+                          adapter.setState( 'version.is_firmware_actual', {val: false, ack: true});
+                          adapter.log.debug('getFirmwareVersion Текущая версия неактуальна');
+                    }
+
+                 } else {
+                    adapter.log.debug('getActual2561FirmwareVersion НЕ ПОПАЛИ: ' + version);
+                 }
+
+              } 
+
+          });
+       }).on('error', function (e) {
+          adapter.log.warn('Got error by getActual2561FirmwareVersion request ' + e.message);
+       });
+    }
+}
+
 // Функция получения версии прошивки Меги ---------------------------------------------------
 function getFirmwareVersion() {
     var version = '';
@@ -2210,6 +2277,7 @@ function main() {
             adapter.log.info('No port specified');
         }
         getFirmwareVersion();
+        getActual2561FirmwareVersion();
     }
     syncObjects();
     adapter.subscribeStates('*');
