@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.1.47",
+        "version":                  "0.1.48",
         "news": {
             "0.1.46": {
                 "en":               "new states: fw_version and is_fw_version_actual",
@@ -78,6 +78,53 @@
             "common": {
                 "role":  "indicator.connected",
                 "name":  "If connected to MegaD",
+                "type":  "boolean",
+                "read":  true,
+                "write": false,
+                "def":   false
+            },
+            "native": {}
+        },
+        {
+            "_id":  "version",
+            "type": "channel",
+            "common": {
+                "name": "Данные о версии прошивке и модели Меги"
+            },
+            "native": {}
+        },
+        {
+            "_id":  "version.firmware",
+            "type": "state",
+            "common": {
+                "role":  "text",
+                "name":  "Версия прошивки Меги на данном устройстве",
+                "type":  "text",
+                "read":  true,
+                "write": false,
+                "def":   0
+            },
+            "native": {}
+        },
+        {
+            "_id":  "version.firmware_last_known",
+            "type": "state",
+            "common": {
+                "role":  "text",
+                "name":  "Номер текущей актуальной версии Меги",
+                "type":  "text",
+                "read":  true,
+                "write": false,
+                "def":   0
+            },
+            "native": {}
+        },
+        {
+            "_id":  "version.is_firmware_actual",
+            "type": "state",
+            "common": {
+                "role":  "indicator",
+                "name":  "Версия прошивки в устройстве актуальна?",
                 "type":  "boolean",
                 "read":  true,
                 "write": false,
