@@ -1,11 +1,15 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.1.48",
+        "version":                  "0.1.49",
         "news": {
-            "0.1.46": {
-                "en":               "new states: fw_version and is_fw_version_actual",
-                "ru":               "добавлены свойства fw_version и is_fw_version_actual"
+            "0.1.49": {
+                "en":               "new states: version.controller_model",
+                "ru":               "добавлены свойства version.controller_model"
+            },
+            "0.1.48": {
+                "en":               "new states: version.firmware and version.is_firmware_actual",
+                "ru":               "добавлены свойства version.firmware and version.is_firmware_actual"
             },
             "0.1.35": {
                 "en":               "added thermosensors on 1wbus",
@@ -129,6 +133,19 @@
                 "read":  true,
                 "write": false,
                 "def":   false
+            },
+            "native": {}
+        },
+        {
+            "_id":  "version.controller_model",
+            "type": "state",
+            "common": {
+                "role":  "text",
+                "name":  "Модель управляющего модуля Меги",
+                "type":  "text",
+                "read":  true,
+                "write": false,
+                "def":   ""
             },
             "native": {}
         }

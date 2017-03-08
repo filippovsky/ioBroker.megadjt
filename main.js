@@ -121,6 +121,7 @@ function getFirmwareVersion() {
     var version = '';
     var parts = adapter.config.ip.split(':');
     var actual_version = '';
+    var controller_model = '';
 
     var options = {
         host: parts[0],
@@ -150,7 +151,9 @@ function getFirmwareVersion() {
                  // Вырезаем из данных версию прошивки
                  adapter.log.debug('getFirmwareVersion response for ' + adapter.config.ip + "[" + options.port + ']: ' + xmldata);
                  version = xmldata.replace(/^(.*?)fw\:\s(.*?)\)(.*?)$/, '$2');
+                 controller_model = xmldata.replace(/^(.*?)\sby(.*?)$/, '$1');
                  adapter.log.debug('getFirmwareVersion for ' + adapter.config.ip + "[" + options.port + '] parsed as: ' + version);
+                 adapter.log.debug('Модель управляющего модуля Меги ' + adapter.config.ip + "[" + options.port + '] распознана как: ' + controller_model);
 
                  if (version) {
                     adapter.log.debug('getFirmwareVersion сохраняем: ' + version);
@@ -171,6 +174,14 @@ function getFirmwareVersion() {
                  } else {
                     adapter.log.debug('getFirmwareVersion НЕ ПОПАЛИ: ' + version);
                  }
+
+                 if (controller_model) {
+                    adapter.setState( 'version.controller_model', {val: controller_model, ack: true});
+                 } else {
+                    adapter.log.debug('Не смогли определить модель управляющего контроллера Меги');
+                 }
+
+
               } 
 
           });
