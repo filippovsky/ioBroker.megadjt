@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.1.43",
+        "version":                  "0.1.44",
         "news": {
             "0.1.35": {
                 "en":               "added thermosensors on 1wbus",
@@ -56,7 +56,6 @@
         "ip":                       "",
         "name":                     "",
         "port":                     80,
-        "is_fw_version_actual":     "",
         "pollInterval":             600,
         "password":                 "sec",
         "longPress":                700,
