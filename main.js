@@ -120,7 +120,7 @@ adapter.on('message', function (obj) {
 // Функция получения актуальной версии прошивки Меги ---------------------------------------------------
 function getActual2561FirmwareVersion() {
     var version = '';
-    var parts = adapter.config.ip.split(':');
+    //var parts = adapter.config.ip.split(':');
     var actual_version = '';
     var controller_model = '';
     var current_version = '';
@@ -152,9 +152,10 @@ function getActual2561FirmwareVersion() {
 
                  // Вырезаем из данных версию прошивки
                  //adapter.log.debug('getFirmwareVersion response for ' + adapter.config.ip + "[" + options.port + ']: ' + xmldata);
-                 version = xmldata.replace(/^(.*?)ver\s(.*?)\s\-(.*?)$/, '$3');
+                 version = xmldata.replace(/^(.*?)\sver\s(.*?)\s\-\s(.*?)$/, '$2');
                  adapter.log.debug('Сырое значение актуальной версии:' + version);
                  version = version.replace(/\s/,'');
+                 adapter.log.debug('Сырое значение актуальной версии1:' + version);
                  version = version.replace(/eta/,'');
                  adapter.log.debug('Очищенное значение актуальной версии:' + version);
 
