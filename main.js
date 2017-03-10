@@ -137,7 +137,7 @@ function getActual2561FirmwareVersion() {
 
        http.get(options, function (res) {
           var xmldata = '';
-          res.setEncoding('windows-1251');//?
+//          res.setEncoding('windows-1251');//?
           res.on('error', function (e) {
               adapter.log.warn('getActual2561FirmwareVersion error: ' + e);
           });
