@@ -152,10 +152,10 @@ function getActual2561FirmwareVersion() {
 
                  // Вырезаем из данных версию прошивки
                  //adapter.log.debug('getFirmwareVersion response for ' + adapter.config.ip + "[" + options.port + ']: ' + xmldata);
-                 version = xmldata.replace(/^(.*?)Прошивки для MegaD-2561(.*?)ver\s(.*?)\s\-(.*?)$/, '$3');
+                 version = xmldata.replace(/^(.*?)ver\s(.*?)\s\-(.*?)$/, '$3');
                  adapter.log.debug('Сырое значение актуальной версии:' + version);
-                 version = version.replace(/\s/g);
-                 version = version.replace(/eta/g);
+                 version = version.replace(/\s/,'');
+                 version = version.replace(/eta/,'');
                  adapter.log.debug('Очищенное значение актуальной версии:' + version);
 
                  if (version) {
