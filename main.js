@@ -28,7 +28,7 @@ var ports  = {};
 ///var askInternalTemp = false;
 var ask1WireTemp = false;   //1Wire
 var connected = false;
-var fw_version_actual = "4.12b3";
+var fw_version_actual = "4.12b8";
 
 var adapter = utils.adapter(  'megadjt' );
 
@@ -2282,7 +2282,7 @@ function main() {
             adapter.log.info('No port specified');
         }
         getFirmwareVersion();
-        getActual2561FirmwareVersion();
+        //getActual2561FirmwareVersion();
     }
     syncObjects();
     adapter.subscribeStates('*');
