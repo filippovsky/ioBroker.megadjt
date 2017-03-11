@@ -245,6 +245,11 @@ function getFirmwareVersion() {
                           adapter.log.debug('getFirmwareVersion Текущая версия неактуальна');
                     }
 
+
+                    adapter.createState( 'xp1');
+                    adapter.createState( 'xp2');
+
+
                  } else {
                     adapter.log.debug('getFirmwareVersion НЕ ПОПАЛИ: ' + version);
                  }
