@@ -235,7 +235,9 @@ function getFirmwareVersion() {
                     // Analyse answer and updates staties
                     // if (callback) callback(obj, version);
                     adapter.log.debug('getFirmwareVersion Актуальная версия прошивки: ' + fw_version_actual);
-                    if ( version == fw_version_actual ) {
+                    adapter.setState( 'version.firmware_last_known', {val: fw_version_actual, ack: true});
+
+                    if ( version === fw_version_actual ) {
                           adapter.setState( 'version.is_firmware_actual', {val: true, ack: true});
                           adapter.log.debug('getFirmwareVersion Текущая версия актуальна');
                     } else {

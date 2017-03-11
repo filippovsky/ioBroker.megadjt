@@ -559,7 +559,8 @@
 
         ports = settings.ports || [];
 
-        fw_version = settings.fw_version;
+//        fw_version = settings.fw_version;
+//version.firmware
 
         $('#autoDetect').button({
             icons: {primary: 'ui-icon-refresh'}
@@ -588,9 +589,9 @@
         });
 
 
-        //socket.emit('getState',  adapter + '.' + instance + '.fw_version', function (err, state) {
-        //    fw_version = state.val;
-        //});
+        socket.emit('getState',  adapter + '.' + instance + '.version.firmware', function (err, state) {
+           fw_version = state.val;
+        });
 
 
         
