@@ -154,7 +154,8 @@ function getActual2561FirmwareVersion() {
                  // Вырезаем из данных версию прошивки
                  //adapter.log.debug('getFirmwareVersion response for ' + adapter.config.ip + "[" + options.port + ']: ' + xmldata);
                  //version = xmldata.replace(/(.*?)\sver\s(.*?)\s\-(.*?)/, '$2');
-                 version=xmldata.replace(/\sver\s(.*?)\<(.*?)/'$1');
+                 adapter.log.debug('xmldata:' + xmldata);
+                 version=xmldata.replace(/(.*?)\sver\s(.*?)\<(.*?)/,'$2');
                  adapter.log.debug('Сырое значение актуальной версии:' + version);
                  version = version.replace(/\s/,'');
                  adapter.log.debug('Сырое значение актуальной версии1:' + version);

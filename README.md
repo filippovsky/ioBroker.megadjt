@@ -1,4 +1,5 @@
 ![Logo](admin/megad.png)
+![NPM version](http://img.shields.io/npm/v/iobroker.megadjt.svg)
 
 ioBroker MegaD-2561 adapter (Version by Filippovsky, based on adapter of ausHaus and BlueFox)
 =================
