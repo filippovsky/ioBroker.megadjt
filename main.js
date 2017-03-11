@@ -156,7 +156,7 @@ function getActual2561FirmwareVersion() {
                  //version = xmldata.replace(/(.*?)\sver\s(.*?)\s\-(.*?)/, '$2');
                  adapter.log.debug('xmldata:' + xmldata);
                  //version=xmldata.replace(/(.*?)\sver\s(.*?)\<(.*?)/,'$2');
-                 version=xmldata.replace(/^(.*?)div id=\"cnt\"\>(.*?)\sver\s(.*?)\<(.*?)/,'$3');
+                 version=xmldata.replace(/(.*?)div\sid\=\"cnt\"\>(.*?)\sver\s(.*?)\<(.*?)/,'$3');
                  adapter.log.debug('Сырое значение актуальной версии:' + version);
                  version = version.replace(/\s/,'');
                  adapter.log.debug('Сырое значение актуальной версии1:' + version);
