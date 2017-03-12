@@ -116,7 +116,7 @@ adapter.on('message', function (obj) {
 });
 
 
-
+/*
 // Функция получения актуальной версии прошивки Меги ---------------------------------------------------
 function getActual2561FirmwareVersion() {
     var version = '';
@@ -187,7 +187,7 @@ function getActual2561FirmwareVersion() {
        });
     }
 }
-
+*/
 // Функция получения версии прошивки Меги ---------------------------------------------------
 function getFirmwareVersion() {
     var version = '';
