@@ -35,7 +35,8 @@ var adapter = utils.adapter(  'megadjt' );
 adapter.on('stateChange', function (id, state) {
     var matched = [];
     if (id && state && !state.ack) {
-        matched = id.match(/megadjt\.(.*?)\.xp(.*?)/);
+        //matched = id.match(/megadjt\.(.*?)\.xp(.*?)/);
+        matched = id.match(/xp(.*?)/);
         if ( matched ) {
            adapter.setState( id, {val: state.val, ack: true});           
            adapter.log.info('Изменился исполнительный модуль ' + id + ' на ' + state.val);
