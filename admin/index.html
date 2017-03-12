@@ -588,13 +588,20 @@
             active = common.enabled || (state && state.val);
         });
 
-
+/*
         socket.emit('getState',  adapter + '.' + instance + '.version.firmware', function (err, state) {
            fw_version = state.val;
            $('#fw_version').value()=fw_version;
            $('#fw_version').val()=fw_version;
+//    var Mode = getState('Climat.mode').val;
         });
-
+*/
+       fw_version = $('megadjt.' + instance + '.version.firmware').getValue;
+/*
+$('channel[role=switch][state.id=*.STATE](rooms=Wohnzimmer)').on(function (obj) {
+   log('New state ' + obj.id + ' = ' + obj.state.val);
+}
+*/
 
         
         $('#add').button({
