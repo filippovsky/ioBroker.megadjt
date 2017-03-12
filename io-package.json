@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.2.18",
+        "version":                  "0.2.19",
         "news": {
             "0.2.0": {
                 "en":               "new states: version.firmware_last_known",
@@ -150,6 +150,32 @@
                 "read":  true,
                 "write": false,
                 "def":   ""
+            },
+            "native": {}
+        },
+        {
+            "_id":  "xp1",
+            "type": "state",
+            "common": {
+                "role":  "number",
+                "name":  "Тип исполнительного модуля на XP1",
+                "type":  "number",
+                "read":  true,
+                "write": true,
+                "def":   0
+            },
+            "native": {}
+        },
+        {
+            "_id":  "xp2",
+            "type": "state",
+            "common": {
+                "role":  "number",
+                "name":  "Тип исполнительного модуля на XP2",
+                "type":  "number",
+                "read":  true,
+                "write": true,
+                "def":   0
             },
             "native": {}
         }
