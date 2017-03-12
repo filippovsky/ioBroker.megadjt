@@ -34,6 +34,11 @@ var adapter = utils.adapter(  'megadjt' );
 
 adapter.on('stateChange', function (id, state) {
     if (id && state && !state.ack) {
+        if ( id === 'xp1' || id === 'xp2' ) {
+           adapter.setState( id, {val: state.val, ack: true});           
+           adapter.log.info('Изменился исполнительный модуль ' + id + ' на ' + state.val);
+           return;
+        } 
         if (!ports[id]) {
             adapter.log.error('Unknown port ID ' + id);
             return;
