@@ -246,8 +246,8 @@ function getFirmwareVersion() {
                     }
 
 
-                    adapter.createState( 'xp1');
-                    adapter.createState( 'xp2');
+                    //adapter.createState( 'xp1');
+                    //adapter.createState( 'xp2');
 
 
                  } else {
