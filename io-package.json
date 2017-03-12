@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.2.27",
+        "version":                  "0.2.28",
         "news": {
             "0.2.0": {
                 "en":               "new states: version.firmware_last_known",
@@ -69,6 +69,7 @@
         "password":                 "sec",
         "longPress":                700,
         "doublePress":              600,
+        "fw_version":               "",
         "ports":                    []
     },
     "instanceObjects": [
