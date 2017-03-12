@@ -241,8 +241,8 @@ function getFirmwareVersion() {
                     adapter.setState( 'version.firmware', {val: version, ack: true});
                     adapter.log.debug('getFirmwareVersion сохранили: ' + version);
 
-                    setState( 'system.adapter.megadjt.'+adapter.instance+'.fw_version', {val: version, ack: true});
-                    adapter.log.debug('getFirmwareVersion сохранили fw_version: ' + version);
+                    //setState( 'system.adapter.megadjt.'+adapter.instance+'.fw_version', {val: version, ack: true});
+                    //adapter.log.debug('getFirmwareVersion сохранили fw_version: ' + version);
 
                     // Analyse answer and updates staties
                     // if (callback) callback(obj, version);
