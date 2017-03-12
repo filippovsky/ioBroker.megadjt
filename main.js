@@ -33,8 +33,10 @@ var fw_version_actual = "4.12b8";
 var adapter = utils.adapter(  'megadjt' );
 
 adapter.on('stateChange', function (id, state) {
+    var matched = [];
     if (id && state && !state.ack) {
-        if ( id === 'xp1' || id === 'xp2' ) {
+        matched = id.match(/megadjt\.(.*?)\.xp(.*?)/);
+        if ( matched ) {
            adapter.setState( id, {val: state.val, ack: true});           
            adapter.log.info('Изменился исполнительный модуль ' + id + ' на ' + state.val);
            return;
