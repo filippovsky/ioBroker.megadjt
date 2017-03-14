@@ -229,7 +229,7 @@ function getFirmwareVersion() {
               } else {
 
                  // Вырезаем из данных версию прошивки
-                 adapter.log.debug('getFirmwareVersion response for ' + adapter.config.ip + "[" + options.port + ']: ' + xmldata);
+                 //adapter.log.debug('getFirmwareVersion response for ' + adapter.config.ip + "[" + options.port + ']: ' + xmldata);
                  version = xmldata.replace(/^(.*?)fw\:\s(.*?)\)(.*?)$/, '$2');
                  controller_model = xmldata.replace(/^(.*?)\sby(.*?)$/, '$1');
                  adapter.log.debug('getFirmwareVersion for ' + adapter.config.ip + "[" + options.port + '] parsed as: ' + version);
@@ -241,7 +241,7 @@ function getFirmwareVersion() {
                     adapter.setState( 'version.firmware', {val: version, ack: true});
                     adapter.log.debug('getFirmwareVersion сохранили: ' + version);
 
-                    //setState( 'system.adapter.megadjt.'+adapter.instance+'.fw_version', {val: version, ack: true});
+                    //adapter.config.setState( 'fw_version', {val: version, ack: true});
                     //adapter.log.debug('getFirmwareVersion сохранили fw_version: ' + version);
 
                     // Analyse answer and updates staties

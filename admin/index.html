@@ -758,6 +758,9 @@ $('channel[role=switch][state.id=*.STATE](rooms=Wohnzimmer)').on(function (obj) 
             $('#xp2').val($(this).val()).trigger('change');
         });
 
+        $text = 'Тест текста '+fw_version;
+        $('#testtext').html(text);
+
 
         onChange(false);
     }
@@ -1039,6 +1042,10 @@ $('channel[role=switch][state.id=*.STATE](rooms=Wohnzimmer)').on(function (obj) 
        <option value="14-R">Релейный модуль 14-R</option>
     </select>
     <br>
+
+    <div id="testtext">
+         555666
+    </div>
 
     <table>
         <thead>
