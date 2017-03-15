@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.2.33",
+        "version":                  "0.2.34",
         "news": {
             "0.2.0": {
                 "en":               "new states: version.firmware_last_known",

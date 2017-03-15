@@ -592,15 +592,15 @@
 
         socket.emit('getState',  adapter + '.' + instance + '.version.firmware', function (err, state) {
            fw_version = state.val;
-           //$('#fw_version').val(fw_version);
-          $('#fw_version').val = fw_version;
+           $('#fw_version').val(fw_version);
+          //$('#fw_version').val = fw_version;
         });
 
         socket.emit('getState',  adapter + '.' + instance + '.version.is_firmware_actual', function (err, state) {
            if (state.val === true ) {
-              $('#fw_version').style.backgound='green';
+              $('#fw_version').style.background('green');
            } else {
-              $('#fw_version').style.background='yellow';
+              $('#fw_version').style.background('yellow');
            }
         });
 
