@@ -530,6 +530,7 @@
 
     // the function loadSettings has to exist ...
     function load(settings, onChange) {
+        var text = '';
         if (!settings) return;
 
         if (settings.longPress === undefined) settings.longPress = 400;
@@ -591,14 +592,15 @@
 
         socket.emit('getState',  adapter + '.' + instance + '.version.firmware', function (err, state) {
            fw_version = state.val;
-           $('#fw_version').val(fw_version);
+           //$('#fw_version').val(fw_version);
+          $('#fw_version').val = fw_version;
         });
 
         socket.emit('getState',  adapter + '.' + instance + '.version.is_firmware_actual', function (err, state) {
            if (state.val === true ) {
-              $('#fw_version').bgcolor='green';
+              $('#fw_version').style.backgound='green';
            } else {
-              $('#fw_version').bgcolor='yellow';
+              $('#fw_version').style.background='yellow';
            }
         });
 
