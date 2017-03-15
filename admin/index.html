@@ -596,9 +596,9 @@
 
         socket.emit('getState',  adapter + '.' + instance + '.version.is_firmware_actual', function (err, state) {
            if (state.val === true ) {
-              $('#fw_version').bgcolor('green');
+              $('#fw_version').bgcolor='green';
            } else {
-              $('#fw_version').bgcolor('yellow');
+              $('#fw_version').bgcolor='yellow';
            }
         });
 
