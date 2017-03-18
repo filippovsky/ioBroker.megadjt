@@ -204,83 +204,7 @@ function getActual2561FirmwareVersion() {
     }
 }
 */
-// Функция перепрошивки Меги ---------------------------------------------------------------
-function updateFirmware( ) {
-   var parts = adapter.config.ip.split(':');
-   var ip = parts[0];
-   var pass = adapter.config.password;
-   var cmd = '';
 
-   var dir ='';
-   adapter.log.info('Вызвана функция перепрошивки Меги ip=' + ip );
-   if ( !ip ) {
-      adapter.log.warn('Не передан IP-адрес Меги. Перепрошивка отменена.');
-      return;
-   }
-   if ( !pass ) {
-      adapter.log.warn('Не передан пароль Меги. Перепрошивка отменена.')
-   }
-   dir = adapter.adapterDir;
-   if ( !dir ) {
-      adapter.log.warn('Не удалось определить каталог адаптера. Перепрошивка отменена.')
-   }
-
-   //cmd = '/usr/bin/php '+dir+'/www/megad-cfg-2561.php --fw '+dir+'/www/megad-2561.hex -p '+pass+' --ee --ip '+ip;
-   //cmd = dir+'/www/megad-cfg-2561.php --fw '+dir+'/www/megad-2561.hex -p '+pass+' --ee --ip '+ip;
-   //cmd = 'cd '+dir+'|megad-cfg-2561.php --fw megad-2561.hex -p '+pass+' --ee --ip '+ip;
-   cmd = 'chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --fw megad-2561.hex -p '+pass+' --ee --ip '+ip;
-
-   adapter.log.debug(cmd);
-
-   
-   var p=process.exec( cmd, 
-          { cwd: dir
-//            shell: '/usr/bin/php'
-          },
-       function (error, stdout, stderr) {
-        if (error) {
-           adapter.log.error( error.code );
-           adapter.log.error( error );
-        }
-        if ( stdout ) {
-           adapter.log.info( stdout );
-           console.log('stdout: ' + stdout);
-        }
-        if ( stderr ) {
-           adapter.log.error( stderr );
-        }
-        adapter.log.debug('Выполнили прошивку');
-   });
-/*
-1. воткнуть кабель напрямую
-2. поменять ip меги на 192.168.0.14  без шлюза
-3. поменять ip на локальном компе на 192.168.0.64, воткнуть кабель напрямую
-c:\php\php C:\megad\megad-cfg-2561\megad-cfg-2561.php  --scan
-c:\php\php C:\megad\megad-cfg-2561\megad-cfg-2561.php  --ip 192.168.0.14 --read-conf last.cfg -p sec
-
-
-c:\php\php C:\megad\megad-cfg-2561\megad-cfg-2561.php --fw megad-2561.hex  -p sec --ee --ip 192.168.0.14
-
-а лучше
-c:\php\php C:\megad\megad-cfg-2561\megad-cfg-2561.php --fw megad-2561.hex  -f -p sec --ee --ip 192.168.0.14
-
-c:\php\php C:\megad\megad-cfg-2561\megad-cfg-2561.php  --ip 192.168.0.14 --write-conf last.cfg -p sec
-c:\php\php C:\megad\megad-cfg-2561\megad-cfg-2561.php  --ip 192.168.0.14 --new-ip 192.168.2.14 -p sec
-
----------------------------------------------------------------------------------------------------------
--- ======================================================================================================
-
-
-c:\php\php C:\megad\megad-cfg-2561\megad-cfg-2561.php  --ip 192.168.1.15 --new-ip 192.168.0.14 -p sec
-c:\php\php C:\megad\megad-cfg-2561\megad-cfg-2561.php  --ip 192.168.0.14 --read-conf last.cfg -p sec
-c:\php\php C:\megad\megad-cfg-2561\megad-cfg-2561.php --fw megad-2561.hex  -p sec --ee --ip 192.168.0.14
-c:\php\php C:\megad\megad-cfg-2561\megad-cfg-2561.php  --ip 192.168.0.14 --write-conf last.cfg -p sec
-c:\php\php C:\megad\megad-cfg-2561\megad-cfg-2561.php  --ip 192.168.0.14 --new-ip 192.168.1.15 -p sec
-
-----------------------------------------------------------------------------------------------------------
-
-  */
-};
 
 // Функция получения версии прошивки Меги ---------------------------------------------------
 function getFirmwareVersion() {
@@ -367,6 +291,58 @@ function getFirmwareVersion() {
        });
     }
 }
+// Функция перепрошивки Меги ---------------------------------------------------------------
+function updateFirmware( ) {
+   var parts = adapter.config.ip.split(':');
+   var ip = parts[0];
+   var pass = adapter.config.password;
+   var cmd = '';
+
+   var dir ='';
+   adapter.log.info('Вызвана функция перепрошивки Меги ip=' + ip );
+   if ( !ip ) {
+      adapter.log.warn('Не передан IP-адрес Меги. Перепрошивка отменена.');
+      return;
+   }
+   if ( !pass ) {
+      adapter.log.warn('Не передан пароль Меги. Перепрошивка отменена.')
+   }
+   dir = adapter.adapterDir;
+   if ( !dir ) {
+      adapter.log.warn('Не удалось определить каталог адаптера. Перепрошивка отменена.')
+   }
+
+   //cmd = '/usr/bin/php '+dir+'/www/megad-cfg-2561.php --fw '+dir+'/www/megad-2561.hex -p '+pass+' --ee --ip '+ip;
+   //cmd = dir+'/www/megad-cfg-2561.php --fw '+dir+'/www/megad-2561.hex -p '+pass+' --ee --ip '+ip;
+   //cmd = 'cd '+dir+'|megad-cfg-2561.php --fw megad-2561.hex -p '+pass+' --ee --ip '+ip;
+   cmd = 'chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --fw megad-2561.hex -p '+pass+' --ee --ip '+ip;
+   cmd += '|php ./megad-cfg-2561.php  --ip 192.168.0.14 --new-ip '+ip+' -p '+pass;
+
+   adapter.log.debug(cmd);
+
+   
+   var p=process.exec( cmd, 
+          { cwd: dir
+//            shell: '/usr/bin/php'
+          },
+       function (error, stdout, stderr) {
+        if (error) {
+           adapter.log.error( error.code );
+           adapter.log.error( error );
+        }
+        if ( stdout ) {
+           adapter.log.info( stdout );
+           console.log('stdout: ' + stdout);
+        }
+        if ( stderr ) {
+           adapter.log.error( stderr );
+        }
+        adapter.log.debug('Выполнили прошивку');
+        getFirmwareVersion;
+   });
+}
+
+
 //------------------------------------------------------------------------------------------------------
 function processMessages(ignore) {
     adapter.getMessage(function (err, obj) {

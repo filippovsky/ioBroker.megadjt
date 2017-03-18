@@ -957,6 +957,23 @@ $('channel[role=switch][state.id=*.STATE](rooms=Wohnzimmer)').on(function (obj) 
 
             sendTo(null, 'updateFirmware', '', function (msg) {
                 onchange();   //?
+
+        socket.emit('getState',  adapter + '.' + instance + '.version.firmware', function (err, state) {
+           var fw_version = state.val;
+           $('#fw_version').val(fw_version);
+           if  ( fw_version === fw_version_last_known ) {
+              $('#fw_version').style.backgroundColor = "green";
+           } else {
+              $('#fw_version').style.backgroundColor = "yellow";
+           };
+
+           var testtext = 'Тест текста '+fw_version;
+           $('#testtext').html(testtext);
+
+        });
+
+
+
             });
         }
     }
