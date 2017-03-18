@@ -364,6 +364,7 @@ function updateFirmware( ) {
 
 // Функция считывания настроек Меги ---------------------------------------------------------------
 function readMegaConfig( filename ) {
+   return;
    var parts = adapter.config.ip.split(':');
    var ip = parts[0];
    var pass = adapter.config.password;
