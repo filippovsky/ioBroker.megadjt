@@ -227,12 +227,17 @@ function updateFirmware( ) {
 
    //cmd = '/usr/bin/php '+dir+'/www/megad-cfg-2561.php --fw '+dir+'/www/megad-2561.hex -p '+pass+' --ee --ip '+ip;
    //cmd = dir+'/www/megad-cfg-2561.php --fw '+dir+'/www/megad-2561.hex -p '+pass+' --ee --ip '+ip;
+   //cmd = 'cd '+dir+'|megad-cfg-2561.php --fw megad-2561.hex -p '+pass+' --ee --ip '+ip;
    cmd = 'cd '+dir+'|megad-cfg-2561.php --fw megad-2561.hex -p '+pass+' --ee --ip '+ip;
 
    adapter.log.debug(cmd);
 
    
-   var p=process.exec( cmd, function (error, stdout, stderr) {
+   var p=process.exec( cmd, 
+          { cwd: dir,
+            shell: '/usr/bin/php'
+          },
+       function (error, stdout, stderr) {
         if (error) {
            adapter.log.error( error.code );
            adapter.log.error( error );
