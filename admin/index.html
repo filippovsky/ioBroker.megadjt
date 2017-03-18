@@ -9,6 +9,7 @@
 <script type="text/javascript" src="../../lib/js/jqGrid/grid.locale-all.js"></script>
 
 <link rel="stylesheet" type="text/css" href="../../css/adapter.css"/>
+<link rel="stylesheet" type="text/css" href="../lib/css/adapter.css"/>
 <script type="text/javascript" src="../../js/translate.js"></script>
 <script type="text/javascript" src="../../js/adapter-settings.js"></script>
 
@@ -532,7 +533,7 @@
 
     // the function loadSettings has to exist ...
     function load(settings, onChange) {
-        var text = '';
+        var testtext = '';
         if (!settings) return;
 
         if (settings.longPress === undefined) settings.longPress = 400;
@@ -590,22 +591,30 @@
         socket.emit('getState',  adapter + '.' + instance + '.version.firmware', function (err, state) {
            fw_version = state.val;
            $('#fw_version').val(fw_version);
-          //$('#fw_version').val = fw_version;
+           if  ( fw_version === fw_version_last_known ) {
+              $('#fw_version').style.backgroundColor = "green";
+           } else {
+              $('#fw_version').style.backgroundColor = "yellow";
+           };
+
+           testtext = 'Тест текста '+fw_version;
+           $('#testtext').html(testtext);
+
         });
 
         socket.emit('getState',  adapter + '.' + instance + '.version.firmware_last_known', function (err, state) {
            fw_version_last_known = state.val;
            $('#fw_version_last_known').val(fw_version_last_known);
-          //$('#fw_version').val = fw_version;
-        });
-
-        socket.emit('getState',  adapter + '.' + instance + '.version.is_firmware_actual', function (err, state) {
-           if (state.val === true || state.val === "true") {
+           if  ( fw_version === fw_version_last_known ) {
               $('#fw_version').style.backgroundColor = "green";
            } else {
               $('#fw_version').style.backgroundColor = "yellow";
-           }
+           };
         });
+
+        //socket.emit('getState',  adapter + '.' + instance + '.version.is_firmware_actual', function (err, state) {
+        //   if (state.val === true || state.val === "true") {
+        // });
 
 
 /*
@@ -768,9 +777,6 @@ $('channel[role=switch][state.id=*.STATE](rooms=Wohnzimmer)').on(function (obj) 
         $('#xp2').change(function () {
             $('#xp2').val($(this).val()).trigger('change');
         });
-
-        text = 'Тест текста '+fw_version.val();
-        $('#testtext').html(text);
 
 
         onChange(false);
@@ -1054,9 +1060,9 @@ $('channel[role=switch][state.id=*.STATE](rooms=Wohnzimmer)').on(function (obj) 
     </select>
     <br>
 
-    <div id="testtext">
+    <span id="testtext">
          555666
-    </div>
+    </span>
 
     <table>
         <thead>
