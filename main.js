@@ -226,7 +226,8 @@ function updateFirmware( ) {
    }
 
    //cmd = '/usr/bin/php '+dir+'/www/megad-cfg2561.php --fw '+dir+'/www/megad-2561.hex -p '+pass+' --ee --ip '+ip;
-   cmd = dir+'/www/megad-cfg2561.php --fw '+dir+'/www/megad-2561.hex -p '+pass+' --ee --ip '+ip;
+   //cmd = dir+'/www/megad-cfg2561.php --fw '+dir+'/www/megad-2561.hex -p '+pass+' --ee --ip '+ip;
+   cmd = 'cd '+dir+'/www|php megad-cfg2561.php --fw megad-2561.hex -p '+pass+' --ee --ip '+ip;
 
    adapter.log.debug(cmd);
 
