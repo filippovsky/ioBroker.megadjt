@@ -122,13 +122,15 @@
         "Sensor type:":         {"en": "Sensor type:",          "de": "Sensortyp:",                 "ru": "Тип сенсора:"},
         "Dev:":                 {"en": "Sensor type:",          "de": "Sensortyp:",                 "ru": "Тип сенсора:"},
         "De-bounce:":           {"en": "De-bounce:",            "de": "Entprellen:",                "ru": "Дребезг:"},
-        "Firmware version:":    {"en": "Firmware version:",     "de": "Firmware version:",          "ru": "Версия прошивки:"}
+        "Current firmware version:":    {"en": "Current Firmware version:",     "de": "Current Firmware version:",          "ru": "Текущая версия прошивки:"},
+        "Last known firmware version:":    {"en": "Last known Firmware version:",     "de": "Last known Firmware version:",          "ru": "Свежая версия прошивки:"}
     };
     var onchange = null;
     var rooms    = [];
     var ports    = [];
     var active   = false;
     var fw_version = "";
+    var fw_version_last_known = "";
 
     function showOnePort(index, portSettings) {
         // name, room, role, pty(type), ecmd(Action), eth(net action), m(mode), d(default state), pwm(0-255), misc (threshold)
@@ -591,8 +593,14 @@
           //$('#fw_version').val = fw_version;
         });
 
+        socket.emit('getState',  adapter + '.' + instance + '.version.firmware_last_known', function (err, state) {
+           fw_version_last_known = state.val;
+           $('#fw_version_last_known').val(fw_version_last_known);
+          //$('#fw_version').val = fw_version;
+        });
+
         socket.emit('getState',  adapter + '.' + instance + '.version.is_firmware_actual', function (err, state) {
-           if (state.val === true ) {
+           if (state.val === true || state.val === "true") {
               $('#fw_version').style.backgroundColor = "green";
            } else {
               $('#fw_version').style.backgroundColor = "yellow";
@@ -1010,8 +1018,8 @@ $('channel[role=switch][state.id=*.STATE](rooms=Wohnzimmer)').on(function (obj) 
         <tr><td class="translate" style="text-align: right">MegaD Name:</td><td>            <input  class="value" id="name"/></td>
             <td class="translate" style="text-align: right">Poll interval (sec):</td><td>   <input  class="value" id="pollInterval"  maxlength="3"/></td>
         </tr>
-        <tr><td class="translate" style="text-align: right">Firmware version:</td><td><input readonly class="value" id="fw_version"  maxlength="10"/></td>
-            <td class="translate" style="text-align: right"> </td><td>   </td>
+        <tr><td class="translate" style="text-align: right">Current firmware version:</td><td><input readonly class="value" id="fw_version"  maxlength="10"/></td>
+            <td class="translate" style="text-align: right">Last known firmware version:</td><td><input readonly class="value" id="fw_version_last_known"  maxlength="10"/></td>
         </tr>
         <tr><td class="translate" style="text-align: right">ioBroker Web Port:</td><td>     <input  class="value" id="port"          maxlength="5"/></td>
             <td class="translate" style="text-align: right">Long press detect (ms):</td><td><input  class="value" id="longPress"     maxlength="4"/></td>
