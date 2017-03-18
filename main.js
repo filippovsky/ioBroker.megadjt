@@ -201,6 +201,59 @@ function getActual2561FirmwareVersion() {
     }
 }
 */
+// Функция перепрошивки Меги ---------------------------------------------------------------
+function updateFirmware(  ip,  pass ) {
+   var dir ='';
+   adapter.log.warn('Вызвана функция перепрошивки Меги ip=' + ip );
+   if ( !ip ) {
+      adapter.log.warn('Не передан IP-адрес Меги. Перепрошивка отменена.');
+      return;
+   }
+   if ( !pass ) {
+      adapter.log.warn('Не передан пароль Меги. Перепрошивка отменена.')
+   }
+   dir = adapter.dirname;
+   if ( !dir ) {
+      adapter.log.warn('Не удалось определить каталог адаптера. Перепрошивка отменена.')
+   }
+
+   adapter.log.debug('php '+dir+'/www/megad-cfg2561.php --fw '+dir+'/megad-2561.hex -p '+pass+' --ee --ip '+ip);
+
+      
+//   exec('ls /var/log', function (error, stdout, stderr) {
+//        console.log('stdout: ' + stdout);
+//   });
+/*
+1. воткнуть кабель напрямую
+2. поменять ip меги на 192.168.0.14  без шлюза
+3. поменять ip на локальном компе на 192.168.0.64, воткнуть кабель напрямую
+c:\php\php C:\megad\megad-cfg-2561\megad-cfg-2561.php  --scan
+c:\php\php C:\megad\megad-cfg-2561\megad-cfg-2561.php  --ip 192.168.0.14 --read-conf last.cfg -p sec
+
+
+c:\php\php C:\megad\megad-cfg-2561\megad-cfg-2561.php --fw megad-2561.hex  -p sec --ee --ip 192.168.0.14
+
+а лучше
+c:\php\php C:\megad\megad-cfg-2561\megad-cfg-2561.php --fw megad-2561.hex  -f -p sec --ee --ip 192.168.0.14
+
+c:\php\php C:\megad\megad-cfg-2561\megad-cfg-2561.php  --ip 192.168.0.14 --write-conf last.cfg -p sec
+c:\php\php C:\megad\megad-cfg-2561\megad-cfg-2561.php  --ip 192.168.0.14 --new-ip 192.168.2.14 -p sec
+
+---------------------------------------------------------------------------------------------------------
+-- ======================================================================================================
+
+
+c:\php\php C:\megad\megad-cfg-2561\megad-cfg-2561.php  --ip 192.168.1.15 --new-ip 192.168.0.14 -p sec
+c:\php\php C:\megad\megad-cfg-2561\megad-cfg-2561.php  --ip 192.168.0.14 --read-conf last.cfg -p sec
+c:\php\php C:\megad\megad-cfg-2561\megad-cfg-2561.php --fw megad-2561.hex  -p sec --ee --ip 192.168.0.14
+c:\php\php C:\megad\megad-cfg-2561\megad-cfg-2561.php  --ip 192.168.0.14 --write-conf last.cfg -p sec
+c:\php\php C:\megad\megad-cfg-2561\megad-cfg-2561.php  --ip 192.168.0.14 --new-ip 192.168.1.15 -p sec
+
+----------------------------------------------------------------------------------------------------------
+
+  */
+};
+
 // Функция получения версии прошивки Меги ---------------------------------------------------
 function getFirmwareVersion() {
     var version = '';
