@@ -117,6 +117,7 @@ adapter.on('message', function (obj) {
 
             case 'updateFirmware':
                 adapter.log.debug('Here will be updateFirmware');                
+                updateFirmware();
                 break;
 
             default:
@@ -202,7 +203,11 @@ function getActual2561FirmwareVersion() {
 }
 */
 // Функция перепрошивки Меги ---------------------------------------------------------------
-function updateFirmware(  ip,  pass ) {
+function updateFirmware( ) {
+   var parts = adapter.config.ip.split(':');
+   var ip = parts[0];
+   var pass = adapter.config.password;
+
    var dir ='';
    adapter.log.warn('Вызвана функция перепрошивки Меги ip=' + ip );
    if ( !ip ) {

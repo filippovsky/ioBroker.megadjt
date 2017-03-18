@@ -620,7 +620,7 @@
         $('#updateFirmware').button({
             icons: {primary: 'ui-icon-refresh'}
         }).click(function() {
-            updateFirmware($('#ip').val(), $('#password').val());
+            updateFirmware();
         });
 
 
@@ -945,7 +945,7 @@ $('channel[role=switch][state.id=*.STATE](rooms=Wohnzimmer)').on(function (obj) 
         }
     }
 
-    function updateFirmware(ip, pass) {
+    function updateFirmware() {
         if (!active) {
             showMessage(_('Enable adapter first'), 'Warning', 'info');
             return;
@@ -953,7 +953,7 @@ $('channel[role=switch][state.id=*.STATE](rooms=Wohnzimmer)').on(function (obj) 
 
         if (window.confirm(_('Firmware will be rewrited. All config will be lost. Are you sure?'))) {
 
-            sendTo(null, 'updateFirmware', {ip: ip, password: pass}, function (msg) {
+            sendTo(null, 'updateFirmware', '', function (msg) {
                 onchange();   //?
             });
         }
