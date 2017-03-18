@@ -360,6 +360,55 @@ function updateFirmware( ) {
 }
 
 
+// Функция считывания настроек Меги ---------------------------------------------------------------
+function readMegaConfig( filename ) {
+   var parts = adapter.config.ip.split(':');
+   var ip = parts[0];
+   var pass = adapter.config.password;
+   var cmd = '';
+   if (!filename) {
+      filename = 'last.cfg';
+   }
+
+   var dir ='';
+   adapter.log.info('Считываем настройки Меги ip=' + ip );
+   if ( !ip ) {
+      adapter.log.warn('Не передан IP-адрес Меги. Считывание настроек отменено.');
+      return;
+   }
+   if ( !pass ) {
+      adapter.log.warn('Не передан пароль Меги. Считывание настроек отменено.');
+      return;
+   }
+   dir = adapter.adapterDir;
+   if ( !dir ) {
+      adapter.log.warn('Не удалось определить каталог адаптера. Перепрошивка отменена.');
+      return;
+   }
+   var dir1 = '../../files/iobroker.megadjt' );
+
+   cmd = 'mkdir '+dir1+'|chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --ip '+ip+' --read-conf '+dir1+'/'+filename+' -p '+pass;
+
+   adapter.log.debug(cmd);
+   
+   var p=process.exec( cmd, 
+          { cwd: dir  },
+       function (error, stdout, stderr) {
+        if (error) {
+           adapter.log.error( error.code );
+           adapter.log.error( error );
+        }
+        if ( stdout ) {
+           adapter.log.info( stdout );
+        }
+        if ( stderr ) {
+           adapter.log.error( stderr );
+        }
+        adapter.log.info('Настройки Меги сохранены в файл '+filename);
+   });
+}
+
+
 //------------------------------------------------------------------------------------------------------
 function processMessages(ignore) {
     adapter.getMessage(function (err, obj) {
@@ -871,6 +920,7 @@ function detectPortConfig(ip, pass, length, callback, port, result) {
     });
 }
 
+// Получение конфигурации Меги из устройства -------------------------------------------------------------------------
 function detectDeviceConfig(ip, pass, callback) {
     var parts = ip.split(':');
     var options = {
@@ -938,8 +988,11 @@ function detectDeviceConfig(ip, pass, callback) {
         adapter.log.error(err.message);
         callback(err);
     });
-}
+    //-------------------------------------------------------
+    readMegaConfig( 'last.cfg' );
 
+}
+//------------------------------------------------------------------------------------------------------------------
 // Message is IP address
 function detectPorts(obj) {
     var ip;
