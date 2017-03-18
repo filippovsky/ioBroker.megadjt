@@ -154,6 +154,7 @@ function getActual2561FirmwareVersion() {
               //adapter.log.debug('getFirmwareVersion get: ' + chunk);
           });
           res.on('end', function () {
+              //var myRe = /(.*?)div\sid\=\"cnt\"\>(.*?)\sver\s(.*?)\<(.*?)/
               if (res.statusCode != 200) {
                  adapter.log.warn('getActual2561FirmwareVersion Response code: ' + res.statusCode + ' - ' + xmldata);
 

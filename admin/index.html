@@ -535,8 +535,6 @@
 
         if (settings.longPress === undefined) settings.longPress = 400;
 
-//        $('#version').value = settings.fw_version;
-
         $('.value').each(function () {
             var key = $(this).attr('id');
             // example: select elements with id=key and class=value and insert value
@@ -559,9 +557,6 @@
         });
 
         ports = settings.ports || [];
-
-//        fw_version = settings.fw_version;
-//version.firmware
 
         $('#autoDetect').button({
             icons: {primary: 'ui-icon-refresh'}
@@ -598,9 +593,9 @@
 
         socket.emit('getState',  adapter + '.' + instance + '.version.is_firmware_actual', function (err, state) {
            if (state.val === true ) {
-              $('#fw_version').style.background('green');
+              $('#fw_version').style.background-color = 'green';
            } else {
-              $('#fw_version').style.background('yellow');
+              $('#fw_version').style.background-color = 'yellow';
            }
         });
 
