@@ -23,7 +23,8 @@
 
 var utils  = require(__dirname + '/lib/utils'); // Get common adapter utils
 var http   = require('http');
-var os     = require('os');
+var fs     = require('fs');
+var process = require('child_process');
 var server =  null;
 var ports  = {};
 ///var askInternalTemp = false;
@@ -229,8 +230,9 @@ function updateFirmware( ) {
    adapter.log.debug(cmd);
 
    
-   os.exec( cmd, function (error, stdout, stderr) {
+   var p=process.exec( cmd, function (error, stdout, stderr) {
         if (error) {
+           adapter.log.error( error.code );
            adapter.log.error( error );
         }
         if ( stdout ) {

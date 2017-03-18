@@ -823,12 +823,14 @@ $('channel[role=switch][state.id=*.STATE](rooms=Wohnzimmer)').on(function (obj) 
             $('#write').button('disable');
             $('#autoDetect').button('disable');
             $('#ipchange').button('disable');
+            $('#updateFirmware').button('disable');
 
             sendTo(null, 'detectPorts', {ip: ip, password: pass}, function (msg) {
 
                 $('#write').button('enable');
                 $('#autoDetect').button('enable');
                 $('#ipchange').button('enable');
+                $('#updateFirmware').button('enable');
 
                 if (!msg || msg.error) {
                     showMessage(msg.error, _('Error'), 'alert');
@@ -1016,12 +1018,14 @@ $('channel[role=switch][state.id=*.STATE](rooms=Wohnzimmer)').on(function (obj) 
         $('#write').button('disable');
         $('#autoDetect').button('disable');
         $('#ipchange').button('disable');
+        $('#updateFirmware').button('disable');
 
         sendTo(null, 'writeConfig', {ip: ip, password: pass, ports: ports, config: config}, function (msg) {
 
             $('#write').button('enable');
             $('#autoDetect').button('enable');
             $('#ipchange').button('enable');
+            $('#updateFirmware').button('enable');
 
             if (callback) return callback(msg ? msg.error : null);
 
