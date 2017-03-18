@@ -209,7 +209,7 @@ function updateFirmware( ) {
    var pass = adapter.config.password;
 
    var dir ='';
-   adapter.log.warn('Вызвана функция перепрошивки Меги ip=' + ip );
+   adapter.log.debug('Вызвана функция перепрошивки Меги ip=' + ip );
    if ( !ip ) {
       adapter.log.warn('Не передан IP-адрес Меги. Перепрошивка отменена.');
       return;
@@ -217,12 +217,12 @@ function updateFirmware( ) {
    if ( !pass ) {
       adapter.log.warn('Не передан пароль Меги. Перепрошивка отменена.')
    }
-   dir = adapter.dirname;
+   dir = adapter.adapterDir;
    if ( !dir ) {
       adapter.log.warn('Не удалось определить каталог адаптера. Перепрошивка отменена.')
    }
 
-   adapter.log.debug('php '+dir+'/www/megad-cfg2561.php --fw '+dir+'/megad-2561.hex -p '+pass+' --ee --ip '+ip);
+   adapter.log.debug('php '+dir+'/www/megad-cfg2561.php --fw '+dir+'/www/megad-2561.hex -p '+pass+' --ee --ip '+ip);
 
       
 //   exec('ls /var/log', function (error, stdout, stderr) {
