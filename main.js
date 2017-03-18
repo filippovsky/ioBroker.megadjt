@@ -387,7 +387,7 @@ function readMegaConfig( filename ) {
    }
    var dir1 = '../../files/iobroker.megadjt' ;
 
-   cmd = 'mkdir '+dir1+'|chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --ip '+ip+' --read-conf '+dir1+'/'+filename1+' -p '+pass;
+   cmd = 'mkdir '+dir+'/'+dir1+'|chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --ip '+ip+' --read-conf '+dir1+'/'+filename1+' -p '+pass;
 
    adapter.log.debug(cmd);
    
