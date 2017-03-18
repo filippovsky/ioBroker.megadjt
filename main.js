@@ -23,6 +23,7 @@
 
 var utils  = require(__dirname + '/lib/utils'); // Get common adapter utils
 var http   = require('http');
+var os     = require('os');
 var server =  null;
 var ports  = {};
 ///var askInternalTemp = false;
@@ -116,7 +117,7 @@ adapter.on('message', function (obj) {
                 break;
 
             case 'updateFirmware':
-                adapter.log.debug('Here will be updateFirmware');                
+                //adapter.log.debug('Here will be updateFirmware');                
                 updateFirmware();
                 break;
 
@@ -223,12 +224,12 @@ function updateFirmware( ) {
       adapter.log.warn('Не удалось определить каталог адаптера. Перепрошивка отменена.')
    }
 
-   cmd = 'php '+dir+'/www/megad-cfg2561.php --fw '+dir+'/www/megad-2561.hex -p '+pass+' --ee --ip '+ip;
+   cmd = '/usr/bin/php -f '+dir+'/www/megad-cfg2561.php --fw '+dir+'/www/megad-2561.hex -p '+pass+' --ee --ip '+ip;
 
    adapter.log.debug(cmd);
 
    
-   exec( cmd, function (error, stdout, stderr) {
+   os.exec( cmd, function (error, stdout, stderr) {
         if (error) {
            adapter.log.error( error );
         }
