@@ -118,8 +118,11 @@ adapter.on('message', function (obj) {
                 break;
 
             case 'updateFirmware':
-                //adapter.log.debug('Here will be updateFirmware');                
                 updateFirmware();
+                break;
+
+            case 'getFirmware':
+                getFirmwareVersion();
                 break;
 
             default:
@@ -251,8 +254,8 @@ function getFirmwareVersion() {
                     adapter.setState( 'version.firmware', {val: version, ack: true});
                     adapter.log.debug('getFirmwareVersion сохранили: ' + version);
 
-                    //adapter.config.setState( 'fw_version', {val: version, ack: true});
-                    //adapter.log.debug('getFirmwareVersion сохранили fw_version: ' + version);
+                    adapter.config.setState( 'fw_version', {val: version, ack: true});
+                    adapter.log.debug('getFirmwareVersion сохранили fw_version: ' + version);
 
                     // Analyse answer and updates staties
                     // if (callback) callback(obj, version);
@@ -266,11 +269,9 @@ function getFirmwareVersion() {
                           adapter.setState( 'version.is_firmware_actual', {val: false, ack: true});
                           adapter.log.debug('getFirmwareVersion Текущая версия неактуальна');
                     }
-
-
+                    
                     //adapter.createState( 'xp1');
                     //adapter.createState( 'xp2');
-
 
                  } else {
                     adapter.log.debug('getFirmwareVersion НЕ ПОПАЛИ: ' + version);
@@ -322,9 +323,7 @@ function updateFirmware( ) {
    adapter.log.debug(cmd);
    
    var p=process.exec( cmd, 
-          { cwd: dir
-//            shell: '/usr/bin/php'
-          },
+          { cwd: dir  },
        function (error, stdout, stderr) {
         if (error) {
            adapter.log.error( error.code );
@@ -332,7 +331,6 @@ function updateFirmware( ) {
         }
         if ( stdout ) {
            adapter.log.info( stdout );
-           //console.log('stdout: ' + stdout);
         }
         if ( stderr ) {
            adapter.log.error( stderr );
@@ -356,7 +354,7 @@ function updateFirmware( ) {
             }
             adapter.log.debug('Выполнили прошивку');
     
-            getFirmwareVersion;
+            getFirmwareVersion();
          });
    });
 }

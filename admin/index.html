@@ -579,9 +579,6 @@
             writeConfig($('#ip').val(), $('#password').val(), port, ports);
         });
 
-        onchange = onChange;
-
-        readRooms();
 
         // read if instance is active or enabled
         socket.emit('getState', 'system.adapter.' + adapter + '.' + instance + '.alive', function (err, state) {
@@ -613,23 +610,15 @@
            };
         });
 
-        //socket.emit('getState',  adapter + '.' + instance + '.version.is_firmware_actual', function (err, state) {
-        //   if (state.val === true || state.val === "true") {
-        // });
-
         $('#updateFirmware').button({
             icons: {primary: 'ui-icon-refresh'}
         }).click(function() {
             updateFirmware();
         });
 
+        onchange = onChange;
 
-
-/*
-$('channel[role=switch][state.id=*.STATE](rooms=Wohnzimmer)').on(function (obj) {
-   log('New state ' + obj.id + ' = ' + obj.state.val);
-}
-*/
+        readRooms();
 
         
         $('#add').button({
@@ -954,25 +943,23 @@ $('channel[role=switch][state.id=*.STATE](rooms=Wohnzimmer)').on(function (obj) 
         }
 
         if (window.confirm(_('Firmware will be rewrited. All config will be lost. Are you sure?'))) {
-
             sendTo(null, 'updateFirmware', '', function (msg) {
-                onchange();   //?
+                 sendTo(null, 'getFirmware', '', function (msg) {
+                    socket.emit('getState',  adapter + '.' + instance + '.version.firmware', function (err, state) {
+                        var fw_version = state.val;
+                        $('#fw_version').val(fw_version);
+                        if  ( fw_version === fw_version_last_known ) {
+                            $('#fw_version').style.backgroundColor = "green";
+                        } else {
+                            $('#fw_version').style.backgroundColor = "yellow";
+                        };
 
-        socket.emit('getState',  adapter + '.' + instance + '.version.firmware', function (err, state) {
-           var fw_version = state.val;
-           $('#fw_version').val(fw_version);
-           if  ( fw_version === fw_version_last_known ) {
-              $('#fw_version').style.backgroundColor = "green";
-           } else {
-              $('#fw_version').style.backgroundColor = "yellow";
-           };
+                        var testtext = 'Тест текста '+fw_version;
+                        $('#testtext').html(testtext);
 
-           var testtext = 'Тест текста '+fw_version;
-           $('#testtext').html(testtext);
-
-        });
-
-
+                        onchange();   //?
+                    });
+                });
 
             });
         }
