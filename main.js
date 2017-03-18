@@ -207,9 +207,10 @@ function updateFirmware( ) {
    var parts = adapter.config.ip.split(':');
    var ip = parts[0];
    var pass = adapter.config.password;
+   var cmd = '';
 
    var dir ='';
-   adapter.log.debug('Вызвана функция перепрошивки Меги ip=' + ip );
+   adapter.log.info('Вызвана функция перепрошивки Меги ip=' + ip );
    if ( !ip ) {
       adapter.log.warn('Не передан IP-адрес Меги. Перепрошивка отменена.');
       return;
@@ -222,12 +223,23 @@ function updateFirmware( ) {
       adapter.log.warn('Не удалось определить каталог адаптера. Перепрошивка отменена.')
    }
 
-   adapter.log.debug('php '+dir+'/www/megad-cfg2561.php --fw '+dir+'/www/megad-2561.hex -p '+pass+' --ee --ip '+ip);
+   cmd = 'php '+dir+'/www/megad-cfg2561.php --fw '+dir+'/www/megad-2561.hex -p '+pass+' --ee --ip '+ip;
 
-      
-//   exec('ls /var/log', function (error, stdout, stderr) {
-//        console.log('stdout: ' + stdout);
-//   });
+   adapter.log.debug(cmd);
+
+   
+   exec( cmd, function (error, stdout, stderr) {
+        if (error) {
+           adapter.log.error( error );
+        }
+        if ( stdout ) {
+           adapter.log.info( stdout );
+           console.log('stdout: ' + stdout);
+        }
+        if ( stderr ) {
+           adapter.log.error( stderr );
+        }
+   });
 /*
 1. воткнуть кабель напрямую
 2. поменять ip меги на 192.168.0.14  без шлюза
