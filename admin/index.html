@@ -124,7 +124,8 @@
         "Dev:":                 {"en": "Sensor type:",          "de": "Sensortyp:",                 "ru": "Тип сенсора:"},
         "De-bounce:":           {"en": "De-bounce:",            "de": "Entprellen:",                "ru": "Дребезг:"},
         "Current firmware version:":    {"en": "Current Firmware version:",     "de": "Current Firmware version:",          "ru": "Текущая версия прошивки:"},
-        "Last known firmware version:":    {"en": "Last known Firmware version:",     "de": "Last known Firmware version:",          "ru": "Свежая версия прошивки:"}
+        "Last known firmware version:":    {"en": "Last known Firmware version:",     "de": "Last known Firmware version:",          "ru": "Свежая версия прошивки:"},
+        "Update Firmware":      {"en": "Update Firmware",       "de": "Update Firmware",            "ru": "Перепрошить Мегу"}
     };
     var onchange = null;
     var rooms    = [];
@@ -616,6 +617,13 @@
         //   if (state.val === true || state.val === "true") {
         // });
 
+        $('#updateFirmware').button({
+            icons: {primary: 'ui-icon-refresh'}
+        }).click(function() {
+            updateFirmware($('#ip').val(), $('#password').val());
+        });
+
+
 
 /*
 $('channel[role=switch][state.id=*.STATE](rooms=Wohnzimmer)').on(function (obj) {
@@ -731,10 +739,12 @@ $('channel[role=switch][state.id=*.STATE](rooms=Wohnzimmer)').on(function (obj) 
                 $('#autoDetect').button('disable');
                 $('#write').button('disable');
                 $('#ipchange').button('disable');
+                $('#updateFirmware').button('disable');
             } else {
                 $('#autoDetect').button('enable');
                 $('#write').button('enable');
                 $('#ipchange').button('enable');
+                $('#updateFirmware').button('enable');
             }
         }).keyup(function () {
             $(this).trigger('change');
@@ -935,6 +945,22 @@ $('channel[role=switch][state.id=*.STATE](rooms=Wohnzimmer)').on(function (obj) 
         }
     }
 
+    function updateFirmware(ip, pass) {
+        if (!active) {
+            showMessage(_('Enable adapter first'), 'Warning', 'info');
+            return;
+        }
+
+        if (window.confirm(_('Firmware will be rewrited. All config will be lost. Are you sure?'))) {
+
+            sendTo(null, 'updateFirmware', {ip: ip, password: pass}, function (msg) {
+                onchange();   //?
+            });
+        }
+    }
+
+
+
     function saveSettings() {
         var id = 'system.adapter.' + adapter + '.' + instance;
 
@@ -1025,7 +1051,9 @@ $('channel[role=switch][state.id=*.STATE](rooms=Wohnzimmer)').on(function (obj) 
             <td class="translate" style="text-align: right">Poll interval (sec):</td><td>   <input  class="value" id="pollInterval"  maxlength="3"/></td>
         </tr>
         <tr><td class="translate" style="text-align: right">Current firmware version:</td><td><input readonly class="value" id="fw_version"  maxlength="10"/></td>
-            <td class="translate" style="text-align: right">Last known firmware version:</td><td><input readonly class="value" id="fw_version_last_known"  maxlength="10"/></td>
+            <td class="translate" style="text-align: right">Last known firmware version:</td><td><input readonly class="value" id="fw_version_last_known"  maxlength="10"/>
+                <button class="translate" id="updateFirmware">Update Firmware</button>
+            </td>
         </tr>
         <tr><td class="translate" style="text-align: right">ioBroker Web Port:</td><td>     <input  class="value" id="port"          maxlength="5"/></td>
             <td class="translate" style="text-align: right">Long press detect (ms):</td><td><input  class="value" id="longPress"     maxlength="4"/></td>

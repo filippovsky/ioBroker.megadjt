@@ -1,8 +1,12 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.2.41",
+        "version":                  "0.2.42",
         "news": {
+            "0.2.42": {
+                "en":               "new function: updateFirmware",
+                "ru":               "добавлена новая функция updateFirmware"
+            },
             "0.2.0": {
                 "en":               "new states: version.firmware_last_known",
                 "ru":               "добавлены свойства version.firmware_last_known"

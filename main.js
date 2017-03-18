@@ -115,6 +115,10 @@ adapter.on('message', function (obj) {
                 writeConfig(obj);
                 break;
 
+            case 'updateFirmware':
+                adapter.log.debug('Here will be updateFirmware');                
+                break;
+
             default:
                 adapter.log.warn('Unknown message: ' + JSON.stringify(obj));
                 break;
