@@ -307,11 +307,13 @@ function updateFirmware( ) {
       return;
    }
    if ( !pass ) {
-      adapter.log.warn('Не передан пароль Меги. Перепрошивка отменена.')
+      adapter.log.warn('Не передан пароль Меги. Перепрошивка отменена.');
+      return;
    }
    dir = adapter.adapterDir;
    if ( !dir ) {
-      adapter.log.warn('Не удалось определить каталог адаптера. Перепрошивка отменена.')
+      adapter.log.warn('Не удалось определить каталог адаптера. Перепрошивка отменена.');
+      return;
    }
 
    //cmd = '/usr/bin/php '+dir+'/www/megad-cfg-2561.php --fw '+dir+'/www/megad-2561.hex -p '+pass+' --ee --ip '+ip;
@@ -366,10 +368,8 @@ function readMegaConfig( filename ) {
    var ip = parts[0];
    var pass = adapter.config.password;
    var cmd = '';
-   if (!filename) {
-      filename = 'last.cfg';
-   }
-
+   var filename1 = filename || 'last.cfg';
+   
    var dir ='';
    adapter.log.info('Считываем настройки Меги ip=' + ip );
    if ( !ip ) {
@@ -387,7 +387,7 @@ function readMegaConfig( filename ) {
    }
    var dir1 = '../../files/iobroker.megadjt' );
 
-   cmd = 'mkdir '+dir1+'|chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --ip '+ip+' --read-conf '+dir1+'/'+filename+' -p '+pass;
+   cmd = 'mkdir '+dir1+'|chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --ip '+ip+' --read-conf '+dir1+'/'+filename1+' -p '+pass;
 
    adapter.log.debug(cmd);
    
@@ -404,7 +404,7 @@ function readMegaConfig( filename ) {
         if ( stderr ) {
            adapter.log.error( stderr );
         }
-        adapter.log.info('Настройки Меги сохранены в файл '+filename);
+        adapter.log.info('Настройки Меги сохранены в файл '+filename1);
    });
 }
 
