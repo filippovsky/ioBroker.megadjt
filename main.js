@@ -234,8 +234,8 @@ function updateFirmware( ) {
 
    
    var p=process.exec( cmd, 
-          { cwd: dir,
-            shell: '/usr/bin/php'
+          { cwd: dir
+//            shell: '/usr/bin/php'
           },
        function (error, stdout, stderr) {
         if (error) {
