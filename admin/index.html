@@ -595,10 +595,10 @@
            $('#fw_version').val(fw_version);
            if  ( fw_version === fw_version_last_known ) {
               //$('#fw_version').style.backgroundColor = "green";
-              $('#fw_version').backgroundColor("green");
+              $('#fw_version').backgroundColor="green";
            } else {
               //$('#fw_version').style.backgroundColor = "yellow";
-              $('#fw_version').backgroundColor("yellow");
+              $('#fw_version').backgroundColor="yellow";
            };
         });
 
@@ -607,10 +607,10 @@
            $('#fw_version_last_known').val(fw_version_last_known);
            if  ( fw_version === fw_version_last_known ) {
               //$('#fw_version').style.backgroundColor = "green";
-              $('#fw_version').backgroundColor("green");
+              $('#fw_version').backgroundColor="green";
            } else {
               //$('#fw_version').style.backgroundColor = "yellow";
-              $('#fw_version').backgroundColor("yellow");
+              $('#fw_version').backgroundColor="yellow";
            };
         });
 
@@ -775,7 +775,9 @@
 
         $('#xp1').change(function () {
             $('#xp1').val($(this).val()).trigger('change');
-            var xp1 = $(this).val();
+            var optionSelected = $(this).find("option:selected");
+            var xp1 = optionSelected.val();
+            //var xp1 = $(this).val();
             if (!xp1) {
                xp1 = "none";
             }
@@ -814,7 +816,9 @@
 
         $('#xp2').change(function () {
             $('#xp2').val($(this).val()).trigger('change');
-            var xp2 = $(this).val();
+            var optionSelected = $(this).find("option:selected");
+            var xp2 = optionSelected.val();
+            //var xp2 = $(this).val();
             if (!xp2) {
                xp2 = "none";
             }
@@ -1022,9 +1026,9 @@
                         var fw_version = state.val;
                         $('#fw_version').val(fw_version);
                         if  ( fw_version === fw_version_last_known ) {
-                            $('#fw_version').style.backgroundColor = "green";
+                            $('#fw_version').backgroundColor = "green";
                         } else {
-                            $('#fw_version').style.backgroundColor = "yellow";
+                            $('#fw_version').backgroundColor = "yellow";
                         };
                         onchange();   //?
                     });
@@ -1156,8 +1160,7 @@
     <button class="translate" id="write">Write config to device</button>
     <button class="translate" id="ipchange">Change ip or password</button>
 
-    <br>&nbsp;
-    XP1:
+    <br>&nbsp;XP1:
     <select id="xp1" class="value">
        <option value="none">Не подключено</option>
        <option value="7I7O-R">Релейный модуль 7I7O-R</option>
@@ -1166,8 +1169,7 @@
        <option value="14-R">Релейный модуль 14-R</option>
     </select>
 
-    &nbsp;&nbsp;
-    XP2:
+    &nbsp;&nbsp;XP2:
     <select id="xp2" class="value">
        <option value="none">Не подключено</option>
        <option value="7I7O-R">Релейный модуль 7I7O-R</option>
