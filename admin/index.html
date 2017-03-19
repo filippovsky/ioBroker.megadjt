@@ -779,7 +779,7 @@
             //var optionSelected = $(this).find("option:selected");
             //var xp1 = optionSelected.val();
             var xp1 = $("#xp1 option:selected").val();
-            alert("xp1 changed to "+xp1);
+            //alert("xp1 changed to "+xp1);
             //var xp1 = $(this).val();
             if (!xp1) {
                xp1 = "none";
@@ -825,7 +825,6 @@
             //var xp2 = optionSelected.val();
 
             var xp2 = $("#xp2 option:selected").val();
-            alert("xp2 changed to "+xp2);
             //var xp2 = $(this).val();
             if (!xp2) {
                xp2 = "none";
@@ -852,6 +851,7 @@
                //$('#xp2_img').src = "../www/mega/MegaD-14-IN.jpg";
             } else if (xp2 == "14-R") {
                setImage( "xp2_img", "mega/MegaD-14-R.jpg" );
+               alert("xp2 changed to "+xp2);
                //document.xp2_img.src = "mega/MegaD-14-R.jpg";
                //$('#xp2_img').attr("src","mega/MegaD-14-R.jpg");
                //$('#xp2_img').src = "../www/mega/MegaD-14-R.jpg";
