@@ -774,12 +774,12 @@
         });
 
         $('#xp1').change(function () {
-            alert("xp1 changed");
-            $('#xp1').val($(this).val()).trigger('change');
+
+
             //var optionSelected = $(this).find("option:selected");
             //var xp1 = optionSelected.val();
             var xp1 = $("#xp1 option:selected").val();
-
+            alert("xp1 changed to "+xp1);
             //var xp1 = $(this).val();
             if (!xp1) {
                xp1 = "none";
@@ -815,17 +815,17 @@
                //$('#xp1_img').attr("src","");
                //$('#xp1_img').src = "";
             };
+            $('#xp1').val($(this).val()).trigger('change');
         });
 
         $('#xp2').change(function () {
-            alert("xp2 changed");
+            //alert("xp2 changed");
 
-            $('#xp2').val($(this).val()).trigger('change');
             //var optionSelected = $(this).find("option:selected");
             //var xp2 = optionSelected.val();
 
             var xp2 = $("#xp2 option:selected").val();
-
+            alert("xp2 changed to "+xp2);
             //var xp2 = $(this).val();
             if (!xp2) {
                xp2 = "none";
@@ -861,6 +861,9 @@
                //$('#xp2_img').attr("src","");
                //$('#xp2_img').src = "";
             };
+            $('#xp2').val($(this).val()).trigger('change');
+
+
         });
 
         onChange(false);
