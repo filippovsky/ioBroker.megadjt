@@ -233,7 +233,7 @@ function getFirmwareVersion() {
           });
           res.on('data', function (chunk) {
               xmldata += chunk;
-              adapter.log.debug('getFirmwareVersion get: ' + chunk);
+              //adapter.log.debug('getFirmwareVersion get: ' + chunk);
           });
           res.on('end', function () {
               if (res.statusCode != 200) {
@@ -409,7 +409,7 @@ function readMegaConfig2File( filename ) {
         }
         adapter.log.info('Настройки Меги считаны в файл '+filename1);
 
-        var cmd1 = 'cd '+dir+'|cd '+uplevel+'|mkdir files|cd files|mkdir iobroker.megadjt|cd '+dir+'|cp --remove-destination ./'+filename1+' '+uplevel+'files/iobroker.megadjt/'+filename1;
+        var cmd1 = 'cd '+dir+'|cd '+uplevel+'|cd etc|mkdir iobroker.megadjt|cd '+dir+'|cp --remove-destination ./'+filename1+' '+uplevel+'etc/iobroker.megadjt/'+filename1;
         adapter.log.debug(cmd1);
         var p1=process.exec( cmd1, 
                              { cwd: dir  },
@@ -424,7 +424,7 @@ function readMegaConfig2File( filename ) {
                                 if ( stderr ) {
                                    adapter.log.error( stderr );
                                 }
-                                adapter.log.info('Файл с настройками Меги перенесен в папку iobroker: files/iobroker.megadjt/'+filename1);
+                                adapter.log.info('Файл с настройками Меги перенесен в папку iobroker: etc/iobroker.megadjt/'+filename1);
                              });
    });
 }
