@@ -534,7 +534,7 @@
 
 
     function setImage( imgName, newSrc ) {
-       document.getElementById( imgName ).src = newSrc;
+       document.getElementById( imgName ).src(newSrc);
     }
 
     // the function loadSettings has to exist ...
@@ -594,9 +594,11 @@
            fw_version = state.val;
            $('#fw_version').val(fw_version);
            if  ( fw_version === fw_version_last_known ) {
-              $('#fw_version').style.backgroundColor = "green";
+              //$('#fw_version').style.backgroundColor = "green";
+              $('#fw_version').backgroundColor("green");
            } else {
-              $('#fw_version').style.backgroundColor = "yellow";
+              //$('#fw_version').style.backgroundColor = "yellow";
+              $('#fw_version').backgroundColor("yellow");
            };
         });
 
@@ -604,9 +606,11 @@
            fw_version_last_known = state.val;
            $('#fw_version_last_known').val(fw_version_last_known);
            if  ( fw_version === fw_version_last_known ) {
-              $('#fw_version').style.backgroundColor = "green";
+              //$('#fw_version').style.backgroundColor = "green";
+              $('#fw_version').backgroundColor("green");
            } else {
-              $('#fw_version').style.backgroundColor = "yellow";
+              //$('#fw_version').style.backgroundColor = "yellow";
+              $('#fw_version').backgroundColor("yellow");
            };
         });
 
