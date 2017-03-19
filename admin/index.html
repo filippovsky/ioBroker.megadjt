@@ -534,7 +534,6 @@
 
     // the function loadSettings has to exist ...
     function load(settings, onChange) {
-        var testtext = '';
         if (!settings) return;
 
         if (settings.longPress === undefined) settings.longPress = 400;
@@ -594,10 +593,6 @@
            } else {
               $('#fw_version').style.backgroundColor = "yellow";
            };
-
-           testtext = 'Тест текста '+fw_version;
-           $('#testtext').html(testtext);
-
         });
 
         socket.emit('getState',  adapter + '.' + instance + '.version.firmware_last_known', function (err, state) {
@@ -771,12 +766,46 @@
 
         $('#xp1').change(function () {
             $('#xp1').val($(this).val()).trigger('change');
+            var xp1 = $('#xp1').val();
+            if (!xp1) {
+               xp1 = "none";
+            }
+            if (xp1 == "none") {
+               $('#xp1_img').src = "";
+            } else if (xp1 == "7I7O-R") {
+               $('#xp1_img').src = "../www/mega/MegaD-7I7O-R.gif";
+            } else if (xp1 == "7I7O-SD") {
+               $('#xp1_img').src = "../www/mega/MegaD-7I7O-SD.jpg";
+            } else if (xp1 == "14-IN") {
+               $('#xp1_img').src = "../www/mega/MegaD-14-IN.jpg";
+            } else if (xp1 == "14-R") {
+               $('#xp1_img').src = "../www/mega/MegaD-14-R.jpg";
+            } else {
+               $('#xp1_img').src = "";
+            };
         });
 
         $('#xp2').change(function () {
             $('#xp2').val($(this).val()).trigger('change');
-        });
+            var xp2 = $('#xp2').val();
+            if (!xp2) {
+               xp2 = "none";
+            }
+            if (xp2 == "none") {
+               $('#xp2_img').src = "";
+            } else if (xp2 == "7I7O-R") {
+               $('#xp2_img').src = "../www/mega/MegaD-7I7O-R.gif";
+            } else if (xp2 == "7I7O-SD") {
+               $('#xp2_img').src = "../www/mega/MegaD-7I7O-SD.jpg";
+            } else if (xp2 == "14-IN") {
+               $('#xp2_img').src = "../www/mega/MegaD-14-IN.jpg";
+            } else if (xp2 == "14-R") {
+               $('#xp2_img').src = "../www/mega/MegaD-14-R.jpg";
+            } else {
+               $('#xp2_img').src = "";
+            };
 
+        });
 
         onChange(false);
     }
@@ -953,10 +982,6 @@
                         } else {
                             $('#fw_version').style.backgroundColor = "yellow";
                         };
-
-                        var testtext = 'Тест текста '+fw_version;
-                        $('#testtext').html(testtext);
-
                         onchange();   //?
                     });
                 });
@@ -1053,24 +1078,36 @@
     <table><tr><td><img src="megad.png"></td><td><h3 class="translate">MegaD-2561 adapter settings</h3></td></tr></table>
 
     <table>
-        <tr><td class="translate" style="text-align: right">IP:</td><td>                    <input  class="value" id="ip"/></select></td>
-            <td style="padding-left: 10px"><select id="ips" style="display:none"></select>&nbsp;<button id="discover" class="translateB">Find devices</button></td></tr>
-        <tr><td class="translate" style="text-align: right">MegaD Name:</td><td>            <input  class="value" id="name"/></td>
-            <td class="translate" style="text-align: right">Poll interval (sec):</td><td>   <input  class="value" id="pollInterval"  maxlength="3"/></td>
-        </tr>
-        <tr><td class="translate" style="text-align: right">Current firmware version:</td><td><input readonly class="value" id="fw_version"  maxlength="10"/></td>
-            <td class="translate" style="text-align: right">Last known firmware version:</td><td><input readonly class="value" id="fw_version_last_known"  maxlength="10"/>
-                <button class="translate" id="updateFirmware">Update Firmware</button>
+        <tr><td class="translate" style="text-align: right">IP:</td>
+            <td><input  class="value" id="ip"/></select></td>
+            <td colspan=3 style="padding-left: 10px">
+                <select id="ips" style="display:none"></select>&nbsp;
+                <button id="discover" class="translateB">Find devices</button>
             </td>
         </tr>
-        <tr><td class="translate" style="text-align: right">ioBroker Web Port:</td><td>     <input  class="value" id="port"          maxlength="5"/></td>
-            <td class="translate" style="text-align: right">Long press detect (ms):</td><td><input  class="value" id="longPress"     maxlength="4"/></td>
+        <tr><td class="translate" style="text-align: right">MegaD Name:</td>
+            <td><input  class="value" id="name"/></td>
+            <td class="translate" style="text-align: right">Poll interval (sec):</td>
+            <td colspan=2><input  class="value" id="pollInterval"  maxlength="3"/></td>
         </tr>
-        <tr><td class="translate" style="text-align: right">MegaD Password:</td><td>        <input  class="value" id="password"      maxlength="3"/></td>
-            <td class="translate" style="text-align: right">Double press detect (ms):</td><td><input  class="value" id="doublePress" maxlength="4"/></td>
+        <tr><td class="translate" style="text-align: right">Current firmware version:</td>
+            <td><input readonly class="value" id="fw_version"  maxlength="10"/></td>
+            <td class="translate" style="text-align: right">Last known firmware version:</td>
+            <td><input readonly class="value" id="fw_version_last_known"  maxlength="10"/></td>
+            <td><button class="translate" id="updateFirmware">Update Firmware</button></td>
+        </tr>
+        <tr><td class="translate" style="text-align: right">ioBroker Web Port:</td>
+            <td><input  class="value" id="port" maxlength="5"/></td>
+            <td class="translate" style="text-align: right">Long press detect (ms):</td>
+            <td colspan=2><input  class="value" id="longPress" maxlength="4"/></td>
+        </tr>
+        <tr><td class="translate" style="text-align: right">MegaD Password:</td>
+            <td><input  class="value" id="password" maxlength="3"/></td>
+            <td class="translate" style="text-align: right">Double press detect (ms):</td>
+            <td colspan=2><input  class="value" id="doublePress" maxlength="4"/></td>
         </tr>
     </table>
-    <button class="translate" id="add">Add new port</button>
+    <!-- <button class="translate" id="add">Add new port</button> -->
     <button class="translate" id="autoDetect">Auto detect ports</button>
     <button class="translate" id="write">Write config to device</button>
     <button class="translate" id="ipchange">Change ip or password</button>
@@ -1096,9 +1133,9 @@
     </select>
     <br>
 
-    <span id="testtext">
-         555666
-    </span>
+    <img id="xp1_img" src="">
+    &nbsp;
+    <img id="xp2_img" src="">
 
     <table>
         <thead>
