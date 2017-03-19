@@ -11,7 +11,7 @@ Lets control the [MegaD-2561](http://www.ab-log.ru/smart-house/ethernet/megad-25
 
 ## Install
 
-```node iobroker.js add megad```
+```node iobroker.js add megadjt```
 
 ### Information
 The device has 36 ports, inputs/outputs and DHT11/DHT22, I2C bus, DS18B20 in ports and 1WBUS.
