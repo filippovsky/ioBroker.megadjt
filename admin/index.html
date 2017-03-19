@@ -534,7 +534,7 @@
 
 
     function setImage( imgName, newSrc ) {
-       document.getElementById( imgName ).src(newSrc);
+       document.getElementById( imgName ).src = newSrc;
     }
 
     // the function loadSettings has to exist ...
@@ -774,6 +774,7 @@
         });
 
         $('#xp1').change(function () {
+            alert("xp1 changed");
             $('#xp1').val($(this).val()).trigger('change');
             //var optionSelected = $(this).find("option:selected");
             //var xp1 = optionSelected.val();
@@ -817,6 +818,8 @@
         });
 
         $('#xp2').change(function () {
+            alert("xp2 changed");
+
             $('#xp2').val($(this).val()).trigger('change');
             //var optionSelected = $(this).find("option:selected");
             //var xp2 = optionSelected.val();
