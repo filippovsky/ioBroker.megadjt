@@ -362,14 +362,15 @@ function updateFirmware( ) {
 }
 
 
-// Функция считывания настроек Меги ---------------------------------------------------------------
-function readMegaConfig( filename ) {
+// Функция считывания настроек Меги в файл ---------------------------------------------------------------
+function readMegaConfig2File( filename ) {
    return;
    var parts = adapter.config.ip.split(':');
    var ip = parts[0];
    var pass = adapter.config.password;
    var cmd = '';
    var filename1 = filename || 'last.cfg';
+   var uplevel = '../../';
    
    var dir ='';
    adapter.log.info('Считываем настройки Меги ip=' + ip );
@@ -386,9 +387,10 @@ function readMegaConfig( filename ) {
       adapter.log.warn('Не удалось определить каталог адаптера. Перепрошивка отменена.');
       return;
    }
-   var dir1 = '../../files/iobroker.megadjt' ;
+   //var dir1 = '../../files/iobroker.megadjt' ;
 
-   cmd = 'mkdir '+dir+'/'+dir1+'|chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --ip '+ip+' --read-conf '+dir1+'/'+filename1+' -p '+pass;
+//   cmd = 'mkdir '+dir+'/'+dir1+'|chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --ip '+ip+' --read-conf '+dir1+'/'+filename1+' -p '+pass;
+   cmd = 'chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --ip '+ip+' --read-conf '+filename1+' -p '+pass;
 
    adapter.log.debug(cmd);
    
@@ -405,7 +407,25 @@ function readMegaConfig( filename ) {
         if ( stderr ) {
            adapter.log.error( stderr );
         }
-        adapter.log.info('Настройки Меги сохранены в файл '+filename1);
+        adapter.log.info('Настройки Меги считаны в файл '+filename1);
+
+        cmd1 = 'cd '+dir+'|cd '+uplevel+'|mkdir files|cd files|mkdir iobroker.megadjt|cd '+dir+'|cp --remove-destination ./'+filename1+' '+uplevel+'files/iobroker.megadjt/'+filename1;
+        adapter.log.debug(cmd1);
+        var p1=process.exec( cmd1, 
+                             { cwd: dir  },
+                             function (error, stdout, stderr) {
+                                if (error) {
+                                   adapter.log.error( error.code );
+                                   adapter.log.error( error );
+                                }
+                                if ( stdout ) {
+                                   adapter.log.info( stdout );
+                                }
+                                if ( stderr ) {
+                                   adapter.log.error( stderr );
+                                }
+                                adapter.log.info('Файл с настройками Меги перенесен в папку files');
+                             });
    });
 }
 
@@ -990,7 +1010,7 @@ function detectDeviceConfig(ip, pass, callback) {
         callback(err);
     });
     //-------------------------------------------------------
-    readMegaConfig( 'last.cfg' );
+    readMegaConfig2File( 'last.cfg' );
 
 }
 //------------------------------------------------------------------------------------------------------------------

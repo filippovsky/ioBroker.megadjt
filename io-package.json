@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.3.8",
+        "version":                  "0.3.9",
         "news": {
             "0.2.42": {
                 "en":               "new function: updateFirmware",
@@ -54,12 +54,12 @@
         "messagebox":               true,
         "readme":                   "https://github.com/filippovsky/ioBroker.megadjt/blob/master/README.md",
         "keywords":                 ["MegaD-2561", "communication"],
-		"enabled":                  true,
+		"enabled":                  false,
         "extIcon":                  "https://github.com/filippovsky/ioBroker.megadjt/raw/master/admin/megad.png",
         "type":                     "hardware",
         "localLink":                "http://%native_ip%/%password%",
         "config": {
-            "width":     1050,
+            "width":     1200,
             "height":    800,
             "minWidth":  600,
             "minHeight": 500
