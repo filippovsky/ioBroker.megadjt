@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.3.13",
+        "version":                  "0.3.14",
         "news": {
             "0.2.42": {
                 "en":               "new function: updateFirmware",
