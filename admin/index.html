@@ -766,7 +766,7 @@
 
         $('#xp1').change(function () {
             $('#xp1').val($(this).val()).trigger('change');
-            var xp1 = $('#xp1').val();
+            var xp1 = $(this).val();
             if (!xp1) {
                xp1 = "none";
             }
@@ -799,7 +799,7 @@
 
         $('#xp2').change(function () {
             $('#xp2').val($(this).val()).trigger('change');
-            var xp2 = $('#xp2').val();
+            var xp2 = $(this).val();
             if (!xp2) {
                xp2 = "none";
             }
@@ -1137,7 +1137,7 @@
 
     <br>&nbsp;
     XP1:
-    <select id="xp1">
+    <select id="xp1" class="value">
        <option value="none">Не подключено</option>
        <option value="7I7O-R">Релейный модуль 7I7O-R</option>
        <option value="7I7O-SD">Симисторный модуль 7I7O-SD</option>
@@ -1147,7 +1147,7 @@
 
     &nbsp;&nbsp;
     XP2:
-    <select id="xp2">
+    <select id="xp2" class="value">
        <option value="none">Не подключено</option>
        <option value="7I7O-R">Релейный модуль 7I7O-R</option>
        <option value="7I7O-SD">Симисторный модуль 7I7O-SD</option>
