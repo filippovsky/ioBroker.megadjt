@@ -775,8 +775,10 @@
 
         $('#xp1').change(function () {
             $('#xp1').val($(this).val()).trigger('change');
-            var optionSelected = $(this).find("option:selected");
-            var xp1 = optionSelected.val();
+            //var optionSelected = $(this).find("option:selected");
+            //var xp1 = optionSelected.val();
+            var xp1 = $("#xp1 option:selected").val();
+
             //var xp1 = $(this).val();
             if (!xp1) {
                xp1 = "none";
@@ -816,8 +818,11 @@
 
         $('#xp2').change(function () {
             $('#xp2').val($(this).val()).trigger('change');
-            var optionSelected = $(this).find("option:selected");
-            var xp2 = optionSelected.val();
+            //var optionSelected = $(this).find("option:selected");
+            //var xp2 = optionSelected.val();
+
+            var xp2 = $("#xp2 option:selected").val();
+
             //var xp2 = $(this).val();
             if (!xp2) {
                xp2 = "none";
