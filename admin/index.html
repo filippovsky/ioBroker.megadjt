@@ -771,17 +771,23 @@
                xp1 = "none";
             }
             if (xp1 == "none") {
-               $('#xp1_img').src = "";
+               //$('#xp1_img').src = "";
+               $('#xp1_img').attr("src","");
             } else if (xp1 == "7I7O-R") {
-               $('#xp1_img').src = "../www/mega/MegaD-7I7O-R.gif";
+               $('#xp1_img').attr("src","../www/mega/MegaD-7I7O-R.gif");
+               //$('#xp1_img').src = "../www/mega/MegaD-7I7O-R.gif";
             } else if (xp1 == "7I7O-SD") {
-               $('#xp1_img').src = "../www/mega/MegaD-7I7O-SD.jpg";
+               $('#xp1_img').attr("src","../www/mega/MegaD-7I7O-SD.jpg");
+               //$('#xp1_img').src = "../www/mega/MegaD-7I7O-SD.jpg";
             } else if (xp1 == "14-IN") {
-               $('#xp1_img').src = "../www/mega/MegaD-14-IN.jpg";
+               $('#xp1_img').attr("src","../www/mega/MegaD-14-IN.jpg");
+               //$('#xp1_img').src = "../www/mega/MegaD-14-IN.jpg";
             } else if (xp1 == "14-R") {
-               $('#xp1_img').src = "../www/mega/MegaD-14-R.jpg";
+               $('#xp1_img').attr("src","../www/mega/MegaD-14-R.jpg");
+               //$('#xp1_img').src = "../www/mega/MegaD-14-R.jpg";
             } else {
-               $('#xp1_img').src = "";
+               $('#xp1_img').attr("src","");
+               //$('#xp1_img').src = "";
             };
         });
 
@@ -792,19 +798,24 @@
                xp2 = "none";
             }
             if (xp2 == "none") {
-               $('#xp2_img').src = "";
+               //$('#xp2_img').src = "";
+               $('#xp2_img').attr("src","");
             } else if (xp2 == "7I7O-R") {
-               $('#xp2_img').src = "../www/mega/MegaD-7I7O-R.gif";
+               $('#xp2_img').attr("src","../www/mega/MegaD-7I7O-R.gif");
+               //$('#xp2_img').src = "../www/mega/MegaD-7I7O-R.gif";
             } else if (xp2 == "7I7O-SD") {
-               $('#xp2_img').src = "../www/mega/MegaD-7I7O-SD.jpg";
+               $('#xp2_img').attr("src","../www/mega/MegaD-7I7O-SD.jpg");
+               //$('#xp2_img').src = "../www/mega/MegaD-7I7O-SD.jpg";
             } else if (xp2 == "14-IN") {
-               $('#xp2_img').src = "../www/mega/MegaD-14-IN.jpg";
+               $('#xp2_img').attr("src","../www/mega/MegaD-14-IN.jpg");
+               //$('#xp2_img').src = "../www/mega/MegaD-14-IN.jpg";
             } else if (xp2 == "14-R") {
-               $('#xp2_img').src = "../www/mega/MegaD-14-R.jpg";
+               $('#xp2_img').attr("src","../www/mega/MegaD-14-R.jpg");
+               //$('#xp2_img').src = "../www/mega/MegaD-14-R.jpg";
             } else {
-               $('#xp2_img').src = "";
+               $('#xp2_img').attr("src","");
+               //$('#xp2_img').src = "";
             };
-
         });
 
         onChange(false);
@@ -1133,9 +1144,9 @@
     </select>
     <br>
 
-    <img id="xp1_img" src="">
+    <img id="xp1_img" class="value" src="">
     &nbsp;
-    <img id="xp2_img" src="">
+    <img id="xp2_img" class="value" src="">
 
     <table>
         <thead>
