@@ -410,7 +410,7 @@ function readMegaConfig2File( filename ) {
         adapter.log.info('Настройки Меги считаны в файл '+filename1);
 
 //        var cmd1 = 'cd '+dir+'|cd '+uplevel+'|cd etc|mkdir iobroker.megadjt|cd '+dir+'|cp --remove-destination ./'+filename1+' '+uplevel+'etc/iobroker.megadjt/'+filename1;
-        var cmd1 = 'mkdir '+uplevel+'/etc/iobroker.megadjt|cp --remove-destination ./'+filename1+' '+uplevel+'etc/iobroker.megadjt/'+filename1;
+        var cmd1 = 'mkdir -p '+uplevel+'etc/iobroker.megadjt|cp --remove-destination ./'+filename1+' '+uplevel+'etc/iobroker.megadjt/'+filename1;
         adapter.log.debug(cmd1);
         var p1=process.exec( cmd1, 
                              { cwd: dir  },
