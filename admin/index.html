@@ -1032,6 +1032,7 @@
         if (window.confirm(_('Firmware will be rewrited. All config will be lost. Are you sure?'))) {
             sendTo(null, 'updateFirmware', '', function (msg) {
                  sendTo(null, 'getFirmware', '', function (msg) {
+                    showMessage(_('Firmware updated'), 'Warning', 'info');
                     socket.emit('getState',  adapter + '.' + instance + '.version.firmware', function (err, state) {
                         var fw_version = state.val;
                         $('#fw_version').val(fw_version);
