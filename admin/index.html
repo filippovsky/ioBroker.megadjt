@@ -125,7 +125,8 @@
         "De-bounce:":           {"en": "De-bounce:",            "de": "Entprellen:",                "ru": "Дребезг:"},
         "Current firmware version:":    {"en": "Current Firmware version:",     "de": "Current Firmware version:",          "ru": "Текущая версия прошивки:"},
         "Last known firmware version:":    {"en": "Last known Firmware version:",     "de": "Last known Firmware version:",          "ru": "Свежая версия прошивки:"},
-        "Update Firmware":      {"en": "Update Firmware",       "de": "Update Firmware",            "ru": "Перепрошить Мегу"}
+        "Update Firmware":      {"en": "Update Firmware",       "de": "Update Firmware",            "ru": "Перепрошить Мегу"},
+        "Firmware updated":     {"en": "Firmware updated",      "de": "Firmware updated",           "ru": "Мега перепрошита"}
     };
     var onchange = null;
     var rooms    = [];
@@ -1030,8 +1031,8 @@
         }
 
         if (window.confirm(_('Firmware will be rewrited. All config will be lost. Are you sure?'))) {
-            sendTo(null, 'updateFirmware', '', function (msg) {
-                 sendTo(null, 'getFirmware', '', function (msg) {
+            sendTo(null, 'updateFirmware', null, function (msg) {
+               sendTo(null, 'getFirmware', null, function (msg1) {
                     showMessage(_('Firmware updated'), 'Warning', 'info');
                     socket.emit('getState',  adapter + '.' + instance + '.version.firmware', function (err, state) {
                         var fw_version = state.val;
