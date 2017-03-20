@@ -538,6 +538,26 @@
        document.getElementById( imgName ).src = newSrc;
     }
 
+    function showXP1() {
+        var xp1 = $("#xp1 option:selected").val();
+        if (!xp1) {
+            xp1 = "none";
+        }
+        if (xp1 == "none") {
+           setImage( "xp1_img", "" );
+        } else if (xp1 == "7I7O-R") {
+           setImage( "xp1_img", "mega/MegaD-7I7O-R.gif" );
+        } else if (xp1 == "7I7O-SD") {
+           setImage( "xp1_img", "mega/MegaD-7I7O-SD.jpg" );
+        } else if (xp1 == "14-IN") {
+           setImage( "xp1_img", "mega/MegaD-14-IN.jpg" );
+        } else if (xp1 == "14-R") {
+           setImage( "xp1_img", "mega/MegaD-14-R.jpg" );
+        } else {
+           setImage( "xp1_img", "" );
+        };
+    }
+
     function showXP2() {
         var xp2 = $("#xp2 option:selected").val();
         if (!xp2) {
@@ -795,46 +815,7 @@
         });
 
         $('#xp1').change(function () {
-            //var optionSelected = $(this).find("option:selected");
-            //var xp1 = optionSelected.val();
-            var xp1 = $("#xp1 option:selected").val();
-            //alert("xp1 changed to "+xp1);
-            //var xp1 = $(this).val();
-            if (!xp1) {
-               xp1 = "none";
-            }
-            if (xp1 == "none") {
-               setImage( "xp1_img", "" );
-               
-               //$('#xp1_img').src = "";
-               //document.xp1_img.src = "";
-               //$('#xp1_img').attr("src","");
-            } else if (xp1 == "7I7O-R") {
-               setImage( "xp1_img", "mega/MegaD-7I7O-R.gif" );
-               //document.xp1_img.src = "mega/MegaD-7I7O-R.gif";
-               //$('#xp1_img').attr("src","mega/MegaD-7I7O-R.gif");
-               //$('#xp1_img').src = "../www/mega/MegaD-7I7O-R.gif";
-            } else if (xp1 == "7I7O-SD") {
-               setImage( "xp1_img", "mega/MegaD-7I7O-SD.jpg" );
-               //document.xp1_img.src = "mega/MegaD-7I7O-SD.jpg";
-               //$('#xp1_img').attr("src","mega/MegaD-7I7O-SD.jpg");
-               //$('#xp1_img').src = "../www/mega/MegaD-7I7O-SD.jpg";
-            } else if (xp1 == "14-IN") {
-               setImage( "xp1_img", "mega/MegaD-14-IN.jpg" );
-               //document.xp1_img.src = "mega/MegaD-14-IN.jpg";
-               //$('#xp1_img').attr("src","mega/MegaD-14-IN.jpg");
-               //$('#xp1_img').src = "../www/mega/MegaD-14-IN.jpg";
-            } else if (xp1 == "14-R") {
-               setImage( "xp1_img", "mega/MegaD-14-R.jpg" );
-               //document.xp1_img.src = "mega/MegaD-14-R.jpg";
-               //$('#xp1_img').attr("src","mega/MegaD-14-R.jpg");
-               //$('#xp1_img').src = "../www/mega/MegaD-14-R.jpg";
-            } else {
-               setImage( "xp1_img", "" );
-               //document.xp1_img.src = "";
-               //$('#xp1_img').attr("src","");
-               //$('#xp1_img').src = "";
-            };
+            showXP1();
             $('#xp1').val($(this).val()).trigger('change');
         });
 
@@ -844,7 +825,7 @@
         });
 
         // инициализируем картинки при загрузке окна
-        var j = $('#xp1').change();
+        var j = showXP1();
         var z = showXP2();
         
 
