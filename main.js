@@ -22,6 +22,7 @@
 "use strict";
 
 var utils  = require(__dirname + '/lib/utils'); // Get common adapter utils
+var tools  = require(__dirname + '/lib/tools'); // npm?
 var http   = require('http');
 var fs     = require('fs');
 var process = require('child_process');
