@@ -135,6 +135,7 @@
     var fw_version = "";
     var fw_version_last_known = "";
 
+    //------------------------------------------------------------------------------------------------
     function showOnePort(index, portSettings) {
         // name, room, role, pty(type), ecmd(Action), eth(net action), m(mode), d(default state), pwm(0-255), misc (threshold)
         var text = '<tr class="tspace">';
@@ -336,6 +337,7 @@
         return text;
     }
 
+    //--------------------------------------------------------------------------------------------------
     function valueChanged() {
         var attr  = $(this).data('type');
         var index = $(this).data('port');
@@ -457,6 +459,7 @@
         onchange();
     }
 
+    //----------------------------------------------------------------------------------------
     function onDelete() {
         var index = $(this).data('port');
         ports.splice(index, 1);
@@ -464,6 +467,7 @@
         showPorts();
     }
 
+    //-----------------------------------------------------------------------------------------
     function onUp() {
         var index = $(this).data('port');
         var tmp = ports[index - 1];
@@ -473,6 +477,7 @@
         showPorts();
     }
 
+    //-------------------------------------------------------------------------------------------
     function onDown() {
         var index = $(this).data('port');
         var tmp = ports[index + 1];
@@ -482,6 +487,7 @@
         showPorts();
     }
 
+    //----------------------------------------------------------------------------------------
     function showPorts() {
         var text = '<table class="tspace">';
         text += '<tr class="tspace ui-widget-header">';
@@ -526,6 +532,7 @@
 
     }
 
+    //-------------------------------------------------------------------------------
     function readRooms() {
         getEnums('rooms', function (err, _rooms) {
             rooms = _rooms;
@@ -533,51 +540,46 @@
         });
     }
 
-
+    //--------------------------------------------------------------------------------
     function setImage( imgName, newSrc ) {
        document.getElementById( imgName ).src = newSrc;
     }
 
-    function showXP1() {
-        var xp1 = $("#xp1 option:selected").val();
-        if (!xp1) {
-            xp1 = "none";
-        }
-        if (xp1 == "none") {
-           setImage( "xp1_img", "" );
-        } else if (xp1 == "7I7O-R") {
-           setImage( "xp1_img", "mega/MegaD-7I7O-R.gif" );
-        } else if (xp1 == "7I7O-SD") {
-           setImage( "xp1_img", "mega/MegaD-7I7O-SD.jpg" );
-        } else if (xp1 == "14-IN") {
-           setImage( "xp1_img", "mega/MegaD-14-IN.jpg" );
-        } else if (xp1 == "14-R") {
-           setImage( "xp1_img", "mega/MegaD-14-R.jpg" );
+    //---------------------------------------------------------------------------------
+    function showXP( numXP ) {
+        var xp = "";
+        var fon = "";
+        var imgName = ""; 
+
+        if ( numXP == 1 ) {
+           xp = $("#xp1 option:selected").val();
+           imgName = "xp1_img";
+        } else if ( numXP == 2 ) {
+           xp = $("#xp2 option:selected").val();
+           imgName = "xp2_img";
         } else {
-           setImage( "xp1_img", "" );
+           return;
+        }
+
+        if (!xp) {
+            xp = "none";
+        }
+
+        if (xp == "7I7O-R") {
+           fon = "mega/MegaD-7I7O-R.gif";
+        } else if (xp == "7I7O-SD") {
+           fon = "mega/MegaD-7I7O-SD.jpg";
+        } else if (xp == "14-IN") {
+           fon = "mega/MegaD-14-IN.jpg";
+        } else if (xp == "14-R") {
+           fon = "mega/MegaD-14-R.jpg";
+        } else {
+           fon = "";
         };
+        setImage( imgName, fon );
     }
 
-    function showXP2() {
-        var xp2 = $("#xp2 option:selected").val();
-        if (!xp2) {
-            xp2 = "none";
-        }
-        if (xp2 == "none") {
-           setImage( "xp2_img", "" );
-        } else if (xp2 == "7I7O-R") {
-           setImage( "xp2_img", "mega/MegaD-7I7O-R.gif" );
-        } else if (xp2 == "7I7O-SD") {
-           setImage( "xp2_img", "mega/MegaD-7I7O-SD.jpg" );
-        } else if (xp2 == "14-IN") {
-           setImage( "xp2_img", "mega/MegaD-14-IN.jpg" );
-        } else if (xp2 == "14-R") {
-           setImage( "xp2_img", "mega/MegaD-14-R.jpg" );
-        } else {
-           setImage( "xp2_img", "" );
-        };
-    }
-
+    //-------------------------------------------------------------------------------------
     // the function loadSettings has to exist ...
     function load(settings, onChange) {
         if (!settings) return;
@@ -815,23 +817,23 @@
         });
 
         $('#xp1').change(function () {
-            showXP1();
+            showXP( 1 );
             $('#xp1').val($(this).val()).trigger('change');
         });
 
         $('#xp2').change(function () {
-            showXP2();
+            showXP( 2 );
             $('#xp2').val($(this).val()).trigger('change');
         });
 
         // инициализируем картинки при загрузке окна
-        var j = showXP1();
-        var z = showXP2();
-        
+        var j = showXP( 1 );
+        var z = showXP( 2 );
 
         onChange(false);
     }
 
+    //---------------------------------------------------------------------------------------
     // ... and the function save has to exist.
     // you have to make sure the callback is called with the settings object as first param!
     function save(callback) {
@@ -852,6 +854,7 @@
         callback(obj);
     }
 
+    //--------------------------------------------------------------------------------------
     function autoDetect(ip, pass) {
         if (!active) {
             showMessage(_('Enable adapter first'), 'Warning', 'info');
@@ -987,6 +990,7 @@
         }
     }
 
+    //-------------------------------------------------------------------------------------
     function updateFirmware() {
         if (!active) {
             showMessage(_('Enable adapter first'), 'Warning', 'info');
@@ -1014,7 +1018,7 @@
     }
 
 
-
+    //----------------------------------------------------------------------------------------------
     function saveSettings() {
         var id = 'system.adapter.' + adapter + '.' + instance;
 
@@ -1052,6 +1056,7 @@
         });
     }
 
+    //----------------------------------------------------------------------------
     function writeConfig(ip, pass, port, ports, newIp, newPass, callback) {
         if (!active) {
             showMessage(_('Enable adapter first'), 'Warning', 'info');
@@ -1180,7 +1185,6 @@
           <img name="ctrl_img" id="ctrl_img" src="mega/megad-2561.jpg">
        </td></tr>
     </table>
-
 
     <table>
         <thead>
