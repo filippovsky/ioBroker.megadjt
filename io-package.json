@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.3.46",
+        "version":                  "0.3.47",
         "news": {
             "0.2.42": {
                 "en":               "new function: updateFirmware",
@@ -56,6 +56,7 @@
         "keywords":                 ["MegaD-2561", "communication"],
 		"enabled":                  false,
         "extIcon":                  "https://github.com/filippovsky/ioBroker.megadjt/raw/master/admin/megad.png",
+        "stopBeforeUpdate":         true,
         "type":                     "hardware",
         "localLink":                "http://%native_ip%/%password%",
         "config": {
