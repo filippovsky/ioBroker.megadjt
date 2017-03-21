@@ -132,8 +132,32 @@
     var rooms    = [];
     var ports    = [];
     var active   = false;
-    var fw_version = "";
-    var fw_version_last_known = "";
+    //var fw_version = "";
+    //var fw_version_last_known = "";
+
+    function getFirmwareVersion () {
+        var fw_version = "";
+        var fw_version_last_known = "";
+
+        socket.emit('getState',  adapter + '.' + instance + '.version.firmware', function (err, state) {
+           fw_version = state.val;
+           $('#fw_version').val(fw_version);
+
+           socket.emit('getState',  adapter + '.' + instance + '.version.firmware_last_known', function (err, state) {
+              fw_version_last_known = state.val;
+              $('#fw_version_last_known').val(fw_version_last_known);
+              if  ( fw_version === fw_version_last_known ) {
+                 //$('#fw_version').style.backgroundColor = "green";
+                 $('#fw_version').backgroundColor="green";
+              } else {
+                 //$('#fw_version').style.backgroundColor = "yellow";
+                 $('#fw_version').backgroundColor="yellow";
+              }
+              onchange();   //?
+
+          });
+        });
+    }
 
     //------------------------------------------------------------------------------------------------
     function showOnePort(index, portSettings) {
@@ -633,29 +657,7 @@
         });
 
 
-        socket.emit('getState',  adapter + '.' + instance + '.version.firmware', function (err, state) {
-           fw_version = state.val;
-           $('#fw_version').val(fw_version);
-           if  ( fw_version === fw_version_last_known ) {
-              //$('#fw_version').style.backgroundColor = "green";
-              $('#fw_version').backgroundColor="green";
-           } else {
-              //$('#fw_version').style.backgroundColor = "yellow";
-              $('#fw_version').backgroundColor="yellow";
-           };
-        });
-
-        socket.emit('getState',  adapter + '.' + instance + '.version.firmware_last_known', function (err, state) {
-           fw_version_last_known = state.val;
-           $('#fw_version_last_known').val(fw_version_last_known);
-           if  ( fw_version === fw_version_last_known ) {
-              //$('#fw_version').style.backgroundColor = "green";
-              $('#fw_version').backgroundColor="green";
-           } else {
-              //$('#fw_version').style.backgroundColor = "yellow";
-              $('#fw_version').backgroundColor="yellow";
-           };
-        });
+        getFirmwareVersion();
 
         $('#updateFirmware').button({
             icons: {primary: 'ui-icon-refresh'}
@@ -1001,16 +1003,7 @@
             sendTo(null, 'updateFirmware', null, function (msg) {
                sendTo(null, 'getFirmware', null, function (msg1) {
                     showMessage(_('Firmware updated'), 'Warning', 'info');
-                    socket.emit('getState',  adapter + '.' + instance + '.version.firmware', function (err, state) {
-                        var fw_version = state.val;
-                        $('#fw_version').val(fw_version);
-                        if  ( fw_version === fw_version_last_known ) {
-                            $('#fw_version').backgroundColor = "green";
-                        } else {
-                            $('#fw_version').backgroundColor = "yellow";
-                        };
-                        onchange();   //?
-                    });
+                    getFirmwareVersion();
                 });
 
             });
