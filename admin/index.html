@@ -659,7 +659,7 @@
 
         getFirmwareVersion();
 
-        $('#updateFirmware').button({
+        $('#updateFirmwareLatest').button({
             icons: {primary: 'ui-icon-refresh'}
         }).click(function() {
             updateFirmware();
@@ -831,6 +831,27 @@
         // инициализируем картинки при загрузке окна
         var j = showXP( 1 );
         var z = showXP( 2 );
+
+        $('#updateFirmware').button({
+            icons: {primary: 'ui-icon-refresh'}
+        }).click(function () {
+            $('#firmware-dialog').dialog( {
+                autoOpen: true,
+                modal:    true,
+                width:    460,
+                height:   270,
+                title:    _('Выбор версии прошивки'),
+                buttons: [
+                    {
+                        text: _('Cancel'),
+                        click: function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                ]
+            });
+        });
+
 
         onChange(false);
     }
@@ -1202,5 +1223,28 @@
             <tr><td class="translate">New password:</td><td><input style="width: 100%" id="change_new_password"/></td></tr>
         </table>
     </div>
+
+    <div id="firmware-dialog" style="display: none">
+        <table border=1>
+           <tr>
+             <td>Версия прошивки</td>
+             <td>Дата и время</td>
+             <td>Описание</td>
+             <td>Прошивка</td>
+           </tr>
+           <tr>
+             <td><b>v4.13b4</td>
+             <td>22.03.2017 10:43</td>
+             <td>Добавлена функция гасить/зажигать дисплей.<br>
+             <i>Пример.</i><br>
+             Линия SDA дисплея подключена к P35<br>
+             (Act/?cmd=) 35:0 - выключить дисплей; 35:1 - включить дисплей.
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest">Прошить</button></td>
+           </tr>
+        </table>
+    </div>
+
+
 </div>
 </html>

@@ -22,7 +22,7 @@
 "use strict";
 
 var utils  = require(__dirname + '/lib/utils'); // Get common adapter utils
-var tools  = require(__dirname + '/lib/tools'); // npm?
+//var tools  = require(__dirname + '/lib/tools'); // npm?
 var http   = require('http');
 var fs     = require('fs');
 var process = require('child_process');
@@ -31,7 +31,7 @@ var ports  = {};
 ///var askInternalTemp = false;
 var ask1WireTemp = false;   //1Wire
 var connected = false;
-var fw_version_actual = "4.13b3";
+var fw_version_actual = "4.13b4";
 
 var adapter = utils.adapter(  'megadjt' );
 
