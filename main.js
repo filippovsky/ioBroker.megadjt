@@ -119,7 +119,7 @@ adapter.on('message', function (obj) {
                 break;
 
             case 'updateFirmware':
-                updateFirmware();
+                updateFirmware(obj.message);
                 break;
 
             case 'getFirmware':
@@ -294,15 +294,33 @@ function getFirmwareVersion() {
     }
 }
 // Функция перепрошивки Меги ---------------------------------------------------------------
-function updateFirmware( ) {
+function updateFirmware( message ) {
    var parts = adapter.config.ip.split(':');
    var ip = parts[0];
    var pass = adapter.config.password;
    var cmd = '';
    var cmd1 = '';
 
+   if (typeof message === 'string') {
+       try {
+            message = JSON.parse(message);
+       } catch (err) {
+            adapter.log.error('Cannot parse: ' + message);
+            return;
+       }
+   }
+
+
+   if (message.targetVersion) {
+      adapter.log.debug('Получен желаемый номер версии прошивки '+message.targetVersion);
+      targetVersion = message.targetVersion || fw_version_actual;
+   } else {
+      adapter.log.debug('Не получен желаемый номер версии прошивки');
+      targetVersion = fw_version_actual;
+   }
+
    var dir ='';
-   adapter.log.info('Вызвана функция перепрошивки Меги ip=' + ip );
+   adapter.log.info('Вызвана функция перепрошивки Меги ip=' + ip +' до версии '+targetVersion);
    if ( !ip ) {
       adapter.log.warn('Не передан IP-адрес Меги. Перепрошивка отменена.');
       return;
@@ -316,11 +334,12 @@ function updateFirmware( ) {
       adapter.log.warn('Не удалось определить каталог адаптера. Перепрошивка отменена.');
       return;
    }
+   dir = dir + '/firmware';
 
    //cmd = '/usr/bin/php '+dir+'/www/megad-cfg-2561.php --fw '+dir+'/www/megad-2561.hex -p '+pass+' --ee --ip '+ip;
    //cmd = dir+'/www/megad-cfg-2561.php --fw '+dir+'/www/megad-2561.hex -p '+pass+' --ee --ip '+ip;
    //cmd = 'cd '+dir+'|megad-cfg-2561.php --fw megad-2561.hex -p '+pass+' --ee --ip '+ip;
-   cmd = 'chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --fw megad-2561.hex -p '+pass+' --ee --ip '+ip;
+   cmd = 'chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --fw '+targetVersion+'.hex -p '+pass+' --ee --ip '+ip;
    cmd1 = 'php ./megad-cfg-2561.php  --ip 192.168.0.14 --new-ip '+ip+' -p sec';
 
    adapter.log.debug(cmd);

@@ -1023,14 +1023,22 @@
     }
 
     //-------------------------------------------------------------------------------------
-    function updateFirmware( ) {
+    function updateFirmware( targetVersion ) {
+        var target = '';
+
         if (!active) {
             showMessage(_('Enable adapter first'), 'Warning', 'info');
             return;
         }
 
+        if (!targetVersion) {
+           target = '{"targetVersion":""}';
+        } else {
+           target = '{"targetVersion":"'+targetVersion+'"}';
+        }
+
         if (window.confirm(_('Firmware will be rewrited. All config will be lost. Are you sure?'))) {
-            sendTo(null, 'updateFirmware', null, function (msg) {
+            sendTo(null, 'updateFirmware', target, function (msg) {
                sendTo(null, 'getFirmware', null, function (msg1) {
                     showMessage(_('Firmware updated'), 'Warning', 'info');
                     getFirmwareVersion();
@@ -1242,14 +1250,21 @@
              <td>Прошивка</td>
            </tr>
            <tr>
-             <td><b>v4.13b4</td>
+             <td><b>4.13b4</td>
              <td>22.03.2017 10:43</td>
              <td>Добавлена функция гасить/зажигать дисплей.<br>
              <i>Пример.</i><br>
              Линия SDA дисплея подключена к P35<br>
              (Act/?cmd=) 35:0 - выключить дисплей; 35:1 - включить дисплей.
              </td>
-             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware();">Прошить</button></td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.13b4');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.13b3</td>
+             <td>20.03.2017 18:44</td>
+             <td>Исправлена ошибка: контроллер при подключенном сервере не отрабатывает действие при поднесении ТМ ключа
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.13b3');">Прошить</button></td>
            </tr>
         </table>
     </div>
