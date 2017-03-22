@@ -665,8 +665,8 @@
             $('#firmware-dialog').dialog( {
                 autoOpen: true,
                 modal:    true,
-                width:    460,
-                height:   270,
+                width:    800,
+                height:   600,
                 title:    _('Выбор версии прошивки'),
                 buttons: [
                     {
@@ -1023,7 +1023,7 @@
     }
 
     //-------------------------------------------------------------------------------------
-    function updateFirmware() {
+    function updateFirmware( ) {
         if (!active) {
             showMessage(_('Enable adapter first'), 'Warning', 'info');
             return;
