@@ -300,6 +300,7 @@ function updateFirmware( message ) {
    var pass = adapter.config.password;
    var cmd = '';
    var cmd1 = '';
+   var targetVersion = '';
 
    if (typeof message === 'string') {
        try {
