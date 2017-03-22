@@ -659,11 +659,39 @@
 
         getFirmwareVersion();
 
+        $('#updateFirmware').button({
+            icons: {primary: 'ui-icon-refresh'}
+        }).click(function () {
+            $('#firmware-dialog').dialog( {
+                autoOpen: true,
+                modal:    true,
+                width:    460,
+                height:   270,
+                title:    _('Выбор версии прошивки'),
+                buttons: [
+                    {
+                        text: _('Перепрошить последней версией'),
+                        click: function () {
+                            updateFirmware();
+                            $(this).dialog("close");
+                        }
+                    },
+                    {
+                        text: _('Cancel'),
+                        click: function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                ]
+            });
+        });
+        /*
         $('#updateFirmwareLatest').button({
             icons: {primary: 'ui-icon-refresh'}
         }).click(function() {
             updateFirmware();
         });
+*/
 
         onchange = onChange;
 
@@ -832,25 +860,6 @@
         var j = showXP( 1 );
         var z = showXP( 2 );
 
-        $('#updateFirmware').button({
-            icons: {primary: 'ui-icon-refresh'}
-        }).click(function () {
-            $('#firmware-dialog').dialog( {
-                autoOpen: true,
-                modal:    true,
-                width:    460,
-                height:   270,
-                title:    _('Выбор версии прошивки'),
-                buttons: [
-                    {
-                        text: _('Cancel'),
-                        click: function () {
-                            $(this).dialog("close");
-                        }
-                    }
-                ]
-            });
-        });
 
 
         onChange(false);
@@ -1240,7 +1249,7 @@
              Линия SDA дисплея подключена к P35<br>
              (Act/?cmd=) 35:0 - выключить дисплей; 35:1 - включить дисплей.
              </td>
-             <td><button class="translate" id="updateFirmwareLatest">Прошить</button></td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware();">Прошить</button></td>
            </tr>
         </table>
     </div>
