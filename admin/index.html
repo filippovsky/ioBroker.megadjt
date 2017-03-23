@@ -20,7 +20,18 @@
         padding: 0px;
         border-spacing: 0px;
         border-image-width: 0px;
-    }
+    },
+    .round {
+        width: 300px;
+        height: 300px;
+        background: #e3e3e3;
+        border: 1px solid #939393;
+        line-height: 300px;
+        text-align: justify;
+        font-size: 50px;
+        color: blue;
+        border-radius: 30px;
+   }
 </style>
 
 <script type="text/javascript">
@@ -1282,7 +1293,8 @@
            </tr>
         </table>
         <br>&nbsp;<br>
-        <table border=1>
+        <div style="round">
+        <table border=0>
           <tr><td>
              <b>В процессе загрузки новой прошивки произошел сбой. Устройство не отвечает. Все пропало?</b><br>
              <i>Режим восстановления</i><br><p>
@@ -1296,6 +1308,7 @@
              Скрипт автоматически соединится с программой загрузчика и попытается перепрошить устройство заново.
          </td></tr>
        </table>
+       </div>
     </div>
 
 

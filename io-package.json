@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.4.2",
+        "version":                  "0.4.3",
         "news": {
             "0.4.2": {
                 "en":               "added bootloader mode for Firmware Update",
