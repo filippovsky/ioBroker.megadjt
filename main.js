@@ -337,10 +337,11 @@ function updateFirmware( message ) {
    }
    dir = dir + '/firmware';
 
-   //cmd = '/usr/bin/php '+dir+'/www/megad-cfg-2561.php --fw '+dir+'/www/megad-2561.hex -p '+pass+' --ee --ip '+ip;
-   //cmd = dir+'/www/megad-cfg-2561.php --fw '+dir+'/www/megad-2561.hex -p '+pass+' --ee --ip '+ip;
-   //cmd = 'cd '+dir+'|megad-cfg-2561.php --fw megad-2561.hex -p '+pass+' --ee --ip '+ip;
-   cmd = 'chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --fw '+targetVersion+'.hex -p '+pass+' --ee --ip '+ip;
+   if (targetVersion === 'bootloader') {
+      cmd = 'chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --fw '+fw_version_actual+'.hex -f -e';
+   } else {
+      cmd = 'chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --fw '+targetVersion+'.hex -p '+pass+' --ee --ip '+ip;
+   }
    cmd1 = 'php ./megad-cfg-2561.php  --ip 192.168.0.14 --new-ip '+ip+' -p sec';
 
    adapter.log.debug(cmd);
@@ -358,27 +359,30 @@ function updateFirmware( message ) {
         if ( stderr ) {
            adapter.log.error( stderr );
         }
-        adapter.log.debug('Выполнили прошивку, меняем ip-адрес');
-        adapter.log.debug(cmd1);
+        adapter.log.debug('Выполнили прошивку');
+        if (targetVersion != 'bootloader') {
+           adapter.log.debug('меняем ip-адрес Меги');
+           adapter.log.debug(cmd1);
 
-        var p1=process.exec( cmd1, 
-          { cwd: dir },
-          function (error, stdout, stderr) {
-            if (error) {
-               adapter.log.error( error.code );
-               adapter.log.error( error );
-            }
-            if ( stdout ) {
-               adapter.log.info( stdout );
-               //console.log('stdout: ' + stdout);
-            }
-            if ( stderr ) {
-               adapter.log.error( stderr );
-            }
-            adapter.log.debug('Выполнили прошивку');
-    
-            getFirmwareVersion();
-         });
+           var p1=process.exec( cmd1, 
+                                { cwd: dir },
+                                function (error, stdout, stderr) {
+                                   if (error) {
+                                      adapter.log.error( error.code );
+                                      adapter.log.error( error );
+                                   }
+                                   if ( stdout ) {
+                                      adapter.log.info( stdout );
+                                   }
+                                   if ( stderr ) {
+                                      adapter.log.error( stderr );
+                                   }
+                                   adapter.log.debug('Выполнили прошивку');
+                                   getFirmwareVersion();
+                               });
+        } else {
+          getFirmwareVersion();
+        }
    });
 }
 
