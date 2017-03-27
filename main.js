@@ -252,22 +252,25 @@ function getFirmwareVersion() {
                  if (version) {
                     adapter.log.debug('getFirmwareVersion сохраняем: ' + version);
 
-                    adapter.setState( 'version.firmware', {val: version, ack: true});
-                    adapter.log.debug('getFirmwareVersion сохранили: ' + version);
+                    //adapter.setState( 'version.firmware', {val: version, ack: true});
+                    //adapter.log.debug('getFirmwareVersion сохранили: ' + version);
 
-                    //adapter.config.setState( 'fw_version', {val: version, ack: true});
-                    //adapter.log.debug('getFirmwareVersion сохранили fw_version: ' + version);
+                    adapter.config.setState( 'fw_version', {val: version, ack: true});
+                    adapter.log.debug('getFirmwareVersion сохранили fw_version: ' + version);
 
                     // Analyse answer and updates staties
                     // if (callback) callback(obj, version);
                     adapter.log.debug('getFirmwareVersion Актуальная версия прошивки: ' + fw_version_actual);
-                    adapter.setState( 'version.firmware_last_known', {val: fw_version_actual, ack: true});
+                    //adapter.setState( 'version.firmware_last_known', {val: fw_version_actual, ack: true});
+                    adapter.setState( 'fw_version_last_known', {val: fw_version_actual, ack: true});
 
                     if ( version === fw_version_actual ) {
-                          adapter.setState( 'version.is_firmware_actual', {val: true, ack: true});
+                          //adapter.setState( 'version.is_firmware_actual', {val: true, ack: true});
+                          adapter.setState( 'is_firmware_actual', {val: true, ack: true});
                           adapter.log.debug('getFirmwareVersion Текущая версия актуальна');
                     } else {
-                          adapter.setState( 'version.is_firmware_actual', {val: false, ack: true});
+                          //adapter.setState( 'version.is_firmware_actual', {val: false, ack: true});
+                          adapter.setState( 'is_firmware_actual', {val: false, ack: true});
                           adapter.log.debug('getFirmwareVersion Текущая версия неактуальна');
                     }
                     
@@ -279,7 +282,8 @@ function getFirmwareVersion() {
                  }
 
                  if (controller_model) {
-                    adapter.setState( 'version.controller_model', {val: controller_model, ack: true});
+                    //adapter.setState( 'version.controller_model', {val: controller_model, ack: true});
+                    adapter.setState( 'controller_model', {val: controller_model, ack: true});
                  } else {
                     adapter.log.debug('Не смогли определить модель управляющего контроллера Меги');
                  }

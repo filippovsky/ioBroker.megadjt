@@ -1,8 +1,12 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.4.14",
+        "version":                  "0.5.0",
         "news": {
+            "0.5.0": {
+                "en":               "fw_version and fw_version_last_known moved from version channel",
+                "ru":               "fw_version и fw_version_last_known перенесено из канала version"
+            },
             "0.4.2": {
                 "en":               "added bootloader mode for Firmware Update",
                 "ru":               "Добавлена возможность аварийной перепрошивки (bootloader)"
@@ -107,61 +111,53 @@
             "native": {}
         },
         {
-            "_id":  "version",
-            "type": "channel",
-            "common": {
-                "name": "Данные о версии прошивке и модели Меги"
-            },
-            "native": {}
-        },
-        {
-            "_id":  "version.firmware",
-            "type": "state",
-            "common": {
-                "role":  "text",
-                "name":  "Версия прошивки Меги на данном устройстве",
-                "type":  "text",
-                "read":  true,
-                "write": false,
-                "def":   0
-            },
-            "native": {}
-        },
-        {
-            "_id":  "version.firmware_last_known",
-            "type": "state",
-            "common": {
-                "role":  "text",
-                "name":  "Номер текущей актуальной версии Меги",
-                "type":  "text",
-                "read":  true,
-                "write": false,
-                "def":   0
-            },
-            "native": {}
-        },
-        {
-            "_id":  "version.is_firmware_actual",
+            "_id":  "is_firmware_actual",
             "type": "state",
             "common": {
                 "role":  "indicator",
                 "name":  "Версия прошивки в устройстве актуальна?",
                 "type":  "boolean",
                 "read":  true,
-                "write": false,
+                "write": true,
                 "def":   false
             },
             "native": {}
         },
         {
-            "_id":  "version.controller_model",
+            "_id":  "controller_model",
             "type": "state",
             "common": {
                 "role":  "text",
                 "name":  "Модель управляющего модуля Меги",
                 "type":  "text",
                 "read":  true,
-                "write": false,
+                "write": true,
+                "def":   ""
+            },
+            "native": {}
+        },
+        {
+            "_id":  "fw_version",
+            "type": "state",
+            "common": {
+                "role":  "text",
+                "name":  "Версия прошивки",
+                "type":  "text",
+                "read":  true,
+                "write": true,
+                "def":   ""
+            },
+            "native": {}
+        },
+        {
+            "_id":  "fw_version_last_known",
+            "type": "state",
+            "common": {
+                "role":  "text",
+                "name":  "Самая актуальная версия прошивки",
+                "type":  "text",
+                "read":  true,
+                "write": true,
                 "def":   ""
             },
             "native": {}
