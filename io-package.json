@@ -1,8 +1,12 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.5.1",
+        "version":                  "0.5.2",
         "news": {
+            "0.5.2": {
+                "en":               "added firmware v4.13b6 and v4.13b7",
+                "ru":               "добавлены версии прошивок v4.13b6 и 4.13b7"
+            },
             "0.5.0": {
                 "en":               "fw_version and fw_version_last_known moved from version channel",
                 "ru":               "fw_version и fw_version_last_known перенесено из канала version"
