@@ -619,6 +619,7 @@
         var xp = "";
         var fon = "";
         var imgName = ""; 
+        var tblName = "#xp"+numXP+"_tbl";
 
         if ( numXP == 1 ) {
            xp = $("#xp1 option:selected").val();
@@ -643,8 +644,14 @@
         } else if (xp == "14-R") {
            fon = "mega/MegaD-14-R.jpg";
         } else {
-           fon = "";
+           fon = "mega/MegaD-7I7O-R.gif";
         };
+        
+        if (xp == "none") {
+           $(tblName).hide();
+        } else {
+           $(tblName).show();
+        }
         setImage( imgName, fon );
     }
 
@@ -1248,7 +1255,7 @@
        </div>
        <div id="xp1_div_img"
         style="position: relative; z-index: 0; width: 200px; top: 0px; left: 0px padding: 0 1em; border: 1px dashed;">
-          <img name="xp1_img" id="xp1_img" src="">
+          <img name="xp1_img" id="xp1_img" src="mega/MegaD-7I7O-R.gif">
           <div style="position: absolute; z-index: 1; width: 20px; top: 250px; left: 50px padding: 0 1em; border: 1px dashed;">
               <span class="circlebutton">&nbsp;</span>
           </div>
@@ -1308,6 +1315,13 @@
              <td>Дата и время</td>
              <td>Описание</td>
              <td>Прошивка</td>
+           </tr>
+           <tr>
+             <td><b>4.13b8</td>
+             <td>30.03.2017 17:52</td>
+             <td>Исправлена ошибка, приводившая к отображению символов на дисплее MCP23008 в зеркально перевернутом виде
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.13b8');">Прошить</button></td>
            </tr>
            <tr>
              <td><b>4.13b7</td>

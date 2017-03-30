@@ -31,7 +31,7 @@ var ports  = {};
 ///var askInternalTemp = false;
 var ask1WireTemp = false;   //1Wire
 var connected = false;
-var fw_version_actual = "4.13b7";
+var fw_version_actual = "4.13b8";
 
 var adapter = utils.adapter(  'megadjt' );
 
