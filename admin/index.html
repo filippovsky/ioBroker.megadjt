@@ -64,6 +64,19 @@
         webkit-animation: rainbow 1s linear 1s infinite;
         animation: rainbow 1s linear 1s infinite;     
      }
+    .circlebutton_green{
+        width:15px;
+        height:15px;
+        display:block;
+        border-radius:10px;
+        -moz-border-radius:10px;
+        -webkit-border-radius:10px;
+        -khtml-border-radius:10px; font-size:2px;
+        color:#fff;
+        line-height:15px;
+        text-align:center;
+        background:darkgreen;
+     }
     .circlebutton1{
         width:15px;
         height:15px;
@@ -80,15 +93,26 @@
         animation: rainbow 0.5s linear 0.5s infinite;     
      }
      .sd7i7or_p0 {
-        position: absolute; 
-        z-index: 2; 
-        width: 20px;
-        height: 20px; 
-        top: 250px; 
-        left: 150px; 
-        padding: 0 1em; 
+        position: absolute;
+        z-index: 2;
+        width: 17px;
+        height: 20px;
+        top: 228px;
+        left: 160px;
+        padding: 23px 1em;
         border: 1px dashed;
      }
+     .sd7i7or_p1 {
+        position: absolute;
+        z-index: 2;
+        width: 17px;
+        height: 20px;
+        top: 228px;
+        left: 204px;
+        padding: 23px 1em;
+        border: 1px dashed;
+     }
+
 </style>
 
 <script type="text/javascript">
@@ -639,6 +663,17 @@
        document.getElementById( imgName ).src = newSrc;
     }
 
+    //--------------------------------------------------------------------------------
+    function selectPort ( XPnum, portNum ) {
+       var spanId = "span_xp" + XPnum + "_p" + portNum;
+       document.getElementById( spanId ).class = "circlebutton1";
+       for (var m = 0; m < 2; m++) {
+          if ( m != portNum ) {
+             spanId = "span_xp" + XPnum + "_p" + m;
+             document.getElementById( spanId ).class = "circlebutton_green";
+          }
+       }
+    }
     //---------------------------------------------------------------------------------
     function showXP( numXP ) {
         var xp = "";
@@ -1281,8 +1316,11 @@
        <div id="xp1_div_img"
         style="position: relative; z-index: 0; width: 700px; top: 0px; left: 0px padding: 0 1em; border: 1px dashed;">
           <img name="xp1_img" id="xp1_img" src="mega/MegaD-7I7O-R.gif">
-          <div id="xp1_p0" class="sd7i7or_p0">
-              <span class="circlebutton1">&nbsp;</span>
+          <div id="div_xp1_p0" class="sd7i7or_p0" onClick="selectPort(1,0);">
+              <span id="span_xp1_p0" class="circlebutton_green">&nbsp;</span>
+          </div>
+          <div id="div_xp1_p1" class="sd7i7or_p1" onClick="selectPort(1,1);">
+              <span id="span_xp1_p1" class="circlebutton_green">&nbsp;</span>
           </div>
        </div>
     </div>
