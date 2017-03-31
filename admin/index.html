@@ -77,6 +77,19 @@
         text-align:center;
         background:darkgreen;
      }
+    .circlebutton_green{
+        width:16px;
+        height:16px;
+        display:block;
+        border-radius:10px;
+        -moz-border-radius:10px;
+        -webkit-border-radius:10px;
+        -khtml-border-radius:10px; font-size:2px;
+        color:#fff;
+        line-height:16px;
+        text-align:center;
+        background:red;
+     }
     .circlebutton1{
         width:16px;
         height:16px;
@@ -716,7 +729,7 @@
     //--------------------------------------------------------------------------------
     function selectPort ( XPnum, portNum ) {
        var spanId = "";
-       for (var m = 0; m < 2; m++) {
+       for (var m = 0; m < 7; m++) {
           if ( m == portNum ) {
              spanId = "span_xp" + XPnum + "_p" + portNum;
              document.getElementById( spanId ).className = "circlebutton1";
@@ -1374,6 +1387,22 @@
           <div id="div_xp1_p1" class="sd7i7or_p1" onClick="selectPort(1,1);">
               <span id="span_xp1_p1" class="circlebutton_green">&nbsp;</span>
           </div>
+          <div id="div_xp1_p2" class="sd7i7or_p2" onClick="selectPort(1,2);">
+              <span id="span_xp1_p2" class="circlebutton_green">&nbsp;</span>
+          </div>
+          <div id="div_xp1_p3" class="sd7i7or_p3" onClick="selectPort(1,3);">
+              <span id="span_xp1_p3" class="circlebutton_green">&nbsp;</span>
+          </div>
+          <div id="div_xp1_p4" class="sd7i7or_p4" onClick="selectPort(1,4);">
+              <span id="span_xp1_p4" class="circlebutton_green">&nbsp;</span>
+          </div>
+          <div id="div_xp1_p5" class="sd7i7or_p5" onClick="selectPort(1,5);">
+              <span id="span_xp1_p5" class="circlebutton_green">&nbsp;</span>
+          </div>
+          <div id="div_xp1_p6" class="sd7i7or_p6" onClick="selectPort(1,6);">
+              <span id="span_xp1_p6" class="circlebutton_green">&nbsp;</span>
+          </div>
+
        </div>
     </div>
 
