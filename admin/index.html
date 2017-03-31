@@ -665,12 +665,14 @@
 
     //--------------------------------------------------------------------------------
     function selectPort ( XPnum, portNum ) {
-       var spanId = "span_xp" + XPnum + "_p" + portNum;
-       document.getElementById( spanId ).class = "circlebutton1";
+       var spanId = "";
        for (var m = 0; m < 2; m++) {
-          if ( m != portNum ) {
+          if ( m == portNum ) {
+             spanId = "span_xp" + XPnum + "_p" + portNum;
+             document.getElementById( spanId ).className = "circlebutton1";
+          } else {
              spanId = "span_xp" + XPnum + "_p" + m;
-             document.getElementById( spanId ).class = "circlebutton_green";
+             document.getElementById( spanId ).className = "circlebutton_green";
           }
        }
     }
