@@ -176,6 +176,77 @@
         border: 1px dashed;
      }
 
+     .sd7i7or_p7 {
+        position: absolute;
+        z-index: 2;
+        width: 17px;
+        height: 20px;
+        top: 306px;
+        left: 160px;
+        padding: 23px 1em;
+        border: 1px dashed;
+     }
+     .sd7i7or_p8 {
+        position: absolute;
+        z-index: 2;
+        width: 17px;
+        height: 20px;
+        top: 306px;
+        left: 205px;
+        padding: 23px 1em;
+        border: 1px dashed;
+     }
+     .sd7i7or_p9 {
+        position: absolute;
+        z-index: 2;
+        width: 17px;
+        height: 20px;
+        top: 306px;
+        left: 250px;
+        padding: 23px 1em;
+        border: 1px dashed;
+     }
+     .sd7i7or_p10 {
+        position: absolute;
+        z-index: 2;
+        width: 17px;
+        height: 20px;
+        top: 306px;
+        left: 295px;
+        padding: 23px 1em;
+        border: 1px dashed;
+     }
+     .sd7i7or_p11 {
+        position: absolute;
+        z-index: 2;
+        width: 17px;
+        height: 20px;
+        top: 306px;
+        left: 340px;
+        padding: 23px 1em;
+        border: 1px dashed;
+     }
+     .sd7i7or_p12 {
+        position: absolute;
+        z-index: 2;
+        width: 17px;
+        height: 20px;
+        top: 306px;
+        left: 385px;
+        padding: 23px 1em;
+        border: 1px dashed;
+     }
+     .sd7i7or_p13 {
+        position: absolute;
+        z-index: 2;
+        width: 17px;
+        height: 20px;
+        top: 306px;
+        left: 430px;
+        padding: 23px 1em;
+        border: 1px dashed;
+     }
+
 </style>
 
 <script type="text/javascript">
@@ -729,13 +800,17 @@
     //--------------------------------------------------------------------------------
     function selectPort ( XPnum, portNum ) {
        var spanId = "";
-       for (var m = 0; m < 7; m++) {
+       for (var m = 0; m < 14; m++) {
           if ( m == portNum ) {
              spanId = "span_xp" + XPnum + "_p" + portNum;
              document.getElementById( spanId ).className = "circlebutton1";
           } else {
              spanId = "span_xp" + XPnum + "_p" + m;
-             document.getElementById( spanId ).className = "circlebutton_green";
+             if ( m < 7 ) {
+                document.getElementById( spanId ).className = "circlebutton_green";
+             } else {
+                document.getElementById( spanId ).className = "circlebutton_red";
+             }
           }
        }
     }
@@ -1402,7 +1477,27 @@
           <div id="div_xp1_p6" class="sd7i7or_p6" onClick="selectPort(1,6);">
               <span id="span_xp1_p6" class="circlebutton_green">&nbsp;</span>
           </div>
-
+          <div id="div_xp1_p7" class="sd7i7or_p7" onClick="selectPort(1,7);">
+              <span id="span_xp1_p7" class="circlebutton_green">&nbsp;</span>
+          </div>
+          <div id="div_xp1_p8" class="sd7i7or_p8" onClick="selectPort(1,8);">
+              <span id="span_xp1_p8" class="circlebutton_green">&nbsp;</span>
+          </div>
+          <div id="div_xp1_p9" class="sd7i7or_p9" onClick="selectPort(1,9);">
+              <span id="span_xp1_p9" class="circlebutton_green">&nbsp;</span>
+          </div>
+          <div id="div_xp1_p10" class="sd7i7or_p10" onClick="selectPort(1,10);">
+              <span id="span_xp1_p10" class="circlebutton_green">&nbsp;</span>
+          </div>
+          <div id="div_xp1_p11" class="sd7i7or_p11" onClick="selectPort(1,11);">
+              <span id="span_xp1_p11" class="circlebutton_green">&nbsp;</span>
+          </div>
+          <div id="div_xp1_p12" class="sd7i7or_p12" onClick="selectPort(1,12);">
+              <span id="span_xp1_p12" class="circlebutton_green">&nbsp;</span>
+          </div>
+          <div id="div_xp1_p13" class="sd7i7or_p13" onClick="selectPort(1,13);">
+              <span id="span_xp1_p13" class="circlebutton_green">&nbsp;</span>
+          </div>
        </div>
     </div>
 
@@ -1412,12 +1507,52 @@
        </div>
        <div id="xp2_div_img"
         style="position: relative; z-index: 0; width: 700px; top: 0px; left: 0px padding: 0 1em; border: 1px dashed;">
-          <img name="xp2_img" id="xp1_img" src="mega/MegaD-7I7O-R.gif">
-          <div id="xp2_p0" class="sd7i7or_p0">
-              <span class="circlebutton1">&nbsp;</span>
+          <img name="xp2_img" id="xp2_img" src="mega/MegaD-7I7O-R.gif">
+          <div id="div_xp2_p0" class="sd7i7or_p0" onClick="selectPort(2,0);">
+              <span id="span_xp2_p0" class="circlebutton_green">&nbsp;</span>
+          </div>
+          <div id="div_xp2_p1" class="sd7i7or_p1" onClick="selectPort(2,1);">
+              <span id="span_xp2_p1" class="circlebutton_green">&nbsp;</span>
+          </div>
+          <div id="div_xp2_p2" class="sd7i7or_p2" onClick="selectPort(2,2);">
+              <span id="span_xp2_p2" class="circlebutton_green">&nbsp;</span>
+          </div>
+          <div id="div_xp2_p3" class="sd7i7or_p3" onClick="selectPort(2,3);">
+              <span id="span_xp2_p3" class="circlebutton_green">&nbsp;</span>
+          </div>
+          <div id="div_xp2_p4" class="sd7i7or_p4" onClick="selectPort(2,4);">
+              <span id="span_xp2_p4" class="circlebutton_green">&nbsp;</span>
+          </div>
+          <div id="div_xp2_p5" class="sd7i7or_p5" onClick="selectPort(2,5);">
+              <span id="span_xp2_p5" class="circlebutton_green">&nbsp;</span>
+          </div>
+          <div id="div_xp2_p6" class="sd7i7or_p6" onClick="selectPort(2,6);">
+              <span id="span_xp2_p6" class="circlebutton_green">&nbsp;</span>
+          </div>
+          <div id="div_xp2_p7" class="sd7i7or_p7" onClick="selectPort(2,7);">
+              <span id="span_xp2_p7" class="circlebutton_green">&nbsp;</span>
+          </div>
+          <div id="div_xp2_p8" class="sd7i7or_p8" onClick="selectPort(2,8);">
+              <span id="span_xp2_p8" class="circlebutton_green">&nbsp;</span>
+          </div>
+          <div id="div_xp2_p9" class="sd7i7or_p9" onClick="selectPort(2,9);">
+              <span id="span_xp2_p9" class="circlebutton_green">&nbsp;</span>
+          </div>
+          <div id="div_xp2_p10" class="sd7i7or_p10" onClick="selectPort(2,10);">
+              <span id="span_xp2_p10" class="circlebutton_green">&nbsp;</span>
+          </div>
+          <div id="div_xp2_p11" class="sd7i7or_p11" onClick="selectPort(2,11);">
+              <span id="span_xp2_p11" class="circlebutton_green">&nbsp;</span>
+          </div>
+          <div id="div_xp2_p12" class="sd7i7or_p12" onClick="selectPort(2,12);">
+              <span id="span_xp2_p12" class="circlebutton_green">&nbsp;</span>
+          </div>
+          <div id="div_xp2_p13" class="sd7i7or_p13" onClick="selectPort(2,13);">
+              <span id="span_xp2_p13" class="circlebutton_green">&nbsp;</span>
           </div>
        </div>
     </div>
+
 
     <div class="round1">
     <table id="ctrl_tbl">
