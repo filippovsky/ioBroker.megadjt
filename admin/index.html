@@ -113,7 +113,7 @@
         padding: 23px 1em;
         border: 1px dashed;
      }
-     .divxp {
+     .dxp {
         position: relative; 
         z-index: 0; 
         width: 700px; 
@@ -823,7 +823,7 @@
        var startX = 160;
        var stepX = 0;
        var x = startX;
-
+ 
        for (var m = 0; m < 14; m++) {
           spanId = "span_xp" + numXP + "_p" + m;
           divId  = "div_xp"  + numXP + "_p" + m;
@@ -839,7 +839,7 @@
              }
              document.getElementById( divId ).style.left = x + "px";
              x = x + stepX;
-             if ( x > (startX + (stepX * 7)) ) {
+             if ( x > 430 ) {
                 x = startX;
              }
 
@@ -901,7 +901,7 @@
         text += '<div id="xp' + numXP + '_label" style="background: yellow;">';
         text += '  &nbsp;XP'  + numXP;
         text += '</div>';
-        text += '<div id="xp' + numXP + '_div_img" style="divxp">';
+        text += '<div id="xp' + numXP + '_div_img" style="dxp">';
         text += '  <img name="xp' + numXP + '_img" id="xp' + numXP + '_img" src="mega/MegaD-7I7O-R.gif">';
         for (var m = 0; m < 14; m++) {
            text += '          <div id="div_xp' + numXP + '_p' + m + '" class="sd7i7or" onClick="selectPort(' + numXP + ',' + m +');">';
