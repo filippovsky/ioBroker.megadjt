@@ -823,63 +823,46 @@
        var startX = 0;
        var stepX = 0;
        var x = 0;
-       var y1 = "228px";
-       var y2 = "306px";
+       var y1 = "";
+       var y2 = "";
 
        if (xp == "7I7O-R") {
           stepX = 45;
           divClass = "sd7i7or";
           startX = 172;
-       } else if (xp == "7I7O-SD") {
+          y1 = "228px";
+          y2 = "306px";
+       } else {
           stepX = 45;
           divClass = "sd7i7or";
-          startX = 172;
-       }
- 
+          startX = 141;
+          y1 = "244px";
+          y2 = "326px";
+       }  
        x = startX;
 
        for (var m = 0; m < 14; m++) {
           spanId = "span_xp" + numXP + "_p" + m;
           divId  = "div_xp"  + numXP + "_p" + m;
 
-          if (xp == "7I7O-R") {
-             document.getElementById( divId ).className = divClass;
-             if ( m < 7 ) {
-                document.getElementById( divId ).style.top = y1;
-             } else {
-                document.getElementById( divId ).style.top = y2;
-             }
-             if ( m == 0 || m == 7 ) {
-                x = startX;
-             }
-             document.getElementById( divId ).style.left = x + "px";
-             x = x + stepX;
+          document.getElementById( divId ).className = divClass;
+          if ( m < 7 ) {
+             document.getElementById( divId ).style.top = y1;
+          } else {
+             document.getElementById( divId ).style.top = y2;
+          }
+          if ( m == 0 || m == 7 ) {
+             x = startX;
+          }
+          document.getElementById( divId ).style.left = x + "px";
+          x = x + stepX;
 
-             if ( m < 7 ) {
-                document.getElementById( spanId ).className = "circlebutton_green";
-             } else {
-                document.getElementById( spanId ).className = "circlebutton_red";
-             }
-
-          } else if (xp == "7I7O-SD") {
-             document.getElementById( divId ).className = divClass;
-             if ( m < 7 ) {
-                document.getElementById( divId ).style.top = y1;
-             } else {
-                document.getElementById( divId ).style.top = y2;
-             }
-             if ( m == 0 || m == 7 ) {
-                x = startX;
-             }
-             document.getElementById( divId ).style.left = x + "px";
-             x = x + stepX;
-
+          if (xp == "7I7O-R" || xp == "7I7O-SD") {
              if ( m < 7 ) {
                 document.getElementById( spanId ).className = "circlebutton_green";
              } else {
                 document.getElementById( spanId ).className = "circlebutton_red";
              }
-
           } else if (xp == "14-IN") {
              if ( m < 7 ) {
                 document.getElementById( spanId ).className = "circlebutton_green";
