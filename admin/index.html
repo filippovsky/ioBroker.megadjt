@@ -886,29 +886,30 @@
        }
     }
     //--------------------------------------------------------------------------------
-    function selectPort ( XPnum, portNum ) {
+    function selectPort ( numXP, portNum ) {
        var spanId = "";
-       imagePorts( XPnum );
-       spanId = "span_xp" + XPnum + "_p" + portNum;
+       imagePorts( numXP );
+       spanId = "span_xp" + numXP + "_p" + portNum;
        document.getElementById( spanId ).className = "circlebutton1";
     }
     //---------------------------------------------------------------------------------
-    function showXPLayer ( XPnum ) {
-        var text = "";
-        text += '<div id="xp' + XPnum + '_tbl" class="round1" style="height: 800px; padding: 1em;">';
-        text += '<div id="xp' + XPnum + '_label" style="background: yellow;">';
-        text += '  &nbsp;XP'  + XPnum;
+    function showXPLayer ( numXP ) {
+        var text  = "";
+        var divId = 'divxp' + numXP;
+        text += '<div id="xp' + numXP + '_tbl" class="round1" style="height: 800px; padding: 1em;">';
+        text += '<div id="xp' + numXP + '_label" style="background: yellow;">';
+        text += '  &nbsp;XP'  + numXP;
         text += '</div>';
-        text += '<div id="xp' + XPnum + '_div_img" style="divxp">';
-        text += '  <img name="xp' + XPnum + '_img" id="xp' + XPnum + '_img" src="mega/MegaD-7I7O-R.gif">';
+        text += '<div id="xp' + numXP + '_div_img" style="divxp">';
+        text += '  <img name="xp' + numXP + '_img" id="xp' + numXP + '_img" src="mega/MegaD-7I7O-R.gif">';
         for (var m = 0; m < 14; m++) {
-           text += '          <div id="div_xp' + XPnum + '_p' + m + '" class="sd7i7or" onClick="selectPort(' + XPnum + ',' + m +');">';
-           text += '              <span id="span_xp' + XPnum + '_p' + m +'" class="circlebutton_green">&nbsp;</span>';
+           text += '          <div id="div_xp' + numXP + '_p' + m + '" class="sd7i7or" onClick="selectPort(' + numXP + ',' + m +');">';
+           text += '              <span id="span_xp' + numXP + '_p' + m +'" class="circlebutton_green">&nbsp;</span>';
            text += '          </div>';
         }
         text += '</div></div>';
         //$('#divxp'+XPNum ).html(text);
-        document.getElementById( 'divxp'+XPNum ).innerHTML = text;
+        document.getElementById( divId ).innerHTML = text;
     }
     //---------------------------------------------------------------------------------
     function showXP( numXP ) {
