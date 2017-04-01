@@ -820,22 +820,34 @@
        var xp = $(xp_sel).val();
        var divId = "";
        var divClass = "";
-       var startX = 160;
+       var startX = 0;
        var stepX = 0;
-       var x = startX;
+       var x = 0;
+       var y1 = "228px";
+       var y2 = "306px";
+
+       if (xp == "7I7O-R") {
+          stepX = 45;
+          divClass = "sd7i7or";
+          startX = 172;
+       } else if (xp == "7I7O-SD") {
+          stepX = 45;
+          divClass = "sd7i7or";
+          startX = 172;
+       }
  
+       x = startX;
+
        for (var m = 0; m < 14; m++) {
           spanId = "span_xp" + numXP + "_p" + m;
           divId  = "div_xp"  + numXP + "_p" + m;
 
           if (xp == "7I7O-R") {
-             stepX = 45;
-             divClass = "sd7i7or";
              document.getElementById( divId ).className = divClass;
              if ( m < 7 ) {
-                document.getElementById( divId ).style.top = "228px";
+                document.getElementById( divId ).style.top = y1;
              } else {
-                document.getElementById( divId ).style.top = "306px";
+                document.getElementById( divId ).style.top = y2;
              }
              document.getElementById( divId ).style.left = x + "px";
              x = x + stepX;
@@ -850,17 +862,15 @@
              }
 
           } else if (xp == "7I7O-SD") {
-             stepX = 45;
-             divClass = "sd7i7or";
              document.getElementById( divId ).className = divClass;
              if ( m < 7 ) {
-                document.getElementById( divId ).style.top = "228px";
+                document.getElementById( divId ).style.top = y1;
              } else {
-                document.getElementById( divId ).style.top = "306px";
+                document.getElementById( divId ).style.top = y2;
              }
              document.getElementById( divId ).style.left = x + "px";
              x = x + stepX;
-             if ( x > (startX + (stepX * 7)) ) {
+             if ( x > 430 ) {
                 x = startX;
              }
 
