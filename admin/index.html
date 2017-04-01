@@ -833,11 +833,11 @@
              divClass = "sd7i7or";
              document.getElementById( divId ).className = divClass;
              if ( m < 7 ) {
-                document.getElementById( divId ).style.top = "228px;";
+                document.getElementById( divId ).style.top = "228px";
              } else {
-                document.getElementById( divId ).style.top = "306px;";
+                document.getElementById( divId ).style.top = "306px";
              }
-             document.getElementById( divId ).style.top = x + "px;";
+             document.getElementById( divId ).style.top = x + "px";
              x = x + stepX;
              if ( x > (startX + (stepX * 7)) ) {
                 x = startX;
@@ -854,11 +854,11 @@
              divClass = "sd7i7or";
              document.getElementById( divId ).className = divClass;
              if ( m < 7 ) {
-                document.getElementById( divId ).style.top = "228px;";
+                document.getElementById( divId ).style.top = "228px";
              } else {
-                document.getElementById( divId ).style.top = "306px;";
+                document.getElementById( divId ).style.top = "306px";
              }
-             document.getElementById( divId ).style.top = x + "px;";
+             document.getElementById( divId ).style.top = x + "px";
              x = x + stepX;
              if ( x > (startX + (stepX * 7)) ) {
                 x = startX;
@@ -927,7 +927,12 @@
         if (!xp) {
             xp = "none";
         }
-        fon = "mega/MegaD-" + xp + ".gif";
+        fon = "mega/MegaD-" + xp 
+        if (xp == '7I7O-R') {
+           fon = fon + ".gif";
+        } else {
+           fon = fon + ".jpg";
+        }
         
         if (xp == "none") {
            $(tblName).hide();
