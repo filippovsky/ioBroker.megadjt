@@ -798,26 +798,26 @@
 
           if (xp == "7I7O-R" || xp == "7I7O-SD") {
              if ( m < 7 ) {
-                if (!ports || ports[k].pty == undefined || ports[k].pty == "255") {
+                if (!ports || ports[k].pty == undefined || ports[k].pty == 255) {
                    document.getElementById( spanId ).className = "circlebutton_darkgreen";
                 } else {
                    document.getElementById( spanId ).className = "circlebutton_green";
                 }
              } else {
-                if (!ports || ports[k].pty == undefined || ports[k].pty == "255") {
+                if (!ports || ports[k].pty == undefined || ports[k].pty == 255) {
                    document.getElementById( spanId ).className = "circlebutton_darkred";
                 } else {
                    document.getElementById( spanId ).className = "circlebutton_red";
                 }
              }
           } else if (xp == "14-IN") {
-             if (!ports || ports[k].pty == undefined || ports[k].pty == "255") {
+             if (!ports || ports[k].pty == undefined || ports[k].pty == 255) {
                  document.getElementById( spanId ).className = "circlebutton_darkgreen";
              } else {
                  document.getElementById( spanId ).className = "circlebutton_green";
              }
           } else if (xp == "14-R") {
-             if (!ports || ports[k].pty == undefined || ports[k].pty == "255") {
+             if (!ports || ports[k].pty == undefined || ports[k].pty == 255) {
                  document.getElementById( spanId ).className = "circlebutton_darkred";
              } else {
                  document.getElementById( spanId ).className = "circlebutton_red";
@@ -825,6 +825,11 @@
           };
 
        }
+    }
+    //--------------------------------------------------------------------------------
+    function ptyChanged ( controlPort ) {
+        var pty = $("#pty"+controlPort+" option:selected").val();
+        ports[controlPort].pty = pty;
     }
     //--------------------------------------------------------------------------------
     function loadPreset( numXP, portNum ) {
@@ -842,7 +847,7 @@
            ports[controlPort].pty = 255;
         }
 
-        text += 'Тип порта: <select class="tvalue" data-type="pty" data-port="' + controlPort + '" onChange="valueChanged();">';
+        text += 'Тип порта: <select id="pty'+controlPort+'" class="tvalue" data-type="pty" data-port="' + controlPort + '" onChange="ptyChanged('+controlPort+');">';
         text += '<option value="255" ' + ((ports[controlPort].pty == 255) ? 'selected' : '') + '>' + _('NC')  + '</option>';
         if ( xp == '7I7O-R' || xp == '7I7O-SD' ) {
            if (portNum < 7) {
