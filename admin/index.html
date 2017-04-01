@@ -823,7 +823,7 @@
     function loadPreset( numXP, portNum ) {
         var xp = $("#xp"+numXP+" option:selected").val();
         var text = "";
-        if (ports[portNum] == undefined) {
+        if (ports == undefined || ports[portNum] == undefined) {
            ports[portNum].pty = 255;
         }
 
