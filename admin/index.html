@@ -251,10 +251,13 @@
               $('#fw_version_last_known').val(fw_version_last_known);
               if  ( fw_version === fw_version_last_known ) {
                  //$('#fw_version').style.backgroundColor = "green";
-                 $('#fw_version').backgroundColor="green";
+                 //$('#fw_version').backgroundColor="green";
+                 document.getElementById( 'fw_version' ).style.backgroundColor = "green";
+
               } else {
                  //$('#fw_version').style.backgroundColor = "yellow";
-                 $('#fw_version').backgroundColor="yellow";
+                 //$('#fw_version').backgroundColor="yellow";
+                 document.getElementById( 'fw_version' ).style.backgroundColor = "yellow";
               }
               onchange();   //?
 
