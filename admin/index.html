@@ -83,7 +83,7 @@
         font-size: 10px;
         height: 40px;
     }
-    .circlebutton_green{
+    .circlebutton_darkgreen{
         width:16px;
         height:16px;
         display:block;
@@ -96,7 +96,20 @@
         text-align:center;
         background:darkgreen;
      }
-    .circlebutton_red{
+    .circlebutton_green{
+        width:16px;
+        height:16px;
+        display:block;
+        border-radius:10px;
+        -moz-border-radius:10px;
+        -webkit-border-radius:10px;
+        -khtml-border-radius:10px; font-size:2px;
+        color:#fff;
+        line-height:16px;
+        text-align:center;
+        background:green;
+     }
+    .circlebutton_darkred{
         width:16px;
         height:16px;
         display:block;
@@ -108,6 +121,19 @@
         line-height:16px;
         text-align:center;
         background:darkred;
+     }
+    .circlebutton_red{
+        width:16px;
+        height:16px;
+        display:block;
+        border-radius:10px;
+        -moz-border-radius:10px;
+        -webkit-border-radius:10px;
+        -khtml-border-radius:10px; font-size:2px;
+        color:#fff;
+        line-height:16px;
+        text-align:center;
+        background:red;
      }
     .circlebutton1{
         width:16px;
@@ -765,21 +791,29 @@
 
           if (xp == "7I7O-R" || xp == "7I7O-SD") {
              if ( m < 7 ) {
-                document.getElementById( spanId ).className = "circlebutton_green";
+                if (ports[m].pty == undefined || ports[m].pty == "255") {
+                   document.getElementById( spanId ).className = "circlebutton_darkgreen";
+                } else {
+                   document.getElementById( spanId ).className = "circlebutton_green";
+                }
              } else {
-                document.getElementById( spanId ).className = "circlebutton_red";
+                if (ports[m].pty == undefined || ports[m].pty == "255") {
+                   document.getElementById( spanId ).className = "circlebutton_darkred";
+                } else {
+                   document.getElementById( spanId ).className = "circlebutton_red";
+                }
              }
           } else if (xp == "14-IN") {
-             if ( m < 7 ) {
-                document.getElementById( spanId ).className = "circlebutton_green";
+             if (ports[m].pty == undefined || ports[m].pty == "255") {
+                 document.getElementById( spanId ).className = "circlebutton_darkgreen";
              } else {
-                document.getElementById( spanId ).className = "circlebutton_green";
+                 document.getElementById( spanId ).className = "circlebutton_green";
              }
           } else if (xp == "14-R") {
-             if ( m < 7 ) {
-                document.getElementById( spanId ).className = "circlebutton_red";
+             if (ports[m].pty == undefined || ports[m].pty == "255") {
+                 document.getElementById( spanId ).className = "circlebutton_darkred";
              } else {
-                document.getElementById( spanId ).className = "circlebutton_red";
+                 document.getElementById( spanId ).className = "circlebutton_red";
              }
           };
 
@@ -789,7 +823,7 @@
     function loadPreset( numXP, portNum ) {
         var xp = $("#xp"+numXP+" option:selected").val();
         var text = "";
-        if (!ports[portNum]) {
+        if (ports[portNum] == undefined) {
            ports[portNum].pty = 255;
         }
 
@@ -852,7 +886,7 @@
         text += 'XP'  + numXP +'</div>';
         for (var m = 0; m < 14; m++) {
            text += '          <div id="div_xp' + numXP + '_p' + m + '" class="sd7i7or" onClick="selectPort(' + numXP + ',' + m +');">';
-           text += '              <span id="span_xp' + numXP + '_p' + m +'" class="circlebutton_green">&nbsp;</span>';
+           text += '              <span id="span_xp' + numXP + '_p' + m +'" class="circlebutton_darkgreen">&nbsp;</span>';
            text += '          </div>';
         }
         text += '</div>';
