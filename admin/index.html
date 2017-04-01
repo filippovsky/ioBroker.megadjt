@@ -35,6 +35,14 @@
         border: 1px solid #939393;
         border-radius: 30px;
        }
+    .roundmore {
+        padding: 30px;
+        margin: 30px;
+        border-spacing: 10px;
+        background: lightgreen;
+        border: 1px solid #939393;
+        border-radius: 30px;
+       }
      @-webkit-keyframes rainbow {
         0%   {background: gold}
         50%  {background: yellow}
@@ -67,9 +75,9 @@
     background: yellow;
     padding: 0 1em;
 }
-    .translateC {
+    .translateB {
         font-size: 10px;
-        height: 20px;
+        height: 30px;
     }
     .circlebutton_green{
         width:16px;
@@ -775,14 +783,22 @@
     //--------------------------------------------------------------------------------
     function selectPort ( numXP, portNum ) {
        var spanId = "";
+       var text   = "";
+       var divMoreId = 'xp' + numXP + '_more';
        imagePorts( numXP );
        spanId = "span_xp" + numXP + "_p" + portNum;
        document.getElementById( spanId ).className = "circlebutton1";
+
+       text='Порт исполнительного модуля: <b>' + portNum + '</b>'; 
+ 
+       document.getElementById( divMoreId ).innerHTML = text;
+       document.getElementById( divMoreId ).show();
     }
     //---------------------------------------------------------------------------------
     function showXPLayer ( numXP ) {
         var text  = "";
         var divId = 'divxp' + numXP;
+        var divMoreId = 'xp' + numXP + '_more';
         text += '<div id="xp' + numXP + '_tbl" class="round1" style="height: 643px; padding: 1em;">';
         text += '<div id="xp' + numXP + '_div_img" class="dxp">';
         text += '  <img name="xp' + numXP + '_img" id="xp' + numXP + '_img" src="mega/MegaD-7I7O-R.gif">';
@@ -793,8 +809,10 @@
            text += '              <span id="span_xp' + numXP + '_p' + m +'" class="circlebutton_green">&nbsp;</span>';
            text += '          </div>';
         }
+        text += '<div id="xp' + numXP + '_more" class="roundmore"></div>';
         text += '</div></div>';
         document.getElementById( divId ).innerHTML = text;
+        document.getElementById( divMoreId ).hide();
     }
     //---------------------------------------------------------------------------------
     function showXP( numXP ) {
@@ -1375,7 +1393,7 @@
             <td><input  class="value" id="ip"/></select></td>
             <td colspan=3 style="padding-left: 10px">
                 <select id="ips" style="display:none"></select>&nbsp;
-                <button id="discover" class="translateC">Find devices</button>
+                <button id="discover" class="translateB">Find devices</button>
             </td>
         </tr>
         <tr><td class="translate" style="text-align: right">MegaD Name:</td>
@@ -1387,7 +1405,7 @@
             <td><input readonly class="value" id="fw_version"  maxlength="10"/></td>
             <td class="translate" style="text-align: right">Last known firmware version:</td>
             <td><input readonly class="value" id="fw_version_last_known"  maxlength="10"/></td>
-            <td><button class="translateC" id="updateFirmware">Update Firmware</button></td>
+            <td><button class="translateB" id="updateFirmware">Update Firmware</button></td>
         </tr>
         <tr><td class="translate" style="text-align: right">ioBroker Web Port:</td>
             <td><input  class="value" id="port" maxlength="5"/></td>
@@ -1401,9 +1419,9 @@
         </tr>
     </table>
     <!-- <button class="translate" id="add">Add new port</button> -->
-    <button class="translateC" id="autoDetect">Auto detect ports</button>
-    <button class="translateC" id="write">Write config to device</button>
-    <button class="translateC" id="ipchange">Change ip or password</button>
+    <button class="translateB" id="autoDetect">Auto detect ports</button>
+    <button class="translateB" id="write">Write config to device</button>
+    <button class="translateB" id="ipchange">Change ip or password</button>
 
     <br>&nbsp;XP1:
     <select id="xp1" class="value">
