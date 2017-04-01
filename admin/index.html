@@ -907,7 +907,8 @@
            text += '          </div>';
         }
         text += '</div></div>';
-        $('#divxp'+XPNum ).html(text);
+        //$('#divxp'+XPNum ).html(text);
+        document.getElementById( 'divxp'+XPNum ).innerHTML = text;
     }
     //---------------------------------------------------------------------------------
     function showXP( numXP ) {
