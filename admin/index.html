@@ -115,7 +115,6 @@
         z-index: 2;
         height: 20px;
         padding: 23px 1em;
-        border: 1px dashed;
      }
      .dxp {
         position: relative; 
@@ -124,7 +123,6 @@
         top: 0px; 
         left: 0px; 
         padding: 0 1em; 
-        border: 1px dashed;
      }
 </style>
 
@@ -688,6 +686,9 @@
        var y1 = "";
        var y2 = "";
        var width = "";
+       var labelId = "xp" + numXP + "_label";
+       var labelX  = "";
+       var labelY  = "";
 
        if (xp == "7I7O-R") {
           stepX = 45;
@@ -696,6 +697,8 @@
           y1 = "228px";
           y2 = "306px";
           width = "17px";
+          labelX = "164px";
+          labelY = "15px";
        } else if (xp == "7I7O-SD") {
           stepX = 44;
           divClass = "sd7i7or";
@@ -703,6 +706,8 @@
           y1 = "244px";
           y2 = "326px";
           width = "17px";
+          labelX = "535px";
+          labelY = "15px";
        } else if (xp == "14-IN") {
           stepX = 44;
           divClass = "sd7i7or";
@@ -710,6 +715,8 @@
           y1 = "239px";
           y2 = "321px";
           width = "17px";
+          labelX = "535px";
+          labelY = "7px";
        } else if (xp == "14-R") {
           stepX = 37;
           divClass = "sd7i7or";
@@ -717,8 +724,13 @@
           y1 = "198px";
           y2 = "264px";
           width = "11px";
+          labelX = "284px";
+          labelY = "11px";
        }  
        x = startX;
+
+       document.getElementById( labelId ).style.x = labelX;
+       document.getElementById( labelId ).style.y = labelY;
 
        for (var m = 0; m < 14; m++) {
           spanId = "span_xp" + numXP + "_p" + m;
