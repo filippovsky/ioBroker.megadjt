@@ -49,20 +49,21 @@
       webkit-animation: rainbow 2s linear 2s infinite;
       animation: rainbow 2s linear 2s infinite;     
     }
-    .circlebutton{
-        width:20px;
-        height:20px;
+    .circlexp{
+        position: absolute;
+        z-index: 1;
+        opacity: 0.5;
+        width:100px;
+        height:100px;
         display:block;
-        border-radius:10px;
-        -moz-border-radius:10px;
-        -webkit-border-radius:10px;
-        -khtml-border-radius:10px; font-size:2px;
+        border-radius:50px;
+        -moz-border-radius:50px;
+        -webkit-border-radius:50px;
+        -khtml-border-radius:50px; font-size:20px;
         color:#fff;
-        line-height:20px;
+        line-height:50px;
         text-align:center;
-        background:gold;
-        webkit-animation: rainbow 1s linear 1s infinite;
-        animation: rainbow 1s linear 1s infinite;     
+        background:yellow;
      }
     .circlebutton_green{
         width:16px;
@@ -121,148 +122,6 @@
         padding: 0 1em; 
         border: 1px dashed;
      }
-     .sd7i7or_p0 {
-        position: absolute;
-        z-index: 2;
-        width: 17px;
-        height: 20px;
-        top: 228px;
-        left: 160px;
-        padding: 23px 1em;
-        border: 1px dashed;
-     }
-     .sd7i7or_p1 {
-        position: absolute;
-        z-index: 2;
-        width: 17px;
-        height: 20px;
-        top: 228px;
-        left: 205px;
-        padding: 23px 1em;
-        border: 1px dashed;
-     }
-     .sd7i7or_p2 {
-        position: absolute;
-        z-index: 2;
-        width: 17px;
-        height: 20px;
-        top: 228px;
-        left: 250px;
-        padding: 23px 1em;
-        border: 1px dashed;
-     }
-     .sd7i7or_p3 {
-        position: absolute;
-        z-index: 2;
-        width: 17px;
-        height: 20px;
-        top: 228px;
-        left: 295px;
-        padding: 23px 1em;
-        border: 1px dashed;
-     }
-     .sd7i7or_p4 {
-        position: absolute;
-        z-index: 2;
-        width: 17px;
-        height: 20px;
-        top: 228px;
-        left: 340px;
-        padding: 23px 1em;
-        border: 1px dashed;
-     }
-     .sd7i7or_p5 {
-        position: absolute;
-        z-index: 2;
-        width: 17px;
-        height: 20px;
-        top: 228px;
-        left: 385px;
-        padding: 23px 1em;
-        border: 1px dashed;
-     }
-     .sd7i7or_p6 {
-        position: absolute;
-        z-index: 2;
-        width: 17px;
-        height: 20px;
-        top: 228px;
-        left: 430px;
-        padding: 23px 1em;
-        border: 1px dashed;
-     }
-
-     .sd7i7or_p7 {
-        position: absolute;
-        z-index: 2;
-        width: 17px;
-        height: 20px;
-        top: 306px;
-        left: 160px;
-        padding: 23px 1em;
-        border: 1px dashed;
-     }
-     .sd7i7or_p8 {
-        position: absolute;
-        z-index: 2;
-        width: 17px;
-        height: 20px;
-        top: 306px;
-        left: 205px;
-        padding: 23px 1em;
-        border: 1px dashed;
-     }
-     .sd7i7or_p9 {
-        position: absolute;
-        z-index: 2;
-        width: 17px;
-        height: 20px;
-        top: 306px;
-        left: 250px;
-        padding: 23px 1em;
-        border: 1px dashed;
-     }
-     .sd7i7or_p10 {
-        position: absolute;
-        z-index: 2;
-        width: 17px;
-        height: 20px;
-        top: 306px;
-        left: 295px;
-        padding: 23px 1em;
-        border: 1px dashed;
-     }
-     .sd7i7or_p11 {
-        position: absolute;
-        z-index: 2;
-        width: 17px;
-        height: 20px;
-        top: 306px;
-        left: 340px;
-        padding: 23px 1em;
-        border: 1px dashed;
-     }
-     .sd7i7or_p12 {
-        position: absolute;
-        z-index: 2;
-        width: 17px;
-        height: 20px;
-        top: 306px;
-        left: 385px;
-        padding: 23px 1em;
-        border: 1px dashed;
-     }
-     .sd7i7or_p13 {
-        position: absolute;
-        z-index: 2;
-        width: 17px;
-        height: 20px;
-        top: 306px;
-        left: 430px;
-        padding: 23px 1em;
-        border: 1px dashed;
-     }
-
 </style>
 
 <script type="text/javascript">
@@ -908,11 +767,13 @@
         var text  = "";
         var divId = 'divxp' + numXP;
         text += '<div id="xp' + numXP + '_tbl" class="round1" style="height: 643px; padding: 1em;">';
-        text += '<div id="xp' + numXP + '_label" style="background: yellow;">';
-        text += '  &nbsp;XP'  + numXP;
-        text += '</div>';
+//        text += '<div id="xp' + numXP + '_label" style="background: yellow;">';
+//        text += '  &nbsp;XP'  + numXP;
+//        text += '</div>';
         text += '<div id="xp' + numXP + '_div_img" class="dxp">';
         text += '  <img name="xp' + numXP + '_img" id="xp' + numXP + '_img" src="mega/MegaD-7I7O-R.gif">';
+        text += '<div id="xp' + numXP + '_label" class="circlexp">';
+        text += 'XP'  + numXP +'</div>';
         for (var m = 0; m < 14; m++) {
            text += '          <div id="div_xp' + numXP + '_p' + m + '" class="sd7i7or" onClick="selectPort(' + numXP + ',' + m +');">';
            text += '              <span id="span_xp' + numXP + '_p' + m +'" class="circlebutton_green">&nbsp;</span>';
