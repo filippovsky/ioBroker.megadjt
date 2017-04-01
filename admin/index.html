@@ -168,9 +168,9 @@
         "Role":                 {"en": "Role",                  "de": "Rolle",                      "ru": "Роль"},
         "Type":                 {"en": "Type",                  "de": "Typ",                        "ru": "Тип"},
         "Mode":                 {"en": "Mode",                  "de": "Modus",                      "ru": "Режим"},
-        "NC":                   {"en": "Not configured",        "de": "nicht benutzt",              "ru": "не используется"},
-        "Input":                {"en": "Input",                 "de": "Input",                      "ru": "Циф. вход"},
-        "Output":               {"en": "Output",                "de": "Output",                     "ru": "Циф. выход"},
+        "NC":                   {"en": "Not configured",        "de": "nicht benutzt",              "ru": "Не подключено"},
+        "Input":                {"en": "Input",                 "de": "Input",                      "ru": "Стандартный вход"},
+        "Output":               {"en": "Output",                "de": "Output",                     "ru": "Стандартный выход"},
         "ADC":                  {"en": "Analog in (ADC)",       "de": "Analog in (ADC)",            "ru": "Ан. вход (ADC)"},
         "Digital Sensor":       {"en": "Digital Sensor",        "de": "Digital Sensor",             "ru": "Циф. датчик"},
         "I2C Bus":              {"en": "I2C Bus",               "de": "I2C Bus",                    "ru": "Шина I2C"},
@@ -786,17 +786,55 @@
        }
     }
     //--------------------------------------------------------------------------------
+    function loadPreset( numXP, portNum ) {
+        var xp = $("#xp"+numXP+" option:selected").val();
+        var text = "";
+
+        text += 'Тип порта: <select class="tvalue" data-type="pty" data-port="' + portNum + '">';
+        text += '<option value="255" ' + ((portSettings.pty == 255) ? 'selected' : '') + '>' + _('NC')              + '</option>';
+        if ( xp == '7I7O-R' || xp == '7I7O-SD' ) {
+           if (portNum < 7) {
+              text += '<option value="0" ' + ((portSettings.pty == 0)   ? 'selected' : '') + '>' + _('Input') + '</option>';
+           } else {
+              text += '<option value="1" ' + ((portSettings.pty == 1)   ? 'selected' : '') + '>' + _('Output') + '</option>';
+           }
+        } else if ( xp == '14-IN' ) {
+           text += '<option value="0" ' + ((portSettings.pty == 0)   ? 'selected' : '') + '>' + _('Input') + '</option>';
+        } else if ( xp == '14-R' ) {
+           text += '<option value="1" ' + ((portSettings.pty == 1)   ? 'selected' : '') + '>' + _('Output') + '</option>';
+        }
+
+/*
+        if (index == 0 || index == 1 || index == 2 || index == 3 || index == 4 || index == 5 || index == 36 || index == 37) {
+            text += '<option value="2" '   + ((portSettings.pty == 2)   ? 'selected' : '') + '>' + _('ADC')         + '</option>';
+        }
+        text += '<option value="3" '   + ((portSettings.pty == 3)   ? 'selected' : '') + '>' + _('Digital Sensor')  + '</option>';
+        text += '<option value="4" '   + ((portSettings.pty == 4)   ? 'selected' : '') + '>' + _('I2C Bus')  + '</option>';
+*/
+        text += '</select><br>';
+        document.getElementById( "xp' + numXP + '_port_preset" ).innerHTML = text;
+    }
+    //-----------------------------------------------------------------------------------
     function selectPort ( numXP, portNum ) {
        var spanId = "";
        var text   = "";
        var divMoreId = 'xp' + numXP + '_more';
+       var controlPort = portNum;
+
+       if (numXP == 2) {
+          controlPort = 15 + portNum;
+       }
+
        imagePorts( numXP );
        spanId = "span_xp" + numXP + "_p" + portNum;
        document.getElementById( spanId ).className = "circlebutton1";
 
-       text='Порт исполнительного модуля: <b>' + portNum + '</b>'; 
- 
+       text =  'Порт исполнительного модуля: <b>' + portNum + '</b><br>'; 
+       text += 'Порт управляющего модуля: <b>' + controlPort + '</b><br>';
+       text += '<div id="xp' + numXP + '_port_preset"></div>';
+
        document.getElementById( divMoreId ).innerHTML = text;
+       loadPreset( numXP, portNum );
        //document.getElementById( divMoreId ).show();
     }
     //---------------------------------------------------------------------------------

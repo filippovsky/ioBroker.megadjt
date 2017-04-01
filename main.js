@@ -416,6 +416,7 @@ function readMegaConfig2File( filename ) {
       adapter.log.warn('Не удалось определить каталог адаптера. Перепрошивка отменена.');
       return;
    }
+   dir = dir + '/firmware';
    //var dir1 = '../../files/iobroker.megadjt' ;
 
 //   cmd = 'mkdir '+dir+'/'+dir1+'|chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --ip '+ip+' --read-conf '+dir1+'/'+filename1+' -p '+pass;
