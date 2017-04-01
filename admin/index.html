@@ -23,7 +23,7 @@
     }
     .round {
         padding: 30px;
-        background: #e3e3e3;
+        background: lightyellow;
         border: 1px solid #939393;
         border-radius: 30px;
        }
@@ -233,9 +233,8 @@
     var rooms    = [];
     var ports    = [];
     var active   = false;
-    //var fw_version = "";
-    //var fw_version_last_known = "";
 
+    //------------------------------------------------------------------------------------------------
     function getFirmwareVersion () {
         var fw_version = "";
         var fw_version_last_known = "";
@@ -250,17 +249,14 @@
               fw_version_last_known = state.val;
               $('#fw_version_last_known').val(fw_version_last_known);
               if  ( fw_version === fw_version_last_known ) {
-                 //$('#fw_version').style.backgroundColor = "green";
-                 //$('#fw_version').backgroundColor="green";
-                 document.getElementById( 'fw_version' ).style.backgroundColor = "green";
+                 document.getElementById( 'fw_version' ).style.backgroundColor = "lightgreen";
+                 document.getElementById( 'fw_version_last_known' ).style.backgroundColor = "lightgreen";
 
               } else {
-                 //$('#fw_version').style.backgroundColor = "yellow";
-                 //$('#fw_version').backgroundColor="yellow";
                  document.getElementById( 'fw_version' ).style.backgroundColor = "yellow";
+                 document.getElementById( 'fw_version_last_known' ).style.backgroundColor = "lightred";
               }
-              onchange();   //?
-
+              onchange();  
           });
         });
     }
@@ -784,9 +780,6 @@
         var text  = "";
         var divId = 'divxp' + numXP;
         text += '<div id="xp' + numXP + '_tbl" class="round1" style="height: 643px; padding: 1em;">';
-//        text += '<div id="xp' + numXP + '_label" style="background: yellow;">';
-//        text += '  &nbsp;XP'  + numXP;
-//        text += '</div>';
         text += '<div id="xp' + numXP + '_div_img" class="dxp">';
         text += '  <img name="xp' + numXP + '_img" id="xp' + numXP + '_img" src="mega/MegaD-7I7O-R.gif">';
         text += '<div id="xp' + numXP + '_label" class="circlexp">';
