@@ -729,6 +729,7 @@
        var labelId = "xp" + numXP + "_label";
        var labelX  = "";
        var labelY  = "";
+       var k = 0;
 
        if (xp == "7I7O-R") {
           stepX = 45;
@@ -776,6 +777,12 @@
           spanId = "span_xp" + numXP + "_p" + m;
           divId  = "div_xp"  + numXP + "_p" + m;
 
+          if ( numXP == 1 ) {
+             k = m;
+          } else if ( numXP == 2 ) {
+             k = m + 15;
+          }
+
           document.getElementById( divId ).className   = divClass;
           document.getElementById( divId ).style.width = width;
           if ( m < 7 ) {
@@ -791,26 +798,26 @@
 
           if (xp == "7I7O-R" || xp == "7I7O-SD") {
              if ( m < 7 ) {
-                if (ports.length == 0 || ports[m].pty == undefined || ports[m].pty == "255") {
+                if (!ports || ports[k].pty == undefined || ports[k].pty == "255") {
                    document.getElementById( spanId ).className = "circlebutton_darkgreen";
                 } else {
                    document.getElementById( spanId ).className = "circlebutton_green";
                 }
              } else {
-                if (ports.length == 0 || ports[m].pty == undefined || ports[m].pty == "255") {
+                if (!ports || ports[k].pty == undefined || ports[k].pty == "255") {
                    document.getElementById( spanId ).className = "circlebutton_darkred";
                 } else {
                    document.getElementById( spanId ).className = "circlebutton_red";
                 }
              }
           } else if (xp == "14-IN") {
-             if (ports.length == 0 || ports[m].pty == undefined || ports[m].pty == "255") {
+             if (!ports || ports[k].pty == undefined || ports[k].pty == "255") {
                  document.getElementById( spanId ).className = "circlebutton_darkgreen";
              } else {
                  document.getElementById( spanId ).className = "circlebutton_green";
              }
           } else if (xp == "14-R") {
-             if (ports.length == 0 || ports[m].pty == undefined || ports[m].pty == "255") {
+             if (!ports || ports[k].pty == undefined || ports[k].pty == "255") {
                  document.getElementById( spanId ).className = "circlebutton_darkred";
              } else {
                  document.getElementById( spanId ).className = "circlebutton_red";
@@ -823,24 +830,30 @@
     function loadPreset( numXP, portNum ) {
         var xp = $("#xp"+numXP+" option:selected").val();
         var text = "";
-        if ( ports.length == 0 ) {
-           ports[portNum].pty = 255;
-        } else if ( ports[portNum] == undefined) {
-           ports[portNum].pty = 255;
+        var controlPort = portNum;
+
+        if (numXP == 2) {
+           controlPort = 15 + portNum;
         }
 
-        text += 'Тип порта: <select class="tvalue" data-type="pty" data-port="' + portNum + '">';
-        text += '<option value="255" ' + ((ports[portNum].pty == 255) ? 'selected' : '') + '>' + _('NC')  + '</option>';
+        if ( !ports ) {
+           ports[controlPort].pty = 255;
+        } else if ( ports[controlPort] == undefined) {
+           ports[controlPort].pty = 255;
+        }
+
+        text += 'Тип порта: <select class="tvalue" data-type="pty" data-port="' + controlPort + '">';
+        text += '<option value="255" ' + ((ports[controlPort].pty == 255) ? 'selected' : '') + '>' + _('NC')  + '</option>';
         if ( xp == '7I7O-R' || xp == '7I7O-SD' ) {
            if (portNum < 7) {
-              text += '<option value="0" ' + ((ports[portNum].pty == 0)   ? 'selected' : '') + '>' + _('Input') + '</option>';
+              text += '<option value="0" ' + ((ports[controlPort].pty == 0)   ? 'selected' : '') + '>' + _('Input') + '</option>';
            } else {
-              text += '<option value="1" ' + ((ports[portNum].pty == 1)   ? 'selected' : '') + '>' + _('Output') + '</option>';
+              text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>' + _('Output') + '</option>';
            }
         } else if ( xp == '14-IN' ) {
-           text += '<option value="0" ' + ((ports[portNum].pty == 0)   ? 'selected' : '') + '>' + _('Input') + '</option>';
+           text += '<option value="0" ' + ((ports[controlPort].pty == 0)   ? 'selected' : '') + '>' + _('Input') + '</option>';
         } else if ( xp == '14-R' ) {
-           text += '<option value="1" ' + ((ports[portNum].pty == 1)   ? 'selected' : '') + '>' + _('Output') + '</option>';
+           text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>' + _('Output') + '</option>';
         }
 
 /*
