@@ -849,11 +849,11 @@
              } else {
                 document.getElementById( divId ).style.top = y2;
              }
-             document.getElementById( divId ).style.left = x + "px";
-             x = x + stepX;
-             if ( x > 430 ) {
+             if ( m == 0 || m == 7 ) {
                 x = startX;
              }
+             document.getElementById( divId ).style.left = x + "px";
+             x = x + stepX;
 
              if ( m < 7 ) {
                 document.getElementById( spanId ).className = "circlebutton_green";
@@ -868,11 +868,11 @@
              } else {
                 document.getElementById( divId ).style.top = y2;
              }
-             document.getElementById( divId ).style.left = x + "px";
-             x = x + stepX;
-             if ( x > 430 ) {
+             if ( m == 0 || m == 7 ) {
                 x = startX;
              }
+             document.getElementById( divId ).style.left = x + "px";
+             x = x + stepX;
 
              if ( m < 7 ) {
                 document.getElementById( spanId ).className = "circlebutton_green";
@@ -907,7 +907,7 @@
     function showXPLayer ( numXP ) {
         var text  = "";
         var divId = 'divxp' + numXP;
-        text += '<div id="xp' + numXP + '_tbl" class="round1" style="height: 800px; padding: 1em;">';
+        text += '<div id="xp' + numXP + '_tbl" class="round1" style="height: 643px; padding: 1em;">';
         text += '<div id="xp' + numXP + '_label" style="background: yellow;">';
         text += '  &nbsp;XP'  + numXP;
         text += '</div>';
