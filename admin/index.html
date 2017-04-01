@@ -842,7 +842,7 @@
            ports[controlPort].pty = 255;
         }
 
-        text += 'Тип порта: <select class="tvalue" data-type="pty" data-port="' + controlPort + '">';
+        text += 'Тип порта: <select class="tvalue" data-type="pty" data-port="' + controlPort + '" onChange="valueChanged();">';
         text += '<option value="255" ' + ((ports[controlPort].pty == 255) ? 'selected' : '') + '>' + _('NC')  + '</option>';
         if ( xp == '7I7O-R' || xp == '7I7O-SD' ) {
            if (portNum < 7) {
