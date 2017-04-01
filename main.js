@@ -438,7 +438,7 @@ function readMegaConfig2File( filename ) {
            adapter.log.error( stderr );
         }
         adapter.log.info('Настройки Меги считаны в файл '+filename1);
-
+/*
 //        var cmd1 = 'cd '+dir+'|cd '+uplevel+'|cd etc|mkdir iobroker.megadjt|cd '+dir+'|cp --remove-destination ./'+filename1+' '+uplevel+'etc/iobroker.megadjt/'+filename1;
         var cmd1 = 'mkdir -p '+uplevel+'etc/iobroker.megadjt|cp --remove-destination ./'+filename1+' '+uplevel+'etc/iobroker.megadjt/'+filename1;
         adapter.log.debug(cmd1);
@@ -456,7 +456,7 @@ function readMegaConfig2File( filename ) {
                                    adapter.log.error( stderr );
                                 }
                                 adapter.log.info('Файл с настройками Меги перенесен в папку iobroker: etc/iobroker.megadjt/'+filename1);
-                             });
+                             });*/
    });
 }
 

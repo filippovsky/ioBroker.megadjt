@@ -789,6 +789,9 @@
     function loadPreset( numXP, portNum ) {
         var xp = $("#xp"+numXP+" option:selected").val();
         var text = "";
+        if (!ports[portNum]) {
+           ports[portNum].pty = 255;
+        }
 
         text += 'Тип порта: <select class="tvalue" data-type="pty" data-port="' + portNum + '">';
         text += '<option value="255" ' + ((ports[portNum].pty == 255) ? 'selected' : '') + '>' + _('NC')  + '</option>';
