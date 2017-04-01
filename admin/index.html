@@ -791,17 +791,17 @@
         var text = "";
 
         text += 'Тип порта: <select class="tvalue" data-type="pty" data-port="' + portNum + '">';
-        text += '<option value="255" ' + ((portSettings.pty == 255) ? 'selected' : '') + '>' + _('NC')              + '</option>';
+        text += '<option value="255" ' + ((ports[portNum].pty == 255) ? 'selected' : '') + '>' + _('NC')  + '</option>';
         if ( xp == '7I7O-R' || xp == '7I7O-SD' ) {
            if (portNum < 7) {
-              text += '<option value="0" ' + ((portSettings.pty == 0)   ? 'selected' : '') + '>' + _('Input') + '</option>';
+              text += '<option value="0" ' + ((ports[portNum].pty == 0)   ? 'selected' : '') + '>' + _('Input') + '</option>';
            } else {
-              text += '<option value="1" ' + ((portSettings.pty == 1)   ? 'selected' : '') + '>' + _('Output') + '</option>';
+              text += '<option value="1" ' + ((ports[portNum].pty == 1)   ? 'selected' : '') + '>' + _('Output') + '</option>';
            }
         } else if ( xp == '14-IN' ) {
-           text += '<option value="0" ' + ((portSettings.pty == 0)   ? 'selected' : '') + '>' + _('Input') + '</option>';
+           text += '<option value="0" ' + ((ports[portNum].pty == 0)   ? 'selected' : '') + '>' + _('Input') + '</option>';
         } else if ( xp == '14-R' ) {
-           text += '<option value="1" ' + ((portSettings.pty == 1)   ? 'selected' : '') + '>' + _('Output') + '</option>';
+           text += '<option value="1" ' + ((ports[portNum].pty == 1)   ? 'selected' : '') + '>' + _('Output') + '</option>';
         }
 
 /*
