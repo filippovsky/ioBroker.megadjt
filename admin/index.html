@@ -108,7 +108,6 @@
      .sd7i7or {
         position: absolute;
         z-index: 2;
-        width: 17px;
         height: 20px;
         padding: 23px 1em;
         border: 1px dashed;
@@ -825,6 +824,7 @@
        var x = 0;
        var y1 = "";
        var y2 = "";
+       var width = "";
 
        if (xp == "7I7O-R") {
           stepX = 45;
@@ -832,24 +832,28 @@
           startX = 172;
           y1 = "228px";
           y2 = "306px";
+          width = "17px";
        } else if (xp == "7I7O-SD") {
           stepX = 44;
           divClass = "sd7i7or";
           startX = 140;
           y1 = "244px";
           y2 = "326px";
+          width = "17px";
        } else if (xp == "14-IN") {
           stepX = 44;
           divClass = "sd7i7or";
           startX = 142;
           y1 = "239px";
           y2 = "321px";
+          width = "17px";
        } else if (xp == "14-R") {
-          stepX = 44;
+          stepX = 32;
           divClass = "sd7i7or";
-          startX = 193;
+          startX = 194;
           y1 = "198px";
           y2 = "264px";
+          width = "10px";
        }  
        x = startX;
 
@@ -857,7 +861,8 @@
           spanId = "span_xp" + numXP + "_p" + m;
           divId  = "div_xp"  + numXP + "_p" + m;
 
-          document.getElementById( divId ).className = divClass;
+          document.getElementById( divId ).className   = divClass;
+          document.getElementById( divId ).style.width = width;
           if ( m < 7 ) {
              document.getElementById( divId ).style.top = y1;
           } else {
