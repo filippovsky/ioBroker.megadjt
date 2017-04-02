@@ -844,24 +844,6 @@
            controlPort = 15 + portNum;
         }
 
-          // инициализируем порты 0-37, если они еще не заданы
-          // инициализацию делаем сразу для всех портов
-          if ( ports == undefined || ports.length == 0 ) {
-             for (var z = 0; z < 38; z++) {
-                ports.push({
-                    pty:    255, //not configured
-                    name:   ('P' + z ),
-                    ecmd:   '',
-                    eth:    '',
-                    m:      0,
-                    long:   false,
-                    double: false,
-                    role:   'state',
-                    room:   ''
-                });
-              }
-          }
-
 
 /*
         if ( ports == undefined || ports.length == 0 || ports[controlPort] == undefined || ports[controlPort].pty == undefined ) {
@@ -963,6 +945,24 @@
         if (xp == "none") {
            $(tblName).hide();
         } else {
+          // инициализируем порты 0-37, если они еще не заданы
+          // инициализацию делаем сразу для всех портов
+          if ( ports == undefined || ports.length == 0 ) {
+             for (var z = 0; z < 38; z++) {
+                ports.push({
+                    pty:    255, //not configured
+                    name:   ('P' + z ),
+                    ecmd:   '',
+                    eth:    '',
+                    m:      0,
+                    long:   false,
+                    double: false,
+                    role:   'state',
+                    room:   ''
+                });
+              }
+          }
+
            $(tblName).show();
         }
 
