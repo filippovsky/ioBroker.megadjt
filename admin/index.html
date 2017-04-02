@@ -8,8 +8,8 @@
 <script type="text/javascript" src="../../lib/js/jqGrid/jquery.jqGrid-4.5.4.min.js"></script>
 <script type="text/javascript" src="../../lib/js/jqGrid/grid.locale-all.js"></script>
 
-<!--<link rel="stylesheet" type="text/css" href="../../css/adapter.css"/>-->
-<link rel="stylesheet" type="text/css" href="../lib/css/adapter.css"/>
+<link rel="stylesheet" type="text/css" href="../../css/adapter.css"/>
+<!--<link rel="stylesheet" type="text/css" href="../lib/css/adapter.css"/>-->
 <script type="text/javascript" src="../../js/translate.js"></script>
 <script type="text/javascript" src="../../js/adapter-settings.js"></script>
 
@@ -797,35 +797,30 @@
           document.getElementById( divId ).style.left = x + "px";
           x = x + stepX;
 
-          if ( ports == undefined || ports.length == 0 || ports[k] == undefined || ports[k].pty == undefined ) {
-             vUndef = 1;
-          } else {
-             vUndef = 0;
-          }
-
+          
 
           if (xp == "7I7O-R" || xp == "7I7O-SD") {
              if ( m < 7 ) {
-                if ( vUndef == 1 || ports[k].pty == 255) {
+                if ( ports[k].pty == 255) {
                    document.getElementById( spanId ).className = "circlebutton_darkgreen";
                 } else {
                    document.getElementById( spanId ).className = "circlebutton_green";
                 }
              } else {
-                if ( vUndef == 1 || ports[k].pty == 255) {
+                if ( ports[k].pty == 255) {
                    document.getElementById( spanId ).className = "circlebutton_darkred";
                 } else {
                    document.getElementById( spanId ).className = "circlebutton_red";
                 }
              }
           } else if (xp == "14-IN") {
-             if ( vUndef == 1 || ports[k].pty == 255) {
+             if ( ports[k].pty == 255) {
                  document.getElementById( spanId ).className = "circlebutton_darkgreen";
              } else {
                  document.getElementById( spanId ).className = "circlebutton_green";
              }
           } else if (xp == "14-R") {
-             if ( vUndef == 1 || ports[k].pty == 255) {
+             if ( ports[k].pty == 255) {
                  document.getElementById( spanId ).className = "circlebutton_darkred";
              } else {
                  document.getElementById( spanId ).className = "circlebutton_red";
@@ -849,9 +844,30 @@
            controlPort = 15 + portNum;
         }
 
+          // инициализируем порты 0-37, если они еще не заданы
+          // инициализацию делаем сразу для всех портов
+          if ( ports == undefined || ports.length == 0 ) {
+             for (var z = 0; z < 38; z++) {
+                ports.push({
+                    pty:    255, //not configured
+                    name:   ('P' + z ),
+                    ecmd:   '',
+                    eth:    '',
+                    m:      0,
+                    long:   false,
+                    double: false,
+                    role:   'state',
+                    room:   ''
+                });
+              }
+          }
+
+
+/*
         if ( ports == undefined || ports.length == 0 || ports[controlPort] == undefined || ports[controlPort].pty == undefined ) {
            ports[controlPort].pty = 255;
         }
+*/
 
 //        text += 'Тип порта: <select id="pty'+controlPort+'" class="tvalue" data-type="pty" data-port="' + controlPort + '" onChange="ptyChanged('+controlPort+');">';
         text += 'Тип порта: <select id="pty'+controlPort+'" onChange="ptyChanged('+controlPort+');">';
