@@ -81,7 +81,7 @@
 }
     .xt2_port {
         padding: 30px;
-        opacity: 0.8;
+        opacity: 0.5;
         margin: 5px;
         border-spacing: 2px;
         background: yellow;
@@ -930,9 +930,10 @@
 
        imagePorts( numXP );
        spanId = "span_xp" + numXP + "_p" + portNum;
-       document.getElementById( spanId ).className = "circlebutton1";
-       
-       if ( numXP != 0 )  {
+       if ( numXP == 0 ) {
+          document.getElementById( spanId ).className = "xt2_port";
+       } else {
+          document.getElementById( spanId ).className = "circlebutton1";
           text =  'Порт исполнительного модуля: <b>' + portNum + '</b><br>'; 
        }
        text += 'Порт управляющего модуля: <b>' + controlPort + '</b><br>';
