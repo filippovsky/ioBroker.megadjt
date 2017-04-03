@@ -79,6 +79,18 @@
     background: yellow;
     padding: 0 1em;
 }
+    .xt2_port {
+        padding: 30px;
+        opacity: 0.5;
+        margin: 5px;
+        border-spacing: 2px;
+        background: yellow;
+        border: 1px solid #939393;
+        border-radius: 30px;
+        display:block;
+        left: 0px;
+        top: 0px;        
+       }
     .translateB {
         font-size: 10px;
         height: 40px;
@@ -140,6 +152,7 @@
         height:16px;
         display:block;
         border-radius:10px;
+        border: 1px solid #939393;
         -moz-border-radius:10px;
         -webkit-border-radius:10px;
         -khtml-border-radius:10px; font-size:2px;
@@ -717,7 +730,7 @@
     function imagePorts( numXP ) {
        var spanId = "";
        var xp_sel = "#xp" + numXP + " option:selected";
-       var xp = $(xp_sel).val();
+       var xp = "";
        var divId = "";
        var divClass = "";
        var startX = 0;
@@ -731,6 +744,14 @@
        var labelY  = "";
        var k = 0;
        var vUndef = 0;
+       var minCycle = 0;
+       var maxCycle = 14;
+
+       if ( numXP == 0 ) {
+          xp = "control";
+       } else {
+          xp = $(xp_sel).val();
+       }
 
        if (xp == "7I7O-R") {
           stepX = 45;
@@ -768,13 +789,24 @@
           width = "11px";
           labelX = "284px";
           labelY = "11px";
+       } else if (xp == "control") {
+          stepX = 37;
+          divClass = "sd7i7or";
+          startX = 194;
+          y1 = "198px";
+          y2 = "264px";
+          width = "11px";
+          labelX = "284px";
+          labelY = "11px";
+          minCycle = 30;
+          maxCycle = 38;
        }  
        x = startX;
 
        document.getElementById( labelId ).style.left = labelX;
        document.getElementById( labelId ).style.top  = labelY;
 
-       for (var m = 0; m < 14; m++) {
+       for (var m = minCycle; m < maxCycle; m++) {
           spanId = "span_xp" + numXP + "_p" + m;
           divId  = "div_xp"  + numXP + "_p" + m;
 
@@ -782,17 +814,22 @@
              k = m;
           } else if ( numXP == 2 ) {
              k = m + 15;
+          } else if ( numXP == 0 ) {
+             k = m + 30;
           }
 
           document.getElementById( divId ).className   = divClass;
           document.getElementById( divId ).style.width = width;
-          if ( m < 7 ) {
-             document.getElementById( divId ).style.top = y1;
-          } else {
-             document.getElementById( divId ).style.top = y2;
-          }
-          if ( m == 0 || m == 7 ) {
-             x = startX;
+          x = startX;
+          if ( numXP != 0 ) {
+             if ( m < 7 ) {
+                document.getElementById( divId ).style.top = y1;
+             } else {
+                document.getElementById( divId ).style.top = y2;
+             }
+             if ( m == 0 || m == 7 ) {
+                x = startX;
+             }
           }
           document.getElementById( divId ).style.left = x + "px";
           x = x + stepX;
@@ -825,6 +862,8 @@
              } else {
                  document.getElementById( spanId ).className = "circlebutton_red";
              }
+          } else if (xp == "control") {
+             document.getElementById( spanId ).className = "xt2_layer";
           };
 
        }
@@ -864,6 +903,8 @@
            text += '<option value="0" ' + ((ports[controlPort].pty == 0)   ? 'selected' : '') + '>' + _('Input') + '</option>';
         } else if ( xp == '14-R' ) {
            text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>' + _('Output') + '</option>';
+        } else if ( xp == 'control' ) {
+           //
         }
 
 /*
@@ -890,8 +931,10 @@
        imagePorts( numXP );
        spanId = "span_xp" + numXP + "_p" + portNum;
        document.getElementById( spanId ).className = "circlebutton1";
-
-       text =  'Порт исполнительного модуля: <b>' + portNum + '</b><br>'; 
+       
+       if ( numXP != 0 )  {
+          text =  'Порт исполнительного модуля: <b>' + portNum + '</b><br>'; 
+       }
        text += 'Порт управляющего модуля: <b>' + controlPort + '</b><br>';
        text += '<div id="xp' + numXP + '_port_preset"></div>';
 
@@ -904,12 +947,23 @@
         var text  = "";
         var divId = 'divxp' + numXP;
         var divMoreId = 'xp' + numXP + '_more';
+        var startPort = 0;
+        var maxCycle  = 14;
         text += '<div id="xp' + numXP + '_tbl" class="round1" style="height: 643px; padding: 1em;">';
         text += '<div id="xp' + numXP + '_div_img" class="dxp">';
         text += '  <img name="xp' + numXP + '_img" id="xp' + numXP + '_img" src="mega/MegaD-7I7O-R.gif">';
         text += '<div id="xp' + numXP + '_label" class="circlexp">';
-        text += 'XP'  + numXP +'</div>';
-        for (var m = 0; m < 14; m++) {
+        if ( numXP != 0 ) {
+           text += 'XP'  + numXP;
+           startPort = 0;
+           maxCycle  = 14;
+        } else {
+           text += 'Управляющий модуль';
+           startPort = 30;
+           maxCycle  = 38;
+        }
+        text += '</div>';
+        for (var m = startPort; m < maxCycle; m++) {
            text += '          <div id="div_xp' + numXP + '_p' + m + '" class="sd7i7or" onClick="selectPort(' + numXP + ',' + m +');">';
            text += '              <span id="span_xp' + numXP + '_p' + m +'" class="circlebutton_darkgreen">&nbsp;</span>';
            text += '          </div>';
@@ -929,11 +983,16 @@
 
         showXPLayer( numXP );
 
-        xp = $("#xp"+numXP+" option:selected").val();
+        if ( numXP != 0 ) {
+           xp = $("#xp"+numXP+" option:selected").val();
+        } else {
+           xp = "megad-2561";
+        }
+
         imgName = "xp"+numXP+"_img";
 
         if (!xp) {
-            xp = "none";
+           xp = "none";
         }
         fon = "mega/MegaD-" + xp 
         if (xp == '7I7O-R') {
@@ -1615,7 +1674,7 @@
            <tr>
              <td><b>4.13b8</td>
              <td>30.03.2017 17:52</td>
-             <td>Исправлена ошибка, приводившая к отображению символов на дисплее MCP23008 в зеркально перевернутом виде
+             <td>Улучшена работа с MCP23008
              </td>
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.13b8');">Прошить</button></td>
            </tr>
