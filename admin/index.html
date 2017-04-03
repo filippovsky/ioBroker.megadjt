@@ -985,16 +985,17 @@
 
         if ( numXP != 0 ) {
            xp = $("#xp"+numXP+" option:selected").val();
+           if (!xp) {
+              xp = "none";
+           }
+           fon = "mega/MegaD-" + xp;
         } else {
-           xp = "megad-2561";
+           xp = "control";
+           fon = "mega/megad-2561";
         }
 
         imgName = "xp"+numXP+"_img";
 
-        if (!xp) {
-           xp = "none";
-        }
-        fon = "mega/MegaD-" + xp 
         if (xp == '7I7O-R') {
            fon = fon + ".gif";
         } else {
