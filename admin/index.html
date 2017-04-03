@@ -820,7 +820,6 @@
 
           document.getElementById( divId ).className   = divClass;
           document.getElementById( divId ).style.width = width;
-          x = startX;
           if ( numXP != 0 ) {
              if ( m < 7 ) {
                 document.getElementById( divId ).style.top = y1;
@@ -833,8 +832,6 @@
           }
           document.getElementById( divId ).style.left = x + "px";
           x = x + stepX;
-
-         
 
           if (xp == "7I7O-R" || xp == "7I7O-SD") {
              if ( m < 7 ) {
@@ -882,7 +879,6 @@
         if (numXP == 2) {
            controlPort = 15 + portNum;
         }
-
 
 /*
         if ( ports == undefined || ports.length == 0 || ports[controlPort] == undefined || ports[controlPort].pty == undefined ) {
