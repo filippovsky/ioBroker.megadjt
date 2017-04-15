@@ -61,6 +61,24 @@
       webkit-animation: rainbow 2s linear 2s infinite;
       animation: rainbow 2s linear 2s infinite;     
     }
+circlexpnew {
+    position: absolute;
+    z-index: 1;
+    opacity: 0.4;
+    width: 20px;
+    height: 40px;
+    display: block;
+    border-radius: 50px;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    -khtml-border-radius: 50px;
+    font-size: 24px;
+    color: darkblue;
+    line-height: 10px;
+    text-align: center;
+    background: yellow;
+    padding: 0 1em;
+}
 .circlexp {
     position: absolute;
     z-index: 1;
@@ -991,13 +1009,13 @@
         text += '<div id="xp' + numXP + '_tbl" class="round1" style="height: 643px; padding: 1em;">';
         text += '<div id="xp' + numXP + '_div_img" class="dxp">';
         text += '  <img name="xp' + numXP + '_img" id="xp' + numXP + '_img" src="mega/MegaD-7I7O-R.gif">';
-        text += '<div id="xp' + numXP + '_label" class="circlexp">';
+        text += '<div id="xp' + numXP + '_label" class="circlexpnew">';
         if ( numXP != 0 ) {
            text += 'XP'  + numXP;
            startPort = 0;
            maxCycle  = 14;
         } else {
-           text += 'Управляющий модуль';
+           text += 'XT2';
            startPort = 30;
            maxCycle  = 38;
         }
