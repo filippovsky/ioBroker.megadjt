@@ -800,7 +800,7 @@
           divClass = "xt2_port";
           startX = 461;
           y1 = "200px";
-          y2 = "264px";
+          y2 = "204px";
           width = "30px";
           labelX = "284px";
           labelY = "11px";
@@ -835,15 +835,45 @@
              if ( m == 0 || m == 7 ) {
                 x = startX;
              }
+             document.getElementById( divId ).style.left = x + "px";
+             x = x + stepX;
           } else {
-             if ( m < 6 ) {
-                document.getElementById( divId ).style.top = y1;
-             } else {
-                document.getElementById( divId ).style.top = y2;
+             if ( m === 30 ) {
+                document.getElementById( divId ).style.left = "461px";
+                document.getElementById( divId ).style.top  = "200px";
+                document.getElementById( divId ).style.height  = "85px";
+             } else if ( m === 31 ) {
+                document.getElementById( divId ).style.left    = "493px";
+                document.getElementById( divId ).style.top     = "200px";
+                document.getElementById( divId ).style.height  = "104px";
+             } else if ( m === 32 ) {
+                document.getElementById( divId ).style.left    = "506px";
+                document.getElementById( divId ).style.top     = "173px";
+                document.getElementById( divId ).style.height  = "104px";
+             } else if ( m === 33 ) {
+                document.getElementById( divId ).style.left    = "538px";
+                document.getElementById( divId ).style.top     = "200px";
+                document.getElementById( divId ).style.height  = "104px";
+             } else if ( m === 34 ) {
+                document.getElementById( divId ).style.left    = "552px";
+                document.getElementById( divId ).style.top     = "173px";
+                document.getElementById( divId ).style.height  = "104px";
+             } else if ( m === 35 ) {
+                document.getElementById( divId ).style.left    = "583px";
+                document.getElementById( divId ).style.top     = "200px";
+                document.getElementById( divId ).style.height  = "85px";
+             } else if ( m === 36 ) {
+                document.getElementById( divId ).style.width   = "94px";
+                document.getElementById( divId ).style.left    = "400px";
+                document.getElementById( divId ).style.top     = "100px";
+                document.getElementById( divId ).style.height  = "85px";
+             } else if ( m === 37 ) {
+                document.getElementById( divId ).style.width   = "94px";
+                document.getElementById( divId ).style.left    = "524px";
+                document.getElementById( divId ).style.top     = "100px";
+                document.getElementById( divId ).style.height  = "69px";
              }
           }
-          document.getElementById( divId ).style.left = x + "px";
-          x = x + stepX;
 
           if (xp == "7I7O-R" || xp == "7I7O-SD") {
              if ( m < 7 ) {
