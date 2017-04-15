@@ -951,25 +951,36 @@
         text += '<option value="255" ' + ((ports[controlPort].pty == 255) ? 'selected' : '') + '>' + _('NC')  + '</option>';
         if ( xp == '7I7O-R' || xp == '7I7O-SD' ) {
            if (portNum < 7) {
-              text += '<option value="0" ' + ((ports[controlPort].pty == 0)   ? 'selected' : '') + '>' + _('Input') + '</option>';
+              text += '<option value="0" ' + ((ports[controlPort].pty == 0)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
            } else {
-              text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>' + _('Output') + '</option>';
+              if ( xp == '7I7O-R' ) {
+                 text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Релейный выход</option>';
+              } else {
+                 if ( m == 10 || m == 12 || m == 13 ) {
+                     text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Симисторный диммируемый выход (ШИМ)</option>';
+                 } else {
+                     text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Симисторный недиммируемый выход</option>';
+                 }
+              }
            }
         } else if ( xp == '14-IN' ) {
-           text += '<option value="0" ' + ((ports[controlPort].pty == 0)   ? 'selected' : '') + '>' + _('Input') + '</option>';
+           text += '<option value="0" ' + ((ports[controlPort].pty == 0)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
+           text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
+           text += '<option value="4" ' + ((ports[controlPort].pty == 4)   ? 'selected' : '') + '>Вход I2C</option>';
+           if ( m <= 5 ) {
+              text += '<option value="2" ' + ((ports[controlPort].pty == 2)   ? 'selected' : '') + '>АЦП-вход для аналоговых датчиков</option>';
+           }
         } else if ( xp == '14-R' ) {
-           text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>' + _('Output') + '</option>';
+           text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Релейный выход</option>';
         } else if ( xp == 'control' ) {
-           //
+           if ( m < 36 ) {
+              text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
+              text += '<option value="4" ' + ((ports[controlPort].pty == 4)   ? 'selected' : '') + '>Вход I2C</option>';
+           } else {
+              text += '<option value="2" ' + ((ports[controlPort].pty == 2)   ? 'selected' : '') + '>АЦП-вход для аналоговых датчиков</option>';
+           }
         }
 
-/*
-        if (index == 0 || index == 1 || index == 2 || index == 3 || index == 4 || index == 5 || index == 36 || index == 37) {
-            text += '<option value="2" '   + ((portSettings.pty == 2)   ? 'selected' : '') + '>' + _('ADC')         + '</option>';
-        }
-        text += '<option value="3" '   + ((portSettings.pty == 3)   ? 'selected' : '') + '>' + _('Digital Sensor')  + '</option>';
-        text += '<option value="4" '   + ((portSettings.pty == 4)   ? 'selected' : '') + '>' + _('I2C Bus')  + '</option>';
-*/
         text += '</select><br>';
         document.getElementById( "xp" + numXP + "_port_preset" ).innerHTML = text;
     }
