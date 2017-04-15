@@ -940,11 +940,6 @@
            controlPort = 15 + portNum;
         }
 
-/*
-        if ( ports == undefined || ports.length == 0 || ports[controlPort] == undefined || ports[controlPort].pty == undefined ) {
-           ports[controlPort].pty = 255;
-        }
-*/
 
 //        text += 'Тип порта: <select id="pty'+controlPort+'" class="tvalue" data-type="pty" data-port="' + controlPort + '" onChange="ptyChanged('+controlPort+');">';
         text += 'Тип порта: <select id="pty'+controlPort+'" onChange="ptyChanged('+controlPort+');">';
@@ -956,7 +951,7 @@
               if ( xp == '7I7O-R' ) {
                  text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Релейный выход</option>';
               } else {
-                 if ( m == 10 || m == 12 || m == 13 ) {
+                 if ( portNum == 10 || portNum == 12 || portNum == 13 ) {
                      text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Симисторный диммируемый выход (ШИМ)</option>';
                  } else {
                      text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Симисторный недиммируемый выход</option>';
@@ -967,13 +962,13 @@
            text += '<option value="0" ' + ((ports[controlPort].pty == 0)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
            text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
            text += '<option value="4" ' + ((ports[controlPort].pty == 4)   ? 'selected' : '') + '>Вход I2C</option>';
-           if ( m <= 5 ) {
+           if ( portNum <= 5 ) {
               text += '<option value="2" ' + ((ports[controlPort].pty == 2)   ? 'selected' : '') + '>АЦП-вход для аналоговых датчиков</option>';
            }
         } else if ( xp == '14-R' ) {
            text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Релейный выход</option>';
         } else if ( xp == 'control' ) {
-           if ( m < 36 ) {
+           if ( portNum < 36 ) {
               text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
               text += '<option value="4" ' + ((ports[controlPort].pty == 4)   ? 'selected' : '') + '>Вход I2C</option>';
            } else {
