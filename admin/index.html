@@ -932,9 +932,15 @@
     }
     //--------------------------------------------------------------------------------
     function loadPreset( numXP, portNum ) {
-        var xp = $("#xp"+numXP+" option:selected").val();
+        var xp = "";
         var text = "";
         var controlPort = portNum;
+
+        if ( numXP > 0 ) {
+           xp = $("#xp"+numXP+" option:selected").val();
+        } else {
+           xp = 'control';
+        }
 
         if (numXP == 2) {
            controlPort = 15 + portNum;
