@@ -14,6 +14,72 @@
 <script type="text/javascript" src="../../js/adapter-settings.js"></script>
 
 <style>
+/* Cначала обозначаем стили для IE8 и более старых версий
+т.е. здесь мы немного облагораживаем стандартный чекбокс. */
+.checkbox {
+  vertical-align: top;
+  margin: 0 3px 0 0;
+  width: 17px;
+  height: 17px;
+}
+/* Это для всех браузеров, кроме совсем старых, которые не поддерживают
+селекторы с плюсом. Показываем, что label кликабелен. */
+.checkbox + label {
+  cursor: pointer;
+}
+
+/* Далее идет оформление чекбокса в современных браузерах, а также IE9 и выше.
+Благодаря тому, что старые браузеры не поддерживают селекторы :not и :checked,
+в них все нижеследующие стили не сработают. */
+
+/* Прячем оригинальный чекбокс. */
+.checkbox:not(checked) {
+  position: absolute;
+  opacity: 0;
+}
+.checkbox:not(checked) + label {
+  position: relative; /* будем позиционировать псевдочекбокс относительно label */
+  padding: 0 0 0 60px; /* оставляем слева от label место под псевдочекбокс */
+}
+/* Оформление первой части чекбокса в выключенном состоянии (фон). */
+.checkbox:not(checked) + label:before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 0;
+  width: 50px;
+  height: 26px;
+  border-radius: 13px;
+  background: #CDD1DA;
+  box-shadow: inset 0 2px 3px rgba(0,0,0,.2);
+}
+/* Оформление второй части чекбокса в выключенном состоянии (переключатель). */
+.checkbox:not(checked) + label:after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 10px;
+  background: #FFF;
+  box-shadow: 0 2px 5px rgba(0,0,0,.3);
+  transition: all .2s; /* анимация, чтобы чекбокс переключался плавно */
+}
+/* Меняем фон чекбокса, когда он включен. */
+.checkbox:checked + label:before {
+  background: #9FD468;
+}
+/* Сдвигаем переключатель чекбокса, когда он включен. */
+.checkbox:checked + label:after {
+  left: 26px;
+}
+/* Показываем получение фокуса. */
+.checkbox:focus + label:before {
+  box-shadow: 0 0 0 3px rgba(255,255,0,.5);
+}
+
+
     .no-space {
         border: 0px !important;
         margin: 0px;
@@ -987,6 +1053,29 @@
         }
 
         text += '</select><br>';
+
+        //-----------------------------------------------------------------------------
+        // порт IN
+        if ( ports[controlPort].pty == 0 ) {
+           text += 'Сценарий по умолчанию:<br>';
+           text += '<input id="ecmd" type="text" value="' + (ports[controlPort].ecmd  || '' ) + '" maxsize="11"/><br>';
+           text += '<input type="checkbox" class="checkbox" id="af" '+ (ports[controlPort].af ? 'checked' : '') + '/>';
+           text += '<label for="af">Выполнять всегда, независимо от наличия сервера (ВЫКЛ=Выполнять только если сервер не прописан или недоступен)</label>';
+        }
+/*
+
+        if (portSettings.pty == 0 || portSettings.pty == 2 || (portSettings.pty == 3 && (portSettings.d == 3 || portSettings.d == 4))) {
+            // ecmd(Action)
+            text += _('Action:') + ' <input class="tvalue" data-type="ecmd" type="text" 
+               data-port="' + index + '" value="' + (portSettings.ecmd || '') + '"  style="width: 70px" maxsize="11"/>, ';
+            text += ' <input type="checkbox" class="tvalue" data-type="af" data-port="' + index + '" ' + (portSettings.af   ? 'checked' : '') + '/>';
+            // eth(net action)
+            text += _('Net:') + ' <input class="tvalue" data-type="eth" type="text" data-port="' + index + '" value="' + portSettings.eth  + '" style="width: 70px" maxsize="35"/>';
+            text += ' <input type="checkbox" class="tvalue" data-type="naf" data-port="' + index + '" ' + (portSettings.naf   ? 'checked' : '') + '/>';
+        }
+  */
+
+
         document.getElementById( "xp" + numXP + "_port_preset" ).innerHTML = text;
     }
     //-----------------------------------------------------------------------------------
