@@ -1175,7 +1175,7 @@ span:hover::before {
            }
         }
 
-        text += '</select>&nbsp;<div class="htooltip"><img src="img/emblem-notice.png" width="10px" height="10px" style="margin: -13px;"></img>';
+        text += '</select>&nbsp;<div class="htooltip"><img src="img/emblem-notice.png" width="10px" height="10px"></img>';
         text += '<span><p align=justify>';
         text += '<b>"Стандартный вход"</b> - порт с опторазвязкой, защищающей контроллер от внешних факторов, ';
         text += 'который предназначен для подключения: кнопок, выключателей, герконов, датчиков протечки, ';
@@ -1273,22 +1273,22 @@ span:hover::before {
            text += 'Сценарий по умолчанию (Act):<br>';
            text += '<input id="ecmd'+controlPort+'" type="text" value="' + (ports[controlPort].ecmd  || '' ) + 
                    '" onChange="ecmdChanged('+controlPort+');" maxsize="11"/>'+
-                   '&nbsp;<div class="htooltip"><img src="img/emblem-notice.png" width="10px" height="10px" style="margin: -13px;"></img>'+
+                   '&nbsp;<div class="htooltip"><img src="img/emblem-notice.png" width="10px" height="10px"></img>'+
                    '<span>'+spanAct0+'</span></div><br>';
            text += '<input type="checkbox" class="checkbox" id="af'+controlPort+'" '+ (ports[controlPort].af ? 'checked' : '') + 
                    ' onChange="afChanged('+controlPort+');"/>'+
-                   '&nbsp;<div class="htooltip"><img src="img/emblem-notice.png" width="10px" height="10px" style="margin: -13px;"></img>'+
+                   '&nbsp;<div class="htooltip"><img src="img/emblem-notice.png" width="10px" height="10px"></img>'+
                    '<span>'+spanAf0+'</span></div><br>';
            text += '<label id="lbl'+controlPort+'" for="af'+controlPort+'">'+(ports[controlPort].af ? 'Выполнять всегда, независимо от наличия сервера' : 'Выполнять только если сервер не прописан или недоступен') + '</label><br>';
 
            text += 'Сетевой сценарий (Net):<br>';
            text += '<input id="eth'+controlPort+'" type="text" value="' + (ports[controlPort].eth  || '' ) + 
                    '" onChange="ethChanged('+controlPort+');" maxsize="35"/>'+
-                   '&nbsp;<div class="htooltip"><img src="img/emblem-notice.png" width="10px" height="10px" style="margin: -13px;"></img>'+
+                   '&nbsp;<div class="htooltip"><img src="img/emblem-notice.png" width="10px" height="10px"></img>'+
                    '<span>'+spanEth0+'</span></div><br>';
            text += '<input type="checkbox" class="checkbox" id="naf'+controlPort+'" '+ (ports[controlPort].naf ? 'checked' : '') + 
                    ' onChange="nafChanged('+controlPort+');"/>'+
-                   '&nbsp;<div class="htooltip"><img src="img/emblem-notice.png" width="10px" height="10px" style="margin: -13px;"></img>'+
+                   '&nbsp;<div class="htooltip"><img src="img/emblem-notice.png" width="10px" height="10px"></img>'+
                    '<span>'+spanNaf0+'</span></div><br>';
            text += '<label id="lblnaf'+controlPort+'" for="naf'+controlPort+'">'+(ports[controlPort].naf ? 'Вызывать ТОЛЬКО при недоступности сервера' : 'Вызывать всегда') + '</label>';
 
