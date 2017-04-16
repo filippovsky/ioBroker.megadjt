@@ -100,6 +100,7 @@
         background: lightyellow;
         border: 1px solid #939393;
         border-radius: 30px;
+        position: relative;
        }
     .roundmore {
         padding: 30px;
@@ -109,9 +110,10 @@
         border: 1px solid #939393;
         border-radius: 30px;
         display:block;
-        left: 0px;
+        left: 670px;
         top: 0px;        
         float: right;
+        position: absolute;
        }
      @-webkit-keyframes rainbow {
         0%   {background: gold}
@@ -1001,6 +1003,13 @@
         ports[controlPort].pty = pty;
     }
     //--------------------------------------------------------------------------------
+    function afChanged ( controlPort ) {
+        //if ($(this).attr('type') == 'checkbox') {
+        //    ports[index][attr] = $(this).prop('checked');
+        var af = $("#af"+controlPort ).val();
+        ports[controlPort].af = af;
+    }
+    //--------------------------------------------------------------------------------
     function loadPreset( numXP, portNum ) {
         var xp = "";
         var text = "";
@@ -1058,9 +1067,10 @@
         // порт IN
         if ( ports[controlPort].pty == 0 ) {
            text += 'Сценарий по умолчанию:<br>';
-           text += '<input id="ecmd" type="text" value="' + (ports[controlPort].ecmd  || '' ) + '" maxsize="11"/><br>';
-           text += '<input type="checkbox" class="checkbox" id="af" '+ (ports[controlPort].af ? 'checked' : '') + '/>';
-           text += '<label for="af">'+(ports[controlPort].af ? 'Выполнять всегда, независимо от наличия сервера' : 'Выполнять только если сервер не прописан или недоступен') + '</label>';
+           text += '<input id="ecmd'+controlPort+'" type="text" value="' + (ports[controlPort].ecmd  || '' ) + '" maxsize="11"/><br>';
+           text += '<input type="checkbox" class="checkbox" id="af'+controlPort+'" '+ (ports[controlPort].af ? 'checked' : '') + 
+                   ' onChange="afChanged('+controlPort+');"/>';
+           text += '<label for="af'+controlPort+'">'+(ports[controlPort].af ? 'Выполнять всегда, независимо от наличия сервера' : 'Выполнять только если сервер не прописан или недоступен') + '</label>';
         }
 /*
 
