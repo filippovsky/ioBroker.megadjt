@@ -18,7 +18,7 @@
 	background-color: rgba(245,237,1, 0.8);
 	border-radius: 15px 15px 15px 0px;
 	box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
-	color: #fff;
+	color: black;
 	margin-left: 2px;
 	margin-top: -75px;
 	opacity: 0; /* Делаем его прозрачным */
@@ -1154,7 +1154,7 @@ span:hover::before {
            }
         }
 
-        text += '</select><div class="htooltip"><img src="img/emblem-notice.png" width="10px" height="10px"></img>';
+        text += '</select>&nbsp;<div class="htooltip"><img src="img/emblem-notice.png" width="10px" height="10px"></img>';
         text += '<span><p align=justify>';
         text += '<b>"Стандартный вход"</b> - порт с опторазвязкой, защищающей контроллер от внешних факторов, ';
         text += 'который предназначен для подключения: кнопок, выключателей, герконов, датчиков протечки, ';
@@ -1188,7 +1188,7 @@ span:hover::before {
            text += 'Сценарий по умолчанию:<br>';
            text += '<input id="ecmd'+controlPort+'" type="text" value="' + (ports[controlPort].ecmd  || '' ) + 
                    '" onChange="ecmdChanged('+controlPort+');" maxsize="11"/>'+
-                   '<div class="htooltip"><img src="img/emblem-notice.png" width="10px" height="10px"></img>'+
+                   '&nbsp;<div class="htooltip"><img src="img/emblem-notice.png" width="10px" height="10px"></img>'+
                    '<span>info</span></div><br>';
            text += '<input type="checkbox" class="checkbox" id="af'+controlPort+'" '+ (ports[controlPort].af ? 'checked' : '') + 
                    ' onChange="afChanged('+controlPort+');"/>';
