@@ -1001,6 +1001,19 @@
     function ptyChanged ( controlPort ) {
         var pty = $("#pty"+controlPort+" option:selected").val();
         ports[controlPort].pty = pty;
+        var numXP = 0;
+        var port  = 0;
+        if ( controlPort < 15 ) {
+           numXP = 1;
+           port  = controlPort;
+        } else if ( controlPort < 30 ) {
+           numXP = 2;
+           port = controlPort - 15;
+        } else {
+           numXP = 0;
+           port = controlPort;
+        }
+        loadPreset( numXP, port ); // при изменении типа порта перерисовываем его описание
     }
     //--------------------------------------------------------------------------------
     function ecmdChanged ( controlPort ) {
