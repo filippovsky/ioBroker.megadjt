@@ -532,6 +532,9 @@ function writeConfigOne(ip, pass, _settings, callback, port, errors) {
         settings.eth  = settings.eth  || '';
         ///options.path += '&pty=0&m=' + (settings.m || 0) + '&misc=1&d=' + settings.d + '&ecmd=' + encodeURIComponent((settings.ecmd || '').trim()) + '&eth=';
         options.path += '&pty=0&m=' + (settings.m || 0) + '&ecmd=' + encodeURIComponent((settings.ecmd || '').trim()) + '&eth=' + encodeURIComponent((settings.eth || '').trim());
+        if (settings.af == 1) {
+            options.path += '&af=1';
+        }
         if (settings.naf == 1) {
             options.path += '&naf=1';
         }
