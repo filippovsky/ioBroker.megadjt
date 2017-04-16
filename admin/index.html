@@ -852,6 +852,10 @@
              }
              if ( m == 0 || m == 7 ) {
                 x = startX;
+             } else if ( xp == '14-IN' ) { // сдвиг для корректного накладывания
+                if ( m == 3 || m = 10 ) {
+                   x = x - 1;
+                }
              }
              document.getElementById( divId ).style.left = x + "px";
              x = x + stepX;
