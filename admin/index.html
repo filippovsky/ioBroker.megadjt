@@ -1060,7 +1060,7 @@
            text += 'Сценарий по умолчанию:<br>';
            text += '<input id="ecmd" type="text" value="' + (ports[controlPort].ecmd  || '' ) + '" maxsize="11"/><br>';
            text += '<input type="checkbox" class="checkbox" id="af" '+ (ports[controlPort].af ? 'checked' : '') + '/>';
-           text += '<label for="af">Выполнять всегда, независимо от наличия сервера (ВЫКЛ=Выполнять только если сервер не прописан или недоступен)</label>';
+           text += '<label for="af">'+(ports[controlPort].af ? 'Выполнять всегда, независимо от наличия сервера' : 'Выполнять только если сервер не прописан или недоступен') + '</label>';
         }
 /*
 
