@@ -1287,7 +1287,7 @@ span:hover::before {
            text += '<input id="eth'+controlPort+'" type="text" value="' + (ports[controlPort].eth  || '' ) + 
                    '" onChange="ethChanged('+controlPort+');" maxsize="35"/>'+
                    '&nbsp;&nbsp;<div class="htooltip"><img src="img/emblem-notice.png" width="10px" height="10px"></img>'+
-                   '<span>'+spanEth0+'</span><br>&nbsp;<br>';
+                   '<span>'+spanEth0+'</span></div><br>&nbsp;<br>';
            text += '<input type="checkbox" class="checkbox" id="naf'+controlPort+'" '+ (ports[controlPort].naf ? 'checked' : '') + 
                    ' onChange="NafChanged('+controlPort+');"/>'+
                    '&nbsp;';
