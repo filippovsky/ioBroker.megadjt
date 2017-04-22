@@ -1390,7 +1390,7 @@ span:hover::before {
 
         imgName = "xp"+numXP+"_img";
 
-        if (xp == '7I7O-R' || xp == '14-IN' ) {
+        if (xp == '7I7O-R' || xp == '14-IN' || xp == '7I7O-SD' ) {
            fon = fon + ".gif";
         } else {
            fon = fon + ".jpg";
@@ -2058,6 +2058,25 @@ span:hover::before {
              <td>Дата и время</td>
              <td>Описание</td>
              <td>Прошивка</td>
+           </tr>
+           <tr>
+             <td><b>4.14b7</td>
+             <td>21.04.2017 18:52</td>
+             <td>- Добавлена поддержка 'd' (выполнение сценария, прописанного в Act) в командах сервера 
+                   (ранее эта функция работала только в ответах сервера на сообщения контроллера).   <br>
+                    Пример: <i>?pt=7&cmd=d</i> (выполнится сценарий, прописанный в Act для порта P7) <br>
+                    Эту особенность можно иногда использовать для работы с паузами в командах сервера.<br>
+                  - Улучшена стабильность работы контроллера. Ранее тип портов P29/P30 мог в определенных ситуациях самопроизвольно меняться на IN.
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.14b7');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.14b5</td>
+             <td>17.04.2017</td>
+             <td>- Улучшена стабильность работы с 1-wire bus<br>
+                 - Незначительные улучшения работы srv-loop
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.14b5');">Прошить</button></td>
            </tr>
            <tr>
              <td><b>4.14b2</td>
