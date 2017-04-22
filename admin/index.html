@@ -1216,7 +1216,7 @@ span:hover::before {
                    '&nbsp;&nbsp;&nbsp;';
            text += '<input type="checkbox" class="checkbox" id="af'+controlPort+'" '+ (ports[controlPort].af ? 'checked' : '') + 
                    ' onChange="afChanged('+controlPort+');"/>'+
-                   '&nbsp;&nbsp;&nbsp;';
+                   '&nbsp;&nbsp;<br>';
            text += '<label id="lbl'+controlPort+'" for="af'+controlPort+'">'+(ports[controlPort].af ? 'Выполнять всегда, независимо от наличия сервера' : 'Выполнять только если сервер не прописан или недоступен') + '</label><br>';
 
            text += 'Сетевой сценарий (Net):<br>';
@@ -1225,7 +1225,7 @@ span:hover::before {
                    '&nbsp;&nbsp;&nbsp;';
            text += '<input type="checkbox" class="checkbox" id="naf'+controlPort+'" '+ (ports[controlPort].naf ? 'checked' : '') + 
                    ' onChange="nafChanged('+controlPort+');"/>'+
-                   '&nbsp;&nbsp;&nbsp;';
+                   '&nbsp;&nbsp;<br>';
            text += '<label id="lblnaf'+controlPort+'" for="naf'+controlPort+'">'+(ports[controlPort].naf ? 'Вызывать ТОЛЬКО при недоступности сервера' : 'Вызывать всегда') + '</label>';
 
         }
