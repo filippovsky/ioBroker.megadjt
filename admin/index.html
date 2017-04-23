@@ -1157,6 +1157,18 @@ span:hover::before {
         document.getElementById( "lblmisc" + controlPort ).innerHTML = text;
     }
     //--------------------------------------------------------------------------------
+    function RawChanged ( controlPort ) {
+        var text = "";
+        if ( $("#d"+controlPort ).prop('checked') ) {
+           ports[controlPort].d = 1;
+           text = 'Защита от дребезга отключена';
+        } else {
+           ports[controlPort].d = 0;
+           text = 'Защита от дребезга включена';
+        }
+        document.getElementById( "lbld" + controlPort ).innerHTML = text;
+    }
+    //--------------------------------------------------------------------------------
     function loadPreset( numXP, portNum ) {
         var xp = "";
         var text = "";
@@ -1367,6 +1379,22 @@ span:hover::before {
            spanMisc += '<i>Данная опция не доступна для Click Mode.</i></p>';
            spanMisc += '</span></div>';
 
+           spanRaw  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img><span>';
+           spanRaw += '<p align=justify><b>Raw</b> - параметр отключает встроенную защиту от дребезга. Когда человек нажимает на ';
+           spanRaw += 'обычный выключатель или кнопку, то коммутация контактов, когда две металлические пластины внутри выключателя ';
+           spanRaw += 'только касаются друг друга, бывает ненадежной. И за этот крайне небольшой промежуток времени, измеряемый ';
+           spanRaw += 'миллисекундами, контроллер может зафиксировать десятки пограничных значений "включено-выключено". Этот эффект ';
+           spanRaw += 'называется &quot;дребезгом контактов&quot; и может генерировать большое количество ложных событий. С самого ';
+           spanRaw += 'начала в контроллере заложена защита от дребезга, которая позволяет выполнять сценарий по умолчанию или ';
+           spanRaw += 'отправлять сообщение на сервер только тогда, когда контакт надежен и состояние входа не меняется. Однако в ';
+           spanRaw += 'определенных ситуациях эта защита может мешать. Например, в случае подключения к входам устройства энкодера. ';
+           spanRaw += 'При вращении ручки энкодера длительность контакта не превышает 10 миллисекунд. Это слишком короткий промежуток ';
+           spanRaw += 'времени, чтобы встроенная защита от дребезга смогла распознать срабатывание входа. В этой ситуации можно отключить ';
+           spanRaw += 'этот механизм и переложить его на сервер. Другой пример - подключение к контроллеру различных импульсных счетчиков, ';
+           spanRaw += 'где длительность импульса не превышает 10-15 миллисекунд.</p>';
+           spanRaw += '</span></div>';
+
+
            text += '<tr><td align="center" valign="middle">';
            text += spanAct0 + '</td><td align="left" valign="middle">';
            text += 'Сценарий по умолчанию (Act):&nbsp;';
@@ -1421,6 +1449,14 @@ span:hover::before {
               text += '<label id="lblmisc'+controlPort+'" for="misc'+controlPort+'">'+(ports[controlPort].misc ? 'Всегда отправлять в режиме P&amp;R' : 'Выполнять Act в режиме, установленном Mode') + '</label>';
               text += '</td></tr>';
            }
+
+           text += '<tr><td align="center" valign="middle">';
+           text += spanRaw + '</td><td align="left" valign="middle">';
+           text += '<input type="checkbox" class="checkbox" id="d'+controlPort+'" '+ (ports[controlPort].d ? 'checked' : '') + 
+                   ' onChange="RawChanged('+controlPort+');"/>&nbsp;';
+           //text += '</td><td align="left" valign="middle">';
+           text += '<label id="lbld'+controlPort+'" for="d'+controlPort+'">'+(ports[controlPort].d ? 'Отключить защиту от дребезга' : 'Включить защиту от дребезга') + '</label>';
+           text += '</td></tr>';
 
 
            text += '</table>';
@@ -1544,6 +1580,7 @@ span:hover::before {
                     af:     0,
                     naf:    0,
                     misc:   0,
+                    d:      0,
                     act:    '',
                     long:   false,
                     double: false,
