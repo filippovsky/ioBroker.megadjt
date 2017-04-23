@@ -1097,7 +1097,10 @@ span:hover::before {
         var m = $("#m"+controlPort+" option:selected").val();
         ports[controlPort].m = m;
         if ( ports[controlPort].m == 3 ) {
+           // для Mode = click mode отключаем флажок
            ports[controlPort].misc = 0;
+           //document.getElementById( "misc" + controlPort ).checked = "false";
+           $("#misc"+controlPort).removeAttr("checked");
            document.getElementById( "misc" + controlPort ).style.visibility = "hidden";
            document.getElementById( "lblmisc" + controlPort ).style.visibility = "hidden";
         } else {
