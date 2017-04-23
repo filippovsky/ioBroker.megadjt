@@ -1092,6 +1092,11 @@ span:hover::before {
         loadPreset( numXP, port ); // при изменении типа порта перерисовываем его описание
     }
     //--------------------------------------------------------------------------------
+    function mChanged ( controlPort ) {
+        var m = $("#m"+controlPort+" option:selected").val();
+        ports[controlPort].m = m;
+    }
+    //--------------------------------------------------------------------------------
     function ecmdChanged ( controlPort ) {
         var ecmd = $("#ecmd"+controlPort).val();
         ports[controlPort].ecmd = ecmd;
@@ -1137,6 +1142,7 @@ span:hover::before {
         var spanEth0 = "";
         var spanNaf0 = "";
         var spanPorts = "";
+        var spanM = "";
 
         if ( numXP > 0 ) {
            xp = $("#xp"+numXP+" option:selected").val();
@@ -1296,6 +1302,40 @@ span:hover::before {
            spanNaf0 += 'Этот флажок указывает, что NetAction будет вызван ТОЛЬКО при недоступности сервера. По умолчанию вызывается всегда.';
            spanNaf0 += '</span></div>';
 
+           spanM  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img><span>';
+           spanM += '<p align=justify><b>Mode</b> - параметр, позволяющий использовать устройство в широком спектре задач. Эта опция определяет режим входа.</p>';
+           spanM += '<p align=justify><b>P</b> - устройство реагирует (то есть отправляет сообщения на сервер, выполняет сценарии и т.д.) только при замыкании контакта/выключателя (Пример: <i>http://192.168.0.1/megad.php?pt=4</i>)</p>';
+           spanM += '<p align=justify><b>R</b> - устройство реагирует только при размыкании контакта/выключателя. На сервер отправляется дополнительный параметр "m=1". (Пример: <i>http://192.168.0.1/megad.php?pt=4&m=1</i>)</p>';
+           spanM += '<p align=justify><b>P&amp;R</b> - устройство реагирует как на замыкание, так и на размыкания контакта.</p>';
+           spanM += '<p align=justify><b>С</b> - Click Mode</p><br>&nbsp;<br>';
+           spanM += 'В режиме Click Mode:<br>';
+           spanM += 'При однократном нажатии на выключатель на сервер передается параметр click=1<br>';
+           spanM += '<i>Пример: /md.php?pt=0&click=1&cnt=1</i><br>';
+           spanM += 'При двойном нажатии (двойной клик) на сервер передается параметр click=2<br>';
+           spanM += '<i>Пример: /md.php?pt=0&click=2&cnt=2</i><br>';
+           spanM += 'При удержании клавиши, как и в других режимах, передается параметр m=2<br>';
+           spanM += '<i>Пример: /md.php?pt=0&m=2&cnt=3</i><br>';
+           spanM += 'После отпускания клавиши после длительного нажатия передается параметр m=1 (как в режиме P&amp;R)<br>';
+           spanM += '<i>Пример: /md.php?pt=0&m=1&cnt=3</i><br>&nbsp;<br>';
+           spanM += 'Есть изменения и в работе сценария по умолчанию (Action).<br>';
+           spanM += 'Теперь допустимо написать так: 7:2|8:2<br>';
+           spanM += 'Это означает, что при одинарном клике выполнится 7:2, а при двойном 8:2<br>&nbsp;<br>';
+           spanM += '<p align="justify">Необходимо отметить, что в случае одинарного клика (в режиме "C") информация на сервер (или выполнение сценария) происходит <b>с задержкой в 500 мс</b>, которая требуется для фиксации двойного клика.</p>';
+           spanM += '<p align=center><b>Обработка длительных нажатий</b></p>';
+           spanM += '<p align=justify>Часто возникает задача по-разному реагировать на длительность нажатия. Например, короткое нажатие ';
+           spanM += 'включает/выключает свет в одной комнате, а нажатие и удержание (длительное нажатие) включает свет во всех комнатах. ';
+           spanM += 'Не всегда удобно и легко делать такую обработку на сервере. Но на помощь приходит наше устройство. В том случае, если ';
+           spanM += 'вход (в режиме P или P&amp;R) удерживается более 1,5 секунд, на сервер отправляется второй запрос, в котором передается ';
+           spanM += 'параметр m=2. Пример.<br>';
+           spanM += '<i>http://192.168.0.1/megad.php?pt=4<br>';
+           spanM += '// спустя 1,5 секунды удержания клавиши выключателя<br>';
+           spanM += 'http://192.168.0.1/megad.php?pt=4&m=2<br></i></p>';
+           spanM += '<p align="justify">Это в значительной степени облегчает обработку таких событий на сервере.</p>';
+           spanM += '<p align="justify">Но если необходимости в этой функции нет (к примеру, используются обычные выключатели вместо кнопочных), ';
+           spanM += 'и в серверном ПО функция не используется, то обязательно необходимо делать проверку на наличие параметра m=2, чтобы ';
+           spanM += 'действия не выполнялись дважды, если пользователь случайно нажал и удерживал кнопку дольше обычного.</p>';
+           spanM += '</span></div>';
+
            text += '<tr><td align="center" valign="middle">';
            text += spanAct0 + '</td><td align="left" valign="middle">';
            text += 'Сценарий по умолчанию (Act):&nbsp;';
@@ -1327,6 +1367,17 @@ span:hover::before {
            //text += '</td><td align="left" valign="middle">';
            text += '<label id="lblnaf'+controlPort+'" for="naf'+controlPort+'">'+(ports[controlPort].naf ? 'Вызывать ТОЛЬКО при недоступности сервера' : 'Вызывать всегда') + '</label>';
            text += '</td></tr>';
+
+           text += '<tr><td align="center" valign="middle">';
+           text += spanM + '</td><td align="left" valign="middle">';
+           text += 'Режим срабатывания (Mode):&nbsp;';
+           text += '<select id="m'+controlPort+'" onChange="mChanged('+controlPort+');">';
+           text += '<option value="0" ' + ((ports[controlPort].m == 0) ? 'selected' : '') + '>Только при замыкании контакта (P)</option>';
+           text += '<option value="1" ' + ((ports[controlPort].m == 1) ? 'selected' : '') + '>При замыкании и размыкании (P&amp;R)</option>';
+           text += '<option value="2" ' + ((ports[controlPort].m == 2) ? 'selected' : '') + '>Только при размыкании (R)</option>';
+           text += '<option value="3" ' + ((ports[controlPort].m == 3) ? 'selected' : '') + '>С определением длинного нажатия (Click Mode)</option>';
+           text += '</td></tr>';
+
            text += '</table>';
 
         }
