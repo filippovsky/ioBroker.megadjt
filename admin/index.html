@@ -1098,11 +1098,11 @@ span:hover::before {
         ports[controlPort].m = m;
         if ( ports[controlPort].m == 3 ) {
            ports[controlPort].misc = 0;
-           document.getElementById( "misc" + controlPort ).visibility = "hidden";
-           document.getElementById( "lblmisc" + controlPort ).visibility = "hidden";
+           document.getElementById( "misc" + controlPort ).style.visibility = "hidden";
+           document.getElementById( "lblmisc" + controlPort ).style.visibility = "hidden";
         } else {
-           document.getElementById( "misc" + controlPort ).visibility = "visible";
-           document.getElementById( "lblmisc" + controlPort ).visibility = "visible";
+           document.getElementById( "misc" + controlPort ).style.visibility = "visible";
+           document.getElementById( "lblmisc" + controlPort ).style.visibility = "visible";
         }
     }
     //--------------------------------------------------------------------------------
