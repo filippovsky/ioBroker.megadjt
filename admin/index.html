@@ -15,6 +15,9 @@
 
 <style>
 
+tablemore{
+   font-size: 0.82em;
+}
 /*---------------------------------------------*/
 .htooltip span { /* Внешний вид нашего тултипа */
 	background-color: rgba(245,237,1, 0.9);
@@ -185,7 +188,6 @@ span:hover::before {
         top: 0px;        
         float: right;
         position: absolute;
-        font-size: 0.82em;
        }
      @-webkit-keyframes rainbow {
         0%   {background: gold}
@@ -1175,7 +1177,7 @@ span:hover::before {
 
 
 //        text += 'Тип порта: <select id="pty'+controlPort+'" class="tvalue" data-type="pty" data-port="' + controlPort + '" onChange="ptyChanged('+controlPort+');">';
-        text += '<table border="0"><tr><td align="center" valign="middle">'; // описания портов
+        text += '<table border="0" class="tablemore"><tr><td align="center" valign="middle">'; // описания портов
         text += spanPorts + '</td><td align="left" valign="middle">';
         text += 'Тип порта:&nbsp;';
         //text += '</td><td align="left" valign="middle">';
