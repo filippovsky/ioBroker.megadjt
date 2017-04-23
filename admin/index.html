@@ -1144,6 +1144,21 @@ span:hover::before {
            text = 'Отправлять на сервер в режиме, установленном в Mode';
         }
         document.getElementById( "lblmisc" + controlPort ).innerHTML = text;
+
+        var numXP = 0;
+        var port  = 0;
+        if ( controlPort < 15 ) {
+           numXP = 1;
+           port  = controlPort;
+        } else if ( controlPort < 30 ) {
+           numXP = 2;
+           port = controlPort - 15;
+        } else {
+           numXP = 0;
+           port = controlPort;
+        }
+        loadPreset( numXP, port ); // при изменении типа порта перерисовываем его описание
+
     }
     //--------------------------------------------------------------------------------
     function loadPreset( numXP, portNum ) {
