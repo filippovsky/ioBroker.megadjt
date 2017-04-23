@@ -1096,6 +1096,14 @@ span:hover::before {
     function mChanged ( controlPort ) {
         var m = $("#m"+controlPort+" option:selected").val();
         ports[controlPort].m = m;
+        if ( ports[controlPort].m == 3 ) {
+           ports[controlPort].misc = 0;
+           document.getElementById( "misc" + controlPort ).visibility = "hidden";
+           document.getElementById( "lblmisc" + controlPort ).visibility = "hidden";
+        } else {
+           document.getElementById( "misc" + controlPort ).visibility = "visible";
+           document.getElementById( "lblmisc" + controlPort ).visibility = "visible";
+        }
     }
     //--------------------------------------------------------------------------------
     function ecmdChanged ( controlPort ) {
@@ -1144,21 +1152,6 @@ span:hover::before {
            text = 'Отправлять на сервер в режиме, установленном в Mode';
         }
         document.getElementById( "lblmisc" + controlPort ).innerHTML = text;
-
-        var numXP = 0;
-        var port  = 0;
-        if ( controlPort < 15 ) {
-           numXP = 1;
-           port  = controlPort;
-        } else if ( controlPort < 30 ) {
-           numXP = 2;
-           port = controlPort - 15;
-        } else {
-           numXP = 0;
-           port = controlPort;
-        }
-        loadPreset( numXP, port ); // при изменении типа порта перерисовываем его описание
-
     }
     //--------------------------------------------------------------------------------
     function loadPreset( numXP, portNum ) {
