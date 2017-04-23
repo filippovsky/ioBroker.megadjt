@@ -713,6 +713,7 @@ span:hover::before {
 
                 if (ports[index].eth    === undefined) ports[index].eth = '';
                 if (ports[index].ecmd   === undefined) ports[index].ecmd = '';
+                if (ports[index].af     === undefined) ports[index].af = 0; // мое 0.7.0
                 if (ports[index].naf    === undefined) ports[index].naf = 0;
                 if (ports[index].d      === undefined) ports[index].d = 0;
                 if (ports[index].misc   === undefined) ports[index].misc = 0;
@@ -1133,6 +1134,18 @@ span:hover::before {
         document.getElementById( "lbl" + controlPort ).innerHTML = text;
     }
     //--------------------------------------------------------------------------------
+    function MiscChanged ( controlPort ) {
+        var text = "";
+        if ( $("#misc"+controlPort ).prop('checked') ) {
+           ports[controlPort].misc = 1;
+           text = 'Отправлять на сервер всегда в режиме P&amp;R';
+        } else {
+           ports[controlPort].misc = 0;
+           text = 'Отправлять на сервер в режиме, установленном в Mode';
+        }
+        document.getElementById( "lblmisc" + controlPort ).innerHTML = text;
+    }
+    //--------------------------------------------------------------------------------
     function loadPreset( numXP, portNum ) {
         var xp = "";
         var text = "";
@@ -1143,6 +1156,7 @@ span:hover::before {
         var spanNaf0 = "";
         var spanPorts = "";
         var spanM = "";
+        var spanMisc = "";
 
         if ( numXP > 0 ) {
            xp = $("#xp"+numXP+" option:selected").val();
@@ -1336,6 +1350,12 @@ span:hover::before {
            spanM += 'действия не выполнялись дважды, если пользователь случайно нажал и удерживал кнопку дольше обычного.</p>';
            spanM += '</span></div>';
 
+           spanMisc  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img><span>';
+           spanMisc += '<p align=justify>Этот флажок указывает, что при наличии сервера - устройство отправляет на сервер сообщения всегда ';
+           spanMisc += 'в режиме P&amp;R, а при его отсутствии Action выполняется только в том режиме, который установлен в Mode. <br>';
+           spanMisc += '<i>Данная опция не доступна для Click Mode.</i></p>';
+           spanMisc += '</span></div>';
+
            text += '<tr><td align="center" valign="middle">';
            text += spanAct0 + '</td><td align="left" valign="middle">';
            text += 'Сценарий по умолчанию (Act):&nbsp;';
@@ -1375,8 +1395,20 @@ span:hover::before {
            text += '<option value="0" ' + ((ports[controlPort].m == 0) ? 'selected' : '') + '>Только при замыкании контакта (P)</option>';
            text += '<option value="1" ' + ((ports[controlPort].m == 1) ? 'selected' : '') + '>При замыкании и размыкании (P&amp;R)</option>';
            text += '<option value="2" ' + ((ports[controlPort].m == 2) ? 'selected' : '') + '>Только при размыкании (R)</option>';
-           text += '<option value="3" ' + ((ports[controlPort].m == 3) ? 'selected' : '') + '>С определением длинного нажатия (Click Mode)</option>';
+           text += '<option value="3" ' + ((ports[controlPort].m == 3) ? 'selected' : '') + '>С определением двойного нажатия (Click Mode)</option>';
            text += '</td></tr>';
+
+           if (ports[controlPort].m <> 3) {
+              // опция недоступна для Click Mode
+              text += '<tr><td align="center" valign="middle">';
+              text += spanMisc + '</td><td align="left" valign="middle">';
+              text += '<input type="checkbox" class="checkbox" id="misc'+controlPort+'" '+ (ports[controlPort].misc ? 'checked' : '') + 
+                   ' onChange="MiscChanged('+controlPort+');"/>&nbsp;';
+              //text += '</td><td align="left" valign="middle">';
+              text += '<label id="lblmisc'+controlPort+'" for="misc'+controlPort+'">'+(ports[controlPort].misc ? 'Всегда отправлять в режиме P&amp;R' : 'Выполянть Act в режиме, установленном Mode') + '</label>';
+              text += '</td></tr>';
+           }
+
 
            text += '</table>';
 
@@ -1498,6 +1530,7 @@ span:hover::before {
                     m:      0,
                     af:     0,
                     naf:    0,
+                    misc:   0,
                     act:    '',
                     long:   false,
                     double: false,
@@ -1847,6 +1880,7 @@ span:hover::before {
                         aPorts[p].name    = ports[p].name  || ('P' + p);
                         aPorts[p].ecmd    = aPorts[p].ecmd || '';
                         aPorts[p].eth     = aPorts[p].eth  || '';
+                        aPorts[p].af      = aPorts[p].af   || 0; // мое 0.7.0
                         aPorts[p].naf     = aPorts[p].naf  || 0;
                         aPorts[p].m       = aPorts[p].m    || 0;
                         aPorts[p].misc    = aPorts[p].misc || 0;
