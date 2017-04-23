@@ -1398,14 +1398,16 @@ span:hover::before {
            text += '<option value="3" ' + ((ports[controlPort].m == 3) ? 'selected' : '') + '>С определением двойного нажатия (Click Mode)</option>';
            text += '</td></tr>';
 
-           if (ports[controlPort].m <> 3) {
+           if (ports[controlPort].m == 3) {
               // опция недоступна для Click Mode
+              ports[controlPort].misc = 0;
+           } else {
               text += '<tr><td align="center" valign="middle">';
               text += spanMisc + '</td><td align="left" valign="middle">';
               text += '<input type="checkbox" class="checkbox" id="misc'+controlPort+'" '+ (ports[controlPort].misc ? 'checked' : '') + 
                    ' onChange="MiscChanged('+controlPort+');"/>&nbsp;';
               //text += '</td><td align="left" valign="middle">';
-              text += '<label id="lblmisc'+controlPort+'" for="misc'+controlPort+'">'+(ports[controlPort].misc ? 'Всегда отправлять в режиме P&amp;R' : 'Выполянть Act в режиме, установленном Mode') + '</label>';
+              text += '<label id="lblmisc'+controlPort+'" for="misc'+controlPort+'">'+(ports[controlPort].misc ? 'Всегда отправлять в режиме P&amp;R' : 'Выполнять Act в режиме, установленном Mode') + '</label>';
               text += '</td></tr>';
            }
 
