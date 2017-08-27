@@ -2270,6 +2270,20 @@ span:hover::before {
              <td>Прошивка</td>
            </tr>
            <tr>
+             <td><b>4.16b3</td>
+             <td>24.08.2017</td>
+             <td><ul>
+               <li>В Web-интерфейсе для SDA-порта отображается состояние всех каналов расширителя MCP23008.<br>
+                   Также возможно сделать запрос вида: <a href=http://192.168.0.14/sec/?pt=31&cmd=get>http://192.168.0.14/sec/?pt=31&cmd=get</a>
+                   <br>
+                   <img src="firmware/4-16b3.gif"><br>
+               </li>
+               <li>Улучшена работа функции srv-loop</li>
+               </ul>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.16b3');">Прошить</button></td>
+           </tr>
+           <tr>
              <td><b>4.15b9</td>
              <td>30.06.2017</td>
              <td>Увеличено поле Net и исправлена ошибка в работе функции Net в некоторых режимах
