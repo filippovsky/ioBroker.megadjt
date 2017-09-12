@@ -940,15 +940,6 @@ span:hover::before {
           width = "17px";
           labelX = "164px";
           labelY = "15px";
-       } else if (xp == "8I7O-S" || xp == "8I7O-SD") {
-          stepX = 45;
-          divClass = "sd7i7or";
-          startX = 172;
-          y1 = "236px";
-          y2 = "315px";
-          width = "17px";
-          labelX = "164px";
-          labelY = "15px";
        } else if (xp == "14-IN") {
           stepX = 46;
           divClass = "sd7i7or";
@@ -1052,20 +1043,6 @@ span:hover::before {
           }
 
           if (xp == "7I7O-R" || xp == "7I7O-SD") {
-             if ( m < 7 ) {
-                if ( ports[k].pty == 255) {
-                   document.getElementById( spanId ).className = "circlebutton_darkgreen";
-                } else {
-                   document.getElementById( spanId ).className = "circlebutton_green";
-                }
-             } else {
-                if ( ports[k].pty == 255) {
-                   document.getElementById( spanId ).className = "circlebutton_darkred";
-                } else {
-                   document.getElementById( spanId ).className = "circlebutton_red";
-                }
-             }
-          } else if (xp == "8I7O-S" || xp == "8I7O-SD") {
              if ( m < 7 ) {
                 if ( ports[k].pty == 255) {
                    document.getElementById( spanId ).className = "circlebutton_darkgreen";
@@ -1273,25 +1250,6 @@ span:hover::before {
                  }
               }
            }
-        } else if ( xp == '8I7O-S' ) {
-           if (portNum < 7) {
-              text += '<option value="0" ' + ((ports[controlPort].pty == 0)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
-           } else if (portNum < 15) {
-              text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Симисторный недиммируемый выход</option>';
-           } else {
-              text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
-           }
-        } else if ( xp == '8I7O-SD' ) {
-           if (portNum < 7) {
-              text += '<option value="0" ' + ((ports[controlPort].pty == 0)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
-           } else if ( portNum == 10 || portNum == 12 || portNum == 13 ) {
-              text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Симисторный диммируемый выход</option>';
-           } else if (portNum < 15) {
-              text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Симисторный недиммируемый выход</option>';
-           } else {
-              text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
-           }
-
         } else if ( xp == '14-IN' ) {
            text += '<option value="0" ' + ((ports[controlPort].pty == 0)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
            text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
@@ -1300,12 +1258,7 @@ span:hover::before {
               text += '<option value="2" ' + ((ports[controlPort].pty == 2)   ? 'selected' : '') + '>АЦП-вход для аналоговых датчиков</option>';
            }
         } else if ( xp == '14-R' ) {
-           if (portNum < 14) {
-              text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Релейный выход</option>';
-           } else {
-              text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
-           }
-
+           text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Релейный выход</option>';
         } else if ( xp == 'control' ) {
            if ( portNum < 36 ) {
               text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
@@ -1641,7 +1594,7 @@ span:hover::before {
 
         imgName = "xp"+numXP+"_img";
 
-        if (xp == '7I7O-R' || xp == '14-IN' || xp == '7I7O-SD' || xp == '8I7O-S' || xp = '8I7O-SD') {
+        if (xp == '7I7O-R' || xp == '14-IN' || xp == '7I7O-SD' ) {
            fon = fon + ".gif";
         } else {
            fon = fon + ".jpg";
@@ -2266,8 +2219,6 @@ span:hover::before {
        <option value="none">Не подключено</option>
        <option value="7I7O-R">Релейный модуль 7I7O-R</option>
        <option value="7I7O-SD">Симисторный модуль 7I7O-SD</option>
-       <option value="8I7O-S">Симисторный модуль 8I7O-S</option>
-       <option value="8I7O-SD">Симисторный модуль 8I7O-SD</option>
        <option value="14-IN">Модуль входов 14-IN</option>
        <option value="14-R">Релейный модуль 14-R</option>
     </select>
@@ -2277,8 +2228,6 @@ span:hover::before {
        <option value="none">Не подключено</option>
        <option value="7I7O-R">Релейный модуль 7I7O-R</option>
        <option value="7I7O-SD">Симисторный модуль 7I7O-SD</option>
-       <option value="8I7O-S">Симисторный модуль 8I7O-S</option>
-       <option value="8I7O-SD">Симисторный модуль 8I7O-SD</option>
        <option value="14-IN">Модуль входов 14-IN</option>
        <option value="14-R">Релейный модуль 14-R</option>
     </select>
