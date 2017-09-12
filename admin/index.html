@@ -547,65 +547,65 @@ span:hover::before {
                 '< threshold',
                 '<> threshold'
             ];
-        } else if (portSettings.pty == 4) {
+      } else if (portSettings.pty == 4) {
             modes = [
                 'NC',
                 'SDA',
                 'SCL'
             ];   
-        }
-        if (modes) {
-            text += '<td class="tspace"><select class="tvalue" data-type="m" data-port="' + index + '">';
+      }
+      if (modes) {
+         text += '<td class="tspace"><select class="tvalue" data-type="m" data-port="' + index + '">';
 
-            for (var m = 0; m < modes.length; m++) {
-                text += '<option value="' + m + '" ' + ((portSettings.m == m) ? 'selected' : '') + '>' + _(modes[m]) + '</option>';
-            }
-            text += '</select</td>';
-        } else {
-            text += '<td class="tspace"></td>';
-        }
-        // buttons
-        text += '<td class="tspace"><table class="no-space"><tr class="no-space">';
-        text += '<td class="no-space"><button data-port="' + index + '" class="btn-delete"></button></td>';
-        text += index ? '<td class="no-space"><button data-port="' + index + '" class="btn-up"></button></td>' : '<td class="no-space"><div style="width: 24px"> </div></td>';
-        text += (index != ports.length - 1) ? '<td class="no-space"><button data-port="' + index + '" class="btn-down"></button></td>' : '<td class="no-space"></td>';
+         for (var m = 0; m < modes.length; m++) {
+            text += '<option value="' + m + '" ' + ((portSettings.m == m) ? 'selected' : '') + '>' + _(modes[m]) + '</option>';
+         }
+         text += '</select</td>';
+      } else {
+         text += '<td class="tspace"></td>';
+      }
+      // buttons
+      text += '<td class="tspace"><table class="no-space"><tr class="no-space">';
+      text += '<td class="no-space"><button data-port="' + index + '" class="btn-delete"></button></td>';
+      text += index ? '<td class="no-space"><button data-port="' + index + '" class="btn-up"></button></td>' : '<td class="no-space"><div style="width: 24px"> </div></td>';
+      text += (index != ports.length - 1) ? '<td class="no-space"><button data-port="' + index + '" class="btn-down"></button></td>' : '<td class="no-space"></td>';
 
-        text += '</tr></table></td>';
+      text += '</tr></table></td>';
 
-
-        text += '<td class="tspace">';
+      text += '<td class="tspace">';
         
-        // raw
-        if (portSettings.pty == 0) {
-            text += ' <input type="checkbox" class="tvalue" data-type="misc" data-port="' + index + '" ' + (portSettings.misc   ? 'checked' : '') + '/>, ';
-        }
+      // raw
+      if (portSettings.pty == 0) {
+         text += ' <input type="checkbox" class="tvalue" data-type="misc" data-port="' + index + '" ' + (portSettings.misc   ? 'checked' : '') + '/>, ';
+      }
 
-        // ecmd(Action) and eth(net action)
-        ///if (portSettings.pty == 0 || portSettings.pty == 2 || (portSettings.pty == 3 && portSettings.d != 1 && portSettings.d != 2)) {
-        if (portSettings.pty == 0 || portSettings.pty == 2 || (portSettings.pty == 3 && (portSettings.d == 3 || portSettings.d == 4))) {
-            // ecmd(Action)
-            text += _('Action:') + ' <input class="tvalue" data-type="ecmd" type="text" data-port="' + index + '" value="' + (portSettings.ecmd || '') + '"  style="width: 70px" maxsize="11"/>, ';
-            text += ' <input type="checkbox" class="tvalue" data-type="af" data-port="' + index + '" ' + (portSettings.af   ? 'checked' : '') + '/>';
-            // eth(net action)
-            text += _('Net:') + ' <input class="tvalue" data-type="eth" type="text" data-port="' + index + '" value="' + portSettings.eth  + '" style="width: 70px" maxsize="35"/>';
-            text += ' <input type="checkbox" class="tvalue" data-type="naf" data-port="' + index + '" ' + (portSettings.naf   ? 'checked' : '') + '/>';
-        }
+      // ecmd(Action) and eth(net action)
+      ///if (portSettings.pty == 0 || portSettings.pty == 2 || (portSettings.pty == 3 && portSettings.d != 1 && portSettings.d != 2)) {
+      if (portSettings.pty == 0 || portSettings.pty == 2 || (portSettings.pty == 3 && (portSettings.d == 3 || portSettings.d == 4))) {
+         // ecmd(Action)
+         text += _('Action:') + ' <input class="tvalue" data-type="ecmd" type="text" data-port="' + index + '" value="' + (portSettings.ecmd || '') + '"  style="width: 70px" maxsize="11"/>, ';
+         text += ' <input type="checkbox" class="tvalue" data-type="af" data-port="' + index + '" ' + (portSettings.af   ? 'checked' : '') + '/>';
+         // eth(net action)
+         text += _('Net:') + ' <input class="tvalue" data-type="eth" type="text" data-port="' + index + '" value="' + portSettings.eth  + '" style="width: 70px" maxsize="35"/>';
+         text += ' <input type="checkbox" class="tvalue" data-type="naf" data-port="' + index + '" ' + (portSettings.naf   ? 'checked' : '') + '/>';
+      }
 
-        //d(default state)
-        if (portSettings.pty == 1) {
-            ///if (portSettings.m) {
-                ///portSettings.d = 0;
-            ///} else {
-            if (portSettings.m == 0) {
-                text += _('Default state:') + ' <select class="tvalue" data-type="d" data-port="' + index + '">';
-                text += '<option value="0" ' + ((portSettings.d == 0) ? 'selected' : '') + '>' + _('off') + '</option>';
-                text += '<option value="1" ' + ((portSettings.d == 1) ? 'selected' : '') + '>' + _('on') + '</option>';
-                text += '</select>';
+      //d(default state)
+      if (portSettings.pty == 1) {
+         ///if (portSettings.m) {
+         ///portSettings.d = 0;
+         ///} else {
+         if (portSettings.m == 0) {
+            text += _('Default state:') + ' <select class="tvalue" data-type="d" data-port="' + index + '">';
+            text += '<option value="0" ' + ((portSettings.d == 0) ? 'selected' : '') + '>' + _('off') + '</option>';
+            text += '<option value="1" ' + ((portSettings.d == 1) ? 'selected' : '') + '>' + _('on') + '</option>';
+            text += '</select>';
             ///}
-            } else if (portSettings.m == 1) {
-                text += _('Default state:') + ' <input class="tvalue" data-type="d" type="text" data-port="' + index + '" value="' + (portSettings.d || 0) + '" size=4 maxsize="3"/>';
-            }   
-        } else if (portSettings.pty == 0) {
+         } else if (portSettings.m == 1) {
+            text += _('Default state:') + ' <input class="tvalue" data-type="d" type="text" data-port="' + index + '" value="' + (portSettings.d || 0) + '" size=4 maxsize="3"/>';
+         }   
+   
+      } else if (portSettings.pty == 0) {
             ///text += _('De-bounce:') + ' <input type="checkbox" class="tvalue" data-type="d" data-port="' + index + '"/>';
             text += ', ' + _('De-bounce:') + ' <input type="checkbox" class="tvalue" data-type="d" data-port="' + index + '" ' + (portSettings.d   ? 'checked' : '') + '/>';
         }
@@ -938,7 +938,7 @@ span:hover::before {
           width = "17px";
           labelX = "164px";
           labelY = "15px";
-       } else if (xp == "8I7O-S") {
+/*       } else if (xp == "8I7O-S") {
           stepX = 45;
           divClass = "sd7i7or";
           startX = 172;
@@ -955,7 +955,7 @@ span:hover::before {
           y2 = "315px";
           width = "17px";
           labelX = "164px";
-          labelY = "15px";
+          labelY = "15px";*/
        } else if (xp == "14-IN") {
           stepX = 46;
           divClass = "sd7i7or";
@@ -1072,7 +1072,7 @@ span:hover::before {
                    document.getElementById( spanId ).className = "circlebutton_red";
                 }
              }
-          } else if ((xp == "8I7O-S") || (xp == "8I7O-SD")) {
+/*          } else if ((xp == "8I7O-S") || (xp == "8I7O-SD")) {
              if ( m < 7 ) {
                 if ( ports[k].pty == 255) {
                    document.getElementById( spanId ).className = "circlebutton_darkgreen";
@@ -1085,7 +1085,7 @@ span:hover::before {
                 } else {
                    document.getElementById( spanId ).className = "circlebutton_red";
                 }
-             }
+             }*/
           } else if (xp == "14-IN") {
              if ( ports[k].pty == 255) {
                  document.getElementById( spanId ).className = "circlebutton_darkgreen";
@@ -1280,7 +1280,7 @@ span:hover::before {
                  }
               }
            }
-        } else if ( xp == '8I7O-S' ) {
+/*        } else if ( xp == '8I7O-S' ) {
            if (portNum < 7) {
               text += '<option value="0" ' + ((ports[controlPort].pty == 0)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
            } else if (portNum < 15) {
@@ -1297,7 +1297,7 @@ span:hover::before {
               text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Симисторный недиммируемый выход</option>';
            } else {
               text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
-           }
+           }*/
         } else if ( xp == '14-IN' ) {
            text += '<option value="0" ' + ((ports[controlPort].pty == 0)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
            text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
@@ -1647,7 +1647,7 @@ span:hover::before {
 
         imgName = "xp"+numXP+"_img";
 
-        if (xp == '7I7O-R' || xp == '14-IN' || xp == '7I7O-SD' || xp == '8I7O-S' || xp = '8I7O-SD') {
+        if (xp == '7I7O-R' || xp == '14-IN' || xp == '7I7O-SD' /*|| xp == '8I7O-S' || xp = '8I7O-SD'*/) {
            fon = fon + ".gif";
         } else {
            fon = fon + ".jpg";
@@ -2272,8 +2272,8 @@ span:hover::before {
        <option value="none">Не подключено</option>
        <option value="7I7O-R">Релейный модуль 7I7O-R</option>
        <option value="7I7O-SD">Симисторный модуль 7I7O-SD</option>
-       <option value="8I7O-S">Симисторный модуль 8I7O-S</option>
-       <option value="8I7O-SD">Симисторный модуль 8I7O-SD</option>
+ <!--      <option value="8I7O-S">Симисторный модуль 8I7O-S</option>
+       <option value="8I7O-SD">Симисторный модуль 8I7O-SD</option> -->
        <option value="14-IN">Модуль входов 14-IN</option>
        <option value="14-R">Релейный модуль 14-R</option>
     </select>
@@ -2283,8 +2283,8 @@ span:hover::before {
        <option value="none">Не подключено</option>
        <option value="7I7O-R">Релейный модуль 7I7O-R</option>
        <option value="7I7O-SD">Симисторный модуль 7I7O-SD</option>
-       <option value="8I7O-S">Симисторный модуль 8I7O-S</option>
-       <option value="8I7O-SD">Симисторный модуль 8I7O-SD</option>
+<!--       <option value="8I7O-S">Симисторный модуль 8I7O-S</option>
+       <option value="8I7O-SD">Симисторный модуль 8I7O-SD</option> -->
        <option value="14-IN">Модуль входов 14-IN</option>
        <option value="14-R">Релейный модуль 14-R</option>
     </select>
