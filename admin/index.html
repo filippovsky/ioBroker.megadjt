@@ -453,71 +453,69 @@ span:hover::before {
         "Update Firmware":      {"en": "Update Firmware",       "de": "Update Firmware",            "ru": "Перепрошить Мегу"},
         "Firmware updated":     {"en": "Firmware updated",      "de": "Firmware updated",           "ru": "Мега перепрошита"}
     };
-    var onchange = null;
-    var rooms    = [];
-    var ports    = [];
-    var active   = false;
+   var onchange = null;
+   var rooms    = [];
+   var ports    = [];
+   var active   = false;
 
-    //------------------------------------------------------------------------------------------------
-    function getFirmwareVersion () {
-        var fw_version = "";
-        var fw_version_last_known = "";
+   //------------------------------------------------------------------------------------------------
+   function getFirmwareVersion () {
+      var fw_version = "";
+      var fw_version_last_known = "";
 
-        //socket.emit('getState',  adapter + '.' + instance + '.version.firmware', function (err, state) {
-        socket.emit('getState',  adapter + '.' + instance + '.fw_version', function (err, state) {
-           fw_version = state.val;
-           $('#fw_version').val(fw_version);
+      //socket.emit('getState',  adapter + '.' + instance + '.version.firmware', function (err, state) {
+      socket.emit('getState',  adapter + '.' + instance + '.fw_version', function (err, state) {
+         fw_version = state.val;
+         $('#fw_version').val(fw_version);
 
-           //socket.emit('getState',  adapter + '.' + instance + '.version.firmware_last_known', function (err, state) {
-           socket.emit('getState',  adapter + '.' + instance + '.fw_version_last_known', function (err, state) {
-              fw_version_last_known = state.val;
-              $('#fw_version_last_known').val(fw_version_last_known);
-              if  ( fw_version === fw_version_last_known ) {
-                 document.getElementById( 'fw_version' ).style.backgroundColor = "lightgreen";
-                 document.getElementById( 'fw_version_last_known' ).style.backgroundColor = "lightgreen";
+         //socket.emit('getState',  adapter + '.' + instance + '.version.firmware_last_known', function (err, state) {
+         socket.emit('getState',  adapter + '.' + instance + '.fw_version_last_known', function (err, state) {
+            fw_version_last_known = state.val;
+            $('#fw_version_last_known').val(fw_version_last_known);
+            if  ( fw_version === fw_version_last_known ) {
+               document.getElementById( 'fw_version' ).style.backgroundColor = "lightgreen";
+               document.getElementById( 'fw_version_last_known' ).style.backgroundColor = "lightgreen";
+            } else {
+               document.getElementById( 'fw_version' ).style.backgroundColor = "yellow";
+               document.getElementById( 'fw_version_last_known' ).style.backgroundColor = "pink";
+            }
+            onchange();  
+         });
+      });
+   }
 
-              } else {
-                 document.getElementById( 'fw_version' ).style.backgroundColor = "yellow";
-                 document.getElementById( 'fw_version_last_known' ).style.backgroundColor = "pink";
-              }
-              onchange();  
-          });
-        });
-    }
+   //------------------------------------------------------------------------------------------------
+   function showOnePort(index, portSettings) {
+      // name, room, role, pty(type), ecmd(Action), eth(net action), m(mode), d(default state), pwm(0-255), misc (threshold)
+      var text = '<tr class="tspace">';
+      // index
+      ///text += '<td class="tspace">' + ((index == 14 || index == 15) ? ('A' + (index - 8)) : ('P' + index)) + '</td>';
+      text += '<td class="tspace">' + ((index == 37) ? ('P' + index) : ('P' + index)) + '</td>';
+      // name
+      text += '<td class="tspace"><input class="tvalue" type="text" data-type="name" data-port="' + index + '" value="' + (portSettings.name || '') + '" style="width: 100%"/></td>';
+      // room
+      text += '<td class="tspace"><select class="tvalue" data-type="room" data-port="' + index + '" style="width: 100%"><option value=""></option>';
 
-    //------------------------------------------------------------------------------------------------
-    function showOnePort(index, portSettings) {
-        // name, room, role, pty(type), ecmd(Action), eth(net action), m(mode), d(default state), pwm(0-255), misc (threshold)
-        var text = '<tr class="tspace">';
-        // index
-        ///text += '<td class="tspace">' + ((index == 14 || index == 15) ? ('A' + (index - 8)) : ('P' + index)) + '</td>';
-        text += '<td class="tspace">' + ((index == 37) ? ('P' + index) : ('P' + index)) + '</td>';
-        // name
-        text += '<td class="tspace"><input class="tvalue" type="text" data-type="name" data-port="' + index + '" value="' + (portSettings.name || '') + '" style="width: 100%"/></td>';
+      for (var r in rooms) {
+         text += '<option value="' + r + '" ' + ((portSettings.room == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
+      }
+      '</td>';
 
-        // room
-        text += '<td class="tspace"><select class="tvalue" data-type="room" data-port="' + index + '" style="width: 100%"><option value=""></option>';
+      // role
+      text += '<td class="tspace"><input class="tvalue" type="text"  data-type="role" data-port="' + index + '" value="' + (portSettings.role || '') + '" style="width: 100%"/></td>';
 
-        for (var r in rooms) {
-            text += '<option value="' + r + '" ' + ((portSettings.room == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
-        }
-        '</td>';
-
-        // role
-        text += '<td class="tspace"><input class="tvalue" type="text"  data-type="role" data-port="' + index + '" value="' + (portSettings.role || '') + '" style="width: 100%"/></td>';
-
-        // type
-        ///text += '<td class="tspace"><select class="tvalue" ' + (((index == 14 || index == 15) && portSettings.pty == 2) ? 'disabled' : '') + ' data-type="pty" data-port="' + index + '" style="width: 100%">';
-        text += '<td class="tspace"><select class="tvalue" ' + ' data-type="pty" data-port="' + index + '" style="width: 100%">';
-        text += '<option value="255" ' + ((portSettings.pty == 255) ? 'selected' : '') + '>' + _('NC')              + '</option>';
-        text += '<option value="0" '   + ((portSettings.pty == 0)   ? 'selected' : '') + '>' + _('Input')           + '</option>';
-        text += '<option value="1" '   + ((portSettings.pty == 1)   ? 'selected' : '') + '>' + _('Output')          + '</option>';
-        if (index == 0 || index == 1 || index == 2 || index == 3 || index == 4 || index == 5 || index == 36 || index == 37) {
-            text += '<option value="2" '   + ((portSettings.pty == 2)   ? 'selected' : '') + '>' + _('ADC')         + '</option>';
-        }
-        text += '<option value="3" '   + ((portSettings.pty == 3)   ? 'selected' : '') + '>' + _('Digital Sensor')  + '</option>';
-        text += '<option value="4" '   + ((portSettings.pty == 4)   ? 'selected' : '') + '>' + _('I2C Bus')  + '</option>';
-        '</td>';
+      // type
+      ///text += '<td class="tspace"><select class="tvalue" ' + (((index == 14 || index == 15) && portSettings.pty == 2) ? 'disabled' : '') + ' data-type="pty" data-port="' + index + '" style="width: 100%">';
+      text += '<td class="tspace"><select class="tvalue" ' + ' data-type="pty" data-port="' + index + '" style="width: 100%">';
+      text += '<option value="255" ' + ((portSettings.pty == 255) ? 'selected' : '') + '>' + _('NC')              + '</option>';
+      text += '<option value="0" '   + ((portSettings.pty == 0)   ? 'selected' : '') + '>' + _('Input')           + '</option>';
+      text += '<option value="1" '   + ((portSettings.pty == 1)   ? 'selected' : '') + '>' + _('Output')          + '</option>';
+      if (index == 0 || index == 1 || index == 2 || index == 3 || index == 4 || index == 5 || index == 36 || index == 37) {
+         text += '<option value="2" '   + ((portSettings.pty == 2)   ? 'selected' : '') + '>' + _('ADC')         + '</option>';
+      }
+      text += '<option value="3" '   + ((portSettings.pty == 3)   ? 'selected' : '') + '>' + _('Digital Sensor')  + '</option>';
+      text += '<option value="4" '   + ((portSettings.pty == 4)   ? 'selected' : '') + '>' + _('I2C Bus')  + '</option>';
+      '</td>';
 
         // mode
         var modes = null;
@@ -940,6 +938,24 @@ span:hover::before {
           width = "17px";
           labelX = "164px";
           labelY = "15px";
+       } else if (xp == "8I7O-S") {
+          stepX = 45;
+          divClass = "sd7i7or";
+          startX = 172;
+          y1 = "236px";
+          y2 = "315px";
+          width = "17px";
+          labelX = "164px";
+          labelY = "15px";
+       } else if (xp == "8I7O-SD") {
+          stepX = 45;
+          divClass = "sd7i7or";
+          startX = 172;
+          y1 = "236px";
+          y2 = "315px";
+          width = "17px";
+          labelX = "164px";
+          labelY = "15px";
        } else if (xp == "14-IN") {
           stepX = 46;
           divClass = "sd7i7or";
@@ -1043,6 +1059,20 @@ span:hover::before {
           }
 
           if (xp == "7I7O-R" || xp == "7I7O-SD") {
+             if ( m < 7 ) {
+                if ( ports[k].pty == 255) {
+                   document.getElementById( spanId ).className = "circlebutton_darkgreen";
+                } else {
+                   document.getElementById( spanId ).className = "circlebutton_green";
+                }
+             } else {
+                if ( ports[k].pty == 255) {
+                   document.getElementById( spanId ).className = "circlebutton_darkred";
+                } else {
+                   document.getElementById( spanId ).className = "circlebutton_red";
+                }
+             }
+          } else if ((xp == "8I7O-S") || (xp == "8I7O-SD")) {
              if ( m < 7 ) {
                 if ( ports[k].pty == 255) {
                    document.getElementById( spanId ).className = "circlebutton_darkgreen";
@@ -1250,6 +1280,24 @@ span:hover::before {
                  }
               }
            }
+        } else if ( xp == '8I7O-S' ) {
+           if (portNum < 7) {
+              text += '<option value="0" ' + ((ports[controlPort].pty == 0)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
+           } else if (portNum < 15) {
+              text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Симисторный недиммируемый выход</option>';
+           } else {
+              text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
+           }
+        } else if ( xp == '8I7O-SD' ) {
+           if (portNum < 7) {
+              text += '<option value="0" ' + ((ports[controlPort].pty == 0)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
+           } else if ( portNum == 10 || portNum == 12 || portNum == 13 ) {
+              text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Симисторный диммируемый выход</option>';
+           } else if (portNum < 15) {
+              text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Симисторный недиммируемый выход</option>';
+           } else {
+              text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
+           }
         } else if ( xp == '14-IN' ) {
            text += '<option value="0" ' + ((ports[controlPort].pty == 0)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
            text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
@@ -1258,7 +1306,12 @@ span:hover::before {
               text += '<option value="2" ' + ((ports[controlPort].pty == 2)   ? 'selected' : '') + '>АЦП-вход для аналоговых датчиков</option>';
            }
         } else if ( xp == '14-R' ) {
-           text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Релейный выход</option>';
+           if (portNum < 14) {
+              text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Релейный выход</option>';
+           } else {
+              text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
+           }
+
         } else if ( xp == 'control' ) {
            if ( portNum < 36 ) {
               text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
@@ -1594,7 +1647,7 @@ span:hover::before {
 
         imgName = "xp"+numXP+"_img";
 
-        if (xp == '7I7O-R' || xp == '14-IN' || xp == '7I7O-SD' ) {
+        if (xp == '7I7O-R' || xp == '14-IN' || xp == '7I7O-SD' || xp == '8I7O-S' || xp = '8I7O-SD') {
            fon = fon + ".gif";
         } else {
            fon = fon + ".jpg";
@@ -2219,6 +2272,8 @@ span:hover::before {
        <option value="none">Не подключено</option>
        <option value="7I7O-R">Релейный модуль 7I7O-R</option>
        <option value="7I7O-SD">Симисторный модуль 7I7O-SD</option>
+       <option value="8I7O-S">Симисторный модуль 8I7O-S</option>
+       <option value="8I7O-SD">Симисторный модуль 8I7O-SD</option>
        <option value="14-IN">Модуль входов 14-IN</option>
        <option value="14-R">Релейный модуль 14-R</option>
     </select>
@@ -2228,6 +2283,8 @@ span:hover::before {
        <option value="none">Не подключено</option>
        <option value="7I7O-R">Релейный модуль 7I7O-R</option>
        <option value="7I7O-SD">Симисторный модуль 7I7O-SD</option>
+       <option value="8I7O-S">Симисторный модуль 8I7O-S</option>
+       <option value="8I7O-SD">Симисторный модуль 8I7O-SD</option>
        <option value="14-IN">Модуль входов 14-IN</option>
        <option value="14-R">Релейный модуль 14-R</option>
     </select>
