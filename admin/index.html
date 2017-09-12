@@ -499,7 +499,7 @@ span:hover::before {
       for (var r in rooms) {
          text += '<option value="' + r + '" ' + ((portSettings.room == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
       }
-      '</td>';
+      text += '</td>';
 
       // role
       text += '<td class="tspace"><input class="tvalue" type="text"  data-type="role" data-port="' + index + '" value="' + (portSettings.role || '') + '" style="width: 100%"/></td>';
@@ -515,32 +515,32 @@ span:hover::before {
       }
       text += '<option value="3" '   + ((portSettings.pty == 3)   ? 'selected' : '') + '>' + _('Digital Sensor')  + '</option>';
       text += '<option value="4" '   + ((portSettings.pty == 4)   ? 'selected' : '') + '>' + _('I2C Bus')  + '</option>';
-      '</td>';
+      text += '</td>';
 
-        // mode
-        var modes = null;
-        if (portSettings.pty == 0) {
-            modes = [
+      // mode
+      var modes = null;
+      if (portSettings.pty == 0) {
+         modes = [
                 'normal opened',
                 'on change',
                 'normal closed',
                 'click mode'
             ];
-        } else if (portSettings.pty == 1) {
-            if (index == 10 || index == 11 || index == 12 || index == 13 || index == 25  || index == 27  || index == 28) {
-                modes = [
-                    'switch',
-                    'PWM',
-                    'DS2413'
-                ];
-            } else {
-                modes = [
-                    'switch',
-                    '',
-                    'DS2413'
-                ];
-            }
-        } else if (portSettings.pty == 2 || (portSettings.pty == 3 && portSettings.d == 3)) {
+      } else if (portSettings.pty == 1) {
+         if (index == 10 || index == 11 || index == 12 || index == 13 || index == 25  || index == 27  || index == 28) {
+            modes = [
+                'switch',
+                'PWM',
+                'DS2413'
+             ];
+         } else {
+            modes = [
+                'switch',
+                '',
+                'DS2413'
+               ];
+         }
+      } else if (portSettings.pty == 2 || (portSettings.pty == 3 && portSettings.d == 3)) {
             modes = [
                 'not monitored',
                 '> threshold',
