@@ -914,7 +914,7 @@ span:hover::before {
        var minCycle = 0;
        var maxCycle = 14;
        var   y3 = "419px";
-       var   x3 = "102px";
+       var   x3 = 102;
 
        if ( numXP == 0 ) {
           xp = "control";
@@ -1313,7 +1313,7 @@ span:hover::before {
         } else if ( xp == '8I7O-S' ) {
            if (portNum < 7) {
               text += '<option value="0" ' + ((ports[controlPort].pty == 0)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
-           } else if (portNum < 15) {
+           } else if (portNum < 14) {
               text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Симисторный недиммируемый выход</option>';
            } else {
               text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
@@ -1321,9 +1321,9 @@ span:hover::before {
         } else if ( xp == '8I7O-SD' ) {
            if (portNum < 7) {
               text += '<option value="0" ' + ((ports[controlPort].pty == 0)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
-           } else if ( portNum == 10 || portNum == 12 || portNum == 13 ) {
+           } else if ( portNum == 10 || portNum == 12 || portNum == 13 ) { /// ?????
               text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Симисторный диммируемый выход</option>';
-           } else if (portNum < 15) {
+           } else if (portNum < 14) {
               text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Симисторный недиммируемый выход</option>';
            } else {
               text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
