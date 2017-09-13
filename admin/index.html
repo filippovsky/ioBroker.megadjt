@@ -913,6 +913,8 @@ span:hover::before {
        var vUndef = 0;
        var minCycle = 0;
        var maxCycle = 14;
+       var   y3 = "419px";
+       var   x3 = "102px";
 
        if ( numXP == 0 ) {
           xp = "control";
@@ -947,6 +949,7 @@ span:hover::before {
           width = "17px";
           labelX = "164px";
           labelY = "15px";
+          maxCycle = 15;
        } else if (xp == "14-IN") {
           stepX = 46;
           divClass = "sd7i7or";
@@ -974,6 +977,7 @@ span:hover::before {
           width = "11px";
           labelX = "284px";
           labelY = "11px";
+          maxCycle = 15;
        } else if (xp == "2R") {
           stepX = 37;
           divClass = "sd7i7or";
@@ -983,6 +987,7 @@ span:hover::before {
           width = "11px";
           labelX = "284px";
           labelY = "11px";
+          maxCycle = 2;
        } else if (xp == "control") {
           stepX = 32;
           divClass = "xt2_port";
@@ -1017,11 +1022,15 @@ span:hover::before {
           if ( numXP != 0 ) {
              if ( m < 7 ) {
                 document.getElementById( divId ).style.top = y1;
+             } else if ( m == 14 ) {
+                document.getElementById( divId ).style.top = y3;
              } else {
                 document.getElementById( divId ).style.top = y2;
              }
              if ( m == 0 || m == 7 ) {
                 x = startX;
+             } else if ( m == 14 ) {
+                x = x3;
              } else if ( xp == "14-IN" ) { // сдвиг для корректного накладывания
                 if ( m ==2 || m == 3 || m == 9 || m == 10 ) {
                    x = x - 1;
