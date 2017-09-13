@@ -956,7 +956,16 @@ span:hover::before {
           width = "17px";
           labelX = "535px";
           labelY = "7px";
-       } else if (xp == "14-R") {
+       } else if (xp == "14-Rv1.0") {
+          stepX = 37;
+          divClass = "sd7i7or";
+          startX = 194;
+          y1 = "198px";
+          y2 = "264px";
+          width = "11px";
+          labelX = "284px";
+          labelY = "11px";
+       } else if (xp == "14-Rv2.0") {
           stepX = 37;
           divClass = "sd7i7or";
           startX = 194;
@@ -1083,7 +1092,13 @@ span:hover::before {
              } else {
                  document.getElementById( spanId ).className = "circlebutton_green";
              }
-          } else if (xp == "14-R") {
+          } else if (xp == "14-Rv1.0") {
+             if ( ports[k].pty == 255) {
+                 document.getElementById( spanId ).className = "circlebutton_darkred";
+             } else {
+                 document.getElementById( spanId ).className = "circlebutton_red";
+             }
+          } else if (xp == "14-Rv2.0") {
              if ( ports[k].pty == 255) {
                  document.getElementById( spanId ).className = "circlebutton_darkred";
              } else {
@@ -1296,7 +1311,13 @@ span:hover::before {
            if ( portNum <= 5 ) {
               text += '<option value="2" ' + ((ports[controlPort].pty == 2)   ? 'selected' : '') + '>АЦП-вход для аналоговых датчиков</option>';
            }
-        } else if ( xp == '14-R' ) {
+        } else if ( xp == '14-Rv1.0' ) {
+           if (portNum < 14) {
+              text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Релейный выход</option>';
+           } /*else {
+              text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
+           }   */
+        } else if ( xp == '14-Rv2.0' ) {
            if (portNum < 14) {
               text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Релейный выход</option>';
            } else {
@@ -1638,7 +1659,7 @@ span:hover::before {
 
         imgName = "xp"+numXP+"_img";
 
-        if (xp == '7I7O-R' || xp == '14-IN' || xp == '7I7O-SD' || xp == '8I7O-S' || xp == '8I7O-SD') {
+        if (xp == '7I7O-R' || xp == '14-IN' || xp == '7I7O-SD' || xp == '8I7O-S' || xp == '8I7O-SD' || xp =='14-Rv2.0') {
            fon = fon + ".gif";
         } else {
            fon = fon + ".jpg";
@@ -2266,7 +2287,8 @@ span:hover::before {
        <option value="8I7O-S">Симисторный модуль 8I7O-S</option>
        <option value="8I7O-SD">Симисторный модуль 8I7O-SD</option> 
        <option value="14-IN">Модуль входов 14-IN</option>
-       <option value="14-R">Релейный модуль 14-R</option>
+       <option value="14-Rv1.0">Релейный модуль 14-R версия 1.0</option>
+       <option value="14-Rv2.0">Релейный модуль 14-R версия 2.0</option>
     </select>
 
     &nbsp;&nbsp;XP2:
@@ -2277,7 +2299,8 @@ span:hover::before {
        <option value="8I7O-S">Симисторный модуль 8I7O-S</option>
        <option value="8I7O-SD">Симисторный модуль 8I7O-SD</option> 
        <option value="14-IN">Модуль входов 14-IN</option>
-       <option value="14-R">Релейный модуль 14-R</option>
+       <option value="14-Rv1.0">Релейный модуль 14-R версия 1.0</option>
+       <option value="14-Rv2.0">Релейный модуль 14-R версия 2.0</option>
     </select>
     <br>
 
