@@ -1635,12 +1635,22 @@ span:hover::before {
        //document.getElementById( divMoreId ).show();
     }
     //---------------------------------------------------------------------------------
-    function showXPLayer ( numXP ) {
+    function showXPLayer ( numXP, xp ) {
         var text  = "";
         var divId = 'divxp' + numXP;
         var divMoreId = 'xp' + numXP + '_more';
         var startPort = 0;
         var maxCycle  = 14;
+
+        if (xp == '8I7O-S' || xp == '8I7O-SD' || xp =='14-Rv2.0') {
+           maxCycle = 15;
+        } else if (xp == '2R') {
+           maxCycle = 2;
+        } else {
+           maxCycle = 14;
+        }
+
+
         text += '<div id="xp' + numXP + '_tbl" class="round1" style="height: 643px; padding: 1em;">';
         text += '<div id="xp' + numXP + '_div_img" class="dxp">';
         text += '  <img name="xp' + numXP + '_img" id="xp' + numXP + '_img" src="mega/MegaD-7I7O-R.gif">';
@@ -1685,6 +1695,8 @@ span:hover::before {
            xp = "control";
            fon = "mega/megad-2561";
         }
+
+        showXPLayer( numXP, xp );
 
         imgName = "xp"+numXP+"_img";
 
