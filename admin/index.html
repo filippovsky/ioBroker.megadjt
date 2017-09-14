@@ -1091,7 +1091,7 @@ span:hover::before {
                 }
              }
           } else if ((xp == "8I7O-S") || (xp == "8I7O-SD")) {
-             if ( m < 7 ) {
+             if ( m < 7 || m == 14 ) {
                 if ( ports[k].pty == 255) {
                    document.getElementById( spanId ).className = "circlebutton_darkgreen";
                 } else {
@@ -1104,7 +1104,7 @@ span:hover::before {
                    document.getElementById( spanId ).className = "circlebutton_red";
                 }
              }
-          } else if (xp == "14-IN") {
+          } else if (xp == "14-IN") {  
              if ( ports[k].pty == 255) {
                  document.getElementById( spanId ).className = "circlebutton_darkgreen";
              } else {
@@ -1117,10 +1117,18 @@ span:hover::before {
                  document.getElementById( spanId ).className = "circlebutton_red";
              }
           } else if (xp == "14-Rv2.0") {
-             if ( ports[k].pty == 255) {
-                 document.getElementById( spanId ).className = "circlebutton_darkred";
+             if ( m < 14 ) {
+                if ( ports[k].pty == 255) {
+                   document.getElementById( spanId ).className = "circlebutton_darkred";
+                } else {
+                   document.getElementById( spanId ).className = "circlebutton_red";
+                }
              } else {
-                 document.getElementById( spanId ).className = "circlebutton_red";
+                if ( ports[k].pty == 255) {
+                   document.getElementById( spanId ).className = "circlebutton_darkgreen";
+                } else {
+                   document.getElementById( spanId ).className = "circlebutton_green";
+                }
              }
           } else if (xp == "2R") {
              if ( ports[k].pty == 255) {
