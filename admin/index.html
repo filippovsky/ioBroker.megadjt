@@ -983,8 +983,8 @@ span:hover::before {
        } else if (xp == "2R") {
           stepX = 37;
           divClass = "sd7i7or";
-          startX = 194;
-          y1 = "198px";
+          startX = 72;
+          y1 = "223px";
           y2 = "264px";
           width = "11px";
           labelX = "284px";
@@ -1624,9 +1624,24 @@ span:hover::before {
        var text   = "";
        var divMoreId = 'xp' + numXP + '_more';
        var controlPort = portNum;
+       var portNumTxt  = portNum;
 
        if (numXP == 2) {
           controlPort = 15 + portNum;
+       }
+
+       var xp = $("#xp"+numXP+" option:selected").val();
+       if ( xp == '2R' ) {
+          portNumTxt = portNum + 1; // ??
+          if ( numXP == 1 && portNumTxt == 1 ) {
+             controlPort = 14;
+          } else if ( numXP == 1 && portNumTxt == 2 ) {
+             controlPort = 7;
+          } else if ( numXP == 2 && portNumTxt == 1 ) {
+             controlPort = 29;
+          } else if ( numXP == 2 && portNumTxt == 2 ) {
+             controlPort = 22;
+          }
        }
 
        imagePorts( numXP );
@@ -1635,7 +1650,7 @@ span:hover::before {
           document.getElementById( spanId ).className = "xt2_port";
        } else {
           document.getElementById( spanId ).className = "circlebutton1";
-          text =  'Порт исполнительного модуля: <b>' + portNum + '</b><br>'; 
+          text =  'Порт исполнительного модуля: <b>' + portNumTxt + '</b><br>'; 
        }
        text += 'Порт управляющего модуля: <b>' + controlPort + '</b><br>';
        text += '<div id="xp' + numXP + '_port_preset"></div>';
