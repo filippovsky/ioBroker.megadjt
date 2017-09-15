@@ -1276,36 +1276,24 @@ span:hover::before {
         var spanMisc = "";
         var spanDisp = '';
 
-        if ( numXP > 0 ) {
-           xp = $("#xp"+numXP+" option:selected").val();
-        } else {
-           xp = 'control';
-        }
-
         if (numXP == 2) {
            controlPort = 15 + portNum;
         }
 
+        if ( numXP > 0 ) {
+           xp = $("#xp"+numXP+" option:selected").val();
 
-      // name, room, role, pty(type), ecmd(Action), eth(net action), m(mode), d(default state), pwm(0-255), misc (threshold)
-      // room
-/*
-      text += '<select class="tvalue" data-type="room" data-port="' + controlPort + '" style="width: 100%"><option value=""></option>';
-      for (var r in rooms) {
-         text += '<option value="' + r + '" ' + ((ports[controlPort].room == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
-      }
-      text += '</select><br>';
+           text += '<br>Комната: <select id="room'+controlPort+'" onChange="roomChanged('+controlPort+');">';
+           text += '<option value=""></option>';
+           for (var r in rooms) {
+               text += '<option value="' + r + '" ' + ((ports[controlPort].room == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
+           }
+           text += '</select><br>';
 
-      // role
-      //text += '<td class="tspace"><input class="tvalue" type="text"  data-type="role" data-port="' + index + '" value="' + (portSettings.role || '') + '" style="width: 100%"/></td>';
-  */
-
-        text += '<br><select id="room'+controlPort+'" onChange="roomChanged('+controlPort+');">';
-        text += '<option value=""></option>';
-        for (var r in rooms) {
-            text += '<option value="' + r + '" ' + ((ports[controlPort].room == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
+        } else {
+           xp = 'control';
         }
-        text += '</select><br>';
+
 
         spanPorts  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img>';
         spanPorts += '<span><p align=justify>';
