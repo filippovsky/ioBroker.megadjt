@@ -1220,6 +1220,18 @@ span:hover::before {
         document.getElementById( "lbl" + controlPort ).innerHTML = text;
     }
     //--------------------------------------------------------------------------------
+    function dChanged ( controlPort ) {
+        var text = "";
+        if ( $("#d"+controlPort ).prop('checked') ) {
+           ports[controlPort].d = 1;
+           text = 'Включено';
+        } else {
+           ports[controlPort].d = 0;
+           text = 'Выключено';
+        }
+        document.getElementById( "lbl" + controlPort ).innerHTML = text;
+    }
+    //--------------------------------------------------------------------------------
     function MiscChanged ( controlPort ) {
         var text = "";
         if ( $("#misc"+controlPort ).prop('checked') ) {
@@ -1253,6 +1265,7 @@ span:hover::before {
         var spanEth0 = "";
         var spanNaf0 = "";
         var spanPorts = "";
+        var spanDef = "";
         var spanM = "";
         var spanMisc = "";
         var spanDisp = '';
@@ -1600,6 +1613,23 @@ span:hover::before {
 
 
            text += '</table>';
+
+        //-----------------------------------------------------------------------------
+        // порт OUT релейный
+        } else if ( ports[controlPort].pty == 1 ) {
+
+           spanDef  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img><span>';
+           spanDisp += '<p align=justify><b>Default state (Def)</b>: состояние порта после включения или перезагрузки устройства. ';
+           spanDisp += 'В ряде случаев требуется, чтобы отдельные приборы по умолчанию были включены.</p> ';
+           spanDisp += '</span></div>';
+
+
+           text += '<tr><td align="center" valign="middle">';
+           text += spanDef + '</td><td align="left" valign="middle">';
+           text += '<input type="checkbox" class="checkbox" id="d'+controlPort+'" '+ (ports[controlPort].d ? 'checked' : '') + 
+                   ' onChange="dChanged('+controlPort+');"/>&nbsp;';
+           text += '<label id="lbl'+controlPort+'" for="d'+controlPort+'">'+(ports[controlPort].d ? 'Выключено' : 'Включено') + '</label>';
+           text += '</td></tr>';
 
         }
 /*
