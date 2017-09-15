@@ -1145,6 +1145,12 @@ span:hover::before {
        }
     }
     //--------------------------------------------------------------------------------
+    function roomChanged ( controlPort ) {
+        var room = $("#room"+controlPort+" option:selected").val();
+        ports[controlPort].room = room;
+    }
+
+    //--------------------------------------------------------------------------------
     function ptyChanged ( controlPort ) {
         var pty = $("#pty"+controlPort+" option:selected").val();
         ports[controlPort].pty = pty;
@@ -1280,6 +1286,26 @@ span:hover::before {
            controlPort = 15 + portNum;
         }
 
+
+      // name, room, role, pty(type), ecmd(Action), eth(net action), m(mode), d(default state), pwm(0-255), misc (threshold)
+      // room
+/*
+      text += '<select class="tvalue" data-type="room" data-port="' + controlPort + '" style="width: 100%"><option value=""></option>';
+      for (var r in rooms) {
+         text += '<option value="' + r + '" ' + ((ports[controlPort].room == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
+      }
+      text += '</select><br>';
+
+      // role
+      //text += '<td class="tspace"><input class="tvalue" type="text"  data-type="role" data-port="' + index + '" value="' + (portSettings.role || '') + '" style="width: 100%"/></td>';
+  */
+
+        text += '<br><select id="room'+controlPort+'" onChange="roomChanged('+controlPort+');">';
+        text += '<option value=""></option>';
+        for (var r in rooms) {
+            text += '<option value="' + r + '" ' + ((ports[controlPort].room == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
+        }
+        text += '</select><br>';
 
         spanPorts  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img>';
         spanPorts += '<span><p align=justify>';
@@ -1619,9 +1645,9 @@ span:hover::before {
         } else if ( ports[controlPort].pty == 1 ) {
 
            spanDef  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img><span>';
-           spanDisp += '<p align=justify><b>Default state (Def)</b>: состояние порта после включения или перезагрузки устройства. ';
-           spanDisp += 'В ряде случаев требуется, чтобы отдельные приборы по умолчанию были включены.</p> ';
-           spanDisp += '</span></div>';
+           spanDefp += '<p align=justify><b>Default state (Def)</b>: состояние порта после включения или перезагрузки устройства. ';
+           spanDef += 'В ряде случаев требуется, чтобы отдельные приборы по умолчанию были включены.</p> ';
+           spanDef += '</span></div>';
 
 
            text += '<tr><td align="center" valign="middle">';
@@ -1683,7 +1709,10 @@ span:hover::before {
           text =  'Порт исполнительного модуля: <b>' + portNumTxt + '</b><br>'; 
        }
        text += 'Порт управляющего модуля: <b>' + controlPort + '</b><br>';
+
        text += '<div id="xp' + numXP + '_port_preset"></div>';
+
+
 
        document.getElementById( divMoreId ).innerHTML = text;
        loadPreset( numXP, portNum );
