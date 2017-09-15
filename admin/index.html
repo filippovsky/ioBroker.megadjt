@@ -1224,10 +1224,10 @@ span:hover::before {
         var text = "";
         if ( $("#d"+controlPort ).prop('checked') ) {
            ports[controlPort].d = 1;
-           text = 'Включено';
+           text = 'Включено по умолчанию';
         } else {
            ports[controlPort].d = 0;
-           text = 'Выключено';
+           text = 'Выключено по умолчанию';
         }
         document.getElementById( "lbl" + controlPort ).innerHTML = text;
     }
@@ -1628,7 +1628,7 @@ span:hover::before {
            text += spanDef + '</td><td align="left" valign="middle">';
            text += '<input type="checkbox" class="checkbox" id="d'+controlPort+'" '+ (ports[controlPort].d ? 'checked' : '') + 
                    ' onChange="dChanged('+controlPort+');"/>&nbsp;';
-           text += '<label id="lbl'+controlPort+'" for="d'+controlPort+'">'+(ports[controlPort].d ? 'Выключено' : 'Включено') + '</label>';
+           text += '<label id="lbl'+controlPort+'" for="d'+controlPort+'">'+(ports[controlPort].d ? 'Включено по умолчанию' : 'Выключено по умолчанию') + '</label>';
            text += '</td></tr>';
 
         }
