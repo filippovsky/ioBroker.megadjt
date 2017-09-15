@@ -1150,6 +1150,12 @@ span:hover::before {
         ports[controlPort].room = room;
     }
     //--------------------------------------------------------------------------------
+    function nameChanged ( controlPort ) {
+        var name = $("#name"+controlPort+" option:selected").val();
+        ports[controlPort].name = name;
+        ports[controlPort].desc = name;
+    }
+    //--------------------------------------------------------------------------------
     function funcChanged ( controlPort ) {
         var func = $("#func"+controlPort+" option:selected").val();
         ports[controlPort].func = func;
@@ -1297,10 +1303,14 @@ span:hover::before {
 
            text += '<br>Функция: <select id="func'+controlPort+'" onChange="funcChanged('+controlPort+');">';
            text += '<option value=""></option>';
-           for (var r in func) {
+           for (var r in functions) {
                text += '<option value="' + r + '" ' + ((ports[controlPort].func == r) ? 'selected' : '') + '>' + func[r].common.name + '</option>';
            }
            text += '</select><br>';
+
+
+           text += '<br>Название: <input id="name'+controlPort+'" onChange="nameChanged('+controlPort+');">';
+           text += ports[controlPort].name + '</input><br>';
 
 
         } else {
