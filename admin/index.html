@@ -1309,14 +1309,14 @@ span:hover::before {
            text += '<br>Функция: <select id="fnc'+controlPort+'" onChange="fncChanged('+controlPort+');">';
            text += '<option value=""></option>';
            for (var r in functions) {
-               text += '<option value="' + r + '" ' + ((ports[controlPort].fnc == r) ? 'selected' : '') + '>' + functions[r].common.name + '</option>';
+               text += '<option value="' + r + '" ' + ((ports[controlPort].func == r) ? 'selected' : '') + '>' + functions[r].common.name + '</option>';
            }
            text += '</select><br>';
   
 
-           text += '<br>Название: <input id="name'+controlPort+'" onChange="nameChanged('+controlPort+');" ';
+/*           text += '<br>Название: <input id="name'+controlPort+'" onChange="nameChanged('+controlPort+');" ';
            text += ' value="' + ports[controlPort].name + '"></input><br>';
-  
+  */
 
         } else {
            xp = 'control';
