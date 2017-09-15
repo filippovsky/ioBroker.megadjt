@@ -456,6 +456,7 @@ span:hover::before {
    var onchange = null;
    var rooms    = [];
    var ports    = [];
+   var functions = [];
    var active   = false;
 
    //------------------------------------------------------------------------------------------------
@@ -885,6 +886,10 @@ span:hover::before {
     function readRooms() {
         getEnums('rooms', function (err, _rooms) {
             rooms = _rooms;
+            showPorts();
+        });
+        getEnums('functions', function (err, _functions) {
+            functions = _functions;
             showPorts();
         });
     }
@@ -1951,7 +1956,8 @@ span:hover::before {
                     offset: 0,
 
                     role:   'state',
-                    room:   ''
+                    room:   '',
+                    func:   ''
                 });
             } else {
                 ports.push({
@@ -1964,7 +1970,8 @@ span:hover::before {
                     long:   false,
                     double: false,
                     role:   'state',
-                    room:   ''
+                    room:   '',
+                    func:   ''
                 });
             }
             onchange();
