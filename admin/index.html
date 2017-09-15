@@ -1149,6 +1149,11 @@ span:hover::before {
         var room = $("#room"+controlPort+" option:selected").val();
         ports[controlPort].room = room;
     }
+    //--------------------------------------------------------------------------------
+    function funcChanged ( controlPort ) {
+        var func = $("#func"+controlPort+" option:selected").val();
+        ports[controlPort].func = func;
+    }
 
     //--------------------------------------------------------------------------------
     function ptyChanged ( controlPort ) {
@@ -1289,6 +1294,14 @@ span:hover::before {
                text += '<option value="' + r + '" ' + ((ports[controlPort].room == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
            }
            text += '</select><br>';
+
+           text += '<br>Функция: <select id="func'+controlPort+'" onChange="funcChanged('+controlPort+');">';
+           text += '<option value=""></option>';
+           for (var r in func) {
+               text += '<option value="' + r + '" ' + ((ports[controlPort].func == r) ? 'selected' : '') + '>' + func[r].common.name + '</option>';
+           }
+           text += '</select><br>';
+
 
         } else {
            xp = 'control';
