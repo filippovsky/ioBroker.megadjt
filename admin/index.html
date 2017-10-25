@@ -1164,6 +1164,11 @@ span:hover::before {
     function fncChanged ( controlPort ) {
         var fnc = $("#fnc"+controlPort+" option:selected").val();
         ports[controlPort].func = fnc;
+        if ( ports[controlPort].pty == 0 || ports[controlPort].pty == 1 ) {
+           ports[controlPort].common.type = "boolean";
+        } else {                                      // ?????
+           ports[controlPort].common.type = "number"; 
+        }
     }
 
     //--------------------------------------------------------------------------------
