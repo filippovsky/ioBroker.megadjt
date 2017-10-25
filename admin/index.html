@@ -1164,17 +1164,19 @@ span:hover::before {
     function fncChanged ( controlPort ) {
         var fnc = $("#fnc"+controlPort+" option:selected").val();
         ports[controlPort].func = fnc;
-        if ( ports[controlPort].pty == 0 || ports[controlPort].pty == 1 ) {
-           ports[controlPort].common.type = "boolean";
-        } else {                                      // ?????
-           ports[controlPort].common.type = "number"; 
-        }
     }
 
     //--------------------------------------------------------------------------------
     function ptyChanged ( controlPort ) {
         var pty = $("#pty"+controlPort+" option:selected").val();
         ports[controlPort].pty = pty;
+
+        if ( ports[controlPort].pty == 0 || ports[controlPort].pty == 1 ) {
+           ports[controlPort].common.type = 'boolean';
+        } else {                                      // ?????
+           ports[controlPort].common.type = 'number'; 
+        }
+
         var numXP = 0;
         var port  = 0;
         if ( controlPort < 15 ) {
