@@ -35,6 +35,7 @@ var fw_version_actual = "4.18b6";
 
 var adapter = utils.adapter(  'megadjt' );
 
+//-------------------------------------------------------------------------------------------------------------------
 adapter.on('stateChange', function (id, state) {
     var matched = [];
     if (id && state && !state.ack) {
@@ -95,10 +96,12 @@ adapter.on('stateChange', function (id, state) {
     }
 });
 
+//---------------------------------------------------------------------------------------
 adapter.on('ready', function (obj) {
     main();
 });
 
+//--------------------------------------------------------------------------------------
 adapter.on('message', function (obj) {
     if (obj && obj.command) {
         switch (obj.command) {
@@ -297,6 +300,8 @@ function getFirmwareVersion() {
        });
     }
 }
+
+
 // Функция перепрошивки Меги ---------------------------------------------------------------
 function updateFirmware( message ) {
    var parts = adapter.config.ip.split(':');
@@ -471,6 +476,8 @@ function processMessages(ignore) {
     });
 }
 
+
+//-------------------------------------------------------------------------------------------------------------------------
 // Because the only one port is occupied by first instance, the changes to other devices will be send with messages
 function processMessage(message) {
     var port;
@@ -501,6 +508,8 @@ function processMessage(message) {
     }
 }
 
+
+//----------------------------------------------------------------------------------------------------------------------
 function writeConfigOne(ip, pass, _settings, callback, port, errors) {
     if (port === undefined) {
         port = 0;
@@ -629,6 +638,8 @@ function writeConfigOne(ip, pass, _settings, callback, port, errors) {
     });
 }
 
+
+//---------------------------------------------------------------------------------------------
 function ipToBuffer(ip, buff, offset) {
     offset = ~~offset;
 
@@ -674,6 +685,8 @@ function ipToBuffer(ip, buff, offset) {
     return result;
 }
 
+
+//----------------------------------------------------------------------------------------------------------------
 function ipToString(buff, offset, length) {
     var i;
     offset = ~~offset;
@@ -699,6 +712,7 @@ function ipToString(buff, offset, length) {
     return result;
 }
 
+//-------------------------------------------------------------------------------------------------------------------
 function ipMask(addr, mask) {
     var i;
     addr = ipToBuffer(addr);
@@ -734,6 +748,7 @@ function ipMask(addr, mask) {
     return ipToString(result);
 }
 
+//-------------------------------------------------------------------------------------------------------------------
 function findIp(ip) {
     var parts = ip.split(':');
     ip = parts[0];
@@ -768,6 +783,7 @@ function findIp(ip) {
     return null;
 }
 
+//--------------------------------------------------------------------------------------------------------
 function writeConfigDevice(ip, pass, config, callback) {
     //pwd: пароль для доступа к Web-интерфейсу устройства (макс. 3 байт)
     //eip: IP-адрес устройства
@@ -817,6 +833,7 @@ function writeConfigDevice(ip, pass, config, callback) {
     });
 }
 
+//-----------------------------------------------------------------------------------------------------------------
 function writeConfig(obj) {
     var ip;
     var password;
@@ -868,6 +885,7 @@ function writeConfig(obj) {
     }
 }
 
+//------------------------------------------------------------------------------------------------------------
 function detectPortConfig(ip, pass, length, callback, port, result) {
     if (port === undefined) {
         port = 0;
@@ -975,6 +993,7 @@ function detectPortConfig(ip, pass, length, callback, port, result) {
     });
 }
 
+
 // Получение конфигурации Меги из устройства -------------------------------------------------------------------------
 function detectDeviceConfig(ip, pass, callback) {
     var parts = ip.split(':');
@@ -1047,6 +1066,8 @@ function detectDeviceConfig(ip, pass, callback) {
     readMegaConfig2File( 'last.cfg' );
 
 }
+
+
 //------------------------------------------------------------------------------------------------------------------
 // Message is IP address
 function detectPorts(obj) {
@@ -1077,6 +1098,8 @@ function detectPorts(obj) {
     }
 }
 
+
+//---------------------------------------------------------------------------------------------------------------
 function discoverMegaOnIP(ip, callback) {
     var nums = ip.split('.');
     nums[3] = 255;
@@ -1113,6 +1136,7 @@ function discoverMegaOnIP(ip, callback) {
 
 }
 
+//--------------------------------------------------------------------------------------------------
 function discoverMega(obj) {
     var interfaces = require('os').networkInterfaces();
     var result = [];
@@ -1139,6 +1163,7 @@ function discoverMega(obj) {
     if (!count && obj.callback) adapter.sendTo(obj.from, obj.command, {error: null, devices: []}, obj.callback);
 }
 
+//--------------------------------------------------------------------------------------------------------------------
 // Get State of ONE port
 function getPortState(port, callback) {
     var parts = adapter.config.ip.split(':');
@@ -1172,6 +1197,7 @@ function getPortState(port, callback) {
     });
 }
 
+//------------------------------------------------------------------------------------------------------------
 function getPortStateW(ip, password, port, callback) {                  // 1Wire
     //http://192.168.1.14/sec/?pt=33&cmd=list
     if (typeof ip == 'function') {
@@ -1221,6 +1247,7 @@ function getPortStateW(ip, password, port, callback) {                  // 1Wire
     });
 }    
 
+//---------------------------------------------------------------------------------------------------------
 // Get state of ALL ports
 function getPortsState(ip, password, callback) {
     if (typeof ip == 'function') {
@@ -1317,6 +1344,7 @@ function getPortsState(ip, password, callback) {
     });
 }*/
 
+//------------------------------------------------------------------------------------------------------------------
 function processClick(port) {
     var config = adapter.config.ports[port];
 
@@ -1385,6 +1413,7 @@ function processClick(port) {
     }
 }
 
+//-------------------------------------------------------------------------------------------------------------------
 function detectDoubleClick(port) {
     var config = adapter.config.ports[port];
 
@@ -1421,6 +1450,7 @@ function detectDoubleClick(port) {
     }
 }
 
+//-------------------------------------------------------------------------------------------------------------
 function triggerShortPress(port) {
     var config = adapter.config.ports[port];
 
@@ -1430,7 +1460,7 @@ function triggerShortPress(port) {
 
         if (!config.value) {
             adapter.setState(config.id, false, true);
-            return;
+             return;
         }
 
         detectDoubleClick(port);
@@ -1455,6 +1485,7 @@ function triggerShortPress(port) {
     }
 }
 
+//------------------------------------------------------------------------------------------------------------------
 function processPortState(_port, value) {
     var _ports = adapter.config.ports;
     var q = 0;
@@ -1580,6 +1611,7 @@ function processPortState(_port, value) {
     }
 }
 
+
 // обработка полученных данных от порта 1Wire-шины ------------------------------------------------------
 function processPortStateW(_port, value) {      //1Wire
    var _ports = adapter.config.ports;
@@ -1652,6 +1684,7 @@ function processPortStateW(_port, value) {      //1Wire
    }
 }    
 
+
 //--------------------------------------------------------------------------------------------------------------
 function pollStatus(dev) {
     /*for (var port = 0; port < adapter.config.ports.length; port++) {
@@ -1721,6 +1754,7 @@ function pollStatus(dev) {
     });
 }
 
+//---------------------------------------------------------------------------------------------------------------
 // Process http://ioBroker:80/instance/?pt=6
 function restApi(req, res) {
     var values = {};
@@ -1811,6 +1845,7 @@ function restApi(req, res) {
     res.end('Error: invalid input "' + req.url + '". Expected /' + (adapter.config.name || adapter.instance) + '/?pt=X', 'utf8');
 }
 
+//-----------------------------------------------------------------------------------------------------------------------
 // отправка команды Меге
 function sendCommand(port, value) {
     var data = 'cmd=' + port + ':' + value;
@@ -1857,6 +1892,7 @@ function sendCommand(port, value) {
     });
 }
 
+//-----------------------------------------------------------------------------------------------------------------
 function sendCommandToDSA(port, value) {          //DS2413 port A
     //http://192.168.1.14/sec/?cmd=7A:0 or &cmd=7A:1
     var data = 'cmd=' + port + 'A' + ':' + value;
@@ -1894,6 +1930,7 @@ function sendCommandToDSA(port, value) {          //DS2413 port A
     });
 }
 
+//------------------------------------------------------------------------------------------------------------
 function sendCommandToDSB(port, value) {          //DS2413 port B
     //http://192.168.1.14/sec/?cmd=7A:0 or &cmd=7A:1
     var data = 'cmd=' + port + 'B' + ':' + value;
@@ -1931,6 +1968,7 @@ function sendCommandToDSB(port, value) {          //DS2413 port B
     });
 }
 
+//----------------------------------------------------------------------------------------------------------
 function sendCommandToCounter(port, value) {
     //'http://192.168.0.52/sec/?pt=2&cnt=0'
     var data = 'pt=' + port + '&cnt=' + (value || 0);
@@ -1962,6 +2000,7 @@ function sendCommandToCounter(port, value) {
     });
 }
 
+//---------------------------------------------------------------------------------------------------------
 function addToEnum(enumName, id, callback) {
     adapter.getForeignObject(enumName, function (err, obj) {
         if (!err && obj) {
@@ -1980,6 +2019,7 @@ function addToEnum(enumName, id, callback) {
     });
 }
 
+//---------------------------------------------------------------------------------------------------------
 function removeFromEnum(enumName, id, callback) {
     adapter.getForeignObject(enumName, function (err, obj) {
         if (!err && obj) {
@@ -1998,6 +2038,7 @@ function removeFromEnum(enumName, id, callback) {
     });
 }
 
+//----------------------------------------------------------------------------------------------------
 function syncObjects() {
 
     adapter.config.longPress   = parseInt(adapter.config.longPress,   10) || 0;
@@ -2034,7 +2075,8 @@ function syncObjects() {
                 _id: adapter.namespace + '.' + id,
                 common: {
                     name: settings.name || ('P' + p),
-                    role: settings.role
+                    role: settings.role,
+                    type: settings.type  // ??????????????????
                 },
                 native: JSON.parse(JSON.stringify(settings)),
                 type:   'state'
@@ -2461,6 +2503,8 @@ function syncObjects() {
     });
 }
 
+
+//---------------------------------------------------------------------------------------------
 //settings: {
 //    "port":   8080,
 //    "auth":   false,
