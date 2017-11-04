@@ -2491,6 +2491,45 @@ span:hover::before {
              <td>Прошивка</td>
            </tr>
            <tr>
+             <td><b>4.18b6</td>
+             <td>02.11.2017</td>
+             <td><p align=justify>Реализована команда <b>get</b> для всех портов в режиме PCA9685:<br>
+                 <b>http://192.168.0.14/sec/?pt=31&cmd=get</b></p>
+                 <p align="justify">Реализована команда <b>get</b> для каждого порта в режиме MCP230XX<br>
+                 <b>http://192.168.0.14/sec/?pt=31&ext=15&cmd=get</b></p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.18b6');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.18b5</td>
+             <td>01.11.2017</td>
+             <td><p align=justify>Добавлена поддержка микросхемы PCA9685 (16 ШИМ каналов с разрешением 12-бит)<br>
+                 Для SDA-порта выбираем тип PCA9685<br>
+                 <img src="firmware/megad-2561-backup-outs.megad-2561-pca9685.png"><br>
+                 Теперь у SDA-порта появляется ссылка Ext-IO<br>
+                 <img src="firmware/megad-2561-backup-outs.megad-2561-pca9685-extio.png"><br>
+                 Перейдя по ссылке, можно увидеть список доступных ШИМ-каналов.<br>
+                 <img src="firmware/megad-2561-backup-outs.megad-2561-pca9685-extio-list.png"><br>
+                 Выбрав нужный порт, можно задать уровень ШИМ (от 0 до 4095). 
+                 <img src="firmware/megad-2561-backup-outs.megad-2561-pca9685-setpwm.png"><br>
+                 </p><p align="justify">Также обеспечена обработка этих портов в сценариях и командах сервера.<br>
+                 Пример: <b>http://192.168.0.14/sec/?cmd=10:2;31e3:4000;31e2:2000;11:2</b><br>
+                 31e3:4000 (31 - SDA-порт, к которому подключена микросхема, e3 - порт P3 расширитеря, 4000 - значение ШИМ)</p>
+                 <p align="justify">Для данных портов поддерживается команда "get".<br>
+                 Пример: <b>http://192.168.0.14/sec/?pt=31&ext=15&cmd=get</b>
+                 </p><p align="justify">Частота ШИМ - одна на все каналы, значение по умолчанию 200 Гц, на данный момент указание
+                   другого значения пока не реализовано.</p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.18b5');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.18b4</td>
+             <td>17.10.2017</td>
+             <td><p align=justify>Исправлено отображение отрицательных температур для датчиков BME280, HTU21D</p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.18b4');">Прошить</button></td>
+           </tr>
+           <tr>
              <td><b>4.18b2</td>
              <td>17.10.2017</td>
              <td><p align=justify>Добавлена команда 's' для сохранения в энергонезависимой памяти состояния выходов (SW/PWM).</p>
