@@ -1,8 +1,12 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.11.19",
+        "version":                  "0.12.0",
         "news": {
+            "0.12.0": {
+                "en":               "new firmwares",
+                "ru":               "new firmwares"
+            },
             "0.8.0": {
                 "en":               "added 8I7O-SD and 8I7O-S",
                 "ru":               "добавлены 8I7O-SD и 8I7O-S"

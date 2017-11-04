@@ -804,7 +804,7 @@ span:hover::before {
                 if (ports[index].m2     !== undefined) delete ports[index].m2;
             }
 
-            showPorts();
+            //showPorts();
         }
         onchange();
     }
@@ -814,7 +814,7 @@ span:hover::before {
         var index = $(this).data('port');
         ports.splice(index, 1);
         onchange();
-        showPorts();
+        //showPorts();
     }
 
     //-----------------------------------------------------------------------------------------
@@ -824,7 +824,7 @@ span:hover::before {
         ports[index - 1] = ports[index];
         ports[index] = tmp;
         onchange();
-        showPorts();
+        //showPorts();
     }
 
     //-------------------------------------------------------------------------------------------
@@ -834,7 +834,7 @@ span:hover::before {
         ports[index + 1] = ports[index];
         ports[index] = tmp;
         onchange();
-        showPorts();
+        //showPorts();
     }
 
     //----------------------------------------------------------------------------------------
@@ -886,11 +886,11 @@ span:hover::before {
     function readRooms() {
         getEnums('rooms', function (err, _rooms) {
             rooms = _rooms;
-            showPorts();
+            //showPorts();
         });
         getEnums('functions', function (err, _functions) {
             functions = _functions;
-            showPorts();
+            //showPorts();
         });
     }
 
@@ -1983,7 +1983,7 @@ span:hover::before {
             }
             onchange();
 
-            showPorts();
+            //showPorts();
         });
 
         $('#ipchange').button({
@@ -2273,7 +2273,7 @@ span:hover::before {
 
                 onchange();
 
-                showPorts();
+                //showPorts();
             });
         }
     }
