@@ -2435,6 +2435,12 @@ function syncObjects() {
                         if (newObjects[i].native.room) addToEnum(newObjects[i].native.room, newObjects[i]._id);
                     }
 
+                    if (newObjects[i].native.func != _states[j].native.func) {
+                        adapter.log.info('Update state func ' + newObjects[i]._id + ': ' + _states[j].native.func + ' => ' + newObjects[i].native.func);
+                        if (_states[j].native.func) removeFromEnum(_states[j].native.func, _states[j]._id);
+                        if (newObjects[i].native.func) addToEnum(newObjects[i].native.func, newObjects[i]._id);
+                    }
+
                     break;
                 }
             }
@@ -2455,6 +2461,7 @@ function syncObjects() {
                 adapter.setObject(newObjects[i]._id, newObjects[i]);
                 // check room
                 if (newObjects[i].native.room) addToEnum(newObjects[i].native.room, newObjects[i]._id);
+                if (newObjects[i].native.func) addToEnum(newObjects[i].native.func, newObjects[i]._id);
             }
         }
 
@@ -2471,6 +2478,7 @@ function syncObjects() {
                 adapter.log.info('Delete state ' + _states[j]._id);
                 adapter.delObject(_states[j]._id);
                 if (_states[j].native.room) removeFromEnum(_states[j].native.room, _states[j]._id);
+                if (_states[j].native.func) removeFromEnum(_states[j].native.func, _states[j]._id);
             }
         }
 
