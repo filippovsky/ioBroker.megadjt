@@ -453,9 +453,9 @@ span:hover::before {
         "Update Firmware":      {"en": "Update Firmware",       "de": "Update Firmware",            "ru": "Перепрошить Мегу"},
         "Firmware updated":     {"en": "Firmware updated",      "de": "Firmware updated",           "ru": "Мега перепрошита"}
     };
-   var onchange = null;
-   var rooms    = [];
-   var ports    = [];
+   var onchange  = null;
+   var rooms     = [];
+   var ports     = [];
    var functions = [];
    var active   = false;
 
@@ -1172,11 +1172,11 @@ span:hover::before {
         var pty = $("#pty"+controlPort+" option:selected").val();
         ports[controlPort].pty = pty;
 
-        if ( ports[controlPort].pty == 0 || ports[controlPort].pty == 1 ) {
+/*        if ( ports[controlPort].pty == 0 || ports[controlPort].pty == 1 ) {
            ports[controlPort].common.type = 'boolean';
         } else {                                      // ?????
            ports[controlPort].common.type = 'number'; 
-        }
+        }*/
 
         var numXP = 0;
         var port  = 0;
