@@ -2087,7 +2087,8 @@ function syncObjects() {
 
             // input
             if (!settings.pty) {
-                obj.common.write = false;
+                //obj.common.write = false;
+                obj.common.write = true; // надо иметь возможность писать сюда данные от меги
                 obj.common.read  = true;
                 obj.common.def   = false;
                 obj.common.desc  = 'P' + p + ' - digital input';
@@ -2102,7 +2103,8 @@ function syncObjects() {
                             common: {
                                 name:  obj.common.name + '_long',
                                 role:  'state',
-                                write: false,
+                                //write: false,
+                                write: true,
                                 read:  true,
                                 def:   false,
                                 desc:  'P' + p + ' - long press',
@@ -2121,7 +2123,8 @@ function syncObjects() {
                         common: {
                             name:  obj.common.name + '_double',
                             role:  'state',
-                            write: false,
+                            //write: false,
+                            write: true,
                             read:  true,
                             def:   false,
                             desc:  'P' + p + ' - double press',
@@ -2217,7 +2220,8 @@ function syncObjects() {
                 settings.factor  = parseFloat(settings.factor || 1);
                 settings.offset  = parseFloat(settings.offset || 0);
 
-                obj.common.write = false;
+                //obj.common.write = false;
+                obj.common.write = true;
                 obj.common.read  = true;
                 obj.common.def   = 0;
                 obj.common.min   = settings.offset;
@@ -2229,7 +2233,8 @@ function syncObjects() {
             } else
             // digital temperature sensor
             if (settings.pty == 3) {
-                obj.common.write = false;
+                //obj.common.write = false;
+                obj.common.write = true;
                 obj.common.read  = true;
                 obj.common.def   = 0;
                 obj.common.type  = 'number';
@@ -2247,7 +2252,8 @@ function syncObjects() {
                             common: {
                                 name: obj.common.name + '_humidity',
                                 role: 'value.humidity',
-                                write: false,
+                                //write: false,
+                                write: true,
                                 read: true,
                                 unit: '%',
                                 def: 0,
@@ -2272,7 +2278,8 @@ function syncObjects() {
                         common: {
                             name: obj.common.name + '_temperature1',
                             role: 'value.temperature',
-                            write: false,
+                            //write: false,
+                            write: true,
                             read: true,
                             unit: '°C',
                             def: 0,
@@ -2293,7 +2300,8 @@ function syncObjects() {
                         common: {
                             name: obj.native.name + '_temperature2',
                             role: 'value.temperature',
-                            write: false,
+                            //write: false,
+                            write: true,
                             read: true,
                             unit: '°C',
                             def: 0,
@@ -2314,7 +2322,8 @@ function syncObjects() {
                         common: {
                             name: obj.native.name + '_temperature',
                             role: 'value.temperature',
-                            write: false,
+                            //write: false,
+                            write: true,
                             read: true,
                             unit: '°C',
                             def: 0,
@@ -2346,7 +2355,8 @@ function syncObjects() {
 	    } else
             // I2C sensor  //NEW
             if (settings.pty == 4) {
-                obj.common.write = false;
+                //obj.common.write = false;
+                obj.common.write = true;
                 obj.common.read  = true;
                 obj.common.def   = 0;
                 obj.common.type  = 'number';
@@ -2363,7 +2373,8 @@ function syncObjects() {
                             common: {
                                 name: obj.common.name + '_humidity',
                                 role: 'value.humidity',
-                                write: false,
+                                //write: false,
+                                write: true,
                                 read: true,
                                 unit: '%',
                                 def: 0,
