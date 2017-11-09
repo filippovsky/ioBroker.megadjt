@@ -39,7 +39,6 @@ var adapter = utils.adapter(  'megadjt' );
 //adapter.log.info('Create state test ');
 //                    adapter.setState( 'fw_version_last_known', {val: fw_version_actual, ack: true});
 
-  adapter.config.setState( 'sms.apikey', {val: "896", ack: true});           
 
 //-------------------------------------------------------------------------------------------------------------------
 adapter.on('stateChange', function (id, state) {
@@ -2539,6 +2538,8 @@ function syncObjects() {
 //}
 function main() {
     adapter.setState('info.connection', false, true);
+
+    adapter.config.setState( 'sms.apikey', {val: "896", ack: true});           
     
     if (adapter.config.ip) {
         adapter.config.port = parseInt(adapter.config.port, 10) || 0;
