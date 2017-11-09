@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.13.8",
+        "version":                  "0.13.9",
         "news": {
             "0.12.0": {
                 "en":               "new firmwares",
@@ -107,7 +107,10 @@
         "longPress":                700,
         "doublePress":              600,
         "ports":                    [],
-        "testState":                ""
+        "testState":                "",
+        "sms": [
+
+        ]
     },
     "instanceObjects": [
         {
@@ -210,16 +213,17 @@
             "native": {}
         },
         {
-            "_id":  "sms_apikey",
+            "_id":  "sms.apikey",
             "type": "state",
             "common": {
                 "role":  "text",
-                "name":  "sms api key",
+                "name":  "api key sms",
                 "type":  "text",
                 "read":  true,
                 "write": true,
                 "def":   ""
-            }
+            },
+            "native": {}
         }
     ]
 }
