@@ -2490,7 +2490,7 @@ function syncObjects() {
                     break;
                 }
             }
-            if ( _states[j]._id !== adapter.namespace.'.sms.apikey0' ) {
+            if ( _states[j]._id != adapter.namespace.'.sms.apikey0' ) {
                if (!found) {
                   adapter.log.info('Delete state ' + _states[j]._id);
                   adapter.delObject(_states[j]._id);
