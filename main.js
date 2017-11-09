@@ -2490,11 +2490,13 @@ function syncObjects() {
                     break;
                 }
             }
-            if (!found) {
-                adapter.log.info('Delete state ' + _states[j]._id);
-                adapter.delObject(_states[j]._id);
-                if (_states[j].native.room) removeFromEnum(_states[j].native.room, _states[j]._id);
-                if (_states[j].native.func) removeFromEnum(_states[j].native.func, _states[j]._id);
+            if ( _states[j]._id !== adapter.namespace.'.sms.apikey0' ) {
+               if (!found) {
+                  adapter.log.info('Delete state ' + _states[j]._id);
+                  adapter.delObject(_states[j]._id);
+                  if (_states[j].native.room) removeFromEnum(_states[j].native.room, _states[j]._id);
+                  if (_states[j].native.func) removeFromEnum(_states[j].native.func, _states[j]._id);
+               }
             }
         }
 
@@ -2551,6 +2553,9 @@ function myTest() {
                         adapter.setObject(
                              adapter.namespace + '.sms.apikey0',
                              objsms );
+
+                      adapter.setState( adapter.namespace + '.sms.apikey0', {val: "7777", ack: true});
+   
 }
 
 //---------------------------------------------------------------------------------------------
