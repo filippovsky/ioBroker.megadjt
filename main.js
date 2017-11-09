@@ -2526,7 +2526,32 @@ function syncObjects() {
         }
     });
 }
+//---------------------------------------------------------------------------------------------
+function myTest() {
+   var objsms = null;
+   objsms = {
+                        _id: adapter.namespace + '.sms.apikey0',
+                            common: {
+                                name: 'sms_apikey0',
+                                role: 'state',
+                                write: true,
+                                read: true,
+                               // unit: '%',
+                                def: "",
+                                desc: 'api sms',
+				type: 'text'
+                            },
+                            native: {
+                                //port: p
+                            },
+                            type: 'state'
+                        };
 
+                        //adapter.setObject(newObjects[i]._id, newObjects[i]);
+                        adapter.setObject(
+                             adapter.namespace + '.sms.apikey0',
+                             objsms );
+}
 
 //---------------------------------------------------------------------------------------------
 //settings: {
@@ -2539,7 +2564,8 @@ function syncObjects() {
 function main() {
     adapter.setState('info.connection', false, true);
 
-    adapter.setState( 'sms.apikey', {val: "896", ack: true});           
+    // adapter.setState( 'sms.apikey', {val: "896", ack: true});           -- только в состояния
+    myTest();
     
     if (adapter.config.ip) {
         adapter.config.port = parseInt(adapter.config.port, 10) || 0;
