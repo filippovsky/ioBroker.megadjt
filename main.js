@@ -2539,7 +2539,7 @@ function syncObjects() {
 function main() {
     adapter.setState('info.connection', false, true);
 
-    adapter.config.setState( 'sms.apikey', {val: "896", ack: true});           
+    adapter.setState( 'sms.apikey', {val: "896", ack: true});           
     
     if (adapter.config.ip) {
         adapter.config.port = parseInt(adapter.config.port, 10) || 0;
