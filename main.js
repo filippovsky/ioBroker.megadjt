@@ -2554,7 +2554,7 @@ function myTest() {
                              adapter.namespace + '.sms.apikey0',
                              objsms );
 
-                      adapter.setState( adapter.namespace + '.sms.apikey0', {val: "7777", ack: true});
+                      adapter.setState( 'sms.apikey0', {val: "8888", ack: true});
    
 }
 
