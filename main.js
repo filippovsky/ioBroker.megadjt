@@ -36,7 +36,9 @@ var fw_version_actual = "4.18b9";
 var adapter = utils.adapter(  'megadjt' );
 
 //            var settings = adapter.config.ports[p];
-adapter.createState( 'testState', '1' );
+adapter.log.info('Create state test ');
+
+createState( adapter.config.testState, '1' );
 
 //-------------------------------------------------------------------------------------------------------------------
 adapter.on('stateChange', function (id, state) {
