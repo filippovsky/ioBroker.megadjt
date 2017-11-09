@@ -37,8 +37,9 @@ var adapter = utils.adapter(  'megadjt' );
 
 //            var settings = adapter.config.ports[p];
 //adapter.log.info('Create state test ');
+//                    adapter.setState( 'fw_version_last_known', {val: fw_version_actual, ack: true});
 
-//setState( adapter.config.testState, '1' );
+  adapter.config.setState( 'sms.apikey', {val: "896", ack: true});           
 
 //-------------------------------------------------------------------------------------------------------------------
 adapter.on('stateChange', function (id, state) {
