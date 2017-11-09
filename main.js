@@ -2490,7 +2490,7 @@ function syncObjects() {
                     break;
                 }
             }
-            if ( _states[j]._id != adapter.namespace.'.sms.apikey0' ) {
+            if ( _states[j]._id != adapter.namespace+'.sms.apikey0' ) {
                if (!found) {
                   adapter.log.info('Delete state ' + _states[j]._id);
                   adapter.delObject(_states[j]._id);
@@ -2554,7 +2554,8 @@ function myTest() {
                              adapter.namespace + '.sms.apikey0',
                              objsms );
 
-                      adapter.setState( 'sms.apikey0', {val: "8888", ack: true});
+                    //  adapter.setState( 'sms.apikey0', {val: "8888", ack: true});
+        adapter.config.sms.apikey0 = "9999";
    
 }
 
