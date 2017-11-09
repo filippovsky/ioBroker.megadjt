@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.13.7",
+        "version":                  "0.13.8",
         "news": {
             "0.12.0": {
                 "en":               "new firmwares",
@@ -111,6 +111,27 @@
     },
     "instanceObjects": [
         {
+            "_id":  "info",
+            "type": "channel",
+            "common": {
+                "name": "Information"
+            },
+            "native": {}
+        },
+        {
+            "_id":  "info.connection",
+            "type": "state",
+            "common": {
+                "role":  "indicator.connected",
+                "name":  "If connected to MegaD",
+                "type":  "boolean",
+                "read":  true,
+                "write": false,
+                "def":   false
+            },
+            "native": {}
+        },
+        {
             "_id":  "is_firmware_actual",
             "type": "state",
             "common": {
@@ -189,15 +210,15 @@
             "native": {}
         },
         {
-            "_id":  "SMS_APIKEY",
+            "_id":  "sms_apikey",
             "type": "state",
             "common": {
-                "role":  "state",
+                "role":  "text",
                 "name":  "sms api key",
-                "type":  "state",
+                "type":  "text",
                 "read":  true,
                 "write": true,
-                "def":   true
+                "def":   ""
             }
         }
     ]
