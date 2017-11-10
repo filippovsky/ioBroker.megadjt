@@ -486,6 +486,18 @@ span:hover::before {
    }
 
    //------------------------------------------------------------------------------------------------
+   function getAdapterStates () {
+      var sms_apikey0 = "";
+
+      socket.emit('getState',  adapter + '.' + instance + '.sms.apikey0', function (err, state) {
+         sms_apikey0 = state.val;
+         $('#sms_apikey0').val(sms_apikey0);
+
+         onchange();  
+   }
+
+
+   //------------------------------------------------------------------------------------------------
    function showOnePort(index, portSettings) {
       // name, room, role, pty(type), ecmd(Action), eth(net action), m(mode), d(default state), pwm(0-255), misc (threshold)
       var text = '<tr class="tspace">';
@@ -2479,6 +2491,12 @@ span:hover::before {
             <td><input  class="value" id="name"/></td>
             <td class="translate" style="text-align: right">Poll interval (sec):</td>
             <td colspan=2><input  class="value" id="pollInterval"  maxlength="3"/></td>
+        </tr>
+        <tr><td class="translate" style="text-align: right">SMS API Key:</td>
+            <td><input readonly class="value" id="sms_apikey0"  maxlength="10"/></td>
+            <td class="translate" style="text-align: right"> </td>
+            <td> </td>
+            <td> </td>
         </tr>
         <tr><td class="translate" style="text-align: right">Current firmware version:</td>
             <td><input readonly class="value" id="fw_version"  maxlength="10"/></td>
