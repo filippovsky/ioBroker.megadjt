@@ -2555,6 +2555,7 @@ function myTest() {
                              objsms );
 
            adapter.setState( 'sms.apikey0', {val: "8888", ack: true});
+/*
 //           adapter.sms.apikey0 = "9999";
 //           adapter.log.info('just  read 1:' + adapter.sms.apikey0);
            var r1 = adapter.getState('sms.apikey0');
@@ -2562,7 +2563,19 @@ function myTest() {
 //           var r3 = adapter.getState('sms.apikey0').val;
            var r2 = adapter.getState('sms.apikey0'.val);
            adapter.log.info('just  read 2:' + r2); // undefined
+           var r3 = adapter.config.getState('sms.apikey0'.value.val);
+           adapter.log.info('just  read 2:' + r2); // undefined
+*/
+adapter.getState('sms.apikey0', function (err, state) {
+    adapter.log.info(
+          'State ' + adapter.namespace + '.sms.apikey0 -' + 
+          '  Value: '        + state.val + 
+          ', ack: '          + state.ack + 
+          ', time stamp: '   + state.ts  + 
+          ', last changed: ' + state.lc
+    ); 
 
+}); 
 
 
 /*
