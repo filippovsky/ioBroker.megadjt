@@ -2529,43 +2529,62 @@ function syncObjects() {
     });
 }
 //---------------------------------------------------------------------------------------------
-function myTest() {
-   var objsms = null;
-   objsms = {
-                        _id: adapter.namespace + '.sms.apikey0',
-                            common: {
-                                name: 'sms_apikey0',
-                                role: 'state',
-                                write: true,
-                                read: true,
-                               // unit: '%',
-                                def: "",
-                                desc: 'api sms',
-				type: 'text'
-                            },
-                            native: {
-                                //port: p
-                            },
-                            type: 'state'
-                        };
+function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
+   var obj = null;
+   var newObjects = [];
+   var id = adapter.namespace + '.' + name;
 
-                        //adapter.setObject(newObjects[i]._id, newObjects[i]);
-                        adapter.setObject(
-                             adapter.namespace + '.sms.apikey0',
-                             objsms );
+   adapter.getStatesOf('', '', function (err, _states) {
+      var i;
+      var found;
+      var role = "";
+      var type = "";
+      var typeObj = "";
 
-           adapter.setState( 'sms.apikey0', {val: "8888", ack: true});
+      found = false;
+      for (i = 0; i < _states.length; i++) {
+         if ( id == _states[i]._id) {
+            found = true;
+            break;
+         }
+      }
+
+      if (!found) {
+         adapter.log.info('Add state ' + id);
+         if ( type == 'state' ) {
+            role = 'state';
+            type = 'text';
+            typeObj = 'state';
+         }
+         obj = {
+                    _id: id,
+                 common: {
+                             name: name,
+                             role: role,
+                            write: true,
+                             read: true,
+                              def: "",
+                             desc: desc,
+                             type: type
+                         },
+                 native: {},
+                   type: typeObj
+               };
+
+         adapter.setObject( id, obj );
+  
+         if ( firstValue ) {
+            adapter.setState( name, {val: firstValue, ack: true});
+         }
+     }
+  });
+}
+//---------------------------------------------------------------------------------------------
+function configInit() {
+   createConfigItemIfNotExists ( 'sms.apiKey', 'state', 'API KEY для отправки SMS с megadjt.sms.ru', 789 );
 /*
-//           adapter.sms.apikey0 = "9999";
-//           adapter.log.info('just  read 1:' + adapter.sms.apikey0);
-           var r1 = adapter.getState('sms.apikey0');
-           adapter.log.info('just  read 1:' + r1); // undefined
-//           var r3 = adapter.getState('sms.apikey0').val;
-           var r2 = adapter.getState('sms.apikey0'.val);
-           adapter.log.info('just  read 2:' + r2); // undefined
-           var r3 = adapter.config.getState('sms.apikey0'.value.val);
-           adapter.log.info('just  read 2:' + r2); // undefined
-*/
+           adapter.setState( 'sms.apikey0', {val: "8888", ack: true});
+
 adapter.getState('sms.apikey0', function (err, state) {
     adapter.log.info(
           'State ' + adapter.namespace + '.sms.apikey0 -' + 
@@ -2574,16 +2593,9 @@ adapter.getState('sms.apikey0', function (err, state) {
           ', time stamp: '   + state.ts  + 
           ', last changed: ' + state.lc
     ); 
-
 }); 
+*/
 
-
-/*
-           var r2 = adapter.getState(adapter.namespace + '.sms.apikey0');
-           var r4 = adapter.getState(adapter.namespace + '.sms.apikey0').val;
-           adapter.log.info('just  read 2:' + r2);
-           adapter.log.info('just  read 4:' + r4);
-  */ 
 }
 
 //---------------------------------------------------------------------------------------------
@@ -2598,7 +2610,7 @@ function main() {
     adapter.setState('info.connection', false, true);
 
     // adapter.setState( 'sms.apikey', {val: "896", ack: true});           -- только в состояния
-    myTest();
+    configInit();
     
     if (adapter.config.ip) {
         adapter.config.port = parseInt(adapter.config.port, 10) || 0;
