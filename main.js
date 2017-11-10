@@ -2556,12 +2556,13 @@ function myTest() {
 
            adapter.setState( 'sms.apikey0', {val: "8888", ack: true});
 //           adapter.sms.apikey0 = "9999";
-           adapter.log.info('just  read 1:' + adapter.sms.apikey0);
-/*           var r1 = adapter.getState('sms.apikey0');
+//           adapter.log.info('just  read 1:' + adapter.sms.apikey0);
+           var r1 = adapter.getState('sms.apikey0');
+           adapter.log.info('just  read 1:' + r1);
+/*
            var r2 = adapter.getState(adapter.namespace + '.sms.apikey0');
            var r3 = adapter.getState('sms.apikey0').val;
            var r4 = adapter.getState(adapter.namespace + '.sms.apikey0').val;
-           adapter.log.info('just  read 1:' + r1);
            adapter.log.info('just  read 2:' + r2);
            adapter.log.info('just  read 3:' + r3);
            adapter.log.info('just  read 4:' + r4);
