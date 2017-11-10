@@ -2534,7 +2534,7 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
    var newObjects = [];
    var id = adapter.namespace + '.' + name;
 
-   adapter.getStatesOf('sms', '', function (err, _states) {
+   adapter.getStatesOf('', 'sms', function (err, _states) {
       var i;
       var found;
       var role = "";
