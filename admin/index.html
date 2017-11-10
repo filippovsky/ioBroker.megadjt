@@ -492,8 +492,8 @@ span:hover::before {
       socket.emit('getState',  adapter + '.' + instance + '.sms.apikey0', function (err, state) {
          sms_apikey0 = state.val;
          $('#sms_apikey0').val(sms_apikey0);
-
          onchange();  
+      });
    }
 
 
