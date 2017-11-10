@@ -485,15 +485,24 @@ span:hover::before {
       });
    }
 
-   //------------------------------------------------------------------------------------------------
+   //--------------------------------------------------------------------------------
+    function smsApiKeyChanged ( ) {
+      var newkey = $('#sms_apikey0').val();
+      socket.emit('setState',  adapter + '.' + instance + '.sms.apikey0', newkey );
+      //http://192.168.1.35:8087/set/megadjt.0.sms.apikey0?value=123&prettyPrint
+    }
+
+   //--------------------------------------------------------------------------------
    function getAdapterStates () {
       var sms_apikey0 = "";
 
       socket.emit('getState',  adapter + '.' + instance + '.sms.apikey0', function (err, state) {
          sms_apikey0 = state.val;
          $('#sms_apikey0').val(sms_apikey0);
+         $('#sms_apikey0').change(smsApiKeyChanged);
          onchange();  
       });
+
    }
 
 
@@ -2494,10 +2503,9 @@ span:hover::before {
             <td colspan=2><input  class="value" id="pollInterval"  maxlength="3"/></td>
         </tr>
         <tr><td class="translate" style="text-align: right">SMS API Key:</td>
-            <td><input readonly class="value" id="sms_apikey0"  maxlength="10"/></td>
-            <td class="translate" style="text-align: right"> </td>
-            <td> </td>
-            <td> </td>
+            <td><input class="value" id="sms_apikey0"  maxlength="100"/></td>
+            <td class="translate" style="text-align: right"><a href="http://megadjt.sms.ru">Получить API KEY</a></td>
+            <td colspan=2>&nbsp;Если Вы уже зарегистрированы на SMS.RU - укажите в своем профиле промокод <b>megadjt</b> и получите скидку 10% на 1 месяц</td>
         </tr>
         <tr><td class="translate" style="text-align: right">Current firmware version:</td>
             <td><input readonly class="value" id="fw_version"  maxlength="10"/></td>
