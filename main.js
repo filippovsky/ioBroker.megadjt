@@ -2534,7 +2534,7 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
    var newObjects = [];
    var id = adapter.namespace + '.' + name;
 
-   adapter.getStatesOf('megadjt.0.sms', '', function (err, _states) {
+   adapter.getStatesOf('', '', function (err, _states) {
       var i;
       var found;
       var role = "";
@@ -2585,6 +2585,7 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
 }
 //---------------------------------------------------------------------------------------------
 function configInit() {
+   createConfigItemIfNotExists ( 'sms', 'state', 'Настройки SMS', '' );
    createConfigItemIfNotExists ( 'sms.apiKey', 'state', 'API KEY для отправки SMS с megadjt.sms.ru', '78945' );
 /*
 adapter.getState('sms.apikey0', function (err, state) {
