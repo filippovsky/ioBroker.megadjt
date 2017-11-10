@@ -2534,6 +2534,15 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
    var newObjects = [];
    var id = adapter.namespace + '.' + name;
 
+   adapter.getObject( name, function(err,obj) {
+       if (obj) {
+          adapter.log.debug('Объект ' + id +' уже есть .... ');
+          return;
+       }
+   });
+
+   adapter.log.debug('Объекта ' + id +' нет .... ');
+
    adapter.getStatesOf('', '', function (err, _states) {
       var i;
       var found;
