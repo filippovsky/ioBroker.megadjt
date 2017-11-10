@@ -2542,9 +2542,12 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
       var typeObj = "";
 
       found = false;
+      adapter.log.debug('Проверяем, есть ли объект ' + id +' .... ');
       for (i = 0; i < _states.length; i++) {
+         adapter.log.debug(' ... ' + _states[i]._id );
          if ( id == _states[i]._id) {
             found = true;
+            adapter.log.debug('Совпало. Не надо добавлять.');
             break;
          }
       }
@@ -2582,10 +2585,8 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
 }
 //---------------------------------------------------------------------------------------------
 function configInit() {
-   createConfigItemIfNotExists ( 'sms.apiKey', 'state', 'API KEY для отправки SMS с megadjt.sms.ru', 789 );
+   createConfigItemIfNotExists ( 'sms.apiKey', 'state', 'API KEY для отправки SMS с megadjt.sms.ru', '78945' );
 /*
-           adapter.setState( 'sms.apikey0', {val: "8888", ack: true});
-
 adapter.getState('sms.apikey0', function (err, state) {
     adapter.log.info(
           'State ' + adapter.namespace + '.sms.apikey0 -' + 
