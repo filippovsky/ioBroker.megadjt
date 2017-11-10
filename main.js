@@ -2601,7 +2601,7 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
 }
 //---------------------------------------------------------------------------------------------
 function configInit() {
-   createConfigItemIfNotExists ( 'sms', 'state', 'Настройки SMS', '' );
+   //createConfigItemIfNotExists ( 'sms', 'state', 'Настройки SMS', '' );
    createConfigItemIfNotExists ( 'sms.apiKey', 'state', 'API KEY для отправки SMS с megadjt.sms.ru', '78945' );
 /*
 adapter.getState('sms.apikey0', function (err, state) {
