@@ -31,7 +31,7 @@ var ports  = {};
 ///var askInternalTemp = false;
 var ask1WireTemp = false;   //1Wire
 var connected = false;
-var fw_version_actual = "4.18b9";
+var fw_version_actual = "4.19b1";
 
 var adapter = utils.adapter(  'megadjt' );
 
@@ -2554,8 +2554,17 @@ function myTest() {
                              adapter.namespace + '.sms.apikey0',
                              objsms );
 
-                      adapter.setState( 'sms.apikey0', {val: "8888", ack: true});
-//        adapter.config.sms.apikey0 = "9999";
+           adapter.setState( 'sms.apikey0', {val: "8888", ack: true});
+           adapter.sms.apikey0 = "9999";
+           adapter.log.info('just  read 1:' + adapter.sms.apikey0);
+           var r1 = adapter.getState('sms.apikey0');
+           var r2 = adapter.getState(adapter.namespace + '.sms.apikey0');
+           var r3 = adapter.getState('sms.apikey0').val;
+           var r4 = adapter.getState(adapter.namespace + '.sms.apikey0').val;
+           adapter.log.info('just  read 1:' + r1);
+           adapter.log.info('just  read 2:' + r2);
+           adapter.log.info('just  read 3:' + r3);
+           adapter.log.info('just  read 4:' + r4);
    
 }
 
