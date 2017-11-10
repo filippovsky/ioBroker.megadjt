@@ -2490,7 +2490,7 @@ function syncObjects() {
                     break;
                 }
             }
-            if ( _states[j]._id != adapter.namespace+'.sms.apikey0' ) {
+            if ( _states[j]._id != adapter.namespace+'.sms.apiKey' ) {
                if (!found) {
                   adapter.log.info('Delete state ' + _states[j]._id);
                   adapter.delObject(_states[j]._id);
@@ -2575,6 +2575,7 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
   
          if ( firstValue ) {
             adapter.setState( name, {val: firstValue, ack: true});
+            adapter.log.info('Set first value ' + firstValue + ' for state ' + id );
          }
      }
   });
