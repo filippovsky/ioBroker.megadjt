@@ -2545,7 +2545,6 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
           adapter.log.debug('Объект ' + id +' уже есть .... ');
           found = true;
        }
-   });
 
    if (found) {
       return;
@@ -2597,8 +2596,8 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
             adapter.setState( name, {val: firstValue, ack: true});
             adapter.log.info('Set first value ' + firstValue + ' for state ' + id );
          }
-  /*   }
-  });*/
+  //   }
+  });
 }
 //---------------------------------------------------------------------------------------------
 function configInit() {
