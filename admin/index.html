@@ -488,7 +488,7 @@ span:hover::before {
    //--------------------------------------------------------------------------------
     function smsApiKeyChanged ( ) {
       var newkey = $('#sms_apiKey').val();
-      socket.emit('setState',  adapter + '.' + instance + '.sms.apiKey', newkey );
+      socket.emit('setState',  adapter + '.' + instance + '.sms.apiKey', newkey, true );
       //http://192.168.1.35:8087/set/megadjt.0.sms.apikey0?value=123&prettyPrint
     }
 
