@@ -2533,16 +2533,23 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
    var obj = null;
    var newObjects = [];
    var id = adapter.namespace + '.' + name;
+   var found;
 
+   found = false;
    adapter.getObject( name, function(err,obj) {
        if (obj) {
           adapter.log.debug('Объект ' + id +' уже есть .... ');
-          return;
+          found = true;
        }
    });
 
+   if (found) {
+      return;
+   }
+
    adapter.log.debug('Объекта ' + id +' нет .... ');
 
+   /*
    adapter.getStatesOf('', '', function (err, _states) {
       var i;
       var found;
@@ -2561,7 +2568,7 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
          }
       }
 
-      if (!found) {
+      if (!found) {*/
          adapter.log.info('Add state ' + id);
          if ( type == 'state' ) {
             role = 'state';
@@ -2589,8 +2596,8 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
             adapter.setState( name, {val: firstValue, ack: true});
             adapter.log.info('Set first value ' + firstValue + ' for state ' + id );
          }
-     }
-  });
+  /*   }
+  });*/
 }
 //---------------------------------------------------------------------------------------------
 function configInit() {
