@@ -31,7 +31,7 @@ var ports  = {};
 ///var askInternalTemp = false;
 var ask1WireTemp = false;   //1Wire
 var connected = false;
-var fw_version_actual = "4.19b1";
+var fw_version_actual = "4.19b2";
 
 var adapter = utils.adapter(  'megadjt' );
 
@@ -2574,6 +2574,10 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
             role = 'state';
             type = 'text';
             typeObj = 'state';
+         } elsif ( type == 'statebool' ) {
+            role = 'state';
+            type = 'boolean';
+            typeObj = 'state';
          }
          obj = {
                     _id: id,
@@ -2601,8 +2605,11 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
 }
 //---------------------------------------------------------------------------------------------
 function configInit() {
-   //createConfigItemIfNotExists ( 'sms', 'state', 'Настройки SMS', '' );
-   createConfigItemIfNotExists ( 'sms.apiKey', 'state', 'API KEY для отправки SMS с megadjt.sms.ru', '78945' );
+   createConfigItemIfNotExists ( 'sms.apiKey', 'state', 'API KEY для отправки SMS с megadjt.sms.ru', '' );
+   createConfigItemIfNotExists ( 'sms.enabled', 'statebool', 'Включить отправку SMS', 'false' );
+   createConfigItemIfNotExists ( 'sms.phones', 'state', 'Номера телефонов (через запятую) для отправки SMS', '' );
+   createConfigItemIfNotExists ( 'sms.text', 'state', 'Текст для отправки SMS', '' );
+
 /*
 adapter.getState('sms.apikey0', function (err, state) {
     adapter.log.info(
