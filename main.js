@@ -2521,10 +2521,10 @@ function syncObjects() {
                     break;
                 }
             }
-            if ( _states[j]._id != adapter.namespace+'.sms.apiKey' ) 
+            if (( _states[j]._id != adapter.namespace+'.sms.apiKey' ) 
                && ( _states[j]._id != adapter.namespace+'.sms.phones' ) 
                && ( _states[j]._id != adapter.namespace+'.sms.text' ) 
-               && ( _states[j]._id != adapter.namespace+'.sms.enabled' ) 
+               && ( _states[j]._id != adapter.namespace+'.sms.enabled' ) )
             {
                if (!found) {
                   adapter.log.info('Delete state ' + _states[j]._id);
