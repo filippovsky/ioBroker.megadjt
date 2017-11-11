@@ -44,6 +44,7 @@ var sms_ru  = require('sms_ru');
 //-------------------------------------------------------------------------------------------------------------------
 adapter.on('stateChange', function (id, state) {
     var matched = [];
+    adapter.log.debug('stateChange: id ='+id+'  state='+state.val+'  ack='+state.ack);
     if (id && state && !state.ack) {
         //matched = id.match(/megadjt\.(.*?)\.xp(.*?)/);
         if (state.val === 'false' || state.val === false) state.val = 0;
