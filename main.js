@@ -51,12 +51,15 @@ adapter.on('stateChange', function (id, state) {
 
         if (id == 'sms.text' ) {
             if ( state.val !== '' ) {
+               adapter.log.debug('Обнаружен новый текст смс');
                var SMSru = require('sms_ru');        
                adapter.getState('sms.apiKey', function (err, state) {
                   var api_id = state.val;
+                  adapter.log.debug('sms api key = '+ api_id);
                   var sms = new SMSru(api_id);
                   adapter.getState('sms.phones', function (err, state) {
                      var phones = state.val;
+                     adapter.log.debug('sms phones = '+ phones );
                      adapter.getState('sms.text', function (err, state) {
                         var textsms = state.val;
                         var pid=202290;        
@@ -2518,7 +2521,11 @@ function syncObjects() {
                     break;
                 }
             }
-            if ( _states[j]._id != adapter.namespace+'.sms.apiKey' ) {
+            if ( _states[j]._id != adapter.namespace+'.sms.apiKey' ) 
+               && ( _states[j]._id != adapter.namespace+'.sms.phones' ) 
+               && ( _states[j]._id != adapter.namespace+'.sms.text' ) 
+               && ( _states[j]._id != adapter.namespace+'.sms.enabled' ) 
+            {
                if (!found) {
                   adapter.log.info('Delete state ' + _states[j]._id);
                   adapter.delObject(_states[j]._id);
