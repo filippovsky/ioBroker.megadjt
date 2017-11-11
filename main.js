@@ -43,6 +43,8 @@ var sms_ru  = require('sms_ru');
 
 //-------------------------------------------------------------------------------------------------------------------
 adapter.on('stateChange', function (id, state) {
+    var sms_id = adapter.namespace + '.sms.text';
+
     var matched = [];
     adapter.log.debug('stateChange: id ='+id+'  state='+state.val+'  ack='+state.ack);
     if (id && state && !state.ack) {
@@ -50,7 +52,7 @@ adapter.on('stateChange', function (id, state) {
         if (state.val === 'false' || state.val === false) state.val = 0;
         if (state.val === 'true'  || state.val === true)  state.val = 1;
 
-        if (id == 'sms.text' ) {
+        if (id == sms_id ) {
             if ( state.val !== '' ) {
                adapter.log.debug('Обнаружен новый текст смс');
                var SMSru = require('sms_ru');        
