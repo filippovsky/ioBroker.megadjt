@@ -2575,7 +2575,7 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
             role = 'state';
             type = 'text';
             typeObj = 'state';
-         } elsif ( type == 'statebool' ) {
+         } else if ( type == 'statebool' ) {
             role = 'state';
             type = 'boolean';
             typeObj = 'state';
