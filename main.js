@@ -2600,7 +2600,7 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
          adapter.log.info('Add state ' + id);
          if ( type == 'state' ) {
             role = 'state';
-            type = 'text';
+            type = 'string';
             typeObj = 'state';
          } else if ( type == 'statebool' ) {
             role = 'state';
