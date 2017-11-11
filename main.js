@@ -2563,7 +2563,7 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
    var id = adapter.namespace + '.' + name;
    var found;
    var role = "";
-   var type = "";
+   var subtype = "";
    var typeObj = "";
 
 
@@ -2600,15 +2600,16 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
          adapter.log.info('Add state ' + id);
          if ( type == 'state' ) {
             role = 'state';
-            type = 'string';
+            subtype = 'string';
             typeObj = 'state';
          } else if ( type == 'statebool' ) {
             role = 'state';
-            type = 'boolean';
+            subtype = 'boolean';
             typeObj = 'state';
          }
          obj = {
                     _id: id,
+                   name: name,
                  common: {
                              name: name,
                              role: role,
@@ -2616,7 +2617,7 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
                              read: true,
                               def: "",
                              desc: desc,
-                             type: type
+                             type: subtype
                          },
                  native: {},
                    type: typeObj
