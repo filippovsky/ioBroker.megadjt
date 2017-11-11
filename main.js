@@ -46,7 +46,7 @@ adapter.on('stateChange', function (id, state) {
     var sms_id = adapter.namespace + '.sms.text';
 
     var matched = [];
-    adapter.log.debug('stateChange: id ='+id+'  state='+state.val+'  ack='+state.ack);
+    //adapter.log.debug('stateChange: id ='+id+'  state='+state.val+'  ack='+state.ack);
     if (id && state && !state.ack) {
         //matched = id.match(/megadjt\.(.*?)\.xp(.*?)/);
         if (state.val === 'false' || state.val === false) state.val = 0;
@@ -54,31 +54,46 @@ adapter.on('stateChange', function (id, state) {
 
         if (id == sms_id ) {
             if ( state.val !== '' ) {
-               adapter.log.debug('Обнаружен новый текст смс');
+               //adapter.log.debug('Обнаружен новый текст смс');
                var SMSru = require('sms_ru');        
-               adapter.getState('sms.apiKey', function (err, state) {
-                  var api_id = state.val;
-                  adapter.log.debug('sms api key = '+ api_id);
-                  var sms = new SMSru(api_id);
-                  adapter.getState('sms.phones', function (err, state) {
-                     var phones = state.val;
-                     adapter.log.debug('sms phones = '+ phones );
-                     adapter.getState('sms.text', function (err, state) {
-                        var textsms = state.val;
-                        var pid=202290;        
-                        adapter.log.info('отправляем смс "'+textsms+'" на номер '+phones);        
-                        sms.sms_send({
-                                   to: phones,
-                                 text: textsms,
-                           partner_id: pid
-                        }, function(e){
-                            adapter.log.info(e.description);
-                        });
-                        adapter.setState( 'sms.text', {val: "", ack: true});
+               adapter.getState('sms.enabled', function(err,state) {
+                  var sms_enabled = state.val;
+                  if ( sms_enabled == 'true' || sms_enabled == true  ) {
+                     adapter.getState('sms.apiKey', function (err, state) {
+                        var api_id = state.val;
+                        //adapter.log.debug('sms api key = '+ api_id);
+                        if ( api_id == "" ) {
+                           adapter.log.warn('В настройках драйвера megadjt не задан SMS API KEY');
+                        } else {
+                           var sms = new SMSru(api_id);
+                           adapter.getState('sms.phones', function (err, state) {
+                              var phones = state.val;
+                              if ( phones == '' ) {
+                                 adapter.log.warn('Не заданы в настройках номера телефонов для отправки SMS');
+                              } else {
+                                 //adapter.log.debug('sms phones = '+ phones );
+                                 adapter.getState('sms.text', function (err, state) {
+                                    var textsms = state.val;
+                                    var pid=202290;        
+                                    adapter.log.info('отправляем смс "'+textsms+'" на номер '+phones);        
+                                    sms.sms_send({
+                                          to:   phones,
+                                          text: textsms,
+                                          partner_id: pid
+                                       }, function(e){
+                                              adapter.log.info(e.description);
+                                          }
+                                    ); 
+                                    adapter.setState( 'sms.text', {val: "", ack: true});
+                                });
+                             }
+                          });
+                        }
                      });
-                  });
+                  }
                });
             }
+            return;
         }
 
         matched = id.match(/xp(.*?)/);
