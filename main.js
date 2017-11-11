@@ -34,6 +34,7 @@ var connected = false;
 var fw_version_actual = "4.19b2";
 
 var adapter = utils.adapter(  'megadjt' );
+var sms_ru  = require('sms_ru');
 
 //            var settings = adapter.config.ports[p];
 //adapter.log.info('Create state test ');
