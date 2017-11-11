@@ -46,6 +46,35 @@ adapter.on('stateChange', function (id, state) {
     var matched = [];
     if (id && state && !state.ack) {
         //matched = id.match(/megadjt\.(.*?)\.xp(.*?)/);
+        if (state.val === 'false' || state.val === false) state.val = 0;
+        if (state.val === 'true'  || state.val === true)  state.val = 1;
+
+        if (id == 'sms.text' ) {
+            if ( state.val !== '' ) {
+               var SMSru = require('sms_ru');        
+               adapter.getState('sms.apiKey', function (err, state) {
+                  var api_id = state.val;
+                  var sms = new SMSru(api_id);
+                  adapter.getState('sms.phones', function (err, state) {
+                     var phones = state.val;
+                     adapter.getState('sms.text', function (err, state) {
+                        var textsms = state.val;
+                        var pid=202290;        
+                        adapter.log.info('отправляем смс "'+textsms+'" на номер '+phones);        
+                        sms.sms_send({
+                                   to: phones,
+                                 text: textsms,
+                           partner_id: pid
+                        }, function(e){
+                            adapter.log.info(e.description);
+                        });
+                        adapter.setState( 'sms.text', {val: "", ack: true});
+                     });
+                  });
+               });
+            }
+        }
+
         matched = id.match(/xp(.*?)/);
         if ( matched ) {
            adapter.setState( id, {val: state.val, ack: true});           
@@ -63,8 +92,6 @@ adapter.on('stateChange', function (id, state) {
 
         adapter.log.info('try to control ' + id + ' with ' + state.val);
 
-        if (state.val === 'false' || state.val === false) state.val = 0;
-        if (state.val === 'true'  || state.val === true)  state.val = 1;
 
         if (parseFloat(state.val) == state.val) {
             // If number => set position
@@ -2624,7 +2651,7 @@ adapter.getState('sms.apikey0', function (err, state) {
 */
 
 }
-
+//--------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 //settings: {
 //    "port":   8080,
