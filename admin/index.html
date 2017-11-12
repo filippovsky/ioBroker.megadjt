@@ -2573,6 +2573,9 @@ span:hover::before {
                 <button id="buttonsms" class="translateB">SMS Setup</button>
             </td>
         </tr>
+        <tr><td class="translate" style="text-align: right">Включить отправку SMS:</td>
+            <td colspan=4><input type="checkbox" class="checkbox" id="sms_enabled"/></td>
+        </tr>
         <tr><td class="translate" style="text-align: right">MegaD Name:</td>
             <td><input  class="value" id="name"/></td>
             <td class="translate" style="text-align: right">Poll interval (sec):</td>
@@ -3121,9 +3124,6 @@ while(1)
                                     <a href="http://megadjt.sms.ru" target="_blank">Получить API KEY</a>
                            </p>
         <table>
-            <tr><td class="translate" style="text-align: right">Включить отправку SMS</td>
-                <td><input type="checkbox" id="sms_enabled"/>&nbsp;</td></tr>
-
             <tr><td class="translate" style="text-align: right">SMS API Key:</td>
                 <td><input class="value" id="sms_apiKey"  size="100" maxlength="200"/></td></tr>
 
