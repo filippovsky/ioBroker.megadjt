@@ -319,16 +319,16 @@ function getFirmwareVersion() {
                     // Analyse answer and updates staties
                     // if (callback) callback(obj, version);
                     adapter.log.debug('getFirmwareVersion Актуальная версия прошивки: ' + fw_version_actual);
-                    //adapter.setState( 'version.firmware_last_known', {val: fw_version_actual, ack: true});
-                    adapter.setState( 'fw_version_last_known', {val: fw_version_actual, ack: true});
+                    //adapter.setState( 'fw_version_last_known', {val: fw_version_actual, ack: true});
+                    adapter.setState( 'firmware.last_known_version', {val: fw_version_actual, ack: true});
 
                     if ( version === fw_version_actual ) {
-                          //adapter.setState( 'version.is_firmware_actual', {val: true, ack: true});
-                          adapter.setState( 'is_firmware_actual', {val: true, ack: true});
+                          //adapter.setState( 'is_firmware_actual', {val: true, ack: true});
+                          adapter.setState( 'firmware.is_actual', {val: true, ack: true});
                           adapter.log.debug('getFirmwareVersion Текущая версия актуальна');
                     } else {
-                          //adapter.setState( 'version.is_firmware_actual', {val: false, ack: true});
-                          adapter.setState( 'is_firmware_actual', {val: false, ack: true});
+                          //adapter.setState( 'is_firmware_actual', {val: false, ack: true});
+                          adapter.setState( 'firmware.is_actual', {val: false, ack: true});
                           adapter.log.debug('getFirmwareVersion Текущая версия неактуальна');
                     }
                     
@@ -2666,6 +2666,8 @@ function configInit() {
    createConfigItemIfNotExists ( 'sms.text', 'state', 'Текст для отправки SMS', '' );
 
    createConfigItemIfNotExists ( 'firmware.version', 'state', 'Версия прошивки устройства', '' );
+   createConfigItemIfNotExists ( 'firmware.last_known_version', 'state', 'Текущий номер актуальной версии прошивки', '' );
+   createConfigItemIfNotExists ( 'firmware.is_actual', 'statebool', 'Мега прошита самой свежей версией?', '' );
 
 /*
 adapter.getState('sms.apikey0', function (err, state) {
