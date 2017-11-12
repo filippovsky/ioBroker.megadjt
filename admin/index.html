@@ -521,7 +521,7 @@ span:hover::before {
    //--------------------------------------------------------------------------------
    function getAdapterStates () {
       var sms_apiKey  = "";
-      var sms_enabled = "";
+      var sms_enabled = false;
       var sms_phones  = "";
 
       socket.emit('getState',  adapter + '.' + instance + '.sms.apiKey', function (err, state) {
@@ -533,7 +533,7 @@ span:hover::before {
 
       socket.emit('getState',  adapter + '.' + instance + '.sms.enabled', function (err, state) {
          sms_enabled = state.val;
-         if (sms_enabled == 'true' || sms_enabled == true ) {
+         if (sms_enabled == true || sms_enabled == 'true' ) {
             //$('#sms_enabled').prop('checked');            
             $('#sms_enabled').attr('checked');
          } else {
