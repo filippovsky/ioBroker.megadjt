@@ -2678,6 +2678,18 @@ adapter.getState('sms.apikey0', function (err, state) {
 
 }
 //--------------------------------------------------------------------------------------------
+function debugAllStates () {
+   adapter.getStatesOf('', '', function (err, _states) {
+      var i;
+      var found;
+
+      for (i = 0; i < _states.length; i++) {
+         adapter.log.debug('State '+i+' ... ' + _states[i]._id );
+      }
+   });
+}
+
+
 //---------------------------------------------------------------------------------------------
 //settings: {
 //    "port":   8080,
@@ -2691,6 +2703,7 @@ function main() {
 
     // adapter.setState( 'sms.apikey', {val: "896", ack: true});           -- только в состояния
     configInit();
+    debugAllStates();
     
     if (adapter.config.ip) {
         adapter.config.port = parseInt(adapter.config.port, 10) || 0;

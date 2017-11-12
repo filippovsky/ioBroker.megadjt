@@ -1,11 +1,15 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.13.63",
+        "version":                  "0.14.0",
         "news": {
+            "0.14.0": {
+                "en":               "sms service added",
+                "ru":               "добавлена поддержка отправки SMS"
+            },
             "0.12.0": {
                 "en":               "new firmwares",
-                "ru":               "new firmwares"
+                "ru":               "новые прошивки"
             },
             "0.8.0": {
                 "en":               "added 8I7O-SD and 8I7O-S",
