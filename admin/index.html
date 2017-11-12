@@ -451,7 +451,8 @@ span:hover::before {
         "Current firmware version:":    {"en": "Current Firmware version:",     "de": "Current Firmware version:",          "ru": "Текущая версия прошивки:"},
         "Last known firmware version:":    {"en": "Last known Firmware version:",     "de": "Last known Firmware version:",          "ru": "Свежая версия прошивки:"},
         "Update Firmware":      {"en": "Update Firmware",       "de": "Update Firmware",            "ru": "Перепрошить Мегу"},
-        "Firmware updated":     {"en": "Firmware updated",      "de": "Firmware updated",           "ru": "Мега перепрошита"}
+        "Firmware updated":     {"en": "Firmware updated",      "de": "Firmware updated",           "ru": "Мега перепрошита"},
+        "SMS Setup":            {"en": "SMS Setup",             "de": "SMS",                        "ru": "Настройки SMS"}
     };
    var onchange  = null;
    var rooms     = [];
@@ -2033,6 +2034,32 @@ span:hover::before {
                 ]
             });
         });
+
+
+
+        $('#buttonsms').button({
+            icons: {primary: 'ui-icon-refresh'}
+        }).click(function () {
+            $('#sms-dialog').dialog( {
+                autoOpen: true,
+                modal:    true,
+                width:    1200,
+                height:   600,
+                title:    _('Настройки SMS'),
+                buttons: [
+                    {
+                        text: _('OK'),
+                        click: function () {
+                            $(this).dialog("close");
+                        }
+                    }
+                ]
+            });
+        });
+
+
+
+
         /*
         $('#updateFirmwareLatest').button({
             icons: {primary: 'ui-icon-refresh'}
@@ -2492,20 +2519,18 @@ span:hover::before {
     <table>
         <tr><td class="translate" style="text-align: right">IP:</td>
             <td><input  class="value" id="ip"/></select></td>
-            <td colspan=3 style="padding-left: 10px">
+            <td style="padding-left: 10px">
                 <select id="ips" style="display:none"></select>&nbsp;
                 <button id="discover" class="translateB">Find devices</button>
+            </td>
+            <td colspan=2 style="padding-left: 10px">
+                <button id="buttonsms" class="translateB">SMS Setup</button>
             </td>
         </tr>
         <tr><td class="translate" style="text-align: right">MegaD Name:</td>
             <td><input  class="value" id="name"/></td>
             <td class="translate" style="text-align: right">Poll interval (sec):</td>
             <td colspan=2><input  class="value" id="pollInterval"  maxlength="3"/></td>
-        </tr>
-        <tr><td class="translate" style="text-align: right">SMS API Key:</td>
-            <td><input class="value" id="sms_apiKey"  maxlength="100"/></td>
-            <td class="translate" style="text-align: right"><a href="http://megadjt.sms.ru" target="_blank">Получить API KEY</a></td>
-            <td colspan=2>&nbsp;Если Вы уже зарегистрированы на SMS.RU - укажите в своем профиле промокод <b>megadjt</b> и получите скидку 10% на 1 месяц</td>
         </tr>
         <tr><td class="translate" style="text-align: right">Current firmware version:</td>
             <td><input readonly class="value" id="fw_version"  maxlength="10"/></td>
@@ -3031,6 +3056,27 @@ while(1)
              <b>2. Выключаем "сломанное" устройство и включаем его снова.</b>
              Скрипт автоматически соединится с программой загрузчика и попытается перепрошить устройство заново.
        </div>
+    </div>
+
+
+    <div id="sms-dialog" style="display: none">
+        <p align="justify">Для отправки SMS используется сервис megadjt.sms.ru. <br>
+                           Вам необходимо указать в настройках драйвера SMS API KEY, который Вы должны получить на указанном сервисе.<br>
+                           После регистрации на сервисе Вы получите скидку 10% на первый месяц.<br>
+                           Если Вы уже зарегитрированы на SMS.RU - перейдите в свой профиль и введите в нем промокод <b>megadjt</b>.<br>
+                           Отправка SMS на собственный номер - бесплатная.<br>
+                           Возможна отправка на несколько номеров, для этого они должны быть указаны через запятую.<br>
+                           Обратите внимание, что по умолчанию отправка смс с одинаковым текстом ограничена по количеству. 
+                           При необходимости это ограничение можно отключить в профиле на сайте.</p>
+                           <p align=center>
+                                    <a href="http://megadjt.sms.ru" target="_blank">Получить API KEY</a>
+                           </p>
+        <table>
+            <tr><td class="translate" style="text-align: right">SMS API Key:</td>
+                <td><input class="value" id="sms_apiKey"  maxlength="200"/></td>
+           </tr>
+        </table>
+
     </div>
 
 

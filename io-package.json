@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.14.0",
+        "version":                  "0.14.1",
         "news": {
             "0.14.0": {
                 "en":               "sms service added",
