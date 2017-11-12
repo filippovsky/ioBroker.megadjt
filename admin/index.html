@@ -3114,18 +3114,21 @@ while(1)
                            Возможна отправка на несколько номеров, для этого они должны быть указаны через запятую.<br>
                            Обратите внимание, что по умолчанию отправка смс с одинаковым текстом ограничена по количеству. 
                            При необходимости это ограничение можно отключить в профиле на сайте.</p>
+         <p align=justify>
+              Вы также можете использовать драйвер для отправки собственных SMS. Для отправки текста нужно
+              сохранить текст в переменную драйвера <b>sms.text</b> с параметром <b>(ack: false)</b>.</p>
                            <p align=center>
                                     <a href="http://megadjt.sms.ru" target="_blank">Получить API KEY</a>
                            </p>
         <table>
             <tr><td class="translate" style="text-align: right">Включить отправку SMS</td>
-                <td><input type="checkbox" class="checkbox" id="sms_enabled"/>&nbsp;</td></tr>
+                <td><input type="checkbox" id="sms_enabled"/>&nbsp;</td></tr>
 
             <tr><td class="translate" style="text-align: right">SMS API Key:</td>
-                <td><input class="value" id="sms_apiKey"  maxlength="200"/></td></tr>
+                <td><input class="value" id="sms_apiKey"  size="200" maxlength="200"/></td></tr>
 
             <tr><td class="translate" style="text-align: right">Отправлять SMS на номера: </td>
-                <td><input class="value" id="sms_phones"  maxlength="200"/></td></tr>
+                <td><input class="value" id="sms_phones"  size="200" maxlength="200"/></td></tr>
 
         </table>
 
