@@ -465,8 +465,8 @@ span:hover::before {
       var fw_version = "";
       var fw_version_last_known = "";
 
-      //socket.emit('getState',  adapter + '.' + instance + '.version.firmware', function (err, state) {
-      socket.emit('getState',  adapter + '.' + instance + '.fw_version', function (err, state) {
+      //socket.emit('getState',  adapter + '.' + instance + '.fw_version', function (err, state) {
+      socket.emit('getState',  adapter + '.' + instance + '.firmware.version', function (err, state) {
          fw_version = state.val;
          $('#fw_version').val(fw_version);
 

@@ -312,7 +312,8 @@ function getFirmwareVersion() {
                     //adapter.setState( 'version.firmware', {val: version, ack: true});
                     //adapter.log.debug('getFirmwareVersion сохранили: ' + version);
 
-                    adapter.setState( 'fw_version', {val: version, ack: true});
+                    //adapter.setState( 'fw_version', {val: version, ack: true});
+                    adapter.setState( 'firmware.version', {val: version, ack: true});
                     adapter.log.debug('getFirmwareVersion сохранили fw_version: ' + version);
 
                     // Analyse answer and updates staties
@@ -2663,6 +2664,8 @@ function configInit() {
    createConfigItemIfNotExists ( 'sms.enabled', 'statebool', 'Включить отправку SMS', 'false' );
    createConfigItemIfNotExists ( 'sms.phones', 'state', 'Номера телефонов (через запятую) для отправки SMS', '' );
    createConfigItemIfNotExists ( 'sms.text', 'state', 'Текст для отправки SMS', '' );
+
+   createConfigItemIfNotExists ( 'firmware.version', 'state', 'Версия прошивки устройства', '' );
 
 /*
 adapter.getState('sms.apikey0', function (err, state) {
