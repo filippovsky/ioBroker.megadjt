@@ -556,10 +556,12 @@ span:hover::before {
 
       socket.emit('getState',  adapter + '.' + instance + '.controller.xp1model', function (err, state) {
          $("#xp1 option:selected").val() = state.val;
+         onchange();  
       });
 
       socket.emit('getState',  adapter + '.' + instance + '.controller.xp2model', function (err, state) {
          $("#xp2 option:selected").val() = state.val;
+         onchange();  
       });
 
    }
