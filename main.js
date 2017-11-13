@@ -31,7 +31,7 @@ var ports  = {};
 ///var askInternalTemp = false;
 var ask1WireTemp = false;   //1Wire
 var connected = false;
-var fw_version_actual = "4.19b2";
+var fw_version_actual = "4.19b4";
 
 var adapter = utils.adapter(  'megadjt' );
 var sms_ru  = require('sms_ru');
@@ -2531,6 +2531,7 @@ function syncObjects() {
             }
         }
 
+         /* пока отключаем удаление
         // Delete old
         for (j = 0; j < _states.length; j++) {
             found = false;
@@ -2557,6 +2558,7 @@ function syncObjects() {
                }
             }
         }
+        */
 
         // if internal temperature desired
         /*for (var po = 0; po < adapter.config.ports.length; po++) {
@@ -2672,6 +2674,7 @@ function configInit() {
    createConfigItemIfNotExists ( 'firmware.version', 'state', 'Версия прошивки устройства', '' );
    createConfigItemIfNotExists ( 'firmware.last_known_version', 'state', 'Текущий номер актуальной версии прошивки', '' );
    createConfigItemIfNotExists ( 'firmware.is_actual', 'statebool', 'Мега прошита самой свежей версией?', '' );
+
 
 /*
 adapter.getState('sms.apikey0', function (err, state) {
