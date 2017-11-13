@@ -556,13 +556,22 @@ span:hover::before {
 
       socket.emit('getState',  adapter + '.' + instance + '.controller.xp1model', function (err, state) {
          $("#xp1 option:selected").val() = state.val;
+         $('#xp1').change(function () {
+             showXP( 1 );
+             $('#xp1').val(state.val).trigger('change');
+         });
          onchange();  
       });
 
       socket.emit('getState',  adapter + '.' + instance + '.controller.xp2model', function (err, state) {
          $("#xp2 option:selected").val() = state.val;
+         $('#xp2').change(function () {
+             showXP( 2 );
+             $('#xp2').val(state.val).trigger('change');
+         });
          onchange();  
       });
+
 
    }
 
@@ -2284,7 +2293,7 @@ span:hover::before {
         });
 
 
-
+        /*
         $('#xp1').change(function () {
             showXP( 1 );
             $('#xp1').val($(this).val()).trigger('change');
@@ -2294,6 +2303,7 @@ span:hover::before {
             showXP( 2 );
             $('#xp2').val($(this).val()).trigger('change');
         });
+        */
 
         // инициализируем картинки при загрузке окна
         var j = showXP( 1 );
@@ -2322,11 +2332,8 @@ span:hover::before {
         // Get edited table
         obj.ports = ports;
 
-        var xp1_sel = "#xp1 option:selected";
-        obj['controller.xp1model'] = $(xp1_sel).val();
-
-        var xp2_sel = "#xp2 option:selected";
-        obj['controller.xp2model'] = $(xp2_sel).val();
+        obj['controller.xp1model'] = $('#xp1 option:selected').val();
+        obj['controller.xp2model'] = $('#xp2 option:selected').val();
 
         callback(obj);
     }
