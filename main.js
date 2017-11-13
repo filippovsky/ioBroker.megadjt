@@ -98,7 +98,8 @@ adapter.on('stateChange', function (id, state) {
 
         matched = id.match(/xp(.*?)/);
         if ( matched ) {
-           adapter.setState( id, {val: state.val, ack: true});           
+           var xpid = adapter.namespace + '.controller.'+id+'model';
+           adapter.setState( xpid, {val: state.val, ack: true});           
            adapter.log.info('Изменился исполнительный модуль ' + id + ' на ' + state.val);
            return;
         } 
@@ -341,7 +342,7 @@ function getFirmwareVersion() {
 
                  if (controller_model) {
                     //adapter.setState( 'version.controller_model', {val: controller_model, ack: true});
-                    adapter.setState( 'controller_model', {val: controller_model, ack: true});
+                    adapter.setState( 'controller.model', {val: controller_model, ack: true});
                  } else {
                     adapter.log.debug('Не смогли определить модель управляющего контроллера Меги');
                  }
@@ -2675,6 +2676,9 @@ function configInit() {
    createConfigItemIfNotExists ( 'firmware.last_known_version', 'state', 'Текущий номер актуальной версии прошивки', '' );
    createConfigItemIfNotExists ( 'firmware.is_actual', 'statebool', 'Мега прошита самой свежей версией?', '' );
 
+   createConfigItemIfNotExists ( 'controller.model', 'state', 'Модель контроллера', '' );
+   createConfigItemIfNotExists ( 'controller.xp1model', 'state', 'Модель исполнительного модуля на XP1', 'none' );
+   createConfigItemIfNotExists ( 'controller.xp2model', 'state', 'Модель исполнительного модуля на XP2', 'none' );
 
 /*
 adapter.getState('sms.apikey0', function (err, state) {
