@@ -563,7 +563,12 @@ span:hover::before {
              $('#xp1model').val(state.val).trigger('change');
          });
 
-         $("#xp1model").val(state.val).change();
+         $("#xp1model").val(state.val).change(); //?
+         $('#xp1model option').each(function() {
+             if($(this).val() == state.val) {
+                 $(this).prop("selected", true);
+             }
+         });
 
          onchange();  
       });
@@ -575,7 +580,13 @@ span:hover::before {
              showXP( 2 );
              $('#xp2model').val(state.val).trigger('change');
          });
-         $("#xp2model").val(state.val).change();
+         $("#xp2model").val(state.val).change(); //?
+         $('#xp2model option').each(function() {
+             if($(this).val() == state.val) {
+                 $(this).prop("selected", true);
+             }
+         });
+
 
          onchange();  
       });
