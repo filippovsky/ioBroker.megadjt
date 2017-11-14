@@ -555,19 +555,19 @@ span:hover::before {
       });
 
       socket.emit('getState',  adapter + '.' + instance + '.controller.xp1model', function (err, state) {
-         $("#xp1 option:selected").val() = state.val;
-         $('#xp1').change(function () {
+         $("#xp1model option:selected").val() = state.val;
+         $('#xp1model').change(function () {
              showXP( 1 );
-             $('#xp1').val(state.val).trigger('change');
+             $('#xp1model').val(state.val).trigger('change');
          });
          onchange();  
       });
 
       socket.emit('getState',  adapter + '.' + instance + '.controller.xp2model', function (err, state) {
-         $("#xp2 option:selected").val() = state.val;
-         $('#xp2').change(function () {
+         $("#xp2model option:selected").val() = state.val;
+         $('#xp2model').change(function () {
              showXP( 2 );
-             $('#xp2').val(state.val).trigger('change');
+             $('#xp2model').val(state.val).trigger('change');
          });
          onchange();  
       });
@@ -993,7 +993,7 @@ span:hover::before {
     //--------------------------------------------------------------------------------
     function imagePorts( numXP ) {
        var spanId = "";
-       var xp_sel = "#xp" + numXP + " option:selected";
+       var xp_sel = "#xp" + numXP + "model option:selected";
        var xp = "";
        var divId = "";
        var divClass = "";
@@ -1003,7 +1003,7 @@ span:hover::before {
        var y1 = "";
        var y2 = "";
        var width = "";
-       var labelId = "xp" + numXP + "_label";
+       var labelId = "xp" + numXP + "model_label";
        var labelX  = "";
        var labelY  = "";
        var k = 0;
@@ -1401,7 +1401,7 @@ span:hover::before {
         }
 
         if ( numXP > 0 ) {
-           xp = $("#xp"+numXP+" option:selected").val();
+           xp = $("#xp"+numXP+"model option:selected").val();
 
            text += '<br>Комната: <select id="room'+controlPort+'" onChange="roomChanged('+controlPort+');">';
            text += '<option value=""></option>';
@@ -1875,7 +1875,7 @@ span:hover::before {
           controlPort = 15 + portNum;
        }
 
-       var xp = $("#xp"+numXP+" option:selected").val();
+       var xp = $("#xp"+numXP+"model option:selected").val();
        if ( xp == '2R' ) {
           portNumTxt = portNum + 1; // ??
           if ( numXP == 1 && portNumTxt == 1 ) {
@@ -1918,7 +1918,7 @@ span:hover::before {
         text += '<div id="xp' + numXP + '_tbl" class="round1" style="height: 643px; padding: 1em;">';
         text += '<div id="xp' + numXP + '_div_img" class="dxp">';
         text += '  <img name="xp' + numXP + '_img" id="xp' + numXP + '_img" src="mega/MegaD-7I7O-R.gif">';
-        text += '<div id="xp' + numXP + '_label" class="circlexpnew">';
+        text += '<div id="xp' + numXP + 'model_label" class="circlexpnew">';
         if ( numXP != 0 ) {
            text += 'XP'  + numXP;
            startPort = 0;
@@ -1957,7 +1957,7 @@ span:hover::before {
         //showXPLayer( numXP );
 
         if ( numXP != 0 ) {
-           xp = $("#xp"+numXP+" option:selected").val();
+           xp = $("#xp"+numXP+"model option:selected").val();
            if (!xp) {
               xp = "none";
            }
@@ -2332,8 +2332,8 @@ span:hover::before {
         // Get edited table
         obj.ports = ports;
 
-        obj['controller.xp1model'] = $('#xp1 option:selected').val();
-        obj['controller.xp2model'] = $('#xp2 option:selected').val();
+        obj['controller.xp1model'] = $('#xp1model option:selected').val();
+        obj['controller.xp2model'] = $('#xp2model option:selected').val();
 
         callback(obj);
     }
@@ -2630,7 +2630,7 @@ span:hover::before {
     <button class="translateB" id="ipchange">Change ip or password</button>
 
     <br>&nbsp;XP1:
-    <select id="xp1" class="value">
+    <select id="xp1model" class="value">
        <option value="none">Не подключено</option>
        <option value="7I7O-R">Релейный модуль 7I7O-R</option>
        <option value="7I7O-SD">Симисторный модуль 7I7O-SD</option>
@@ -2643,7 +2643,7 @@ span:hover::before {
     </select>
 
     &nbsp;&nbsp;XP2:
-    <select id="xp2" class="value">
+    <select id="xp2model" class="value">
        <option value="none">Не подключено</option>
        <option value="7I7O-R">Релейный модуль 7I7O-R</option>
        <option value="7I7O-SD">Симисторный модуль 7I7O-SD</option>
