@@ -562,6 +562,9 @@ span:hover::before {
              showXP( 1 );
              $('#xp1model').val(state.val).trigger('change');
          });
+
+         $("#xp1model").val(state.val).change();
+
          onchange();  
       });
 
@@ -572,6 +575,8 @@ span:hover::before {
              showXP( 2 );
              $('#xp2model').val(state.val).trigger('change');
          });
+         $("#xp2model").val(state.val).change();
+
          onchange();  
       });
 
