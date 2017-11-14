@@ -557,6 +557,7 @@ span:hover::before {
       socket.emit('getState',  adapter + '.' + instance + '.controller.xp1model', function (err, state) {
          $('#xp1text').val(state.val);
          $('#xp1model option:selected').val(state.val);
+         $("#xp1model select").val(state.val);
          $('#xp1model').change(function () {
              showXP( 1 );
              $('#xp1model').val(state.val).trigger('change');
@@ -566,6 +567,7 @@ span:hover::before {
 
       socket.emit('getState',  adapter + '.' + instance + '.controller.xp2model', function (err, state) {
          $('#xp2model option:selected').val(state.val);
+         $("#xp2model select").val(state.val);
          $('#xp2model').change(function () {
              showXP( 2 );
              $('#xp2model').val(state.val).trigger('change');
