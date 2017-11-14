@@ -555,6 +555,7 @@ span:hover::before {
       });
 
       socket.emit('getState',  adapter + '.' + instance + '.controller.xp1model', function (err, state) {
+         $('#xp1text').val(state.val);
          $('#xp1model option:selected').val(state.val);
          $('#xp1model').change(function () {
              showXP( 1 );
@@ -2620,6 +2621,9 @@ span:hover::before {
             <td><input  class="value" id="password" maxlength="3"/></td>
             <td class="translate" style="text-align: right">Double press detect (ms):</td>
             <td colspan=2><input  class="value" id="doublePress" maxlength="4"/></td>
+        </tr>
+        <tr><td class="translate" style="text-align: right">test xp1:</td>
+            <td colspan=4><input  class="value" id="xp1text"/></td>
         </tr>
     </table>
     <!-- <button class="translate" id="add">Add new port</button> -->
