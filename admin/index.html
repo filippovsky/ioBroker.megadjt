@@ -556,19 +556,19 @@ span:hover::before {
 
       socket.emit('getState',  adapter + '.' + instance + '.controller.xp1model', function (err, state) {
          $('#xp1model option:selected').val(state.val);
-         $('#xp1model').change(function () {
+/*         $('#xp1model').change(function () {
              showXP( 1 );
              $('#xp1model').val(state.val).trigger('change');
-         });
+         });*/
          onchange();  
       });
 
       socket.emit('getState',  adapter + '.' + instance + '.controller.xp2model', function (err, state) {
          $('#xp2model option:selected').val(state.val);
-         $('#xp2model').change(function () {
+         /*$('#xp2model').change(function () {
              showXP( 2 );
              $('#xp2model').val(state.val).trigger('change');
-         });
+         });*/
          onchange();  
       });
 
@@ -2293,17 +2293,15 @@ span:hover::before {
         });
 
 
-        /*
-        $('#xp1').change(function () {
+        $('#xp1model').change(function () {
             showXP( 1 );
-            $('#xp1').val($(this).val()).trigger('change');
+            $('#xp1model').val($(this).val()).trigger('change');
         });
 
-        $('#xp2').change(function () {
+        $('#xp2model').change(function () {
             showXP( 2 );
-            $('#xp2').val($(this).val()).trigger('change');
+            $('#xp2model').val($(this).val()).trigger('change');
         });
-        */
 
         // инициализируем картинки при загрузке окна
         var j = showXP( 1 );
