@@ -1425,7 +1425,7 @@ span:hover::before {
         if ( numXP > 0 ) {
            xp = $("#xp"+numXP+"model option:selected").val();
 
-           socket.emit('getState',  adapter + '.' + instance + '.ports.' + i + '.room', function (err, state) {
+           socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.room', function (err, state) {
                room = state.val;
            });
 
