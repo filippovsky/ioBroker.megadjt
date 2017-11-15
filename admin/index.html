@@ -556,14 +556,16 @@ span:hover::before {
 
       socket.emit('getState',  adapter + '.' + instance + '.controller.xp1model', function (err, state) {
          $('#xp1text').val(state.val);
+         $('#xp1model').val(state.val);
          $('#xp1model option:selected').val(state.val);
          $("#xp1model select").val(state.val);
-         $('#xp1model').change(function () {
+  /*       $('#xp1model').change(function () {
              showXP( 1 );
              $('#xp1model').val(state.val).trigger('change');
          });
 
          $("#xp1model").val(state.val).change(); //?
+*/
          $('#xp1model option').each(function() {
              if($(this).val() == state.val) {
                  $(this).prop("selected", true);
@@ -575,12 +577,14 @@ span:hover::before {
 
       socket.emit('getState',  adapter + '.' + instance + '.controller.xp2model', function (err, state) {
          $('#xp2model option:selected').val(state.val);
+         $('#xp2model').val(state.val);
          $("#xp2model select").val(state.val);
-         $('#xp2model').change(function () {
+/*         $('#xp2model').change(function () {
              showXP( 2 );
              $('#xp2model').val(state.val).trigger('change');
          });
          $("#xp2model").val(state.val).change(); //?
+*/
          $('#xp2model option').each(function() {
              if($(this).val() == state.val) {
                  $(this).prop("selected", true);
@@ -2713,8 +2717,8 @@ span:hover::before {
              <td>Прошивка</td>
            </tr>
            <tr>
-             <td><b>4.19b4</td>
-             <td>13.11.2017</td>
+             <td><b>4.19b5</td>
+             <td>15.11.2017</td>
              <td><p align=justify><p align=justify>Добавлено управление группой.</p>
                            <p align=justify>Поле Group теперь доступно также для режима "SW", что делает возможным объединение нескольких портов в группу.<br>
                            Поле Group может принимать значения от 0 до 99.<br>
@@ -2723,7 +2727,7 @@ span:hover::before {
                            Доступные команды: (1 - включить, 0 - выключить, 2 - переключить)
                  </p>
              </td>
-             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.19b4');">Прошить</button></td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.19b5');">Прошить</button></td>
            </tr>
            <tr>
              <td><b>4.19b2</td>
