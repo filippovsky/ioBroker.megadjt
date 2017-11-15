@@ -577,8 +577,9 @@ span:hover::before {
                  $(this).prop("selected", true);
              }
          });
+      });
 
-      var i;
+/*      var i;
       for ( i = 0; i <= 37; i ++ ) {
          socket.emit('getState',  adapter + '.' + instance + '.ports.' + i + '.room', function (err, state) {
              $('#ports.' + i + '.room option:selected').val(state.val);
@@ -591,7 +592,7 @@ span:hover::before {
              });
              onchange();  
          });
-     }
+     }*/
 
    }
 
@@ -2363,12 +2364,12 @@ span:hover::before {
         obj1 = {  val: xpmodel, ack: true };
         socket.emit('setState',  adapter + '.' + instance + '.controller.xp2model', obj1 );
 
-        var newvalue;
+        /*var newvalue;
         for ( i = 0; i <= 37; i ++ ) {
            newvalue = $('#ports.'+i+'.room option:selected').val();
            obj1 = {  val: newvalue, ack: true };
            socket.emit('setState',  adapter + '.' + instance + '.ports.' + i + '.room', obj1 );
-        }
+        } */
 
         callback(obj);
     }
