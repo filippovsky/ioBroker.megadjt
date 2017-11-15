@@ -2353,8 +2353,17 @@ span:hover::before {
         // Get edited table
         obj.ports = ports;
 
+        /*
         obj['controller.xp1model'] = $('#xp1model option:selected').val();
         obj['controller.xp2model'] = $('#xp2model option:selected').val();
+        */
+        var xpmodel = $('#xp1model option:selected').val();
+        var obj1 = {  val: xpmodel, ack: true };
+        socket.emit('setState',  adapter + '.' + instance + '.controller.xp1model', obj1 );
+
+        xpmodel = $('#xp2model option:selected').val();
+        obj1 = {  val: xpmodel, ack: true };
+        socket.emit('setState',  adapter + '.' + instance + '.controller.xp2model', obj1 );
 
         callback(obj);
     }
