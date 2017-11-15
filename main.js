@@ -36,6 +36,26 @@ var fw_version_actual = "4.19b5";
 var adapter = utils.adapter(  'megadjt' );
 var sms_ru  = require('sms_ru');
 
+var cPortType_NotConnected = 'NotConnected';
+var cPortType_StandartIn  = 'StandartIn';
+var cPortType_ReleOut = 'ReleOut';
+var cPortType_PWMOut = 'PWMOut';
+var cPortType_DigitalSensor  = 'DigitalSensor';
+var cPortType_I2C  = 'I2C';
+
+var cPortMode_PressOnly = 'PressOnly';
+var cPortMode_PressAndRelease = 'PressAndRelease';
+var cPortMode_ReleaseOnly = 'ReleaseOnly';
+var cPortMode_ClickMode = 'ClickMode';
+
+var cDigitalSensorTypeDS18B20 = 'DS18B20';
+var cDigitalSensorTypeDHT11   = 'DHT11';
+var cDigitalSensorTypeDHT22   = 'DHT22';
+var cDigitalSensorTypeMarine  = 'iButton/EMMarine';
+var cDigitalSensorType1WBus   = '1WireBUS';
+var cDigitalSensorTypeWiegand26   = 'Wiegand26';
+
+
 //            var settings = adapter.config.ports[p];
 //adapter.log.info('Create state test ');
 //                    adapter.setState( 'fw_version_last_known', {val: fw_version_actual, ack: true});
@@ -2667,6 +2687,7 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
 }
 //---------------------------------------------------------------------------------------------
 function configInit() {
+   var i;
    createConfigItemIfNotExists ( 'sms.apiKey', 'state', 'API KEY для отправки SMS с megadjt.sms.ru', '' );
    createConfigItemIfNotExists ( 'sms.enabled', 'statebool', 'Включить отправку SMS', 'false' );
    createConfigItemIfNotExists ( 'sms.phones', 'state', 'Номера телефонов (через запятую) для отправки SMS', '' );
@@ -2679,6 +2700,22 @@ function configInit() {
    createConfigItemIfNotExists ( 'controller.model', 'state', 'Модель контроллера', '' );
    createConfigItemIfNotExists ( 'controller.xp1model', 'state', 'Модель исполнительного модуля на XP1', 'none' );
    createConfigItemIfNotExists ( 'controller.xp2model', 'state', 'Модель исполнительного модуля на XP2', 'none' );
+
+   for ( i=0; i <= 37; i ++ ) {
+       createConfigItemIfNotExists ( 'ports.'+ i + '.room', 'state', 'Комната, к которой привязан порт ' + i, '' );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.func', 'state', 'Функция, которую выполняет порт ' + i, '' );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.portType', 'state', 'Тип порта ' + i, cPortType_NotConnected );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.defaultAction', 'state', 'Сценарий по умолчанию порта ' + i, '' );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.defaultRunAlways', 'statebool', 'Выполнять сценарий по умолчанию даже при наличии сервера', 'false' );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.netAction', 'state', 'Сетевой сценарий для порта ' + i, '' );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.netRunOnlyWhenServerOut', 'statebool', 'Выполнять сетевой сценарий только при отсутствии сервера', 'false' );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.portMode', 'state', 'Режим работы порта ' + i, cPortMode_PressOnly );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.send2ServerAlwaysPressRelease', 'statebool', 'Отправлять на сервер всегда в режиме P&R', 'false' );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.tremorDefenceDisabled', 'statebool', 'Отключить защиту от дребезга', 'false' );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.displayPort', 'state', 'Порт дисплея', '' );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.defaultState', 'statebool', 'Состояние порта по умолчанию', 'false' );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.digitalSensorType', 'state', 'Тип цифрового датчика', '' );
+   }
 
 /*
 adapter.getState('sms.apikey0', function (err, state) {
