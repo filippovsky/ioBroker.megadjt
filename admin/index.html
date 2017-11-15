@@ -559,13 +559,6 @@ span:hover::before {
          $('#xp1model').val(state.val);
          $('#xp1model option:selected').val(state.val);
          $("#xp1model select").val(state.val);
-  /*       $('#xp1model').change(function () {
-             showXP( 1 );
-             $('#xp1model').val(state.val).trigger('change');
-         });
-
-         $("#xp1model").val(state.val).change(); //?
-*/
          $('#xp1model option').each(function() {
              if($(this).val() == state.val) {
                  $(this).prop("selected", true);
@@ -579,22 +572,26 @@ span:hover::before {
          $('#xp2model option:selected').val(state.val);
          $('#xp2model').val(state.val);
          $("#xp2model select").val(state.val);
-/*         $('#xp2model').change(function () {
-             showXP( 2 );
-             $('#xp2model').val(state.val).trigger('change');
-         });
-         $("#xp2model").val(state.val).change(); //?
-*/
          $('#xp2model option').each(function() {
              if($(this).val() == state.val) {
                  $(this).prop("selected", true);
              }
          });
 
-
-         onchange();  
-      });
-
+      var i;
+      for ( i = 0; i <= 37; i ++ ) {
+         socket.emit('getState',  adapter + '.' + instance + '.ports.' + i + '.room', function (err, state) {
+             $('#ports.' + i + '.room option:selected').val(state.val);
+             $('#ports.' + i + '.room').val(state.val);
+             $('#ports.' + i + '.room select').val(state.val);
+             $('#ports.' + i + '.room option').each(function() {
+                 if($(this).val() == state.val) {
+                     $(this).prop("selected", true);
+                 }
+             });
+             onchange();  
+         });
+     }
 
    }
 
@@ -1426,7 +1423,7 @@ span:hover::before {
         if ( numXP > 0 ) {
            xp = $("#xp"+numXP+"model option:selected").val();
 
-           text += '<br>Комната: <select id="port.'+controlPort+'.room" onChange="roomChanged('+controlPort+');">';
+           text += '<br>Комната: <select id="ports.'+controlPort+'.room" onChange="roomChanged('+controlPort+');">';
            text += '<option value=""></option>';
            for (var r in rooms) {
                text += '<option value="' + r + '" ' + ((ports[controlPort].room == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
@@ -2365,6 +2362,13 @@ span:hover::before {
         xpmodel = $('#xp2model option:selected').val();
         obj1 = {  val: xpmodel, ack: true };
         socket.emit('setState',  adapter + '.' + instance + '.controller.xp2model', obj1 );
+
+        var newvalue;
+        for ( i = 0; i <= 37; i ++ ) {
+           newvalue = $('#ports.'+i+'.room option:selected').val();
+           obj1 = {  val: newvalue, ack: true };
+           socket.emit('setState',  adapter + '.' + instance + '.ports.' + i + '.room', obj1 );
+        }
 
         callback(obj);
     }
