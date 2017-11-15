@@ -1416,6 +1416,7 @@ span:hover::before {
         var spanM = "";
         var spanMisc = "";
         var spanDisp = '';
+        var room;
 
         if (numXP == 2) {
            controlPort = 15 + portNum;
@@ -1424,10 +1425,15 @@ span:hover::before {
         if ( numXP > 0 ) {
            xp = $("#xp"+numXP+"model option:selected").val();
 
+           socket.emit('getState',  adapter + '.' + instance + '.ports.' + i + '.room', function (err, state) {
+               room = state.val;
+           });
+
            text += '<br>Комната: <select id="ports.'+controlPort+'.room" onChange="roomChanged('+controlPort+');">';
            text += '<option value=""></option>';
            for (var r in rooms) {
-               text += '<option value="' + r + '" ' + ((ports[controlPort].room == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
+//               text += '<option value="' + r + '" ' + ((ports[controlPort].room == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
+               text += '<option value="' + r + '" ' + ((room == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
            }
            text += '</select><br>';
 
@@ -1881,6 +1887,9 @@ span:hover::before {
         }
   */
 
+        text += '<tr><td align="center" valign="middle">&nbsp;<td align=center valign=middle>';
+        text += '    <button class="translateB" id="savePort" onClick="savePort('+controlPort+');">Сохранить настройки порта</button>';
+        text += '</td></tr>';
 
         document.getElementById( "xp" + numXP + "_port_preset" ).innerHTML = text;
     }
@@ -2035,6 +2044,13 @@ span:hover::before {
 
     }
 
+    // ------------------------------------------------------------------------------------
+    function savePort ( controlPort ) {
+       var newvalue = $('#ports.'+controlPort+'.room option:selected').val();
+       var obj = { val: newvalue, ack: true };
+       socket.emit('setState',  adapter + '.' + instance + '.ports.' + controlPort + '.room', obj );
+    }
+
     //-------------------------------------------------------------------------------------
     // the function loadSettings has to exist ...
     function load(settings, onChange) {
@@ -2082,6 +2098,11 @@ span:hover::before {
             writeConfig($('#ip').val(), $('#password').val(), port, ports);
         });
 
+        /*$('#savePort').button({
+            icons: {primary: 'ui-icon-disk'}
+        }).click(function() {
+            savePort();
+        });*/
 
         // read if instance is active or enabled
         socket.emit('getState', 'system.adapter.' + adapter + '.' + instance + '.alive', function (err, state) {
