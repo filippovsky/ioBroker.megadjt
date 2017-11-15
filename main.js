@@ -2715,6 +2715,7 @@ function configInit() {
        createConfigItemIfNotExists ( 'ports.'+ i + '.displayPort', 'state', 'Порт дисплея', '' );
        createConfigItemIfNotExists ( 'ports.'+ i + '.defaultState', 'statebool', 'Состояние порта по умолчанию', 'false' );
        createConfigItemIfNotExists ( 'ports.'+ i + '.digitalSensorType', 'state', 'Тип цифрового датчика', '' );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.currentState', 'statebool', 'Текущее состояние порта ВКЛ/ВЫКЛ', 'false' );
    }
 
 /*
