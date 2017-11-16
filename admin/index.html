@@ -1414,9 +1414,11 @@ span:hover::before {
            controlPort = 15 + portNum;
        }
 
+       portSetup.room = '';
+
        if ( numXP > 0 ) {
            socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.room', function (err, state) {
-              portSetup.room = state.val;
+              if (state.val) portSetup.room = state.val;
               loadPresetSub( numXP, portNum, portSetup );
            });
 
