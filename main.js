@@ -2516,11 +2516,12 @@ function syncObjects() {
                         adapter.setObject(newObjects[i]._id, newObjects[i]);
                     }
 
+/*
                     if (newObjects[i].native.room != _states[j].native.room) {
                         adapter.log.info('Update state room ' + newObjects[i]._id + ': ' + _states[j].native.room + ' => ' + newObjects[i].native.room);
                         if (_states[j].native.room) removeFromEnum(_states[j].native.room, _states[j]._id);
                         if (newObjects[i].native.room) addToEnum(newObjects[i].native.room, newObjects[i]._id);
-                    }
+                    } */
 
                     if (newObjects[i].native.func != _states[j].native.func) {
                         adapter.log.info('Update state func ' + newObjects[i]._id + ': ' + _states[j].native.func + ' => ' + newObjects[i].native.func);
@@ -2547,8 +2548,8 @@ function syncObjects() {
 
                 adapter.setObject(newObjects[i]._id, newObjects[i]);
                 // check room
-                if (newObjects[i].native.room) addToEnum(newObjects[i].native.room, newObjects[i]._id);
-                if (newObjects[i].native.func) addToEnum(newObjects[i].native.func, newObjects[i]._id);
+                //if (newObjects[i].native.room) addToEnum(newObjects[i].native.room, newObjects[i]._id);
+                //if (newObjects[i].native.func) addToEnum(newObjects[i].native.func, newObjects[i]._id);
             }
         }
 
@@ -2659,6 +2660,10 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
             role = 'state';
             subtype = 'boolean';
             typeObj = 'state';
+         } else if ( type == 'statenum' ) {
+            role = 'state';
+            subtype = 'number';
+            typeObj = 'state';
          }
          obj = {
                     _id: id,
@@ -2716,6 +2721,7 @@ function configInit() {
        createConfigItemIfNotExists ( 'ports.'+ i + '.defaultState', 'statebool', 'Состояние порта по умолчанию', 'false' );
        createConfigItemIfNotExists ( 'ports.'+ i + '.digitalSensorType', 'state', 'Тип цифрового датчика', '' );
        createConfigItemIfNotExists ( 'ports.'+ i + '.currentState', 'statebool', 'Текущее состояние порта ВКЛ/ВЫКЛ', 'false' );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.counter', 'statenum', 'Счетчик срабатываний порта ' + i, 0 );
    }
 
 /*

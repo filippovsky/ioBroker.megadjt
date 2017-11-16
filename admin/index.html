@@ -1277,8 +1277,8 @@ span:hover::before {
     }
     //--------------------------------------------------------------------------------
     function fncChanged ( controlPort ) {
-        var fnc = $("#fnc"+controlPort+" option:selected").val();
-        ports[controlPort].func = fnc;
+        var fnc = $("#fnc option:selected").val();
+        //ports[controlPort].func = fnc;
     }
 
     //--------------------------------------------------------------------------------
@@ -1406,6 +1406,7 @@ span:hover::before {
     }
     // -------------------------------------------------------------------------------
     function loadPreset( numXP, portNum ) {
+       // здесь считываются настройки конкретного порта из конфига сервера (не МЕГИ)
        //megadjt_setup
        var portSetup = [];
        var controlPort = portNum;
@@ -1415,16 +1416,20 @@ span:hover::before {
        }
 
        portSetup.room = '';
+       portSetup.func = '';
 
        if ( numXP > 0 ) {
            socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.room', function (err, state) {
               if (state) portSetup.room = state.val;
-              loadPresetSub( numXP, portNum, portSetup );
+              //loadPresetSub( numXP, portNum, portSetup );
            });
-
-       } else {
-          loadPresetSub( numXP, portNum, portSetup );
+           socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.func', function (err, state) {
+              if (state) portSetup.func = state.val;
+           });
        }
+
+       loadPresetSub( numXP, portNum, portSetup );
+
     }
     //--------------------------------------------------------------------------------
     function loadPresetSub( numXP, portNum, portSetup ) {
@@ -1450,6 +1455,7 @@ span:hover::before {
 
 //           text += '<br>Комната: <select id="ports.'+controlPort+'.room" onChange="roomChanged('+controlPort+');">';
            text += '<input type="hidden" id="old_room" value="'+portSetup.room+'">';
+           text += '<input type="hidden" id="old_fnc" value="'+portSetup.func+'">';
            text += '<br>Комната: <select id="room" onChange="roomChanged('+controlPort+');">';
            text += '<option value=""></option>';
            for (var r in rooms) {
@@ -1458,10 +1464,10 @@ span:hover::before {
            }
            text += '</select><br>';
 
-           text += '<br>Функция: <select id="fnc'+controlPort+'" onChange="fncChanged('+controlPort+');">';
+           text += '<br>Функция: <select id="fnc" onChange="fncChanged('+controlPort+');">';
            text += '<option value=""></option>';
            for (var r in functions) {
-               text += '<option value="' + r + '" ' + ((ports[controlPort].func == r) ? 'selected' : '') + '>' + functions[r].common.name + '</option>';
+               text += '<option value="' + r + '" ' + ((portSetup.func == r) ? 'selected' : '') + '>' + functions[r].common.name + '</option>';
            }
            text += '</select><br>';
   
@@ -2070,20 +2076,34 @@ span:hover::before {
        var oldroom = $('#old_room').val();
        var newroom = $('#room option:selected').val();
 
-       var id = adapter + '.' + instance + '.ports.' + controlPort + '.currentState';
-       var obj = { val: newroom, ack: true, room: newroom };
+       var id_currentState = adapter + '.' + instance + '.ports.' + controlPort + '.currentState';
+       var id_func = adapter + '.' + instance + '.ports.' + controlPort + '.func';
+       var objroom = { val: newroom, ack: true, room: newroom };
+
+       var oldfnc = $('#old_fnc').val();
+       var newfnc = $('#fnc option:selected').val();
+       var objfnc = { val: newfnc, ack: true, room: newroom };
 
        if ( oldroom != newroom ) {
-          socket.emit('setState',  adapter + '.' + instance + '.ports.' + controlPort + '.room', obj );
-
+          socket.emit('setState',  adapter + '.' + instance + '.ports.' + controlPort + '.room', objroom );
           if ( oldroom ) { 
-             removeFromEnum( oldroom, id );
+             removeFromEnum( oldroom, id_currentState );
+             removeFromEnum( oldroom, id_func );
           }
           if ( newroom ) {
-             addToEnum( newvalue, id );
+             addToEnum( newroom, id_currentState );
+             addToEnum( newroom, id_func );
           }
        }
-
+       if ( oldfnc != newfnc ) {
+          socket.emit('setState',  adapter + '.' + instance + '.ports.' + controlPort + '.func', objfnc );
+          if ( oldfnc ) { 
+             removeFromEnum( oldfnc, id_func );
+          }
+          if ( newfnc ) {
+             addToEnum( newfnc, id_func );
+          }
+       }
     }
 
     //-------------------------------------------------------------------------------------
