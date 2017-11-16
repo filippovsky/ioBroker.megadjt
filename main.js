@@ -36,12 +36,14 @@ var fw_version_actual = "4.19b5";
 var adapter = utils.adapter(  'megadjt' );
 var sms_ru  = require('sms_ru');
 
-var cPortType_NotConnected = 'NotConnected';
-var cPortType_StandartIn  = 'StandartIn';
-var cPortType_ReleOut = 'ReleOut';
-var cPortType_PWMOut = 'PWMOut';
-var cPortType_DigitalSensor  = 'DigitalSensor';
-var cPortType_I2C  = 'I2C';
+var cPortType_NotConnected = 'NotConnected'; //255
+var cPortType_StandartIn  = 'StandartIn';    //0
+var cPortType_ReleOut = 'ReleOut';           //1
+var cPortType_DimmedOut = 'DimmedOut'; //1
+var cPortType_SimistorOut = 'SimistorOut'; //1
+var cPortType_DigitalSensor  = 'DigitalSensor'; //3 цифровой вход dsen
+var cPortType_I2C  = 'I2C'; // 4 
+var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для аналоговых датчиков
 
 var cPortMode_PressOnly = 'PressOnly';
 var cPortMode_PressAndRelease = 'PressAndRelease';

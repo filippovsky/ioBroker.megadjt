@@ -461,6 +461,16 @@ span:hover::before {
    var active    = false;
    var megadjt_setup = [];   
 
+var cPortType_NotConnected = 'NotConnected'; //255
+var cPortType_StandartIn  = 'StandartIn';    //0
+var cPortType_ReleOut = 'ReleOut';           //1
+var cPortType_DimmedOut = 'DimmedOut'; //1
+var cPortType_SimistorOut = 'SimistorOut'; //1
+var cPortType_DigitalSensor  = 'DigitalSensor'; //3 цифровой вход dsen
+var cPortType_I2C  = 'I2C'; // 4 
+var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для аналоговых датчиков
+
+
    //------------------------------------------------------------------------------------------------
    function getFirmwareVersion () {
       var fw_version = "";
@@ -1283,14 +1293,8 @@ span:hover::before {
 
     //--------------------------------------------------------------------------------
     function ptyChanged ( controlPort ) {
-        var pty = $("#pty"+controlPort+" option:selected").val();
-        ports[controlPort].pty = pty;
-
-/*        if ( ports[controlPort].pty == 0 || ports[controlPort].pty == 1 ) {
-           ports[controlPort].common.type = 'boolean';
-        } else {                                      // ?????
-           ports[controlPort].common.type = 'number'; 
-        }*/
+        var pty = $("#portType option:selected").val();
+        //ports[controlPort].pty = pty;
 
         var numXP = 0;
         var port  = 0;
@@ -1417,6 +1421,7 @@ span:hover::before {
 
        portSetup.room = '';
        portSetup.func = '';
+       portSetup.portType = cPortType_NotConnected;
 
        if ( numXP > 0 ) {
            socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.room', function (err, state) {
@@ -1430,6 +1435,12 @@ span:hover::before {
                      $("#fnc").val( state.val );
                   }
               });
+          });
+          socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.portType', function (err, state) {
+              if (state) {
+                 portSetup.portType = state.val;
+                 $("#portType").val( state.val );
+              }
           });
        }
 
@@ -1461,6 +1472,7 @@ span:hover::before {
 //           text += '<br>Комната: <select id="ports.'+controlPort+'.room" onChange="roomChanged('+controlPort+');">';
            text += '<input type="hidden" id="old_room" value="'+portSetup.room+'">';
            text += '<input type="hidden" id="old_fnc" value="'+portSetup.func+'">';
+           text += '<input type="hidden" id="old_portType" value="'+portSetup.portType+'">';
            text += '<br>Комната: <select id="room" onChange="roomChanged('+controlPort+');">';
            text += '<option value=""></option>';
            for (var r in rooms) {
@@ -1521,72 +1533,72 @@ span:hover::before {
         text += 'Тип порта:&nbsp;';
         //text += '</td><td align="left" valign="middle">';
 
-        //--- выбор типа порта ---------------------------------------------------------------------
-        text += '<select id="pty'+controlPort+'" onChange="ptyChanged('+controlPort+');">';
-        text += '<option value="255" ' + ((ports[controlPort].pty == 255) ? 'selected' : '') + '>' + _('NC')  + '</option>';
+                //--- выбор типа порта ---------------------------------------------------------------------
+        text += '<select id="portType" onChange="ptyChanged('+controlPort+');">';
+        text += '<option value="'+cPortType_NotConnected+'" ' + ((portSetup.portType == cPortType_NotConnected) ? 'selected' : '') + '>' + _('NC')  + '</option>';
         if ( xp == '7I7O-R' || xp == '7I7O-SD' ) {
            if (portNum < 7) {
-              text += '<option value="0" ' + ((ports[controlPort].pty == 0)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
+              text += '<option value="'+cPortType_StandartIn+'" ' + ((portSetup.portType == cPortType_StandartIn)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
            } else {
               if ( xp == '7I7O-R' ) {
-                 text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Релейный выход</option>';
+                 text += '<option value="'+cPortType_ReleOut+'" ' + ((portSetup.portType == cPortType_ReleOut)   ? 'selected' : '') + '>Релейный выход</option>';
               } else {
                  if ( portNum == 10 || portNum == 12 || portNum == 13 ) {
-                     text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Симисторный диммируемый выход</option>';
+                     text += '<option value="'+cPortType_DimmedOut+'" ' + ((portSetup.portType == cPortType_DimmedOut)   ? 'selected' : '') + '>Симисторный диммируемый выход</option>';
                  } else {
-                     text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Симисторный недиммируемый выход</option>';
+                     text += '<option value="'+cPortType_SimistorOut+'" ' + ((portSetup.portType == cPortType_SimistorOut)   ? 'selected' : '') + '>Симисторный недиммируемый выход</option>';
                  }
               }
            }
         } else if ( xp == '8I7O-S' ) {
            if (portNum < 7) {
-              text += '<option value="0" ' + ((ports[controlPort].pty == 0)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
+              text += '<option value="'+cPortType_StandartIn+'" ' + ((portSetup.portType == cPortType_StandartIn)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
            } else if (portNum < 14) {
-              text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Симисторный недиммируемый выход</option>';
+              text += '<option value="'+cPortType_SimistorOut+'" ' + ((portSetup.portType == cPortType_SimistorOut)   ? 'selected' : '') + '>Симисторный недиммируемый выход</option>';
            } else {
-              text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
+              text += '<option value="'+cPortType_DigitalSensor+'" ' + ((portSetup.portType == cPortType_DigitalSensor)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
            }
         } else if ( xp == '8I7O-SD' ) {
            if (portNum < 7) {
-              text += '<option value="0" ' + ((ports[controlPort].pty == 0)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
+              text += '<option value="'+cPortType_StandartIn+'" ' + ((portSetup.portType == cPortType_StandartIn)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
            } else if ( portNum == 10 || portNum == 12 || portNum == 13 ) { /// ?????
-              text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Симисторный диммируемый выход</option>';
+              text += '<option value="'+cPortType_DimmedOut+'" ' + ((portSetup.portType == cPortType_DimmedOut)   ? 'selected' : '') + '>Симисторный диммируемый выход</option>';
            } else if (portNum < 14) {
-              text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Симисторный недиммируемый выход</option>';
+              text += '<option value="'+cPortType_SimistorOut+'" ' + ((portSetup.portType == cPortType_SimistorOut)   ? 'selected' : '') + '>Симисторный недиммируемый выход</option>';
            } else {
-              text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
+              text += '<option value="'+cPortType_DigitalSensor+'" ' + ((portSetup.portType == cPortType_DigitalSensor)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
            }
         } else if ( xp == '14-IN' ) {
-           text += '<option value="0" ' + ((ports[controlPort].pty == 0)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
-           text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
-           text += '<option value="4" ' + ((ports[controlPort].pty == 4)   ? 'selected' : '') + '>Вход I2C</option>';
+           text += '<option value="'+cPortType_StandartIn+'" ' + ((portSetup.portType == cPortType_StandartIn)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
+           text += '<option value="'+cPortType_DigitalSensor+'" ' + ((portSetup.portType == cPortType_DigitalSensor)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
+           text += '<option value="'+cPortType_I2C+'" ' + ((portSetup.portType == cPortType_I2C)   ? 'selected' : '') + '>Вход I2C</option>';
            if ( portNum <= 5 ) {
-              text += '<option value="2" ' + ((ports[controlPort].pty == 2)   ? 'selected' : '') + '>АЦП-вход для аналоговых датчиков</option>';
+              text += '<option value="'+cPortType_AnalogSensor+'" ' + ((portSetup.portType == cPortType_AnalogSensor)   ? 'selected' : '') + '>АЦП-вход для аналоговых датчиков</option>';
            }
         } else if ( xp == '14-Rv1.0' ) {
            if (portNum < 14) {
-              text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Релейный выход</option>';
+              text += '<option value="'+cPortType_ReleOut+'" ' + ((portSetup.portType == cPortType_ReleOut)   ? 'selected' : '') + '>Релейный выход</option>';
            } /*else {
               text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
            }   */
         } else if ( xp == '14-Rv2.0' ) {
            if (portNum < 14) {
-              text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Релейный выход</option>';
+              text += '<option value="'+cPortType_ReleOut+'" ' + ((portSetup.portType == cPortType_ReleOut)   ? 'selected' : '') + '>Релейный выход</option>';
            } else {
-              text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
+              text += '<option value="'+cPortType_DigitalSensor+'" ' + ((portSetup.portType == cPortType_DigitalSensor)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
            }
         } else if ( xp == '2R' ) {
            if (portNum < 2) {
-              text += '<option value="1" ' + ((ports[controlPort].pty == 1)   ? 'selected' : '') + '>Релейный выход</option>';
+              text += '<option value="'+cPortType_ReleOut+'" ' + ((portSetup.portType == cPortType_ReleOut)   ? 'selected' : '') + '>Релейный выход</option>';
            } /*else {
               text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
            }   */
         } else if ( xp == 'control' ) {
            if ( portNum < 36 ) {
-              text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
-              text += '<option value="4" ' + ((ports[controlPort].pty == 4)   ? 'selected' : '') + '>Вход I2C</option>';
+              text += '<option value="'+cPortType_DigitalSensor+'" ' + ((portSetup.portType == cPortType_DigitalSensor)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
+              text += '<option value="'+cPortType_I2C+'" ' + ((portSetup.portType == cPortType_I2C)   ? 'selected' : '') + '>Вход I2C</option>';
            } else {
-              text += '<option value="2" ' + ((ports[controlPort].pty == 2)   ? 'selected' : '') + '>АЦП-вход для аналоговых датчиков</option>';
+              text += '<option value="'+cPortType_AnalogSensor+'" ' + ((portSetup.portType == cPortType_AnalogSensor)   ? 'selected' : '') + '>АЦП-вход для аналоговых датчиков</option>';
            }
         }
         text += '</select>';
@@ -1594,7 +1606,7 @@ span:hover::before {
 
         //-----------------------------------------------------------------------------
         // порт IN
-        if ( ports[controlPort].pty == 0 ) {
+        if ( portSetup.portType == cPortType_StandartIn ) {
            spanAct0  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img><span>';
            spanAct0 += '<p align=justify><b>Act</b> - Действие, которое необходимо произвести, в случае, когда сервер не указан или не отвечает.</p>';
            spanAct0 += '<p align=justify>Контроллер MegaD-2561, по своей сути, является исполнителем указаний центральной управляющей ';
@@ -1821,7 +1833,7 @@ span:hover::before {
 
         //-----------------------------------------------------------------------------
         // порт OUT релейный
-        } else if ( ports[controlPort].pty == 1 ) {
+        } else if (( portSetup.portType == cPortType_ReleOut ) || ( portSetup.portType == cPortType_DimmedOut ) || ( portSetup.portType == cPortType_SimistorOut ) ) {
 
            spanDef  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img><span>';
            spanDef += '<p align=justify><b>Default state (Def)</b>: состояние порта после включения или перезагрузки устройства. ';
@@ -1838,7 +1850,7 @@ span:hover::before {
 
         //-----------------------------------------------------------------------------
         // порт DSen цифровой вход
-        } else if ( ports[controlPort].pty == 3 ) {
+        } else if ( portSetup.portType == cPortType_DigitalSensor ) {
 
            spanSen  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img><span>';
            spanSen += '<font color=red><b>ВНИМАНИЕ! Положение джампера должно быть нижнее!</b></font><br>';
@@ -2109,6 +2121,15 @@ span:hover::before {
              addToEnum( newfnc, id_func );
           } */
        }
+
+       var oldPortType = $('#old_portType').val();
+       var newPortType = $('#old_portType option:selected').val();
+       var objPortType = { val: newPortType, ack: true/*, room: newroom*/ };
+       if ( oldPortType != newPortType ) {
+          socket.emit('setState',  adapter + '.' + instance + '.ports.' + controlPort + '.portType', objPortType );
+       }
+
+
     }
 
     //-------------------------------------------------------------------------------------
