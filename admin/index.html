@@ -1292,7 +1292,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
     }
 
     //--------------------------------------------------------------------------------
-    function ptyChanged ( controlPort ) {
+    function ptyChanged ( controlPort, portSetup ) {
         var pty = $("#portType option:selected").val();
         //ports[controlPort].pty = pty;
 
@@ -1308,7 +1308,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
            numXP = 0;
            port = controlPort;
         }
-        loadPreset( numXP, port ); // при изменении типа порта перерисовываем его описание
+        loadPresetSub( numXP, port, portSetup ); // при изменении типа порта перерисовываем его описание
     }
     //--------------------------------------------------------------------------------
     function mChanged ( controlPort ) {
@@ -1534,7 +1534,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
         //text += '</td><td align="left" valign="middle">';
 
                 //--- выбор типа порта ---------------------------------------------------------------------
-        text += '<select id="portType" onChange="ptyChanged('+controlPort+');">';
+        text += '<select id="portType" onChange="ptyChanged('+controlPort+',portSetup);">';
         text += '<option value="'+cPortType_NotConnected+'" ' + ((portSetup.portType == cPortType_NotConnected) ? 'selected' : '') + '>' + _('NC')  + '</option>';
         if ( xp == '7I7O-R' || xp == '7I7O-SD' ) {
            if (portNum < 7) {
