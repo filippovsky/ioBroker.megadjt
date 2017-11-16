@@ -1447,6 +1447,7 @@ span:hover::before {
            xp = $("#xp"+numXP+"model option:selected").val();
 
 //           text += '<br>Комната: <select id="ports.'+controlPort+'.room" onChange="roomChanged('+controlPort+');">';
+           text += '<input type="hidden" id="old_room" value="'+portSetup.room+'">';
            text += '<br>Комната: <select id="room" onChange="roomChanged('+controlPort+');">';
            text += '<option value=""></option>';
            for (var r in rooms) {
@@ -2064,10 +2065,23 @@ span:hover::before {
 
     // ------------------------------------------------------------------------------------
     function savePort ( controlPort ) {
-//       var newvalue = $('#ports.'+controlPort+'.room option:selected').val();
-       var newvalue = $('#room option:selected').val();
-       var obj = { val: newvalue, ack: true };
-       socket.emit('setState',  adapter + '.' + instance + '.ports.' + controlPort + '.room', obj );
+       var oldroom = $('#old_room option:selected').val();
+       var newroom = $('#room option:selected').val();
+
+       var id = adapter + '.' + instance + '.ports.' + controlPort + '.currentState';
+       var obj = { val: newroom, ack: true, room: newroom };
+
+       if ( oldroom != newroom ) {
+          socket.emit('setState',  adapter + '.' + instance + '.ports.' + controlPort + '.room', obj );
+
+          if ( oldroom ) { 
+             removeFromEnum( oldroom, id );
+          }
+          if ( newroom ) {
+             addToEnum( newvalue, id );
+          }
+       }
+
     }
 
     //-------------------------------------------------------------------------------------
