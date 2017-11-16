@@ -1420,10 +1420,15 @@ span:hover::before {
 
        if ( numXP > 0 ) {
            socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.room', function (err, state) {
-              if (state) portSetup.room = state.val;
-              //loadPresetSub( numXP, portNum, portSetup );
+              if (state) {
+                 portSetup.room = state.val;
+                 $("#room").val( state.val );
+              }
               socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.func', function (err, state) {
-                  if (state) portSetup.func = state.val;
+                  if (state) {
+                     portSetup.func = state.val;
+                     $("#fnc").val( state.val );
+                  }
               });
           });
        }
