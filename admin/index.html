@@ -458,7 +458,8 @@ span:hover::before {
    var rooms     = [];
    var ports     = [];
    var functions = [];
-   var active   = false;
+   var active    = false;
+   var megadjt_setup = [];   
 
    //------------------------------------------------------------------------------------------------
    function getFirmwareVersion () {
@@ -1264,8 +1265,9 @@ span:hover::before {
     }
     //--------------------------------------------------------------------------------
     function roomChanged ( controlPort ) {
-        var room = $("#ports."+controlPort+".room option:selected").val();
-        ports[controlPort].room = room;
+        //var room = $("#ports."+controlPort+".room option:selected").val();
+        var room = $("#room option:selected").val();
+        //ports[controlPort].room = room;
     }
     //--------------------------------------------------------------------------------
     function nameChanged ( controlPort ) {
@@ -1402,8 +1404,28 @@ span:hover::before {
         }
         document.getElementById( "lbld" + controlPort ).innerHTML = text;
     }
-    //--------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------
     function loadPreset( numXP, portNum ) {
+       //megadjt_setup
+       var portSetup = [];
+       var controlPort = portNum;
+
+       if (numXP == 2) {
+           controlPort = 15 + portNum;
+       }
+
+       if ( numXP > 0 ) {
+           socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.room', function (err, state) {
+              portSetup.room = state.val;
+              loadPresetSub( numXP, portNum, portSetup );
+           });
+
+       } else {
+          loadPresetSub( numXP, portNum, portSetup );
+       }
+    }
+    //--------------------------------------------------------------------------------
+    function loadPresetSub( numXP, portNum, portSetup ) {
         var xp = "";
         var text = "";
         var controlPort = portNum;
@@ -1416,7 +1438,6 @@ span:hover::before {
         var spanM = "";
         var spanMisc = "";
         var spanDisp = '';
-        var room;
 
         if (numXP == 2) {
            controlPort = 15 + portNum;
@@ -1425,15 +1446,12 @@ span:hover::before {
         if ( numXP > 0 ) {
            xp = $("#xp"+numXP+"model option:selected").val();
 
-           socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.room', function (err, state) {
-               room = state.val;
-           });
-
-           text += '<br>Комната: <select id="ports.'+controlPort+'.room" onChange="roomChanged('+controlPort+');">';
+//           text += '<br>Комната: <select id="ports.'+controlPort+'.room" onChange="roomChanged('+controlPort+');">';
+           text += '<br>Комната: <select id="room" onChange="roomChanged('+controlPort+');">';
            text += '<option value=""></option>';
            for (var r in rooms) {
 //               text += '<option value="' + r + '" ' + ((ports[controlPort].room == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
-               text += '<option value="' + r + '" ' + ((room == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
+               text += '<option value="' + r + '" ' + ((portSetup.room == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
            }
            text += '</select><br>';
 
@@ -2046,7 +2064,8 @@ span:hover::before {
 
     // ------------------------------------------------------------------------------------
     function savePort ( controlPort ) {
-       var newvalue = $('#ports.'+controlPort+'.room option:selected').val();
+//       var newvalue = $('#ports.'+controlPort+'.room option:selected').val();
+       var newvalue = $('#room option:selected').val();
        var obj = { val: newvalue, ack: true };
        socket.emit('setState',  adapter + '.' + instance + '.ports.' + controlPort + '.room', obj );
     }
