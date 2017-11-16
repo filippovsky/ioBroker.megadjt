@@ -1421,8 +1421,8 @@ span:hover::before {
        if ( numXP > 0 ) {
            socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.room', function (err, state) {
               if (state) portSetup.room = state.val;
-              //loadPresetSub( numXP, portNum, portSetup );
            });
+              //loadPresetSub( numXP, portNum, portSetup );
            socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.func', function (err, state) {
               if (state) portSetup.func = state.val;
            });
@@ -2078,31 +2078,31 @@ span:hover::before {
 
        var id_currentState = adapter + '.' + instance + '.ports.' + controlPort + '.currentState';
        var id_func = adapter + '.' + instance + '.ports.' + controlPort + '.func';
-       var objroom = { val: newroom, ack: true, room: newroom };
+       var objroom = { val: newroom, ack: true/*, room: newroom*/ };
 
        var oldfnc = $('#old_fnc').val();
        var newfnc = $('#fnc option:selected').val();
-       var objfnc = { val: newfnc, ack: true, room: newroom };
+       var objfnc = { val: newfnc, ack: true/*, room: newroom*/ };
 
        if ( oldroom != newroom ) {
           socket.emit('setState',  adapter + '.' + instance + '.ports.' + controlPort + '.room', objroom );
-          if ( oldroom ) { 
+          /*if ( oldroom ) { 
              removeFromEnum( oldroom, id_currentState );
              removeFromEnum( oldroom, id_func );
           }
           if ( newroom ) {
              addToEnum( newroom, id_currentState );
              addToEnum( newroom, id_func );
-          }
+          } */
        }
        if ( oldfnc != newfnc ) {
           socket.emit('setState',  adapter + '.' + instance + '.ports.' + controlPort + '.func', objfnc );
-          if ( oldfnc ) { 
+          /*if ( oldfnc ) { 
              removeFromEnum( oldfnc, id_func );
           }
           if ( newfnc ) {
              addToEnum( newfnc, id_func );
-          }
+          } */
        }
     }
 
