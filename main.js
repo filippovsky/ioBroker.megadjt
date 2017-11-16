@@ -2683,7 +2683,7 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
 
          adapter.setObject( id, obj );
   
-         if ( firstValue ) {
+         if ( firstValue || (subtype == 'number') ) {
             adapter.setState( name, {val: firstValue, ack: true});
             adapter.log.info('Set first value ' + firstValue + ' for state ' + id );
          }
