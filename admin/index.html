@@ -1418,7 +1418,7 @@ span:hover::before {
 
        if ( numXP > 0 ) {
            socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.room', function (err, state) {
-              if (state.val) portSetup.room = state.val;
+              if (state) portSetup.room = state.val;
               loadPresetSub( numXP, portNum, portSetup );
            });
 
@@ -2067,7 +2067,7 @@ span:hover::before {
 
     // ------------------------------------------------------------------------------------
     function savePort ( controlPort ) {
-       var oldroom = $('#old_room option:selected').val();
+       var oldroom = $('#old_room').val();
        var newroom = $('#room option:selected').val();
 
        var id = adapter + '.' + instance + '.ports.' + controlPort + '.currentState';
