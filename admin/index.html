@@ -1442,30 +1442,30 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
 
        /*portSetup.room = '';
        portSetup.func = '';
-       portSetup.portType = cPortType_NotConnected;*/
+       portSetup.portType = cPortType_NotConnected;
        $("#old_roomXP"+numXP).val( '' );
        $("#old_fncXP"+numXP).val( '' );
-       $("#old_portTypeXP"+numXP).val( '' );
+       $("#old_portTypeXP"+numXP).val( '' );*/
 
        socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.room', function (err, state) {
           if (state) {
-             portSetup.room = state.val;
+             //portSetup.room = state.val;
              $("#roomXP"+numXP).val( state.val );
-             $("#old_roomXP"+numXP).val( state.val );
+             //$("#old_roomXP"+numXP).val( state.val );
           }
           socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.func', function (err, state) {
              if (state) {
-                 portSetup.func = state.val;
+                 //portSetup.func = state.val;
                  $("#fncXP"+numXP).val( state.val );
-                 $("#old_fncXP"+numXP).val( state.val );
+                 //$("#old_fncXP"+numXP).val( state.val );
              }
           });
        });
        socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.portType', function (err, state) {
           if (state) {
-              portSetup.portType = state.val;
+              //portSetup.portType = state.val;
               $("#portTypeXP"+numXP).val( state.val );
-              $("#old_portTypeXP"+numXP).val( state.val );
+              //$("#old_portTypeXP"+numXP).val( state.val );
           }
        });
  

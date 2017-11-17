@@ -1,9 +1,10 @@
 ![Logo](admin/megad.png)
-![NPM version](http://img.shields.io/npm/v/iobroker.megadjt.svg)
 
 ioBroker MegaD-2561 adapter (Version by Filippovsky, based on adapter of ausHaus and BlueFox)
 =================
 
+### Current version: 0.15.20 ( 17.11.2017 20:42 )
+### Текущая версия: 0.15.20 ( 17.11.2017 20:42 )
 
 Lets control the [MegaD-2561](http://www.ab-log.ru/smart-house/ethernet/megad-2561) over ethernet.
 ## English 
