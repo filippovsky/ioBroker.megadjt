@@ -2747,41 +2747,40 @@ function savePort(obj) {
    adapter.log.debug( 'obj.message.func = '+ obj.message.func );
    adapter.log.debug( 'obj.message.portType = '+ obj.message.portType );
 
-   adapter.getState( adapter.namespace + '.ports.' + obj.message.portNum + '.room',
-      function (err, state, obj.message.portNum, obj.message.room ) {
+   var portNum = obj.message.portNum;
+   var room    = obj.message.room;
+   var func    = obj.message.func;
+   var portType = obj.message.portType;
+
+   adapter.getState( adapter.namespace + '.ports.' + portNum + '.room',
+      function (err, state, portNum, room ) {
          var oldvalue = "";
-         var newvalue = "";
          if ( state ) oldvalue = state.val;
-         if ( obj.message.room ) newvalue = obj.message.room;
-         if ( oldvalue != newvalue ) {
-            adapter.setState( 'ports.' + obj.message.portNum + '.room', {val: newvalue, ack: true});
-            adapter.log.info( 'ports.' + obj.message.portNum + '.room : '+ oldvalue + ' -> ' + newvalue );
+         if ( oldvalue != room ) {
+            adapter.setState( 'ports.' + portNum + '.room', {val: room, ack: true});
+            adapter.log.info( 'ports.' + portNum + '.room : '+ oldvalue + ' -> ' + room );
          }
       }
    );
 
-   adapter.getState( adapter.namespace + '.ports.' + obj.message.portNum + '.func',
-      function (err, state, obj.message.portNum, obj.message.func ) {
+   adapter.getState( adapter.namespace + '.ports.' + portNum + '.func',
+      function (err, state, portNum, func ) {
          var oldvalue = "";
-         var newvalue = "";
          if ( state ) oldvalue = state.val;
-         if ( obj.message.func ) newvalue = obj.message.func;
-         if ( oldvalue != newvalue ) {
-            adapter.setState( 'ports.' + obj.message.portNum + '.func', {val: newvalue, ack: true});
-            adapter.log.info( 'ports.' + obj.message.portNum + '.func : '+ oldvalue + ' -> ' + newvalue );
+         if ( oldvalue != func ) {
+            adapter.setState( 'ports.' + portNum + '.func', {val: func, ack: true});
+            adapter.log.info( 'ports.' + portNum + '.func : '+ oldvalue + ' -> ' + func );
          }
       }
    );
 
-   adapter.getState( adapter.namespace + '.ports.' + obj.message.portNum + '.portType',
-      function (err, state, obj.message.portNum, obj.message.portType ) {
+   adapter.getState( adapter.namespace + '.ports.' + portNum + '.portType',
+      function (err, state, portNum, portType ) {
          var oldvalue = "";
-         var newvalue = "";
          if ( state ) oldvalue = state.val;
-         if ( obj.message.portType ) newvalue = obj.message.portType;
-         if ( oldvalue != newvalue ) {
-            adapter.setState( 'ports.' + obj.message.portNum + '.portType', {val: newvalue, ack: true});
-            adapter.log.info( 'ports.' + obj.message.portNum + '.portType : '+ oldvalue + ' -> ' + newvalue );
+         if ( oldvalue != portType ) {
+            adapter.setState( 'ports.' + portNum + '.portType', {val: portType, ack: true});
+            adapter.log.info( 'ports.' + portNum + '.portType : '+ oldvalue + ' -> ' + portType );
          }
       }
    );
