@@ -1276,7 +1276,17 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
     //--------------------------------------------------------------------------------
     function roomChanged ( controlPort ) {
         //var room = $("#ports."+controlPort+".room option:selected").val();
-        var room = $("#room option:selected").val();
+        var numXP = 0;
+        if ( controlPort < 15 ) {
+           numXP = 1;
+        } else if ( controlPort < 30 ) {
+           numXP = 2;
+        } else {
+           numXP = 0;
+        }
+        var room = $('#roomXP'+numXP+' option:selected').val();
+        $('#roomXP'+numXP).val(room);
+
         //ports[controlPort].room = room;
     }
     //--------------------------------------------------------------------------------
@@ -1287,15 +1297,21 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
     }
     //--------------------------------------------------------------------------------
     function fncChanged ( controlPort ) {
-        var fnc = $("#fnc option:selected").val();
+        var numXP = 0;
+        if ( controlPort < 15 ) {
+           numXP = 1;
+        } else if ( controlPort < 30 ) {
+           numXP = 2;
+        } else {
+           numXP = 0;
+        }
+        var fnc = $('#fncXP'+numXP+' option:selected').val();
+        $('#fncXP'+numXP).val(fnc);
         //ports[controlPort].func = fnc;
     }
 
     //--------------------------------------------------------------------------------
     function ptyChanged ( controlPort, portSetup ) {
-        var pty = $("#portType option:selected").val();
-        //ports[controlPort].pty = pty;
-
         var numXP = 0;
         var port  = 0;
         if ( controlPort < 15 ) {
@@ -1308,6 +1324,11 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
            numXP = 0;
            port = controlPort;
         }
+
+        var pty = $('#portTypeXP'+numXP+' option:selected').val();
+        $('#portTypeXP'+numXP).val(pty);
+        //ports[controlPort].pty = pty;
+
         loadPresetSub( numXP, port, portSetup ); // при изменении типа порта перерисовываем его описание
     }
     //--------------------------------------------------------------------------------
@@ -1412,39 +1433,43 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
     function loadPreset( numXP, portNum ) {
        // здесь считываются настройки конкретного порта из конфига сервера (не МЕГИ)
        //megadjt_setup
-       var portSetup = [];
+       //var portSetup = [];
        var controlPort = portNum;
 
        if (numXP == 2) {
            controlPort = 15 + portNum;
        }
 
-       portSetup.room = '';
+       /*portSetup.room = '';
        portSetup.func = '';
-       portSetup.portType = cPortType_NotConnected;
+       portSetup.portType = cPortType_NotConnected;*/
+       $("#old_roomXP"+numXP).val( '' );
+       $("#old_fncXP"+numXP).val( '' );
+       $("#old_portTypeXP"+numXP).val( '' );
 
-       if ( numXP > 0 ) {
-           socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.room', function (err, state) {
-              if (state) {
-                 portSetup.room = state.val;
-                 $("#room").val( state.val );
-              }
-              socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.func', function (err, state) {
-                  if (state) {
-                     portSetup.func = state.val;
-                     $("#fnc").val( state.val );
-                  }
-              });
+       socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.room', function (err, state) {
+          if (state) {
+             portSetup.room = state.val;
+             $("#roomXP"+numXP).val( state.val );
+             $("#old_roomXP"+numXP).val( state.val );
+          }
+          socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.func', function (err, state) {
+             if (state) {
+                 portSetup.func = state.val;
+                 $("#fncXP"+numXP).val( state.val );
+                 $("#old_fncXP"+numXP).val( state.val );
+             }
           });
-          socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.portType', function (err, state) {
-              if (state) {
-                 portSetup.portType = state.val;
-                 $("#portType").val( state.val );
-              }
-          });
-       }
-
-       loadPresetSub( numXP, portNum, portSetup );
+       });
+       socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.portType', function (err, state) {
+          if (state) {
+              portSetup.portType = state.val;
+              $("#portTypeXP"+numXP).val( state.val );
+              $("#old_portTypeXP"+numXP).val( state.val );
+          }
+       });
+ 
+      loadPresetSub( numXP, portNum, portSetup );
 
     }
     //--------------------------------------------------------------------------------
@@ -1470,21 +1495,21 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
            xp = $("#xp"+numXP+"model option:selected").val();
 
 //           text += '<br>Комната: <select id="ports.'+controlPort+'.room" onChange="roomChanged('+controlPort+');">';
-           text += '<input type="hidden" id="old_room" value="'+portSetup.room+'">';
-           text += '<input type="hidden" id="old_fnc" value="'+portSetup.func+'">';
-           text += '<input type="hidden" id="old_portType" value="'+portSetup.portType+'">';
-           text += '<br>Комната: <select id="room" onChange="roomChanged('+controlPort+');">';
+//           text += '<input type="hidden" id="old_room" value="'+portSetup.room+'">';
+//           text += '<input type="hidden" id="old_fnc" value="'+portSetup.func+'">';
+//           text += '<input type="hidden" id="old_portType" value="'+portSetup.portType+'">';
+           text += '<br>Комната: <select id="roomXP'+numXP+'" onChange="roomChanged('+controlPort+');">';
            text += '<option value=""></option>';
            for (var r in rooms) {
 //               text += '<option value="' + r + '" ' + ((ports[controlPort].room == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
-               text += '<option value="' + r + '" ' + ((portSetup.room == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
+               text += '<option value="' + r + '" ' + (($('#roomXP'+numXP).val() == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
            }
            text += '</select><br>';
 
-           text += '<br>Функция: <select id="fnc" onChange="fncChanged('+controlPort+');">';
+           text += '<br>Функция: <select id="fnc'+numXP+'" onChange="fncChanged('+controlPort+');">';
            text += '<option value=""></option>';
            for (var r in functions) {
-               text += '<option value="' + r + '" ' + ((portSetup.func == r) ? 'selected' : '') + '>' + functions[r].common.name + '</option>';
+               text += '<option value="' + r + '" ' + (($('#fncXP'+numXP).val() == r) ? 'selected' : '') + '>' + functions[r].common.name + '</option>';
            }
            text += '</select><br>';
   
@@ -1534,71 +1559,71 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
         //text += '</td><td align="left" valign="middle">';
 
                 //--- выбор типа порта ---------------------------------------------------------------------
-        text += '<select id="portType" onChange="ptyChanged('+controlPort+',portSetup);">';
-        text += '<option value="'+cPortType_NotConnected+'" ' + ((portSetup.portType == cPortType_NotConnected) ? 'selected' : '') + '>' + _('NC')  + '</option>';
+        text += '<select id="portTypeXP'+numXP+'" onChange="ptyChanged('+controlPort+',portSetup);">';
+        text += '<option value="'+cPortType_NotConnected+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_NotConnected) ? 'selected' : '') + '>' + _('NC')  + '</option>';
         if ( xp == '7I7O-R' || xp == '7I7O-SD' ) {
            if (portNum < 7) {
-              text += '<option value="'+cPortType_StandartIn+'" ' + ((portSetup.portType == cPortType_StandartIn)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
+              text += '<option value="'+cPortType_StandartIn+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_StandartIn)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
            } else {
               if ( xp == '7I7O-R' ) {
-                 text += '<option value="'+cPortType_ReleOut+'" ' + ((portSetup.portType == cPortType_ReleOut)   ? 'selected' : '') + '>Релейный выход</option>';
+                 text += '<option value="'+cPortType_ReleOut+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_ReleOut)   ? 'selected' : '') + '>Релейный выход</option>';
               } else {
                  if ( portNum == 10 || portNum == 12 || portNum == 13 ) {
-                     text += '<option value="'+cPortType_DimmedOut+'" ' + ((portSetup.portType == cPortType_DimmedOut)   ? 'selected' : '') + '>Симисторный диммируемый выход</option>';
+                     text += '<option value="'+cPortType_DimmedOut+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_DimmedOut)   ? 'selected' : '') + '>Симисторный диммируемый выход</option>';
                  } else {
-                     text += '<option value="'+cPortType_SimistorOut+'" ' + ((portSetup.portType == cPortType_SimistorOut)   ? 'selected' : '') + '>Симисторный недиммируемый выход</option>';
+                     text += '<option value="'+cPortType_SimistorOut+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_SimistorOut)   ? 'selected' : '') + '>Симисторный недиммируемый выход</option>';
                  }
               }
            }
         } else if ( xp == '8I7O-S' ) {
            if (portNum < 7) {
-              text += '<option value="'+cPortType_StandartIn+'" ' + ((portSetup.portType == cPortType_StandartIn)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
+              text += '<option value="'+cPortType_StandartIn+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_StandartIn)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
            } else if (portNum < 14) {
-              text += '<option value="'+cPortType_SimistorOut+'" ' + ((portSetup.portType == cPortType_SimistorOut)   ? 'selected' : '') + '>Симисторный недиммируемый выход</option>';
+              text += '<option value="'+cPortType_SimistorOut+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_SimistorOut)   ? 'selected' : '') + '>Симисторный недиммируемый выход</option>';
            } else {
-              text += '<option value="'+cPortType_DigitalSensor+'" ' + ((portSetup.portType == cPortType_DigitalSensor)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
+              text += '<option value="'+cPortType_DigitalSensor+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_DigitalSensor)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
            }
         } else if ( xp == '8I7O-SD' ) {
            if (portNum < 7) {
-              text += '<option value="'+cPortType_StandartIn+'" ' + ((portSetup.portType == cPortType_StandartIn)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
+              text += '<option value="'+cPortType_StandartIn+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_StandartIn)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
            } else if ( portNum == 10 || portNum == 12 || portNum == 13 ) { /// ?????
-              text += '<option value="'+cPortType_DimmedOut+'" ' + ((portSetup.portType == cPortType_DimmedOut)   ? 'selected' : '') + '>Симисторный диммируемый выход</option>';
+              text += '<option value="'+cPortType_DimmedOut+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_DimmedOut)   ? 'selected' : '') + '>Симисторный диммируемый выход</option>';
            } else if (portNum < 14) {
-              text += '<option value="'+cPortType_SimistorOut+'" ' + ((portSetup.portType == cPortType_SimistorOut)   ? 'selected' : '') + '>Симисторный недиммируемый выход</option>';
+              text += '<option value="'+cPortType_SimistorOut+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_SimistorOut)   ? 'selected' : '') + '>Симисторный недиммируемый выход</option>';
            } else {
-              text += '<option value="'+cPortType_DigitalSensor+'" ' + ((portSetup.portType == cPortType_DigitalSensor)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
+              text += '<option value="'+cPortType_DigitalSensor+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_DigitalSensor)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
            }
         } else if ( xp == '14-IN' ) {
-           text += '<option value="'+cPortType_StandartIn+'" ' + ((portSetup.portType == cPortType_StandartIn)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
-           text += '<option value="'+cPortType_DigitalSensor+'" ' + ((portSetup.portType == cPortType_DigitalSensor)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
-           text += '<option value="'+cPortType_I2C+'" ' + ((portSetup.portType == cPortType_I2C)   ? 'selected' : '') + '>Вход I2C</option>';
+           text += '<option value="'+cPortType_StandartIn+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_StandartIn)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
+           text += '<option value="'+cPortType_DigitalSensor+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_DigitalSensor)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
+           text += '<option value="'+cPortType_I2C+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_I2C)   ? 'selected' : '') + '>Вход I2C</option>';
            if ( portNum <= 5 ) {
-              text += '<option value="'+cPortType_AnalogSensor+'" ' + ((portSetup.portType == cPortType_AnalogSensor)   ? 'selected' : '') + '>АЦП-вход для аналоговых датчиков</option>';
+              text += '<option value="'+cPortType_AnalogSensor+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_AnalogSensor)   ? 'selected' : '') + '>АЦП-вход для аналоговых датчиков</option>';
            }
         } else if ( xp == '14-Rv1.0' ) {
            if (portNum < 14) {
-              text += '<option value="'+cPortType_ReleOut+'" ' + ((portSetup.portType == cPortType_ReleOut)   ? 'selected' : '') + '>Релейный выход</option>';
+              text += '<option value="'+cPortType_ReleOut+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_ReleOut)   ? 'selected' : '') + '>Релейный выход</option>';
            } /*else {
               text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
            }   */
         } else if ( xp == '14-Rv2.0' ) {
            if (portNum < 14) {
-              text += '<option value="'+cPortType_ReleOut+'" ' + ((portSetup.portType == cPortType_ReleOut)   ? 'selected' : '') + '>Релейный выход</option>';
+              text += '<option value="'+cPortType_ReleOut+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_ReleOut)   ? 'selected' : '') + '>Релейный выход</option>';
            } else {
-              text += '<option value="'+cPortType_DigitalSensor+'" ' + ((portSetup.portType == cPortType_DigitalSensor)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
+              text += '<option value="'+cPortType_DigitalSensor+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_DigitalSensor)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
            }
         } else if ( xp == '2R' ) {
            if (portNum < 2) {
-              text += '<option value="'+cPortType_ReleOut+'" ' + ((portSetup.portType == cPortType_ReleOut)   ? 'selected' : '') + '>Релейный выход</option>';
+              text += '<option value="'+cPortType_ReleOut+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_ReleOut)   ? 'selected' : '') + '>Релейный выход</option>';
            } /*else {
               text += '<option value="3" ' + ((ports[controlPort].pty == 3)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
            }   */
         } else if ( xp == 'control' ) {
            if ( portNum < 36 ) {
-              text += '<option value="'+cPortType_DigitalSensor+'" ' + ((portSetup.portType == cPortType_DigitalSensor)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
-              text += '<option value="'+cPortType_I2C+'" ' + ((portSetup.portType == cPortType_I2C)   ? 'selected' : '') + '>Вход I2C</option>';
+              text += '<option value="'+cPortType_DigitalSensor+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_DigitalSensor)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
+              text += '<option value="'+cPortType_I2C+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_I2C)   ? 'selected' : '') + '>Вход I2C</option>';
            } else {
-              text += '<option value="'+cPortType_AnalogSensor+'" ' + ((portSetup.portType == cPortType_AnalogSensor)   ? 'selected' : '') + '>АЦП-вход для аналоговых датчиков</option>';
+              text += '<option value="'+cPortType_AnalogSensor+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_AnalogSensor)   ? 'selected' : '') + '>АЦП-вход для аналоговых датчиков</option>';
            }
         }
         text += '</select>';
@@ -1606,7 +1631,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
 
         //-----------------------------------------------------------------------------
         // порт IN
-        if ( portSetup.portType == cPortType_StandartIn ) {
+        if ( $('#portTypeXP'+numXP).val() == cPortType_StandartIn ) {
            spanAct0  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img><span>';
            spanAct0 += '<p align=justify><b>Act</b> - Действие, которое необходимо произвести, в случае, когда сервер не указан или не отвечает.</p>';
            spanAct0 += '<p align=justify>Контроллер MegaD-2561, по своей сути, является исполнителем указаний центральной управляющей ';
@@ -1833,7 +1858,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
 
         //-----------------------------------------------------------------------------
         // порт OUT релейный
-        } else if (( portSetup.portType == cPortType_ReleOut ) || ( portSetup.portType == cPortType_DimmedOut ) || ( portSetup.portType == cPortType_SimistorOut ) ) {
+        } else if (( $('#portTypeXP'+numXP).val() == cPortType_ReleOut ) || ( $('#portTypeXP'+numXP).val() == cPortType_DimmedOut ) || ( $('#portTypeXP'+numXP).val() == cPortType_SimistorOut ) ) {
 
            spanDef  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img><span>';
            spanDef += '<p align=justify><b>Default state (Def)</b>: состояние порта после включения или перезагрузки устройства. ';
@@ -1850,7 +1875,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
 
         //-----------------------------------------------------------------------------
         // порт DSen цифровой вход
-        } else if ( portSetup.portType == cPortType_DigitalSensor ) {
+        } else if ( $('#portTypeXP'+numXP).val() == cPortType_DigitalSensor ) {
 
            spanSen  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img><span>';
            spanSen += '<font color=red><b>ВНИМАНИЕ! Положение джампера должно быть нижнее!</b></font><br>';
@@ -2090,46 +2115,53 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
 
     // ------------------------------------------------------------------------------------
     function savePort ( controlPort ) {
-       var oldroom = $('#old_room').val();
-       var newroom = $('#room option:selected').val();
+        var numXP = 0;
+        if ( controlPort < 15 ) {
+           numXP = 1;
+        } else if ( controlPort < 30 ) {
+           numXP = 2;
+        } else {
+           numXP = 0;
+        }
 
-       var id_currentState = adapter + '.' + instance + '.ports.' + controlPort + '.currentState';
-       var id_func = adapter + '.' + instance + '.ports.' + controlPort + '.func';
-       var objroom = { val: newroom, ack: true/*, room: newroom*/ };
+       //var oldroom = $('#old_roomXP'+numXP).val();
+       var newroom = $('#roomXP'+numXP+' option:selected').val();
 
-       var oldfnc = $('#old_fnc').val();
-       var newfnc = $('#fnc option:selected').val();
-       var objfnc = { val: newfnc, ack: true/*, room: newroom*/ };
+       //var id_currentState = adapter + '.' + instance + '.ports.' + controlPort + '.currentState';
+       //var id_func = adapter + '.' + instance + '.ports.' + controlPort + '.func';
+       //var objroom = { val: newroom, ack: true/*, room: newroom*/ };
 
-       if ( oldroom != newroom ) {
+       //var oldfnc = $('#old_fncXP'+numXP).val();
+       var newfnc = $('#fncXP'+numXP+' option:selected').val();
+       //var objfnc = { val: newfnc, ack: true/*, room: newroom*/ };
+
+       /*if ( oldroom != newroom ) {
           socket.emit('setState',  adapter + '.' + instance + '.ports.' + controlPort + '.room', objroom );
-          /*if ( oldroom ) { 
-             removeFromEnum( oldroom, id_currentState );
-             removeFromEnum( oldroom, id_func );
-          }
-          if ( newroom ) {
-             addToEnum( newroom, id_currentState );
-             addToEnum( newroom, id_func );
-          } */
        }
        if ( oldfnc != newfnc ) {
           socket.emit('setState',  adapter + '.' + instance + '.ports.' + controlPort + '.func', objfnc );
-          /*if ( oldfnc ) { 
-             removeFromEnum( oldfnc, id_func );
+       } */
+
+       //var oldPortType = $('#old_portTypeXP'+numXP).val();
+       var newPortType = $('#portTypeXP'+numXP+' option:selected').val();
+       //var objPortType = { val: newPortType, ack: true/*, room: newroom*/ };
+       //if ( oldPortType != newPortType ) {
+       //   socket.emit('setState',  adapter + '.' + instance + '.ports.' + controlPort + '.portType', objPortType );
+       //} 
+
+       sendTo(null, 'savePort', {  portNum: controlPort, 
+                                      room: newroom, 
+                                      func: newfnc,
+                                  portType: newPortType
+                                }, 
+          function (msg) {
+             if (!msg || msg.error) {
+                showMessage(msg.error, _('Error'), 'alert');
+                return;
+             }
+          
           }
-          if ( newfnc ) {
-             addToEnum( newfnc, id_func );
-          } */
-       }
-
-       var oldPortType = $('#old_portType').val();
-       var newPortType = $('#old_portType option:selected').val();
-       var objPortType = { val: newPortType, ack: true/*, room: newroom*/ };
-       if ( oldPortType != newPortType ) {
-          socket.emit('setState',  adapter + '.' + instance + '.ports.' + controlPort + '.portType', objPortType );
-       }
-
-
+        );
     }
 
     //-------------------------------------------------------------------------------------
@@ -3292,8 +3324,10 @@ while(1)
                            Если Вы уже зарегитрированы на SMS.RU - перейдите в свой профиль и введите в нем промокод <b>megadjt</b>.<br>
                            Отправка SMS на собственный номер - бесплатная.<br>
                            Возможна отправка на несколько номеров, для этого они должны быть указаны через запятую.<br>
+                           Номера телефонов вводятся в формате 79031234567ю<br>
                            Обратите внимание, что по умолчанию отправка смс с одинаковым текстом ограничена по количеству. 
-                           При необходимости это ограничение можно отключить в профиле на сайте.</p>
+                           При необходимости это ограничение можно отключить в профиле на сайте.<br>
+                           Отправка производится только если включена галочка "Включить отправку SMS"</p>
          <p align=justify>
               Вы также можете использовать драйвер для отправки собственных SMS. Для отправки текста нужно
               сохранить текст в переменную драйвера <b>sms.text</b> с параметром <b>(ack: false)</b>.</p>

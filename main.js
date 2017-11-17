@@ -194,6 +194,10 @@ adapter.on('message', function (obj) {
                 detectPorts(obj);
                 break;
 
+            case 'savePort':
+                savePort(obj);
+                break;
+
             case 'writeConfig':
                 writeConfig(obj);
                 break;
@@ -1144,6 +1148,7 @@ function detectDeviceConfig(ip, pass, callback) {
     readMegaConfig2File( 'last.cfg' );
 
 }
+
 
 
 //------------------------------------------------------------------------------------------------------------------
@@ -2749,6 +2754,44 @@ function debugAllStates () {
          adapter.log.debug('State '+i+' ... ' + _states[i]._id );
       }
    });
+}
+
+//------------------------------------------------------------------------------------------------------------------
+// Message is IP address
+function savePort(obj) {
+   var portSuffix = 'ports.' + obj.portNum + '.';
+   var id = adapter.namespace + '.' + portSuffix;
+   var name = '';
+   var newvalue = '';
+
+   adapter.log.info('Сохраняем настройки для порта '+obj.portNum);
+   name = 'room';
+   newvalue = obj.room;
+   adapter.getState( portSuffix + name, function (err, state) {
+      if ( state.val != newvalue ) {
+         adapter.setState( id + name, {val: newvalue, ack: true});
+         adapter.log.info( id + name + ' : '+ state.val + ' -> ' + newvalue );
+      }
+   });
+
+   name = 'func';
+   newvalue = obj.func;
+   adapter.getState( portSuffix + name, function (err, state) {
+      if ( state.val != newvalue ) {
+         adapter.setState( id + name, {val: newvalue, ack: true});
+         adapter.log.info( id + name + ' : '+ state.val + ' -> ' + newvalue );
+      }
+   });
+
+   name = 'portType';
+   newvalue = obj.portType;
+   adapter.getState( portSuffix + name, function (err, state) {
+      if ( state.val != newvalue ) {
+         adapter.setState( id + name, {val: newvalue, ack: true});
+         adapter.log.info( id + name + ' : '+ state.val + ' -> ' + newvalue );
+      }
+   });
+
 }
 
 
