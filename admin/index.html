@@ -1432,40 +1432,35 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
     // -------------------------------------------------------------------------------
     function loadPreset( numXP, portNum ) {
        // здесь считываются настройки конкретного порта из конфига сервера (не МЕГИ)
-       //megadjt_setup
-       //var portSetup = [];
        var controlPort = portNum;
 
        if (numXP == 2) {
            controlPort = 15 + portNum;
        }
 
-       /*portSetup.room = '';
-       portSetup.func = '';
-       portSetup.portType = cPortType_NotConnected;
-       $("#old_roomXP"+numXP).val( '' );
-       $("#old_fncXP"+numXP).val( '' );
-       $("#old_portTypeXP"+numXP).val( '' );*/
-
        socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.room', function (err, state) {
           if (state) {
-             //portSetup.room = state.val;
              $("#roomXP"+numXP).val( state.val );
-             //$("#old_roomXP"+numXP).val( state.val );
           }
           socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.func', function (err, state) {
              if (state) {
-                 //portSetup.func = state.val;
                  $("#fncXP"+numXP).val( state.val );
-                 //$("#old_fncXP"+numXP).val( state.val );
              }
           });
        });
        socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.portType', function (err, state) {
           if (state) {
-              //portSetup.portType = state.val;
               $("#portTypeXP"+numXP).val( state.val );
-              //$("#old_portTypeXP"+numXP).val( state.val );
+              $('#portTypeXP'+numXP+' option:selected').val(state.val);
+              $('#portTypeXP'+numXP+' select').val(state.val);
+              $('#portTypeXP'+numXP+' option').each(function() {
+                   if($(this).val() == state.val) {
+                         $(this).prop("selected", true);
+                   }
+              });
+
+              onchange();  
+
           }
        });
  
