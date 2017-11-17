@@ -2763,7 +2763,6 @@ function savePort(obj) {
    var id = adapter.namespace + '.' + portSuffix;
    var name = '';
    var newvalue = '';
-   var oldvalue = '';
    var saved = false;
    var wake = false;
 
@@ -2787,8 +2786,9 @@ function savePort(obj) {
                 newvalue = obj.message.portType;
                 break;
         }
-        saved = false;
-        adapter.getState( portSuffix + name, function (err, state) {
+
+        adapter.getState( portSuffix + name, function (err, state, newvalue ) {
+           var oldvalue = '';
            if ( !state ) {
               oldvalue = '';
            } else {
@@ -2798,17 +2798,8 @@ function savePort(obj) {
               adapter.setState( id + name, {val: newvalue, ack: true});
               adapter.log.info( id + name + ' : '+ oldvalue + ' -> ' + newvalue );
            }
-           saved = true;
         });
 
-        wake = false;
-        while (!saved) {
-           /* if (!wake) {
-               setTimeout(function () {
-                   wake = true;
-               }, 1000);
-            }*/
-        }
     }
 
 }
