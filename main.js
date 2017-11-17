@@ -2764,49 +2764,52 @@ function savePort(obj) {
    var name = '';
    var newvalue = '';
    var oldvalue = '';
+   var saved = false;
+   var wake = false;
 
    adapter.log.info('Сохраняем настройки для порта '+obj.message.portNum);
-   name = 'room';
-   newvalue = obj.message.room;
-   adapter.getState( portSuffix + name, function (err, state) {
-      if ( !state ) {
-         oldvalue = '';
-      } else {
-         oldvalue = state.val;
-      }
-      if ( oldvalue != newvalue ) {
-         adapter.setState( id + name, {val: newvalue, ack: true});
-         adapter.log.info( id + name + ' : '+ oldvalue + ' -> ' + newvalue );
-      }
-   });
+   adapter.log.debug( obj.message );
 
-   name = 'func';
-   newvalue = obj.message.func;
-   adapter.getState( portSuffix + name, function (err, state) {
-      if ( !state ) {
-         oldvalue = '';
-      } else {
-         oldvalue = state.val;
-      }
-      if ( oldvalue != newvalue ) {
-         adapter.setState( id + name, {val: newvalue, ack: true});
-         adapter.log.info( id + name + ' : '+ oldvalue + ' -> ' + newvalue );
-      }
-   });
+   for ( var i = 0; i <= 2; i ++ ) {
+        switch ( i ) {
+            case 0:
+                name = 'room';
+                newvalue = obj.message.room;
+                break;
+     
+            case 1:
+                name = 'func';
+                newvalue = obj.message.func;
+                break;
 
-   name = 'portType';
-   newvalue = obj.message.portType;
-   adapter.getState( portSuffix + name, function (err, state) {
-      if ( !state ) {
-         oldvalue = '';
-      } else {
-         oldvalue = state.val;
-      }
-      if ( oldvalue != newvalue ) {
-         adapter.setState( id + name, {val: newvalue, ack: true});
-         adapter.log.info( id + name + ' : '+ oldvalue + ' -> ' + newvalue );
-      }
-   });
+            case 2:
+                name = 'portType';
+                newvalue = obj.message.portType;
+                break;
+        }
+        saved = false;
+        adapter.getState( portSuffix + name, function (err, state) {
+           if ( !state ) {
+              oldvalue = '';
+           } else {
+              oldvalue = state.val;
+           }
+           if ( oldvalue != newvalue ) {
+              adapter.setState( id + name, {val: newvalue, ack: true});
+              adapter.log.info( id + name + ' : '+ oldvalue + ' -> ' + newvalue );
+           }
+           saved = true;
+        });
+
+        wake = false;
+        while (!saved) {
+           /* if (!wake) {
+               setTimeout(function () {
+                   wake = true;
+               }, 1000);
+            }*/
+        }
+    }
 
 }
 
