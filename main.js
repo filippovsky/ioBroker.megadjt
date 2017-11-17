@@ -2759,15 +2759,15 @@ function debugAllStates () {
 //------------------------------------------------------------------------------------------------------------------
 // Message is IP address
 function savePort(obj) {
-   var portSuffix = 'ports.' + obj.portNum + '.';
+   var portSuffix = 'ports.' + obj.message.portNum + '.';
    var id = adapter.namespace + '.' + portSuffix;
    var name = '';
    var newvalue = '';
    var oldvalue = '';
 
-   adapter.log.info('Сохраняем настройки для порта '+obj.portNum);
+   adapter.log.info('Сохраняем настройки для порта '+obj.message.portNum);
    name = 'room';
-   newvalue = obj.room;
+   newvalue = obj.message.room;
    adapter.getState( portSuffix + name, function (err, state) {
       if ( !state ) {
          oldvalue = '';
@@ -2781,7 +2781,7 @@ function savePort(obj) {
    });
 
    name = 'func';
-   newvalue = obj.func;
+   newvalue = obj.message.func;
    adapter.getState( portSuffix + name, function (err, state) {
       if ( !state ) {
          oldvalue = '';
@@ -2795,7 +2795,7 @@ function savePort(obj) {
    });
 
    name = 'portType';
-   newvalue = obj.portType;
+   newvalue = obj.message.portType;
    adapter.getState( portSuffix + name, function (err, state) {
       if ( !state ) {
          oldvalue = '';
@@ -2822,9 +2822,8 @@ function savePort(obj) {
 function main() {
     adapter.setState('info.connection', false, true);
 
-    // adapter.setState( 'sms.apikey', {val: "896", ack: true});           -- только в состояния
     configInit();
-    debugAllStates();
+    //debugAllStates();
     
     if (adapter.config.ip) {
         adapter.config.port = parseInt(adapter.config.port, 10) || 0;
