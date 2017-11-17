@@ -1506,7 +1506,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
            }
            text += '</select><br>';
 
-           text += '<br>Функция: <select id="fnc'+numXP+'" onChange="fncChanged('+controlPort+');">';
+           text += '<br>Функция: <select id="fncXP'+numXP+'" onChange="fncChanged('+controlPort+');">';
            text += '<option value=""></option>';
            for (var r in functions) {
                text += '<option value="' + r + '" ' + (($('#fncXP'+numXP).val() == r) ? 'selected' : '') + '>' + functions[r].common.name + '</option>';
@@ -2151,7 +2151,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
 
        sendTo(null, 'savePort', {  portNum: controlPort, 
                                       room: newroom, 
-                                      func: newfnc,
+                                       fnc: newfnc,
                                   portType: newPortType
                                 }, 
           function (msg) {
