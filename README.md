@@ -3,8 +3,13 @@
 ioBroker MegaD-2561 adapter (Version by Filippovsky, based on adapter of ausHaus and BlueFox)
 =================
 
-### Current version: 0.15.21 ( 17.11.2017 20:47 )
-### Текущая версия:  0.15.21 ( 17.11.2017 20:47 )
+### Current version: 0.15.22 ( 17.11.2017 20:52 )
+### Текущая версия:  0.15.22 ( 17.11.2017 20:52 )
+
+[![NPM version](http://img.shields.io/npm/v/iobroker.megadjt.svg)](https://www.npmjs.com/package/iobroker.megadjt)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.megadjt.svg)](https://www.npmjs.com/package/iobroker.megadjt)
+
+[![NPM](https://nodei.co/npm/iobroker.megadjt.png?downloads=true)](https://nodei.co/npm/iobroker.megadjt/)
 
 Lets control the [MegaD-2561](http://www.ab-log.ru/smart-house/ethernet/megad-2561) over ethernet.
 ## English 
