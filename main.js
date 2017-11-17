@@ -2767,7 +2767,9 @@ function savePort(obj) {
    var wake = false;
 
    adapter.log.info('Сохраняем настройки для порта '+obj.message.portNum);
-   adapter.log.debug( obj.message );
+   adapter.log.debug( 'obj.message.room = '+ obj.message.room );
+   adapter.log.debug( 'obj.message.func = '+ obj.message.room );
+   adapter.log.debug( 'obj.message.portType = '+ obj.message.portType );
 
    for ( var i = 0; i <= 2; i ++ ) {
         switch ( i ) {
@@ -2787,7 +2789,7 @@ function savePort(obj) {
                 break;
         }
 
-        adapter.getState( portSuffix + name, function (err, state, newvalue ) {
+        adapter.getState( portSuffix + name, function (err, state, id, name, newvalue ) {
            var oldvalue = '';
            if ( !state ) {
               oldvalue = '';
