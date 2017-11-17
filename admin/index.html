@@ -1311,7 +1311,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
     }
 
     //--------------------------------------------------------------------------------
-    function ptyChanged ( controlPort, portSetup ) {
+    function ptyChanged ( controlPort ) {
         var numXP = 0;
         var port  = 0;
         if ( controlPort < 15 ) {
@@ -1329,7 +1329,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
         $('#portTypeXP'+numXP).val(pty);
         //ports[controlPort].pty = pty;
 
-        loadPresetSub( numXP, port, portSetup ); // при изменении типа порта перерисовываем его описание
+        loadPresetSub( numXP, port ); // при изменении типа порта перерисовываем его описание
     }
     //--------------------------------------------------------------------------------
     function mChanged ( controlPort ) {
@@ -1469,11 +1469,11 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
           }
        });
  
-      loadPresetSub( numXP, portNum, portSetup );
+      loadPresetSub( numXP, portNum );
 
     }
     //--------------------------------------------------------------------------------
-    function loadPresetSub( numXP, portNum, portSetup ) {
+    function loadPresetSub( numXP, portNum ) {
         var xp = "";
         var text = "";
         var controlPort = portNum;
@@ -1559,7 +1559,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
         //text += '</td><td align="left" valign="middle">';
 
                 //--- выбор типа порта ---------------------------------------------------------------------
-        text += '<select id="portTypeXP'+numXP+'" onChange="ptyChanged('+controlPort+',portSetup);">';
+        text += '<select id="portTypeXP'+numXP+'" onChange="ptyChanged('+controlPort+');">';
         text += '<option value="'+cPortType_NotConnected+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_NotConnected) ? 'selected' : '') + '>' + _('NC')  + '</option>';
         if ( xp == '7I7O-R' || xp == '7I7O-SD' ) {
            if (portNum < 7) {
