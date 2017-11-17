@@ -2745,12 +2745,12 @@ function savePort(obj) {
    adapter.log.info('Сохраняем настройки для порта '+obj.message.portNum);
    adapter.log.debug( 'obj.message.portNum =  '+obj.message.portNum);
    adapter.log.debug( 'obj.message.room = '+ obj.message.room );
-   adapter.log.debug( 'obj.message.func = '+ obj.message.func );
+   adapter.log.debug( 'obj.message.fnc = '+ obj.message.fnc );
    adapter.log.debug( 'obj.message.portType = '+ obj.message.portType );
 
    var portNum = obj.message.portNum;
    var room    = obj.message.room;
-   var func    = obj.message.func;
+   var fnc     = obj.message.fnc;
    var portType = obj.message.portType;
 
    adapter.getState( adapter.namespace + '.ports.' + portNum + '.room',
@@ -2768,9 +2768,9 @@ function savePort(obj) {
       function (err, state ) {
          var oldvalue = "";
          if ( state ) oldvalue = state.val;
-         if ( oldvalue != func ) {
-            adapter.setState( 'ports.' + portNum + '.func', {val: func, ack: true});
-            adapter.log.info( 'ports.' + portNum + '.func : '+ oldvalue + ' -> ' + func );
+         if ( oldvalue != fnc ) {
+            adapter.setState( 'ports.' + portNum + '.func', {val: fnc, ack: true});
+            adapter.log.info( 'ports.' + portNum + '.func : '+ oldvalue + ' -> ' + fnc );
          }
       }
    );
