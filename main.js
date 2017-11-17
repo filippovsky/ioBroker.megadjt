@@ -2763,35 +2763,48 @@ function savePort(obj) {
    var id = adapter.namespace + '.' + portSuffix;
    var name = '';
    var newvalue = '';
+   var oldvalue = '';
 
    adapter.log.info('Сохраняем настройки для порта '+obj.portNum);
    name = 'room';
    newvalue = obj.room;
    adapter.getState( portSuffix + name, function (err, state) {
-      if ( !state ) state.val = '';
-      if ( state.val != newvalue ) {
+      if ( !state ) {
+         oldvalue = '';
+      } else {
+         oldvalue = state.val;
+      }
+      if ( oldvalue != newvalue ) {
          adapter.setState( id + name, {val: newvalue, ack: true});
-         adapter.log.info( id + name + ' : '+ state.val + ' -> ' + newvalue );
+         adapter.log.info( id + name + ' : '+ oldvalue + ' -> ' + newvalue );
       }
    });
 
    name = 'func';
    newvalue = obj.func;
    adapter.getState( portSuffix + name, function (err, state) {
-      if ( !state ) state.val = '';
-      if ( state.val != newvalue ) {
+      if ( !state ) {
+         oldvalue = '';
+      } else {
+         oldvalue = state.val;
+      }
+      if ( oldvalue != newvalue ) {
          adapter.setState( id + name, {val: newvalue, ack: true});
-         adapter.log.info( id + name + ' : '+ state.val + ' -> ' + newvalue );
+         adapter.log.info( id + name + ' : '+ oldvalue + ' -> ' + newvalue );
       }
    });
 
    name = 'portType';
    newvalue = obj.portType;
    adapter.getState( portSuffix + name, function (err, state) {
-      if ( !state ) state.val = '';
-      if ( state.val != newvalue ) {
+      if ( !state ) {
+         oldvalue = '';
+      } else {
+         oldvalue = state.val;
+      }
+      if ( oldvalue != newvalue ) {
          adapter.setState( id + name, {val: newvalue, ack: true});
-         adapter.log.info( id + name + ' : '+ state.val + ' -> ' + newvalue );
+         adapter.log.info( id + name + ' : '+ oldvalue + ' -> ' + newvalue );
       }
    });
 
