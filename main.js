@@ -2768,6 +2768,7 @@ function savePort(obj) {
    name = 'room';
    newvalue = obj.room;
    adapter.getState( portSuffix + name, function (err, state) {
+      if ( !state ) state.val = '';
       if ( state.val != newvalue ) {
          adapter.setState( id + name, {val: newvalue, ack: true});
          adapter.log.info( id + name + ' : '+ state.val + ' -> ' + newvalue );
@@ -2777,6 +2778,7 @@ function savePort(obj) {
    name = 'func';
    newvalue = obj.func;
    adapter.getState( portSuffix + name, function (err, state) {
+      if ( !state ) state.val = '';
       if ( state.val != newvalue ) {
          adapter.setState( id + name, {val: newvalue, ack: true});
          adapter.log.info( id + name + ' : '+ state.val + ' -> ' + newvalue );
@@ -2786,6 +2788,7 @@ function savePort(obj) {
    name = 'portType';
    newvalue = obj.portType;
    adapter.getState( portSuffix + name, function (err, state) {
+      if ( !state ) state.val = '';
       if ( state.val != newvalue ) {
          adapter.setState( id + name, {val: newvalue, ack: true});
          adapter.log.info( id + name + ' : '+ state.val + ' -> ' + newvalue );
