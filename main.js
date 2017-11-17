@@ -2631,7 +2631,7 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
    found = false;
    adapter.getObject( name, function(err,obj) {
        if (obj) {
-          adapter.log.debug('Объект ' + id +' уже есть .... ');
+//          adapter.log.debug('Объект ' + id +' уже есть .... ');
           found = true;
        }
 
@@ -2639,25 +2639,8 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
       return;
    }
 
-   adapter.log.debug('Объекта ' + id +' нет .... ');
+//   adapter.log.debug('Объекта ' + id +' нет .... ');
 
-   /*
-   adapter.getStatesOf('', '', function (err, _states) {
-      var i;
-      var found;
-
-      found = false;
-      adapter.log.debug('Проверяем, есть ли объект ' + id +' .... ');
-      for (i = 0; i < _states.length; i++) {
-         adapter.log.debug(' ... ' + _states[i]._id );
-         if ( id == _states[i]._id) {
-            found = true;
-            adapter.log.debug('Совпало. Не надо добавлять.');
-            break;
-         }
-      }
-
-      if (!found) {*/
          adapter.log.info('Add state ' + id);
          if ( type == 'state' ) {
             role = 'state';
@@ -2694,7 +2677,6 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
             adapter.setState( name, {val: firstValue, ack: true});
             adapter.log.info('Set first value ' + firstValue + ' for state ' + id );
          }
-  //   }
   });
 }
 //---------------------------------------------------------------------------------------------
@@ -2766,7 +2748,7 @@ function savePort(obj) {
    adapter.log.debug( 'obj.message.portType = '+ obj.message.portType );
 
    adapter.getState( adapter.namespace + '.ports.' + obj.message.portNum + '.room',
-      function (err, state, obj ) {
+      function (err, state, obj.message.portNum, obj.message.room ) {
          var oldvalue = "";
          var newvalue = "";
          if ( state ) oldvalue = state.val;
@@ -2779,7 +2761,7 @@ function savePort(obj) {
    );
 
    adapter.getState( adapter.namespace + '.ports.' + obj.message.portNum + '.func',
-      function (err, state, obj ) {
+      function (err, state, obj.message.portNum, obj.message.func ) {
          var oldvalue = "";
          var newvalue = "";
          if ( state ) oldvalue = state.val;
@@ -2792,7 +2774,7 @@ function savePort(obj) {
    );
 
    adapter.getState( adapter.namespace + '.ports.' + obj.message.portNum + '.portType',
-      function (err, state, obj ) {
+      function (err, state, obj.message.portNum, obj.message.portType ) {
          var oldvalue = "";
          var newvalue = "";
          if ( state ) oldvalue = state.val;
