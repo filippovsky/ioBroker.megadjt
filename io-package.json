@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.15.35",
+        "version":                  "0.15.36",
         "news": {
             "0.14.0": {
                 "en":               "sms service added",
@@ -90,10 +90,11 @@
         "messagebox":               true,
         "readme":                   "https://github.com/filippovsky/ioBroker.megadjt/blob/master/README.md",
         "keywords":                 ["MegaD-2561", "communication"],
-		"enabled":                  false,
         "extIcon":                  "https://github.com/filippovsky/ioBroker.megadjt/raw/master/admin/megad.png",
         "stopBeforeUpdate":         true,
+        "enabled":                  false,
         "type":                     "hardware",
+        "meta": "https://raw.githubusercontent.com/filippovsky/ioBroker.megadjt/master/io-package.json",
         "localLink":                "http://%native_ip%/%password%",
         "config": {
             "width":     1200,
