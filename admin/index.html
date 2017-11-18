@@ -536,14 +536,16 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
       var sms_apiKey  = "";
       var sms_enabled = false;
       var sms_phones  = "";
+      var portstate = cPortType_NotConnected;
       var i;
 
       for ( i = 0; i <= 37; i ++ ) {
          socket.emit('getState',  adapter + '.' + instance + '.ports.' + i + '.portType', function (err, state) {
+             portstate = state.val;
              //$('#portState' + i ).val(state.val);
              if (state) {
                 //portState[i] = state.val;
-                $('#portState'+i).val(state.val);
+                $('#portState'+i).val(portstate);
              } else {
                 //portState[i] = cPortType_NotConnected;
                 $('#portState'+i).val(cPortType_NotConnected);
@@ -1052,6 +1054,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
        var maxCycle = 14;
        var   y3 = "419px";
        var   x3 = 102;
+       var portstate = "";
 
        if ( numXP == 0 ) {
           xp = "control";
@@ -1215,16 +1218,17 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
              }
           }
 
+          portstate = $('#portState' + k ).val();
 
           if (xp == "7I7O-R" || xp == "7I7O-SD") {
              if ( m < 7 ) {
-                if ( $('#portState' + k ).val() == cPortType_NotConnected ) {
+                if ( portstate == cPortType_NotConnected ) {
                    document.getElementById( spanId ).className = "circlebutton_darkgreen";
                 } else {
                    document.getElementById( spanId ).className = "circlebutton_green";
                 }
              } else {
-                if ( $('#portState' + k ).val() == cPortType_NotConnected ) {
+                if ( portstate == cPortType_NotConnected ) {
                    document.getElementById( spanId ).className = "circlebutton_darkred";
                 } else {
                    document.getElementById( spanId ).className = "circlebutton_red";
@@ -1232,46 +1236,46 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
              }
           } else if ((xp == "8I7O-S") || (xp == "8I7O-SD")) {
              if ( m < 7 || m == 14 ) {
-                if ( $('#portState' + k ).val() == cPortType_NotConnected ) {
+                if ( portstate == cPortType_NotConnected ) {
                    document.getElementById( spanId ).className = "circlebutton_darkgreen";
                 } else {
                    document.getElementById( spanId ).className = "circlebutton_green";
                 }
              } else {
-                if ( $('#portState' + k ).val() == cPortType_NotConnected ) {
+                if ( portstate == cPortType_NotConnected ) {
                    document.getElementById( spanId ).className = "circlebutton_darkred";
                 } else {
                    document.getElementById( spanId ).className = "circlebutton_red";
                 }
              }
           } else if (xp == "14-IN") {  
-             if ( $('#portState' + k ).val() == cPortType_NotConnected ) {
+             if ( portstate == cPortType_NotConnected ) {
                  document.getElementById( spanId ).className = "circlebutton_darkgreen";
              } else {
                  document.getElementById( spanId ).className = "circlebutton_green";
              }
           } else if (xp == "14-Rv1.0") {
-             if ( $('#portState' + k ).val() == cPortType_NotConnected ) {
+             if ( portstate == cPortType_NotConnected ) {
                  document.getElementById( spanId ).className = "circlebutton_darkred";
              } else {
                  document.getElementById( spanId ).className = "circlebutton_red";
              }
           } else if (xp == "14-Rv2.0") {
              if ( m < 14 ) {
-                if ( $('#portState' + k ).val() == cPortType_NotConnected ) {
+                if ( portstate == cPortType_NotConnected ) {
                    document.getElementById( spanId ).className = "circlebutton_darkred";
                 } else {
                    document.getElementById( spanId ).className = "circlebutton_red";
                 }
              } else {
-                if ( $('#portState' + k ).val() == cPortType_NotConnected ) {
+                if ( portstate == cPortType_NotConnected ) {
                    document.getElementById( spanId ).className = "circlebutton_darkgreen";
                 } else {
                    document.getElementById( spanId ).className = "circlebutton_green";
                 }
              }
           } else if (xp == "2R") {
-             if ( $('#portState' + k ).val() == cPortType_NotConnected ) {
+             if ( portstate == cPortType_NotConnected ) {
                  document.getElementById( spanId ).className = "circlebutton_darkred";
              } else {
                  document.getElementById( spanId ).className = "circlebutton_red";
@@ -1483,7 +1487,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
               $("#portTypeXP"+numXP).val( state.val );
               $('#portTypeXP'+numXP+' option:selected').val(state.val);
               $('#portTypeXP'+numXP+' select').val(state.val);
-              $('#portState' + controlPort ).val(state.val);
+              //$('#portState' + controlPort ).val(state.val);
               //portState[ controlPort ] = state.val;
 
               $('#portTypeXP'+numXP+' option').each(function() {
@@ -1492,9 +1496,9 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
                    }
               });
               ptyChanged( controlPort ); // ?
-          } else {
-              $('#portState' + controlPort ).val( cPortType_NotConnected );
-              ptyChanged( controlPort ); // ?
+          //} else {
+          //    $('#portState' + controlPort ).val( cPortType_NotConnected );
+          //    ptyChanged( controlPort ); // ?
               //portState[ controlPort ] = cPortType_NotConnected;
           }
        });
