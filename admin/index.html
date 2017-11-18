@@ -536,6 +536,22 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
       var sms_apiKey  = "";
       var sms_enabled = false;
       var sms_phones  = "";
+      var i;
+
+      for ( i = 0; i <= 37; i ++ ) {
+         socket.emit('getState',  adapter + '.' + instance + '.ports.' + i + '.portType', function (err, state) {
+             //$('#portState' + i ).val(state.val);
+             if (state) {
+                //portState[i] = state.val;
+                $('#portState'+i).val(state.val);
+             } else {
+                //portState[i] = cPortType_NotConnected;
+                $('#portState'+i).val(cPortType_NotConnected);
+             }
+             onchange(); // ?
+         });
+      }
+
 
       socket.emit('getState',  adapter + '.' + instance + '.sms.apiKey', function (err, state) {
          sms_apiKey = state.val;
@@ -593,20 +609,6 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
          onchange();
       });
   
-      var i;
-      for ( i = 0; i <= 37; i ++ ) {
-         socket.emit('getState',  adapter + '.' + instance + '.ports.' + i + '.portType', function (err, state) {
-             //$('#portState' + i ).val(state.val);
-             if (state) {
-                //portState[i] = state.val;
-                $('#portState'+i).val(state.val);
-             } else {
-                //portState[i] = cPortType_NotConnected;
-                $('#portState'+i).val(cPortType_NotConnected);
-             }
-             onchange(); // ?
-         });
-      }
       //onchange();
       //showXP( 1 );
       //showXP( 2 );
@@ -1492,6 +1494,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
               ptyChanged( controlPort ); // ?
           } else {
               $('#portState' + controlPort ).val( cPortType_NotConnected );
+              ptyChanged( controlPort ); // ?
               //portState[ controlPort ] = cPortType_NotConnected;
           }
        });
@@ -1546,12 +1549,12 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
 //           text += '<input type="hidden" id="old_fnc" value="'+portSetup.func+'">';
 //           text += '<input type="hidden" id="old_portType" value="'+portSetup.portType+'">';
 
-           for ( var i = 0; i <= 37; i++ ) {
+/*           for ( var i = 0; i <= 37; i++ ) {
                text += '<br>DEBUG:<br>';
 //               text += i + ' - ' + portState[ i ] + '<br>';
                text += i + ' - ' + $('#portState'+i).val() + '<br>';
                text += '---------------------<br>';
-           }
+           }*/
 
            text += '<br>Комната: <select id="roomXP'+numXP+'" onChange="roomChanged('+controlPort+');">';
            text += '<option value=""></option>';
@@ -2796,44 +2799,44 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
 
-    <input type="hidden" id="portState0"/>
-    <input type="hidden" id="portState1"/>
-    <input type="hidden" id="portState2"/>
-    <input type="hidden" id="portState3"/>
-    <input type="hidden" id="portState4"/>
-    <input type="hidden" id="portState5"/>
-    <input type="hidden" id="portState6"/>
-    <input type="hidden" id="portState7"/>
-    <input type="hidden" id="portState8"/>
-    <input type="hidden" id="portState9"/>
-    <input type="hidden" id="portState10"/>
-    <input type="hidden" id="portState11"/>
-    <input type="hidden" id="portState12"/>
-    <input type="hidden" id="portState13"/>
-    <input type="hidden" id="portState14"/>
-    <input type="hidden" id="portState15"/>
-    <input type="hidden" id="portState16"/>
-    <input type="hidden" id="portState17"/>
-    <input type="hidden" id="portState18"/>
-    <input type="hidden" id="portState19"/>
-    <input type="hidden" id="portState20"/>
-    <input type="hidden" id="portState21"/>
-    <input type="hidden" id="portState22"/>
-    <input type="hidden" id="portState23"/>
-    <input type="hidden" id="portState24"/>
-    <input type="hidden" id="portState25"/>
-    <input type="hidden" id="portState26"/>
-    <input type="hidden" id="portState27"/>
-    <input type="hidden" id="portState28"/>
-    <input type="hidden" id="portState29"/>
-    <input type="hidden" id="portState30"/>
-    <input type="hidden" id="portState31"/>
-    <input type="hidden" id="portState32"/>
-    <input type="hidden" id="portState33"/>
-    <input type="hidden" id="portState34"/>
-    <input type="hidden" id="portState35"/>
-    <input type="hidden" id="portState36"/>
-    <input type="hidden" id="portState37"/>
+    <input type="text" id="portState0"/>
+    <input type="text" id="portState1"/>
+    <input type="text" id="portState2"/>
+    <input type="text" id="portState3"/>
+    <input type="text" id="portState4"/>
+    <input type="text" id="portState5"/>
+    <input type="text" id="portState6"/>
+    <input type="text" id="portState7"/>
+    <input type="text" id="portState8"/>
+    <input type="text" id="portState9"/>
+    <input type="text" id="portState10"/>
+    <input type="text" id="portState11"/>
+    <input type="text" id="portState12"/>
+    <input type="text" id="portState13"/>
+    <input type="text" id="portState14"/>
+    <input type="text" id="portState15"/>
+    <input type="text" id="portState16"/>
+    <input type="text" id="portState17"/>
+    <input type="text" id="portState18"/>
+    <input type="text" id="portState19"/>
+    <input type="text" id="portState20"/>
+    <input type="text" id="portState21"/>
+    <input type="text" id="portState22"/>
+    <input type="text" id="portState23"/>
+    <input type="text" id="portState24"/>
+    <input type="text" id="portState25"/>
+    <input type="text" id="portState26"/>
+    <input type="text" id="portState27"/>
+    <input type="text" id="portState28"/>
+    <input type="text" id="portState29"/>
+    <input type="text" id="portState30"/>
+    <input type="text" id="portState31"/>
+    <input type="text" id="portState32"/>
+    <input type="text" id="portState33"/>
+    <input type="text" id="portState34"/>
+    <input type="text" id="portState35"/>
+    <input type="text" id="portState36"/>
+    <input type="text" id="portState37"/>
     <table><tr><td><img src="megad.png"></td><td><h3 class="translate">MegaD-2561 adapter settings</h3></td></tr></table>
 
     <table>
