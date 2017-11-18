@@ -1352,8 +1352,16 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
     }
     //--------------------------------------------------------------------------------
     function ecmdChanged ( controlPort ) {
-        var ecmd = $("#ecmd"+controlPort).val();
-        ports[controlPort].ecmd = ecmd;
+        var numXP = 0;
+        if ( controlPort < 15 ) {
+           numXP = 1;
+        } else if ( controlPort < 30 ) {
+           numXP = 2;
+        } else {
+           numXP = 0;
+        }
+
+        var ecmd = $("#ecmdXP"+numXP).val();
     }
     //--------------------------------------------------------------------------------
     function dispChanged ( controlPort ) {
@@ -1462,6 +1470,14 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
               ptyChanged( controlPort ); // ?
           }
        });
+
+       socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.defaultAction', function (err, state) {
+          if (state) {
+              $("#ecmdXP"+numXP).val( state.val );
+              onchange();
+          }
+       });
+
 
       loadPresetSub( numXP, portNum );
 
@@ -1780,8 +1796,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
            text += '<tr><td align="center" valign="middle">';
            text += spanAct0 + '</td><td align="left" valign="middle">';
            text += 'Сценарий по умолчанию (Act):&nbsp;';
-//           text += '</td></tr><tr><td align="left" valign="middle">';
-           text += '<input id="ecmd'+controlPort+'" type="text" value="' + (ports[controlPort].ecmd  || '' ) + 
+           text += '<input id="ecmdXP'+numXP+'" type="text" value="' + ($('#ecmdXP'+numXP).val() || '' ) + 
                    '" onChange="ecmdChanged('+controlPort+');" maxsize="11"/>';
            text += '</td></tr>';
 
@@ -2118,35 +2133,16 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
            numXP = 0;
         }
 
-       //var oldroom = $('#old_roomXP'+numXP).val();
        var newroom = $('#roomXP'+numXP+' option:selected').val();
-
-       //var id_currentState = adapter + '.' + instance + '.ports.' + controlPort + '.currentState';
-       //var id_func = adapter + '.' + instance + '.ports.' + controlPort + '.func';
-       //var objroom = { val: newroom, ack: true/*, room: newroom*/ };
-
-       //var oldfnc = $('#old_fncXP'+numXP).val();
        var newfnc = $('#fncXP'+numXP+' option:selected').val();
-       //var objfnc = { val: newfnc, ack: true/*, room: newroom*/ };
-
-       /*if ( oldroom != newroom ) {
-          socket.emit('setState',  adapter + '.' + instance + '.ports.' + controlPort + '.room', objroom );
-       }
-       if ( oldfnc != newfnc ) {
-          socket.emit('setState',  adapter + '.' + instance + '.ports.' + controlPort + '.func', objfnc );
-       } */
-
-       //var oldPortType = $('#old_portTypeXP'+numXP).val();
        var newPortType = $('#portTypeXP'+numXP+' option:selected').val();
-       //var objPortType = { val: newPortType, ack: true/*, room: newroom*/ };
-       //if ( oldPortType != newPortType ) {
-       //   socket.emit('setState',  adapter + '.' + instance + '.ports.' + controlPort + '.portType', objPortType );
-       //} 
+       var newDefaultAction = $('#ecmdXP' + numXP ).val();
 
        sendTo(null, 'savePort', {  portNum: controlPort, 
                                       room: newroom, 
                                        fnc: newfnc,
-                                  portType: newPortType
+                                  portType: newPortType,
+                                  defaultAction: newDefaultAction
                                 }, 
           function (msg) {
              if (!msg || msg.error) {

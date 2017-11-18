@@ -2747,11 +2747,13 @@ function savePort(obj) {
    adapter.log.debug( 'obj.message.room = '+ obj.message.room );
    adapter.log.debug( 'obj.message.fnc = '+ obj.message.fnc );
    adapter.log.debug( 'obj.message.portType = '+ obj.message.portType );
+   adapter.log.debug( 'obj.message.defaultAction = '+ obj.message.defaultAction );
 
    var portNum = obj.message.portNum;
    var room    = obj.message.room;
    var fnc     = obj.message.fnc;
    var portType = obj.message.portType;
+   var defaultAction = obj.message.defaultAction;
 
    adapter.getState( adapter.namespace + '.ports.' + portNum + '.room',
       function (err, state) {
@@ -2785,6 +2787,18 @@ function savePort(obj) {
          }
       }
    );
+
+   adapter.getState( adapter.namespace + '.ports.' + portNum + '.defaultAction',
+      function (err, state ) {
+         var oldvalue = "";
+         if ( state ) oldvalue = state.val;
+         if ( oldvalue != defaultAction ) {
+            adapter.setState( 'ports.' + portNum + '.defaultAction', {val: defaultAction, ack: true});
+            adapter.log.info( 'ports.' + portNum + '.defaultAction : '+ oldvalue + ' -> ' + defaultAction );
+         }
+      }
+   );
+
 
 }
 
