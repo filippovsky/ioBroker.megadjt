@@ -2748,12 +2748,19 @@ function savePort(obj) {
    adapter.log.debug( 'obj.message.fnc = '+ obj.message.fnc );
    adapter.log.debug( 'obj.message.portType = '+ obj.message.portType );
    adapter.log.debug( 'obj.message.defaultAction = '+ obj.message.defaultAction );
+   adapter.log.debug( 'obj.message.defaultRunAlways = '+ obj.message.defaultRunAlways );
 
    var portNum = obj.message.portNum;
    var room    = obj.message.room;
    var fnc     = obj.message.fnc;
    var portType = obj.message.portType;
    var defaultAction = obj.message.defaultAction;
+   var defaultRunAlways = obj.message.defaultRunAlways;
+   if (defaultRunAlways == 1) {
+      defaultRunAlways = true;
+   } else {
+      defaultRunAlways = false;
+   }
 
    adapter.getState( adapter.namespace + '.ports.' + portNum + '.room',
       function (err, state) {
@@ -2790,6 +2797,7 @@ function savePort(obj) {
 
    if ( portType == cPortType_NotConnected ) {
       defaultAction = '';
+      defaultRunAlways = false;
    }
 
    adapter.getState( adapter.namespace + '.ports.' + portNum + '.defaultAction',
@@ -2803,6 +2811,16 @@ function savePort(obj) {
       }
    );
 
+   adapter.getState( adapter.namespace + '.ports.' + portNum + '.defaultRunAlways',
+      function (err, state ) {
+         var oldvalue = "";
+         if ( state ) oldvalue = state.val;
+         if ( oldvalue != defaultRunAlways ) {
+            adapter.setState( 'ports.' + portNum + '.defaultRunAlways', {val: defaultRunAlways, ack: true});
+            adapter.log.info( 'ports.' + portNum + '.defaultRunAlways : '+ oldvalue + ' -> ' + defaultRunAlways );
+         }
+      }
+   );
 
 }
 

@@ -590,20 +590,11 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
          });
       });
 
-/*      var i;
-      for ( i = 0; i <= 37; i ++ ) {
-         socket.emit('getState',  adapter + '.' + instance + '.ports.' + i + '.room', function (err, state) {
-             $('#ports.' + i + '.room option:selected').val(state.val);
-             $('#ports.' + i + '.room').val(state.val);
-             $('#ports.' + i + '.room select').val(state.val);
-             $('#ports.' + i + '.room option').each(function() {
-                 if($(this).val() == state.val) {
-                     $(this).prop("selected", true);
-                 }
-             });
-             onchange();  
+      for ( var i = 0; i <= 37; i ++ ) {
+         socket.emit('getState',  adapter + '.' + instance + '.ports.' + i + '.portType', function (err, state) {
+             $('#portState.' + i ).val(state.val);
          });
-     }*/
+      }
 
    }
 
@@ -1207,15 +1198,18 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
              }
           }
 
+        $('#portState.' + controlPort ).val(pty);
+
+
           if (xp == "7I7O-R" || xp == "7I7O-SD") {
              if ( m < 7 ) {
-                if ( ports[k].pty == 255) {
+                if ( $('#portState' + k ).val() == cPortType_NotConnected ) {
                    document.getElementById( spanId ).className = "circlebutton_darkgreen";
                 } else {
                    document.getElementById( spanId ).className = "circlebutton_green";
                 }
              } else {
-                if ( ports[k].pty == 255) {
+                if ( $('#portState' + k ).val() == cPortType_NotConnected ) {
                    document.getElementById( spanId ).className = "circlebutton_darkred";
                 } else {
                    document.getElementById( spanId ).className = "circlebutton_red";
@@ -1223,46 +1217,46 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
              }
           } else if ((xp == "8I7O-S") || (xp == "8I7O-SD")) {
              if ( m < 7 || m == 14 ) {
-                if ( ports[k].pty == 255) {
+                if ( $('#portState' + k ).val() == cPortType_NotConnected ) {
                    document.getElementById( spanId ).className = "circlebutton_darkgreen";
                 } else {
                    document.getElementById( spanId ).className = "circlebutton_green";
                 }
              } else {
-                if ( ports[k].pty == 255) {
+                if ( $('#portState' + k ).val() == cPortType_NotConnected ) {
                    document.getElementById( spanId ).className = "circlebutton_darkred";
                 } else {
                    document.getElementById( spanId ).className = "circlebutton_red";
                 }
              }
           } else if (xp == "14-IN") {  
-             if ( ports[k].pty == 255) {
+             if ( $('#portState' + k ).val() == cPortType_NotConnected ) {
                  document.getElementById( spanId ).className = "circlebutton_darkgreen";
              } else {
                  document.getElementById( spanId ).className = "circlebutton_green";
              }
           } else if (xp == "14-Rv1.0") {
-             if ( ports[k].pty == 255) {
+             if ( $('#portState' + k ).val() == cPortType_NotConnected ) {
                  document.getElementById( spanId ).className = "circlebutton_darkred";
              } else {
                  document.getElementById( spanId ).className = "circlebutton_red";
              }
           } else if (xp == "14-Rv2.0") {
              if ( m < 14 ) {
-                if ( ports[k].pty == 255) {
+                if ( $('#portState' + k ).val() == cPortType_NotConnected ) {
                    document.getElementById( spanId ).className = "circlebutton_darkred";
                 } else {
                    document.getElementById( spanId ).className = "circlebutton_red";
                 }
              } else {
-                if ( ports[k].pty == 255) {
+                if ( $('#portState' + k ).val() == cPortType_NotConnected ) {
                    document.getElementById( spanId ).className = "circlebutton_darkgreen";
                 } else {
                    document.getElementById( spanId ).className = "circlebutton_green";
                 }
              }
           } else if (xp == "2R") {
-             if ( ports[k].pty == 255) {
+             if ( $('#portState' + k ).val() == cPortType_NotConnected ) {
                  document.getElementById( spanId ).className = "circlebutton_darkred";
              } else {
                  document.getElementById( spanId ).className = "circlebutton_red";
@@ -1326,6 +1320,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
 
         var pty = $('#portTypeXP'+numXP+' option:selected').val();
         $('#portTypeXP'+numXP).val(pty);
+        $('#portState.' + controlPort ).val(pty);
 
         loadPresetSub( numXP, port ); // при изменении типа порта перерисовываем его описание
     }
@@ -1387,14 +1382,23 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
     }
     //--------------------------------------------------------------------------------
     function afChanged ( controlPort ) {
-        //if ($(this).attr('type') == 'checkbox') {
-        //    ports[index][attr] = $(this).prop('checked');
         var text = "";
-        if ( $("#af"+controlPort ).prop('checked') ) {
-           ports[controlPort].af = 1;
+        var numXP = 0;
+        if ( controlPort < 15 ) {
+           numXP = 1;
+        } else if ( controlPort < 30 ) {
+           numXP = 2;
+        } else {
+           numXP = 0;
+        }
+
+        if ( $("#afXP"+numXP ).prop('checked') ) {
+           //ports[controlPort].af = 1;
+           $('#afXP'+numXP ).val( 1 );
            text = 'Выполнять всегда, независимо от наличия сервера';
         } else {
-           ports[controlPort].af = 0;
+           //ports[controlPort].af = 0;
+           $('#afXP'+numXP ).val( 0 );
            text = 'Выполнять только если сервер не прописан или недоступен';
         }
         document.getElementById( "lbl" + controlPort ).innerHTML = text;
@@ -1409,7 +1413,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
            ports[controlPort].d = 0;
            text = 'Выключено по умолчанию';
         }
-        document.getElementById( "lbl" + controlPort ).innerHTML = text;
+        document.getElementById( "lbl" + controlPort ).innerHTML = text; //?lbl
     }
     //--------------------------------------------------------------------------------
     function MiscChanged ( controlPort ) {
@@ -1433,7 +1437,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
            ports[controlPort].d = 0;
            text = 'Защита от дребезга включена';
         }
-        document.getElementById( "lbld" + controlPort ).innerHTML = text;
+        document.getElementById( "lbld" + controlPort ).innerHTML = text; //?lbl
     }
     // -------------------------------------------------------------------------------
     function loadPreset( numXP, portNum ) {
@@ -1462,6 +1466,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
               $("#portTypeXP"+numXP).val( state.val );
               $('#portTypeXP'+numXP+' option:selected').val(state.val);
               $('#portTypeXP'+numXP+' select').val(state.val);
+              $('#portState.' + controlPort ).val(pty);
               $('#portTypeXP'+numXP+' option').each(function() {
                    if($(this).val() == state.val) {
                          $(this).prop("selected", true);
@@ -1478,6 +1483,16 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
           }
        });
 
+       socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.defaultRunAlways', function (err, state) {
+          if (state) {
+              if ( state.val == true || state.val == 'true') {
+                 $("#afXP"+numXP).val( 1 );
+              } else {
+                 $("#afXP"+numXP).val( 0 );
+              }
+              afChanged( controlPort );
+          }
+       });
 
       loadPresetSub( numXP, portNum );
 
@@ -1802,10 +1817,10 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
 
            text += '<tr><td align="center" valign="middle">';
            text += spanAf0 + '</td><td align="left" valign="middle">';
-           text += '<input type="checkbox" class="checkbox" id="af'+controlPort+'" '+ (ports[controlPort].af ? 'checked' : '') + 
+           text += '<input type="checkbox" class="checkbox" id="afXP'+numXP+'" '+ ($('#afXP'+numXP).val() ? 'checked' : '') + 
                    ' onChange="afChanged('+controlPort+');"/>&nbsp;';
            //text += '</td><td align="left" valign="middle">';
-           text += '<label id="lbl'+controlPort+'" for="af'+controlPort+'">'+(ports[controlPort].af ? 'Выполнять всегда, независимо от наличия сервера' : 'Выполнять только если сервер не прописан или недоступен') + '</label>';
+           text += '<label id="lbl'+controlPort+'" for="afXP'+numXP+'">'+($('#afXP'+numXP).val() ? 'Выполнять всегда, независимо от наличия сервера' : 'Выполнять только если сервер не прописан или недоступен') + '</label>';
            text += '</td></tr>';
 
            text += '<tr><td align="center" valign="middle">';
@@ -2137,12 +2152,14 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
        var newfnc = $('#fncXP'+numXP+' option:selected').val();
        var newPortType = $('#portTypeXP'+numXP+' option:selected').val();
        var newDefaultAction = $('#ecmdXP' + numXP ).val();
+       var newDefaultRunAlways = $('#afXP' + numXP ).val();
 
        sendTo(null, 'savePort', {  portNum: controlPort, 
                                       room: newroom, 
                                        fnc: newfnc,
                                   portType: newPortType,
-                                  defaultAction: newDefaultAction
+                                  defaultAction: newDefaultAction,
+                                  defaultRunAlways: newDefaultRunAlways
                                 }, 
           function (msg) {
              if (!msg || msg.error) {
