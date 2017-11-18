@@ -592,8 +592,9 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
          });
          onchange();
       });
-
-      for ( var i = 0; i <= 37; i ++ ) {
+  
+      var i;
+      for ( i = 0; i <= 37; i ++ ) {
          socket.emit('getState',  adapter + '.' + instance + '.ports.' + i + '.portType', function (err, state) {
              //$('#portState' + i ).val(state.val);
              if (state) {
@@ -1540,6 +1541,13 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
 //           text += '<input type="hidden" id="old_room" value="'+portSetup.room+'">';
 //           text += '<input type="hidden" id="old_fnc" value="'+portSetup.func+'">';
 //           text += '<input type="hidden" id="old_portType" value="'+portSetup.portType+'">';
+
+           for ( var i = 0; i <= 37; i++ ) {
+               text += '<br>DEBUG:<br>';
+               text += i + ' - ' + portState[ i ] + '<br>';
+               text += '---------------------<br>';
+           }
+
            text += '<br>Комната: <select id="roomXP'+numXP+'" onChange="roomChanged('+controlPort+');">';
            text += '<option value=""></option>';
            for (var r in rooms) {
