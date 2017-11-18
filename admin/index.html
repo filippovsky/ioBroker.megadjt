@@ -592,7 +592,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
 
       for ( var i = 0; i <= 37; i ++ ) {
          socket.emit('getState',  adapter + '.' + instance + '.ports.' + i + '.portType', function (err, state) {
-             $('#portState.' + i ).val(state.val);
+             $('#portState' + i ).val(state.val);
          });
       }
 
@@ -1318,7 +1318,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
 
         var pty = $('#portTypeXP'+numXP+' option:selected').val();
         $('#portTypeXP'+numXP).val(pty);
-        $('#portState.' + controlPort ).val(pty);
+        $('#portState' + controlPort ).val(pty);
 
         loadPresetSub( numXP, port ); // при изменении типа порта перерисовываем его описание
     }
@@ -1464,7 +1464,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
               $("#portTypeXP"+numXP).val( state.val );
               $('#portTypeXP'+numXP+' option:selected').val(state.val);
               $('#portTypeXP'+numXP+' select').val(state.val);
-              $('#portState.' + controlPort ).val(state.val);
+              $('#portState' + controlPort ).val(state.val);
               $('#portTypeXP'+numXP+' option').each(function() {
                    if($(this).val() == state.val) {
                          $(this).prop("selected", true);
