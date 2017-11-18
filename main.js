@@ -2788,6 +2788,10 @@ function savePort(obj) {
       }
    );
 
+   if ( portType == cPortType_NotConnected ) {
+      defaultAction = '';
+   }
+
    adapter.getState( adapter.namespace + '.ports.' + portNum + '.defaultAction',
       function (err, state ) {
          var oldvalue = "";
