@@ -3,16 +3,16 @@
 ioBroker MegaD-2561 adapter (Version by Filippovsky, based on adapter of ausHaus and BlueFox)
 =================
 
-### Current version: 0.15.37 ( 18.11.2017 16:47 MSK )
-### Текущая версия:  0.15.37 ( 18.11.2017 16:47 MSK )
+### Current version: 0.15.38 ( 18.11.2017 16:56 MSK )
+### Текущая версия:  0.15.38 ( 18.11.2017 16:56 MSK )
 
-ВНИМАНИЕ!! Этот драйвер еще не закончен. 
-Для реальной работы его использовать нельзя.
-Можно использовать для целей общего ознакомления.
+### ВНИМАНИЕ!! Этот драйвер еще не закончен. 
+### Для реальной работы его использовать пока нельзя.
+### Можно использовать для целей общего ознакомления.
 
-ATTENTION! THIS DRIVER NOW YUNDER DEVELOPMENT.
-IT CAN NOT BE USED FOR REAL WORK!!
-USE IT ONLY FOR INFORMATION!
+### ATTENTION! THIS DRIVER IS UNDER DEVELOPMENT NOW!!
+### IT CAN NOT BE USED FOR REAL WORK!!
+### USE IT ONLY FOR INFORMATION!
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.megadjt.svg)](https://www.npmjs.com/package/iobroker.megadjt)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.megadjt.svg)](https://www.npmjs.com/package/iobroker.megadjt)

@@ -1307,13 +1307,12 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
         }
         var fnc = $('#fncXP'+numXP+' option:selected').val();
         $('#fncXP'+numXP).val(fnc);
-        //ports[controlPort].func = fnc;
     }
 
     //--------------------------------------------------------------------------------
     function ptyChanged ( controlPort ) {
-        var numXP = 0;
-        var port  = 0;
+        var numXP;
+        var port;
         if ( controlPort < 15 ) {
            numXP = 1;
            port  = controlPort;
@@ -1327,7 +1326,6 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
 
         var pty = $('#portTypeXP'+numXP+' option:selected').val();
         $('#portTypeXP'+numXP).val(pty);
-        //ports[controlPort].pty = pty;
 
         loadPresetSub( numXP, port ); // при изменении типа порта перерисовываем его описание
     }
@@ -1441,13 +1439,16 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
        socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.room', function (err, state) {
           if (state) {
              $("#roomXP"+numXP).val( state.val );
+             onchange();
           }
           socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.func', function (err, state) {
              if (state) {
                  $("#fncXP"+numXP).val( state.val );
+                 onchange();
              }
           });
        });
+
        socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.portType', function (err, state) {
           if (state) {
               $("#portTypeXP"+numXP).val( state.val );
@@ -1458,12 +1459,10 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
                          $(this).prop("selected", true);
                    }
               });
-              $('#portTypeXP' + numxP ).change(ptyChanged); // ?
+              ptyChanged( controlPort ); // ?
           }
        });
 
-      onchange();  
- 
       loadPresetSub( numXP, portNum );
 
     }
