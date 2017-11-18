@@ -550,7 +550,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
                 //portState[i] = cPortType_NotConnected;
                 $('#portState'+i).val(cPortType_NotConnected);
              }
-             onchange(); // ?
+             //onchange(); // ?
          });
       }
       //imagePorts( 1 );
@@ -1423,7 +1423,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
            $('#afXP'+numXP ).val( 0 );
            text = 'Выполнять только если сервер не прописан или недоступен';
         }
-        document.getElementById( "lbl" + controlPort ).innerHTML = text;
+        document.getElementById( "lblXP" + numXP ).innerHTML = text;
     }
     //--------------------------------------------------------------------------------
     function dChanged ( controlPort ) {
@@ -1858,7 +1858,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
            text += '<input type="checkbox" class="checkbox" id="afXP'+numXP+'" '+ ($('#afXP'+numXP).val() ? 'checked' : '') + 
                    ' onChange="afChanged('+controlPort+');"/>&nbsp;';
            //text += '</td><td align="left" valign="middle">';
-           text += '<label id="lbl'+controlPort+'" for="afXP'+numXP+'">'+($('#afXP'+numXP).val() ? 'Выполнять всегда, независимо от наличия сервера' : 'Выполнять только если сервер не прописан или недоступен') + '</label>';
+           text += '<label id="lblXP'+numXP+'" for="afXP'+numXP+'">'+($('#afXP'+numXP).val() ? 'Выполнять всегда, независимо от наличия сервера' : 'Выполнять только если сервер не прописан или недоступен') + '</label>';
            text += '</td></tr>';
 
            text += '<tr><td align="center" valign="middle">';
@@ -3407,7 +3407,7 @@ while(1)
                            Если Вы уже зарегитрированы на SMS.RU - перейдите в свой профиль и введите в нем промокод <b>megadjt</b>.<br>
                            Отправка SMS на собственный номер - бесплатная.<br>
                            Возможна отправка на несколько номеров, для этого они должны быть указаны через запятую.<br>
-                           Номера телефонов вводятся в формате 79031234567ю<br>
+                           Номера телефонов вводятся в формате 79031234567.<br>
                            Обратите внимание, что по умолчанию отправка смс с одинаковым текстом ограничена по количеству. 
                            При необходимости это ограничение можно отключить в профиле на сайте.<br>
                            Отправка производится только если включена галочка "Включить отправку SMS"</p>
