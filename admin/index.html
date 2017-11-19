@@ -559,6 +559,18 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
          //onchange();
       }
 
+         i = 10;
+         socket.emit('getState',  adapter + '.' + instance + '.ports.' + i + '.portType', function (err, state ) {
+             var z = state.val;
+             $('#tmp').val( z );
+           });
+
+         portstate = $('#tmp').val();
+         hist = $('#tmphist').val();
+         $('#tmphist').val( hist + '; '+i+'='+portstate );
+         $( '#portState' + i ).val( portstate );
+
+
       socket.emit('getState',  adapter + '.' + instance + '.sms.apiKey', function (err, state) {
          sms_apiKey = state.val;
          $('#sms_apiKey').val(sms_apiKey);
