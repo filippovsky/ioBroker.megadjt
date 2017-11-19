@@ -567,7 +567,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
 
          portstate = $('#tmp').val();
          hist = $('#tmphist').val();
-         $('#tmphist').val( hist + '; '+i+'='+portstate );
+         $('#tmphist').val( hist + ';*10** '+i+'='+portstate );
          $( '#portState' + i ).val( portstate );
 
 
@@ -1535,7 +1535,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
                  $('#afXP' + numXP ).removeAttr('checked');
                  $("#afXP"+numXP).val( 0 );
               }
-              afChanged( controlPort );
+              //?afChanged( controlPort );
           }
        });
 
