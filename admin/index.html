@@ -536,11 +536,11 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
       var sms_apiKey  = "";
       var sms_enabled = false;
       var sms_phones  = "";
-      var portstate;
+      //var portstate;
 
       for ( var i = 0; i <= 37; i ++ ) {
          //socket.emit('getState',  adapter + '.' + instance + '.ports.' + i + '.portType', function (err, state, i ) {
-         portstate = cPortType_NotConnected;
+         //portstate = cPortType_NotConnected;
          getState( adapter + '.' + instance + '.ports.' + i + '.portType', function (err, state ) {
              $('#tmp').val( state.val );
          });
@@ -2795,6 +2795,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
 
+    <input type="text" id="tmp"/>
     <input type="text" id="portState0"/>
     <input type="text" id="portState1"/>
     <input type="text" id="portState2"/>
