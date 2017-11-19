@@ -536,15 +536,24 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
       var sms_apiKey  = "";
       var sms_enabled = false;
       var sms_phones  = "";
-      //var portstate;
+      var portstate;
+      var portid;
 
       for ( var i = 0; i <= 37; i ++ ) {
          //socket.emit('getState',  adapter + '.' + instance + '.ports.' + i + '.portType', function (err, state, i ) {
          //portstate = cPortType_NotConnected;
          getState( adapter + '.' + instance + '.ports.' + i + '.portType', function (err, state ) {
-             $('#tmp').val( state.val );
+             var z = state.val;
+             $('#tmp').val( z );
            });
-         $( '#portState' + i ).val( $('#tmp').val() );
+
+         portstate = $('#tmp').val();
+         portid = '#portState' + i;
+
+         $( portid ).val( portstate );
+         $( portid + '.value' ).val( portstate );
+
+         onchange();
       }
 
       socket.emit('getState',  adapter + '.' + instance + '.sms.apiKey', function (err, state) {
