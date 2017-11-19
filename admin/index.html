@@ -537,7 +537,6 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
       var sms_enabled = false;
       var sms_phones  = "";
       var portstate;
-      var portid;
 
       for ( var i = 0; i <= 37; i ++ ) {
          //socket.emit('getState',  adapter + '.' + instance + '.ports.' + i + '.portType', function (err, state, i ) {
@@ -548,10 +547,9 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
            });
 
          portstate = $('#tmp').val();
-         portid = '#portState' + i;
 
-         $( portid ).val( portstate );
-         $( portid + '.value' ).val( portstate );
+         $( '#portState' + i ).val( portstate );
+         $( '#portState' + i + '.value' ).val( portstate );
 
          //onchange();
       }
@@ -1021,11 +1019,11 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
     function readRooms() {
         getEnums('rooms', function (err, _rooms) {
             rooms = _rooms;
-            showPorts();
+            //showPorts();
         });
         getEnums('functions', function (err, _functions) {
             functions = _functions;
-            showPorts();
+            //showPorts();
         });
     }
 
@@ -2377,7 +2375,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
             }
             onchange();
 
-            showPorts();
+            //showPorts();
         });
 
         $('#ipchange').button({
@@ -2687,7 +2685,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
 
                 onchange();
 
-                showPorts();
+                //showPorts();
             });
         }
     }
