@@ -494,7 +494,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
                document.getElementById( 'fw_version' ).style.backgroundColor = "yellow";
                document.getElementById( 'fw_version_last_known' ).style.backgroundColor = "pink";
             }
-            onchange();  
+            //onchange();  
          });
       });
    }
@@ -553,7 +553,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
          $( portid ).val( portstate );
          $( portid + '.value' ).val( portstate );
 
-         onchange();
+         //onchange();
       }
 
       socket.emit('getState',  adapter + '.' + instance + '.sms.apiKey', function (err, state) {
