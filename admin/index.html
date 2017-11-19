@@ -546,6 +546,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
          socket.emit('getState',  adapter + '.' + instance + '.ports.' + i + '.portType', function (err, state ) {
              var z = state.val;
              $('#tmp').val( z );
+             $('#tmphist').val( $('#tmphist').val + '; '+i+'='+z );
            });
 
          portstate = $('#tmp').val();
@@ -2805,6 +2806,8 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
 <div id="adapter-container">
 
     <input type="text" id="tmp"/>
+    <input type="text" id="tmphist"/><br>
+
     <input type="text" id="portState0"/>
     <input type="text" id="portState1"/>
     <input type="text" id="portState2"/>
