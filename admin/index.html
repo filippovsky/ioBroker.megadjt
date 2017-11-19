@@ -537,8 +537,9 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
       var sms_enabled = false;
       var sms_phones  = "";
       var portstate;
+      var i;
 
-      for ( var i = 0; i <= 37; i ++ ) {
+      for ( i = 0; i <= 37; i ++ ) {
          //socket.emit('getState',  adapter + '.' + instance + '.ports.' + i + '.portType', function (err, state, i ) {
          //portstate = cPortType_NotConnected;
          //getState( adapter + '.' + instance + '.ports.' + i + '.portType', function (err, state ) {
@@ -1420,7 +1421,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
         } else {
            //ports[controlPort].af = 0;
            $('#afXP'+numXP ).val( 0 );
-           text = 'Выполнять только когда сервер не указан, не отвечает или HTTP-статус ответа отличный от "200 OK"';
+           text = 'Выполнять только когда сервер не указан или не отвечает';
         }
         document.getElementById( "lblafXP" + numXP ).innerHTML = text;
     }
@@ -1759,7 +1760,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
            spanAct0 += '</span></div>';
 
            spanAf0   = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img><span>';
-           spanAf0  += '<p align=justify>Этот флажок определяет логику работы сценария. Если он <b>не установлен</b> (по умолчанию), то сценарий выполняется ТОЛЬКО если сервер не прописан или недоступен. ';
+           spanAf0  += '<p align=justify>Этот флажок определяет логику работы сценария. Если он <b>не установлен</b> (по умолчанию), то сценарий выполняется ТОЛЬКО когда сервер не указан, не отвечает или HTTP-статус ответа отличный от "200 OK". ';
            spanAf0  += 'Если флажок <b>установлен</b>, то сценарий выполняется всегда, независимо от наличия сервера. Контроллер в этом случае будет сообщать на сервер о событиях, но его ответные команды в рамках одной TCP-сессии будут проигнорированы.</p>';
            spanAf0  += '<p align=justify><b>Дополнительная команда "d"</b> (default). Если сервер на факт срабатывания входа, возвращает "d", то это дает сигнал устройству выполнить сценарий по умолчанию (Act). ';
            spanAf0  += 'Эта команда дублирует поведение контроллера в случае установленного флажка, но в этом случае сам сервер определяетб когда выполнять сценарий по умолчанию. ';
@@ -1857,7 +1858,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
            text += '<input type="checkbox" class="checkbox" id="afXP'+numXP+'" '+ ($('#afXP'+numXP).val() ? 'checked' : '') + 
                    ' onChange="afChanged('+controlPort+');"/>&nbsp;';
            //text += '</td><td align="left" valign="middle">';
-           text += '<label id="lblafXP'+numXP+'" for="afXP'+numXP+'">'+($('#afXP'+numXP).val() ? 'Выполнять всегда, независимо от наличия сервера' : 'Выполнять только когда сервер не указан, не отвечает или HTTP-статус ответа отличный от "200 OK".') + '</label>';
+           text += '<label id="lblafXP'+numXP+'" for="afXP'+numXP+'">'+($('#afXP'+numXP).val() ? 'Выполнять всегда, независимо от наличия сервера' : 'Выполнять только когда сервер не указан или не отвечает.') + '</label>';
            text += '</td></tr>';
 
            text += '<tr><td align="center" valign="middle">';
