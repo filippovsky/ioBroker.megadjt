@@ -560,14 +560,15 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
       } */
 
        for ( i = 0; i <= 37; i ++ ) {
+         var k = i;
          socket.emit('getState',  adapter + '.' + instance + '.ports.' + i + '.portType', function (err, state ) {
              var z = state.val;
              $('#tmp').val( z );
              $('#tmp').change;
              portstate = $('#tmp').val();
              hist = $('#tmphist').val();
-             $('#tmphist').val( hist + ';'+i+'='+portstate );
-             $( '#portState' + i ).val( portstate );
+             $('#tmphist').val( hist + ';'+k+'='+portstate );
+             $( '#portState' + k ).val( portstate );
            });
        }
 
@@ -2861,6 +2862,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
     <input class="value" id="portState35"/>
     <input class="value" id="portState36"/>
     <input class="value" id="portState37"/>
+    <input class="value" id="portState38"/>
     <table><tr><td><img src="megad.png"></td><td><h3 class="translate">MegaD-2561 adapter settings</h3></td></tr></table>
 
     <table>
