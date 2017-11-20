@@ -559,10 +559,11 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
          //onchange();
       } */
 
-       for ( i = 0; i <= 37; i ++ ) {
+       for ( i = 0; i <= 37; i++ ) {
          var k = i;
          socket.emit('getState',  adapter + '.' + instance + '.ports.' + i + '.portType', function (err, state ) {
              var z = state.val;
+             //var $value = $('#' + id + '.value');
              $('#tmp').val( z );
              $('#tmp').change;
              portstate = $('#tmp').val();
