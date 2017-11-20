@@ -2964,9 +2964,17 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
              <td>Прошивка</td>
            </tr>
            <tr>
+             <td><b>4.19b6</td>
+             <td>20.11.2017</td>
+             <td><p align=justify>Исправлена ошибка в процедуре взаимодействия с сервером по протоколу HTTP, которая появилась в версии 4.18b9
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.19b6');">Прошить</button></td>
+           </tr>
+           <tr>
              <td><b>4.19b5</td>
              <td>15.11.2017</td>
-             <td><p align=justify><p align=justify>Добавлено управление группой.</p>
+             <td><p align=justify>Добавлено управление группой.</p>
                            <p align=justify>Поле Group теперь доступно также для режима "SW", что делает возможным объединение нескольких портов в группу.<br>
                            Поле Group может принимать значения от 0 до 99.<br>
                            Управление группой, пример (включить все порты группы "1"): <b>g1:1</b><br>
