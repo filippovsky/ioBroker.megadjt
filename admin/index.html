@@ -460,6 +460,7 @@ span:hover::before {
    var functions = [];
    var active    = false;
    var megadjt_setup = [];   
+   var portsColor = [];
 
 //   var portState = [];
 
@@ -539,7 +540,26 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
       var portstate;
       var hist;
 
-      $('#tmphist').val('');
+      socket.emit('getState',  adapter + '.' + instance + '.ports.0.portType', function (err, state) {
+         portsColor[0] = state.val;
+      });
+      socket.emit('getState',  adapter + '.' + instance + '.ports.1.portType', function (err, state) {
+         portsColor[1] = state.val;
+      });
+      socket.emit('getState',  adapter + '.' + instance + '.ports.2.portType', function (err, state) {
+         portsColor[2] = state.val;
+      });
+      socket.emit('getState',  adapter + '.' + instance + '.ports.3.portType', function (err, state) {
+         portsColor[3] = state.val;
+      });
+      socket.emit('getState',  adapter + '.' + instance + '.ports.4.portType', function (err, state) {
+         portsColor[4] = state.val;
+      });
+      socket.emit('getState',  adapter + '.' + instance + '.ports.5.portType', function (err, state) {
+         portsColor[5] = state.val;
+      });
+
+
       /*for ( i = 0; i <= 37; i ++ ) {
          //socket.emit('getState',  adapter + '.' + instance + '.ports.' + i + '.portType', function (err, state, i ) {
          //portstate = cPortType_NotConnected;
@@ -1238,10 +1258,11 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
           }
 
           //portstate = $('#portState' + k ).val();
-          socket.emit('getState',  adapter + '.' + instance + '.ports.' + k + '.portType', function (err, state ) {
+          portstate = portsColor[k];
+          /*socket.emit('getState',  adapter + '.' + instance + '.ports.' + k + '.portType', function (err, state ) {
              portstate = state.val;
              showMessage('k='+k+'; porstate='+portstate, _('Error'), 'alert');
-          
+            */
 
           if (xp == "7I7O-R" || xp == "7I7O-SD") {
              if ( m < 7 ) {
@@ -1306,7 +1327,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
           } else if (xp == "control") {
              document.getElementById( spanId ).className = "xt2_port";
           };
-          });
+          //});
        }
     }
     //--------------------------------------------------------------------------------
