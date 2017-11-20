@@ -540,10 +540,11 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
       var portstate;
       var hist;
 
-      socket.emit('getState',  adapter + '.' + instance + '.ports.0.portType', function (err, state) {
-         portsColor[0] = state.val;
+      for ( var z=0; z < 38; z++ ) {
+      socket.emit('getState',  adapter + '.' + instance + '.ports.'+z+'.portType', function (err, state) {
+         portsColor[z] = state.val;
       });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.1.portType', function (err, state) {
+/*      socket.emit('getState',  adapter + '.' + instance + '.ports.1.portType', function (err, state) {
          portsColor[1] = state.val;
       });
       socket.emit('getState',  adapter + '.' + instance + '.ports.2.portType', function (err, state) {
@@ -558,7 +559,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
       socket.emit('getState',  adapter + '.' + instance + '.ports.5.portType', function (err, state) {
          portsColor[5] = state.val;
       });
-
+  */
 
       /*for ( i = 0; i <= 37; i ++ ) {
          //socket.emit('getState',  adapter + '.' + instance + '.ports.' + i + '.portType', function (err, state, i ) {
