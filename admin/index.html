@@ -729,11 +729,6 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
                  $(this).prop("selected", true);
              }
          });
-        $('#xp1model').change(function () {
-            showXP( 1 );
-            $('#xp1model').val($(this).val()).trigger('change');
-        });
-
          onchange();  
       });
 
@@ -746,27 +741,28 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
                  $(this).prop("selected", true);
              }
          });
+         onchange();
+      });
+
+        $('#xp1model').change(function () {
+            showXP( 1 );
+            $('#xp1model').val($(this).val()).trigger('change');
+        });
         $('#xp2model').change(function () {
             showXP( 2 );
             $('#xp2model').val($(this).val()).trigger('change');
         });
 
-         onchange();
-      });
-
-
-
-
 
   
       //onchange();
         // инициализируем картинки при загрузке окна
-/*        var j = showXP( 1 );
+        var j = showXP( 1 );
         var z = showXP( 2 );
         z = showXP( 0 );
-
+//
         onChange(false);
-  */
+  
 
    }
 
