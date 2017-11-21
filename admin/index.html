@@ -655,45 +655,11 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
          portsColor[37] = state.val;
       });
 
-      /*for ( i = 0; i <= 37; i ++ ) {
-         //socket.emit('getState',  adapter + '.' + instance + '.ports.' + i + '.portType', function (err, state, i ) {
-         //portstate = cPortType_NotConnected;
-         //getState( adapter + '.' + instance + '.ports.' + i + '.portType', function (err, state ) {
-         socket.emit('getState',  adapter + '.' + instance + '.ports.' + i + '.portType', function (err, state ) {
-             var z = state.val;
-             $('#tmp').val( z );
-           });
-
-         portstate = $('#tmp').val();
-         hist = $('#tmphist').val();
-         $('#tmphist').val( hist + '; '+i+'='+portstate );
-         $( '#portState' + i ).val( portstate );
-         //$( '#portState' + i + '.value' ).val( portstate );
-
-         //onchange();
-      } */
-/*
-       for ( var i = 0; i < 38; i++ ) {
-         socket.emit('getState',  adapter + '.' + instance + '.ports.' + i + '.portType', function (err, state ) {
-             var z = state.val;
-             var $field = $('#portState' + i + '.value');
-             var $field1 = $('#portState' + i );
-             $('#tmp').val( z );
-             $('#tmp').change;
-             portstate = $('#tmp').val();
-             hist = $('#tmphist').val();
-             $('#tmphist').val( hist + ';'+i+'='+portstate );
-             $field.val( portstate );
-             $field1.val( portstate );
-           });
-       }
-  */
-
       socket.emit('getState',  adapter + '.' + instance + '.sms.apiKey', function (err, state) {
          sms_apiKey = state.val;
          $('#sms_apiKey').val(sms_apiKey);
          $('#sms_apiKey').change(smsApiKeyChanged);
-         onchange();  
+         //onchange();  
       });
 
       socket.emit('getState',  adapter + '.' + instance + '.sms.enabled', function (err, state) {
@@ -709,14 +675,14 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
             $('#sms_enabled').removeAttr('checked');
          }
          $('#sms_enabled').change(smsEnabledChanged);
-         onchange();  
+         //onchange();  
       });
 
       socket.emit('getState',  adapter + '.' + instance + '.sms.phones', function (err, state) {
          sms_phones = state.val;
          $('#sms_phones').val(sms_phones);
          $('#sms_phones').change(smsPhonesChanged);
-         onchange();  
+         //onchange();  
       });
 
       socket.emit('getState',  adapter + '.' + instance + '.controller.xp1model', function (err, state) {
@@ -729,7 +695,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
                  $(this).prop("selected", true);
              }
          });
-         onchange();  
+         //onchange();  
       });
 
       socket.emit('getState',  adapter + '.' + instance + '.controller.xp2model', function (err, state) {
@@ -741,28 +707,8 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
                  $(this).prop("selected", true);
              }
          });
-         onchange();
+         //onchange();
       });
-
-        $('#xp1model').change(function () {
-            showXP( 1 );
-            $('#xp1model').val($(this).val()).trigger('change');
-        });
-        $('#xp2model').change(function () {
-            showXP( 2 );
-            $('#xp2model').val($(this).val()).trigger('change');
-        });
-
-
-  
-      //onchange();
-        // инициализируем картинки при загрузке окна
-        var j = showXP( 1 );
-        var z = showXP( 2 );
-        z = showXP( 0 );
-//
-        onChange(false);
-  
 
    }
 
@@ -1495,10 +1441,9 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
         $('#portTypeXP'+numXP).val(pty);
         //$('#portState' + controlPort ).val(pty);
         //portState[ controlPort ] = pty;
-         portsColor[ controlPort ] = pty;
+        portsColor[ controlPort ] = pty;
 
-
-
+        
         loadPresetSub( numXP, port ); // при изменении типа порта перерисовываем его описание
     }
     //--------------------------------------------------------------------------------
@@ -2220,6 +2165,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
 
 
        document.getElementById( divMoreId ).innerHTML = text;
+
        loadPreset( numXP, portNum );
        //document.getElementById( divMoreId ).show();
     }
@@ -2686,10 +2632,6 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
         // Get edited table
         obj.ports = ports;
 
-        /*
-        obj['controller.xp1model'] = $('#xp1model option:selected').val();
-        obj['controller.xp2model'] = $('#xp2model option:selected').val();
-        */
         var xpmodel = $('#xp1model option:selected').val();
         var obj1 = {  val: xpmodel, ack: true };
         socket.emit('setState',  adapter + '.' + instance + '.controller.xp1model', obj1 );
