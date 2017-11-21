@@ -539,14 +539,14 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
       var sms_phones  = "";
       var id = "";
  
-      for (var i = 0; i <= 37; i++ ) {
+      /*for (var i = 0; i <= 37; i++ ) {
           id = adapter + '.' + instance + '.ports.' + i + '.portType';
           socket.emit('getState',  id, function (err, state) {
               portsColor[i] = state.val;
           });
-      }
+      } */
 
-/*      socket.emit('getState',  adapter + '.' + instance + '.ports.0.portType', function (err, state) {
+      socket.emit('getState',  adapter + '.' + instance + '.ports.0.portType', function (err, state) {
          portsColor[0] = state.val;
       });
       socket.emit('getState',  adapter + '.' + instance + '.ports.1.portType', function (err, state) {
@@ -660,7 +660,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
       socket.emit('getState',  adapter + '.' + instance + '.ports.37.portType', function (err, state) {
          portsColor[37] = state.val;
       });
-  */
+  
       socket.emit('getState',  adapter + '.' + instance + '.sms.apiKey', function (err, state) {
          sms_apiKey = state.val;
          $('#sms_apiKey').val(sms_apiKey);
@@ -671,12 +671,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
       socket.emit('getState',  adapter + '.' + instance + '.sms.enabled', function (err, state) {
          sms_enabled = state.val;
          if (sms_enabled == true || sms_enabled == 'true' ) {
-            //$('#sms_enabled').prop('checked');            
-            /// $('#sms_enabled').setAttribute('checked','checked');
             $('#sms_enabled').prop('checked', true);
-            //$('#sms_enabled').checked = true;
-            //$('#sms_enabled').prop('checked') = true;
-            //$('#sms_enabled').setAttr('checked','checked');
          } else {
             $('#sms_enabled').removeAttr('checked');
          }
@@ -2436,6 +2431,8 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
 */
 
         onchange = onChange;
+
+        onchange();
 
         readRooms();
 
