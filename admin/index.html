@@ -537,8 +537,6 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
       var sms_apiKey  = "";
       var sms_enabled = false;
       var sms_phones  = "";
-      var portstate;
-      var hist;
 
       socket.emit('getState',  adapter + '.' + instance + '.ports.0.portType', function (err, state) {
          portsColor[0] = state.val;
@@ -1315,10 +1313,6 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
 
           //portstate = $('#portState' + k ).val();
           portstate = portsColor[k];
-          /*socket.emit('getState',  adapter + '.' + instance + '.ports.' + k + '.portType', function (err, state ) {
-             portstate = state.val;
-             showMessage('k='+k+'; porstate='+portstate, _('Error'), 'alert');
-            */
 
           if (xp == "7I7O-R" || xp == "7I7O-SD") {
              if ( m < 7 ) {
@@ -2599,8 +2593,11 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
         var z = showXP( 2 );
         z = showXP( 0 );
 
-        imagePorts(1);//?
-        imagePorts(2); //?
+        //imagePorts(1);//?
+        //imagePorts(2); //?
+
+        $('#xp1model').onChange();
+        $('#xp2model').onChange();
 
         onChange(false);
     }
