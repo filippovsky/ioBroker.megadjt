@@ -1649,17 +1649,6 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
         if ( numXP > 0 ) {
            xp = $("#xp"+numXP+"model option:selected").val();
 
-//           text += '<br>Комната: <select id="ports.'+controlPort+'.room" onChange="roomChanged('+controlPort+');">';
-//           text += '<input type="hidden" id="old_room" value="'+portSetup.room+'">';
-//           text += '<input type="hidden" id="old_fnc" value="'+portSetup.func+'">';
-//           text += '<input type="hidden" id="old_portType" value="'+portSetup.portType+'">';
-
-/*           for ( var i = 0; i <= 37; i++ ) {
-               text += '<br>DEBUG:<br>';
-//               text += i + ' - ' + portState[ i ] + '<br>';
-               text += i + ' - ' + $('#portState'+i).val() + '<br>';
-               text += '---------------------<br>';
-           }*/
 
            text += '<br>Комната: <select id="roomXP'+numXP+'" onChange="roomChanged('+controlPort+');">';
            text += '<option value=""></option>';
@@ -2610,6 +2599,8 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
         var z = showXP( 2 );
         z = showXP( 0 );
 
+        imagePorts(1);//?
+        imagePorts(2); //?
 
         onChange(false);
     }
