@@ -540,12 +540,10 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
       var portstate;
       var hist;
 
-      for ( var z=0; z < 38; z++ ) {
-      socket.emit('getState',  adapter + '.' + instance + '.ports.'+z+'.portType', function (err, state) {
-         portsColor[z] = state.val;
+      socket.emit('getState',  adapter + '.' + instance + '.ports.0.portType', function (err, state) {
+         portsColor[0] = state.val;
       });
-      }
-/*      socket.emit('getState',  adapter + '.' + instance + '.ports.1.portType', function (err, state) {
+      socket.emit('getState',  adapter + '.' + instance + '.ports.1.portType', function (err, state) {
          portsColor[1] = state.val;
       });
       socket.emit('getState',  adapter + '.' + instance + '.ports.2.portType', function (err, state) {
@@ -560,7 +558,6 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
       socket.emit('getState',  adapter + '.' + instance + '.ports.5.portType', function (err, state) {
          portsColor[5] = state.val;
       });
-  */
 
       /*for ( i = 0; i <= 37; i ++ ) {
          //socket.emit('getState',  adapter + '.' + instance + '.ports.' + i + '.portType', function (err, state, i ) {
@@ -654,12 +651,12 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
   
       //onchange();
         // инициализируем картинки при загрузке окна
-        var j = showXP( 1 );
+/*        var j = showXP( 1 );
         var z = showXP( 2 );
         z = showXP( 0 );
 
         onChange(false);
-
+  */
 
    }
 
@@ -2958,6 +2955,29 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
              <td>Дата и время</td>
              <td>Описание</td>
              <td>Прошивка</td>
+           </tr>
+           <tr>
+             <td><b>4.19b7</td>
+             <td>21.11.2017</td>
+             <td><p align=justify>
+                    <b><font color=red>Это экспериментальная версия.</font></b><br>
+                    На странице "Config" добавлена ссылка "Program". Это аналог Events в NetAlarm.<br>
+                    <b><font color=red>Обновление ТОЛЬКО со сбросом EEPROM!</font></b></p>
+                 <p align=justify>
+                   <img src="firmware/megad-2561-program-list.png">
+                 </p>
+                 <p align=justify> 
+                    Всего можно задать 10 правил типа "если значение порта больше/меньше/равно, выполнить сценарий".<br>
+                    Пока нет поддержки логического "И" для связывания двух условий, но оно будет. Пока поддерживаются только IN/OUT/DSen.<br>
+                    В текущем виде преимущество этого механизма в том, что можно прописать сценарий для выходов (OUT). Ведь у них нет штатного поля Act, как у входов.<br>
+                    В отличие от Act, этот механизм должен работать независимо от наличия или отсутствия сервера, то есть всегда.
+                 </p>
+                 <p align=justify>
+                   <img src="firmware/megad-2561-program-edit.png">
+                 </p>
+                 <p align=justify>Редактирование условия.</p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.19b7');">Прошить</button></td>
            </tr>
            <tr>
              <td><b>4.19b6</td>
