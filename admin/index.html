@@ -1515,14 +1515,25 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
     //--------------------------------------------------------------------------------
     function NafChanged ( controlPort ) {
         var text = "";
-        if ( $("#naf"+controlPort ).prop('checked') ) {
-           ports[controlPort].naf = 1;
+        var numXP = 0;
+        if ( controlPort < 15 ) {
+           numXP = 1;
+        } else if ( controlPort < 30 ) {
+           numXP = 2;
+        } else {
+           numXP = 0;
+        }
+
+        if ( $("#nafXP"+numXP ).prop('checked') ) {
+           //ports[controlPort].naf = 1;
+           $('#nafXP'+numXP ).val( 1 );
            text = 'Вызывать ТОЛЬКО при недоступности сервера';
         } else {
-           ports[controlPort].naf = 0;
+           //ports[controlPort].naf = 0;
            text = 'Выполнять всегда';
+           $('#nafXP'+numXP ).val( 0 );
         }
-        document.getElementById( "lblnaf" + controlPort ).innerHTML = text;
+        document.getElementById( "lblnafXP" + numXP ).innerHTML = text;
     }
     //--------------------------------------------------------------------------------
     function afChanged ( controlPort ) {
@@ -1643,6 +1654,19 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
           if (state) {
               $("#ethXP"+numXP).val( state.val );
               //onchange();
+          }
+       });
+
+       socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.netRunOnlyWhenServerOut', function (err, state) {
+          if (state) {
+              if ( state.val == true || state.val == 'true') {
+                 $('#nafXP' + numXP ).prop('checked', true);
+                 $("#nafXP" + numXP ).val( 1 );
+              } else {
+                 $('#nafXP' + numXP ).removeAttr('checked');
+                 $("#nafXP"+numXP).val( 0 );
+              }
+              //?afChanged( controlPort );
           }
        });
 
@@ -1983,10 +2007,10 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
 
            text += '<tr><td align="center" valign="middle">';
            text += spanNaf0 + '</td><td align="left" valign="middle">';
-           text += '<input type="checkbox" class="checkbox" id="naf'+controlPort+'" '+ (ports[controlPort].naf ? 'checked' : '') + 
+           text += '<input type="checkbox" class="checkbox" id="nafXP'+numXP+'" '+ ($('#nafXP'+numXP).val() ? 'checked' : '') + 
                    ' onChange="NafChanged('+controlPort+');"/>&nbsp;';
            //text += '</td><td align="left" valign="middle">';
-           text += '<label id="lblnaf'+controlPort+'" for="naf'+controlPort+'">'+(ports[controlPort].naf ? 'Вызывать ТОЛЬКО при недоступности сервера' : 'Вызывать всегда') + '</label>';
+           text += '<label id="lblnaf'+numXP+'" for="nafXP'+numXP+'">'+($('#nafXP'+numXP).val() ? 'Вызывать ТОЛЬКО при недоступности сервера' : 'Вызывать всегда') + '</label>';
            text += '</td></tr>';
 
            text += '<tr><td align="center" valign="middle">';
@@ -2305,6 +2329,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
        var newDefaultAction = $('#ecmdXP' + numXP ).val();
        var newDefaultRunAlways = $('#afXP' + numXP ).val();
        var newNetAction = $('#ethXP' + numXP ).val();
+       var newNetRunOnlyWhenServerOut = $('#nafXP' + numXP ).val();
 
        sendTo(null, 'savePort', {  portNum: controlPort, 
                                       room: newroom, 
@@ -2312,7 +2337,8 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
                                   portType: newPortType,
                                   defaultAction: newDefaultAction,
                                   defaultRunAlways: newDefaultRunAlways,
-                                  netAction: newNetAction
+                                  netAction: newNetAction,
+                                  netRunOnlyWhenServerOut: newNetRunOnlyWhenServerOut
                                 }, 
           function (msg) {
              if (!msg || msg.error) {

@@ -2750,6 +2750,7 @@ function savePort(obj) {
    adapter.log.debug( 'obj.message.defaultAction = '+ obj.message.defaultAction );
    adapter.log.debug( 'obj.message.defaultRunAlways = '+ obj.message.defaultRunAlways );
    adapter.log.debug( 'obj.message.netAction = '+ obj.message.netAction );
+   adapter.log.debug( 'obj.message.netRunOnlyWhenServerOut = '+ obj.message.netRunOnlyWhenServerOut );
 
    var portNum = obj.message.portNum;
    var room    = obj.message.room;
@@ -2758,11 +2759,19 @@ function savePort(obj) {
    var defaultAction = obj.message.defaultAction;
    var defaultRunAlways = obj.message.defaultRunAlways;
    var netAction = obj.message.netAction;
+   var netRunOnlyWhenServerOut = obj.message.netRunOnlyWhenServerOut;
+
    if (defaultRunAlways == 1) {
       defaultRunAlways = true;
    } else {
       defaultRunAlways = false;
    }
+   if (netRunOnlyWhenServerOut == 1) {
+      netRunOnlyWhenServerOut = true;
+   } else {
+      netRunOnlyWhenServerOut = false;
+   }
+
 
    adapter.getState( adapter.namespace + '.ports.' + portNum + '.room',
       function (err, state) {
@@ -2801,6 +2810,7 @@ function savePort(obj) {
       defaultAction = '';
       defaultRunAlways = false;
       netAction = '';
+      netRunOnlyWhenServerOut = false;
    }
 
    adapter.getState( adapter.namespace + '.ports.' + portNum + '.defaultAction',
@@ -2832,6 +2842,17 @@ function savePort(obj) {
          if ( oldvalue != netAction ) {
             adapter.setState( 'ports.' + portNum + '.netAction', {val: netAction, ack: true});
             adapter.log.info( 'ports.' + portNum + '.netAction : '+ oldvalue + ' -> ' + netAction );
+         }
+      }
+   );
+
+   adapter.getState( adapter.namespace + '.ports.' + portNum + '.netRunOnlyWhenServerOut',
+      function (err, state ) {
+         var oldvalue = "";
+         if ( state ) oldvalue = state.val;
+         if ( oldvalue != netRunOnlyWhenServerOut ) {
+            adapter.setState( 'ports.' + portNum + '.netRunOnlyWhenServerOut', {val: netRunOnlyWhenServerOut, ack: true});
+            adapter.log.info( 'ports.' + portNum + '.netRunOnlyWhenServerOut : '+ oldvalue + ' -> ' + netRunOnlyWhenServerOut );
          }
       }
    );
