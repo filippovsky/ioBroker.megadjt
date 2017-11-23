@@ -1500,8 +1500,17 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
     }
     //--------------------------------------------------------------------------------
     function ethChanged ( controlPort ) {
-        var eth = $("#eth"+controlPort).val();
-        ports[controlPort].eth = eth;
+        var numXP = 0;
+        if ( controlPort < 15 ) {
+           numXP = 1;
+        } else if ( controlPort < 30 ) {
+           numXP = 2;
+        } else {
+           numXP = 0;
+        }
+
+        var eth = $("#ethXP"+numXP).val();
+        //ports[controlPort].eth = eth;
     }
     //--------------------------------------------------------------------------------
     function NafChanged ( controlPort ) {
@@ -1629,6 +1638,14 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
               //?afChanged( controlPort );
           }
        });
+
+       socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.netAction', function (err, state) {
+          if (state) {
+              $("#ethXP"+numXP).val( state.val );
+              //onchange();
+          }
+       });
+
 
       loadPresetSub( numXP, portNum );
 
@@ -1960,7 +1977,7 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
            text += spanEth0 + '</td><td align="left" valign="middle">';
            text += 'Сетевой сценарий (Net):&nbsp;';
 //           text += '</td></tr><tr><td align="left" valign="middle">';
-           text += '<input id="eth'+controlPort+'" type="text" value="' + (ports[controlPort].eth  || '' ) + 
+           text += '<input id="ethXP'+numXP+'" type="text" value="' + ($('#ethXP'+numXP).val()  || '' ) + 
                    '" onChange="ethChanged('+controlPort+');" maxsize="35"/>';
            text += '</td></tr>';
 
@@ -2287,13 +2304,15 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
        var newPortType = $('#portTypeXP'+numXP+' option:selected').val();
        var newDefaultAction = $('#ecmdXP' + numXP ).val();
        var newDefaultRunAlways = $('#afXP' + numXP ).val();
+       var newNetAction = $('#ethXP' + numXP ).val();
 
        sendTo(null, 'savePort', {  portNum: controlPort, 
                                       room: newroom, 
                                        fnc: newfnc,
                                   portType: newPortType,
                                   defaultAction: newDefaultAction,
-                                  defaultRunAlways: newDefaultRunAlways
+                                  defaultRunAlways: newDefaultRunAlways,
+                                  netAction: newNetAction
                                 }, 
           function (msg) {
              if (!msg || msg.error) {
