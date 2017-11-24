@@ -2820,6 +2820,8 @@ function savePort(obj) {
       defaultRunAlways = false;
       netAction = '';
       netRunOnlyWhenServerOut = false;
+      portMode = cPortMode_PressOnly;
+      send2ServerAlwaysPressRelease = false;
    }
 
    adapter.getState( adapter.namespace + '.ports.' + portNum + '.defaultAction',
