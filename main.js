@@ -2751,6 +2751,8 @@ function savePort(obj) {
    adapter.log.debug( 'obj.message.defaultRunAlways = '+ obj.message.defaultRunAlways );
    adapter.log.debug( 'obj.message.netAction = '+ obj.message.netAction );
    adapter.log.debug( 'obj.message.netRunOnlyWhenServerOut = '+ obj.message.netRunOnlyWhenServerOut );
+   adapter.log.debug( 'obj.message.portMode = '+ obj.message.portMode );
+   adapter.log.debug( 'obj.message.send2ServerAlwaysPressRelease = '+ obj.message.send2ServerAlwaysPressRelease );
 
    var portNum = obj.message.portNum;
    var room    = obj.message.room;
@@ -2760,6 +2762,8 @@ function savePort(obj) {
    var defaultRunAlways = obj.message.defaultRunAlways;
    var netAction = obj.message.netAction;
    var netRunOnlyWhenServerOut = obj.message.netRunOnlyWhenServerOut;
+   var portMode = obj.message.portMode;
+   var send2ServerAlwaysPressRelease = obj.message.send2ServerAlwaysPressRelease;
 
    if (defaultRunAlways == 1) {
       defaultRunAlways = true;
@@ -2770,6 +2774,11 @@ function savePort(obj) {
       netRunOnlyWhenServerOut = true;
    } else {
       netRunOnlyWhenServerOut = false;
+   }
+   if (send2ServerAlwaysPressRelease == 1) {
+      send2ServerAlwaysPressRelease = true;
+   } else {
+      send2ServerAlwaysPressRelease = false;
    }
 
 
@@ -2853,6 +2862,32 @@ function savePort(obj) {
          if ( oldvalue != netRunOnlyWhenServerOut ) {
             adapter.setState( 'ports.' + portNum + '.netRunOnlyWhenServerOut', {val: netRunOnlyWhenServerOut, ack: true});
             adapter.log.info( 'ports.' + portNum + '.netRunOnlyWhenServerOut : '+ oldvalue + ' -> ' + netRunOnlyWhenServerOut );
+         }
+      }
+   );
+
+   adapter.getState( adapter.namespace + '.ports.' + portNum + '.portMode',
+      function (err, state ) {
+         var oldvalue = "";
+         if ( state ) oldvalue = state.val;
+         if ( oldvalue != portMode ) {
+            adapter.setState( 'ports.' + portNum + '.portMode', {val: portMode, ack: true});
+            adapter.log.info( 'ports.' + portNum + '.portMode : '+ oldvalue + ' -> ' + portMode );
+         }
+      }
+   );
+
+   if ( portMode == cPortMode_ClickMode ) {
+      send2ServerAlwaysPressRelease = false;
+   }
+
+   adapter.getState( adapter.namespace + '.ports.' + portNum + '.send2ServerAlwaysPressRelease',
+      function (err, state ) {
+         var oldvalue = "";
+         if ( state ) oldvalue = state.val;
+         if ( oldvalue != send2ServerAlwaysPressRelease ) {
+            adapter.setState( 'ports.' + portNum + '.send2ServerAlwaysPressRelease', {val: send2ServerAlwaysPressRelease, ack: true});
+            adapter.log.info( 'ports.' + portNum + '.send2ServerAlwaysPressRelease : '+ oldvalue + ' -> ' + send2ServerAlwaysPressRelease );
          }
       }
    );

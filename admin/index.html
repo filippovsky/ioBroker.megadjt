@@ -474,6 +474,11 @@ var cPortType_I2C  = 'I2C'; // 4
 var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для аналоговых датчиков
 
 
+var cPortMode_PressOnly = 'PressOnly';
+var cPortMode_PressAndRelease = 'PressAndRelease';
+var cPortMode_ReleaseOnly = 'ReleaseOnly';
+var cPortMode_ClickMode = 'ClickMode';
+
    //------------------------------------------------------------------------------------------------
    function getFirmwareVersion () {
       var fw_version = "";
@@ -1461,18 +1466,30 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
     }
     //--------------------------------------------------------------------------------
     function mChanged ( controlPort ) {
-        var m = $("#m"+controlPort+" option:selected").val();
-        ports[controlPort].m = m;
-        if ( ports[controlPort].m == 3 ) {
-           // для Mode = click mode отключаем флажок
-           ports[controlPort].misc = 0;
-           //document.getElementById( "misc" + controlPort ).checked = "false";
-           $("#misc"+controlPort).removeAttr("checked");
-           document.getElementById( "misc" + controlPort ).style.visibility = "hidden";
-           document.getElementById( "lblmisc" + controlPort ).style.visibility = "hidden";
+        var numXP;
+        var port;
+        if ( controlPort < 15 ) {
+           numXP = 1;
+           port  = controlPort;
+        } else if ( controlPort < 30 ) {
+           numXP = 2;
+           port = controlPort - 15;
         } else {
-           document.getElementById( "misc" + controlPort ).style.visibility = "visible";
-           document.getElementById( "lblmisc" + controlPort ).style.visibility = "visible";
+           numXP = 0;
+           port = controlPort;
+        }
+
+        var m = $("#mXP"+numXP+" option:selected").val();
+        //ports[controlPort].m = m;
+        if ( m == cPortMode_ClickMode ) {
+           // для Mode = click mode отключаем флажок
+           $("#miscXP"+numXP).val(0);
+           $("#miscXP"+numXP).removeAttr("checked");
+           document.getElementById( "miscXP" + numXP ).style.visibility = "hidden";
+           document.getElementById( "lblmiscXP" + numXP ).style.visibility = "hidden";
+        } else {
+           document.getElementById( "miscXP" + numXP ).style.visibility = "visible";
+           document.getElementById( "lblmiscXP" + numXP ).style.visibility = "visible";
         }
     }
     //--------------------------------------------------------------------------------
@@ -1573,14 +1590,23 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
     //--------------------------------------------------------------------------------
     function MiscChanged ( controlPort ) {
         var text = "";
-        if ( $("#misc"+controlPort ).prop('checked') ) {
-           ports[controlPort].misc = 1;
+        var numXP = 0;
+        if ( controlPort < 15 ) {
+           numXP = 1;
+        } else if ( controlPort < 30 ) {
+           numXP = 2;
+        } else {
+           numXP = 0;
+        }
+
+        if ( $('#miscXP'+numXP ).prop('checked') ) {
+           $('#miscXP'+numXP).val(1);
            text = 'Отправлять на сервер всегда в режиме P&amp;R';
         } else {
-           ports[controlPort].misc = 0;
+           $('#miscXP'+numXP).val(0);
            text = 'Отправлять на сервер в режиме, установленном в Mode';
         }
-        document.getElementById( "lblmisc" + controlPort ).innerHTML = text;
+        document.getElementById( "lblmiscXP" + numXP ).innerHTML = text;
     }
     //--------------------------------------------------------------------------------
     function RawChanged ( controlPort ) {
@@ -1670,6 +1696,33 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
           }
        });
 
+
+       socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.portMode', function (err, state) {
+          if (state) {
+              $("#mXP"+numXP).val( state.val );
+              $('#mXP'+numXP+' option:selected').val(state.val);
+              $('#mXP'+numXP+' select').val(state.val);
+              $('#mXP'+numXP+' option').each(function() {
+                   if($(this).val() == state.val) {
+                         $(this).prop("selected", true);
+                   }
+              });
+              mChanged( controlPort ); // ?
+          }
+       });
+
+       socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.send2ServerAlwaysPressRelease', function (err, state) {
+          if (state) {
+              if ( state.val == true || state.val == 'true') {
+                 $('#miscXP' + numXP ).prop('checked', true);
+                 $("#miscXP" + numXP ).val( 1 );
+              } else {
+                 $('#miscXP' + numXP ).removeAttr('checked');
+                 $("#miscXP"+numXP).val( 0 );
+              }
+              //?MiscChanged( controlPort );
+          }
+       });
 
       loadPresetSub( numXP, portNum );
 
@@ -2009,30 +2062,28 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
            text += spanNaf0 + '</td><td align="left" valign="middle">';
            text += '<input type="checkbox" class="checkbox" id="nafXP'+numXP+'" '+ ($('#nafXP'+numXP).val() ? 'checked' : '') + 
                    ' onChange="NafChanged('+controlPort+');"/>&nbsp;';
-           //text += '</td><td align="left" valign="middle">';
            text += '<label id="lblnafXP'+numXP+'" for="nafXP'+numXP+'">'+($('#nafXP'+numXP).val() ? 'Вызывать ТОЛЬКО при недоступности сервера' : 'Вызывать всегда') + '</label>';
            text += '</td></tr>';
 
            text += '<tr><td align="center" valign="middle">';
            text += spanM + '</td><td align="left" valign="middle">';
            text += 'Режим срабатывания (Mode):&nbsp;';
-           text += '<select id="m'+controlPort+'" onChange="mChanged('+controlPort+');">';
-           text += '<option value="0" ' + ((ports[controlPort].m == 0) ? 'selected' : '') + '>Только при замыкании контакта (P)</option>';
-           text += '<option value="1" ' + ((ports[controlPort].m == 1) ? 'selected' : '') + '>При замыкании и размыкании (P&amp;R)</option>';
-           text += '<option value="2" ' + ((ports[controlPort].m == 2) ? 'selected' : '') + '>Только при размыкании (R)</option>';
-           text += '<option value="3" ' + ((ports[controlPort].m == 3) ? 'selected' : '') + '>С определением двойного нажатия (Click Mode)</option>';
+           text += '<select id="mXP'+numXP+'" onChange="mChanged('+controlPort+');">';
+           text += '<option value="'||cPortMode_PressOnly||'" ' + (($('#mXP'+numXP).val() == cPortMode_PressOnly) ? 'selected' : '') + '>Только при замыкании контакта (P)</option>';
+           text += '<option value="'||cPortMode_PressAndRelease||'" ' + (($('#mXP'+numXP).val() == cPortMode_PressAndRelease) ? 'selected' : '') + '>При замыкании и размыкании (P&amp;R)</option>';
+           text += '<option value="'||cPortMode_ReleaseOnly||'" ' + (($('#mXP'+numXP).val() == cPortMode_ReleaseOnly) ? 'selected' : '') + '>Только при размыкании (R)</option>';
+           text += '<option value="'||cPortMode_ClickMode||'" ' + (($('#mXP'+numXP).val() == cPortMode_ClickMode) ? 'selected' : '') + '>С определением двойного нажатия (Click Mode)</option>';
            text += '</td></tr>';
 
-           if (ports[controlPort].m == 3) {
+           if ($('#mXP'+numXP).val() == cPortMode_ClickMode) {
               // опция недоступна для Click Mode
-              ports[controlPort].misc = 0;
+              $('#miscXP'+numXP).val() = 0;
            } else {
               text += '<tr><td align="center" valign="middle">';
               text += spanMisc + '</td><td align="left" valign="middle">';
-              text += '<input type="checkbox" class="checkbox" id="misc'+controlPort+'" '+ (ports[controlPort].misc ? 'checked' : '') + 
+              text += '<input type="checkbox" class="checkbox" id="miscXP'+numXP+'" '+ ($('#miscXP').val() ? 'checked' : '') + 
                    ' onChange="MiscChanged('+controlPort+');"/>&nbsp;';
-              //text += '</td><td align="left" valign="middle">';
-              text += '<label id="lblmisc'+controlPort+'" for="misc'+controlPort+'">'+(ports[controlPort].misc ? 'Всегда отправлять в режиме P&amp;R' : 'Выполнять Act в режиме, установленном Mode') + '</label>';
+              text += '<label id="lblmiscXP'+numXP+'" for="miscXP'+numXP+'">'+($('#miscXP').val() ? 'Всегда отправлять в режиме P&amp;R' : 'Выполнять Act в режиме, установленном Mode') + '</label>';
               text += '</td></tr>';
            }
 
@@ -2330,6 +2381,8 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
        var newDefaultRunAlways = $('#afXP' + numXP ).val();
        var newNetAction = $('#ethXP' + numXP ).val();
        var newNetRunOnlyWhenServerOut = $('#nafXP' + numXP ).val();
+       var newPortMode = $('#mXP' + numXP ).val();
+       var newSend2ServerAlwaysPressRelease = $('#miscXP' + numXP ).val();
 
        sendTo(null, 'savePort', {  portNum: controlPort, 
                                       room: newroom, 
@@ -2338,7 +2391,9 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
                                   defaultAction: newDefaultAction,
                                   defaultRunAlways: newDefaultRunAlways,
                                   netAction: newNetAction,
-                                  netRunOnlyWhenServerOut: newNetRunOnlyWhenServerOut
+                                  netRunOnlyWhenServerOut: newNetRunOnlyWhenServerOut,
+                                  portMode: newPortMode,
+                                  send2ServerAlwaysPressRelease: newSend2ServerAlwaysPressRelease
                                 }, 
           function (msg) {
              if (!msg || msg.error) {
