@@ -2069,10 +2069,10 @@ var cPortMode_ClickMode = 'ClickMode';
            text += spanM + '</td><td align="left" valign="middle">';
            text += 'Режим срабатывания (Mode):&nbsp;';
            text += '<select id="mXP'+numXP+'" onChange="mChanged('+controlPort+');">';
-           text += '<option value="'||cPortMode_PressOnly||'" ' + (($('#mXP'+numXP).val() == cPortMode_PressOnly) ? 'selected' : '') + '>Только при замыкании контакта (P)</option>';
-           text += '<option value="'||cPortMode_PressAndRelease||'" ' + (($('#mXP'+numXP).val() == cPortMode_PressAndRelease) ? 'selected' : '') + '>При замыкании и размыкании (P&amp;R)</option>';
-           text += '<option value="'||cPortMode_ReleaseOnly||'" ' + (($('#mXP'+numXP).val() == cPortMode_ReleaseOnly) ? 'selected' : '') + '>Только при размыкании (R)</option>';
-           text += '<option value="'||cPortMode_ClickMode||'" ' + (($('#mXP'+numXP).val() == cPortMode_ClickMode) ? 'selected' : '') + '>С определением двойного нажатия (Click Mode)</option>';
+           text += '<option value="'+cPortMode_PressOnly+'" ' + (($('#mXP'+numXP).val() == cPortMode_PressOnly) ? 'selected' : '') + '>Только при замыкании контакта (P)</option>';
+           text += '<option value="'+cPortMode_PressAndRelease+'" ' + (($('#mXP'+numXP).val() == cPortMode_PressAndRelease) ? 'selected' : '') + '>При замыкании и размыкании (P&amp;R)</option>';
+           text += '<option value="'+cPortMode_ReleaseOnly+'" ' + (($('#mXP'+numXP).val() == cPortMode_ReleaseOnly) ? 'selected' : '') + '>Только при размыкании (R)</option>';
+           text += '<option value="'+cPortMode_ClickMode+'" ' + (($('#mXP'+numXP).val() == cPortMode_ClickMode) ? 'selected' : '') + '>С определением двойного нажатия (Click Mode)</option>';
            text += '</td></tr>';
 
            if ($('#mXP'+numXP).val() == cPortMode_ClickMode) {
