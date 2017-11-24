@@ -1493,7 +1493,7 @@ var cPortMode_ClickMode = 'ClickMode';
         }
     }
     //--------------------------------------------------------------------------------
-    function dChanged ( controlPort ) {
+    function d1Changed ( controlPort ) {
         var d = $("#d"+controlPort+" option:selected").val();
         ports[controlPort].d = d;
     }
@@ -1512,8 +1512,16 @@ var cPortMode_ClickMode = 'ClickMode';
     }
     //--------------------------------------------------------------------------------
     function dispChanged ( controlPort ) {
-        var disp = $("#disp"+controlPort).val();
-        ports[controlPort].disp = disp;
+        var numXP = 0;
+        if ( controlPort < 15 ) {
+           numXP = 1;
+        } else if ( controlPort < 30 ) {
+           numXP = 2;
+        } else {
+           numXP = 0;
+        }
+
+        var disp = $("#dispXP"+numXP).val();
     }
     //--------------------------------------------------------------------------------
     function ethChanged ( controlPort ) {
@@ -1576,7 +1584,7 @@ var cPortMode_ClickMode = 'ClickMode';
         document.getElementById( "lblafXP" + numXP ).innerHTML = text;
     }
     //--------------------------------------------------------------------------------
-    function dChanged ( controlPort ) {
+    function d2Changed ( controlPort ) {
         var text = "";
         if ( $("#d"+controlPort ).prop('checked') ) {
            ports[controlPort].d = 1;
@@ -1611,14 +1619,23 @@ var cPortMode_ClickMode = 'ClickMode';
     //--------------------------------------------------------------------------------
     function RawChanged ( controlPort ) {
         var text = "";
-        if ( $("#d"+controlPort ).prop('checked') ) {
-           ports[controlPort].d = 1;
+        var numXP = 0;
+        if ( controlPort < 15 ) {
+           numXP = 1;
+        } else if ( controlPort < 30 ) {
+           numXP = 2;
+        } else {
+           numXP = 0;
+        }
+
+        if ( $('#RawXP'+numXP ).prop('checked') ) {
+           $('#RawXP'+numXP).val( 1 );
            text = 'Защита от дребезга отключена';
         } else {
-           ports[controlPort].d = 0;
+           $('#RawXP'+numXP).val( 0 );
            text = 'Защита от дребезга включена';
         }
-        document.getElementById( "lbld" + controlPort ).innerHTML = text; //?lbl
+        document.getElementById( "lblRawXP" + numXP ).innerHTML = text; //?lbl
     }
     // -------------------------------------------------------------------------------
     function loadPreset( numXP, portNum ) {
@@ -1721,6 +1738,25 @@ var cPortMode_ClickMode = 'ClickMode';
                  $("#miscXP"+numXP).val( 0 );
               }
               //?MiscChanged( controlPort );
+          }
+       });
+
+       socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.tremorDefenceDisabled', function (err, state) {
+          if (state) {
+              if ( state.val == true || state.val == 'true') {
+                 $('#RawXP' + numXP ).prop('checked', true);
+                 $("#RawXP" + numXP ).val( 1 );
+              } else {
+                 $('#RawXP' + numXP ).removeAttr('checked');
+                 $("#RawXP"+numXP).val( 0 );
+              }
+              //?RawChanged( controlPort );
+          }
+       });
+
+       socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.displayPort', function (err, state) {
+          if (state) {
+              $("#dispXP"+numXP).val( state.val );
           }
        });
 
@@ -2081,24 +2117,24 @@ var cPortMode_ClickMode = 'ClickMode';
            } else {
               text += '<tr><td align="center" valign="middle">';
               text += spanMisc + '</td><td align="left" valign="middle">';
-              text += '<input type="checkbox" class="checkbox" id="miscXP'+numXP+'" '+ ($('#miscXP').val() ? 'checked' : '') + 
+              text += '<input type="checkbox" class="checkbox" id="miscXP'+numXP+'" '+ ($('#miscXP'+numXP).val() ? 'checked' : '') + 
                    ' onChange="MiscChanged('+controlPort+');"/>&nbsp;';
-              text += '<label id="lblmiscXP'+numXP+'" for="miscXP'+numXP+'">'+($('#miscXP').val() ? 'Всегда отправлять в режиме P&amp;R' : 'Выполнять Act в режиме, установленном Mode') + '</label>';
+              text += '<label id="lblmiscXP'+numXP+'" for="miscXP'+numXP+'">'+($('#miscXP'+numXP).val() ? 'Всегда отправлять в режиме P&amp;R' : 'Выполнять Act в режиме, установленном Mode') + '</label>';
               text += '</td></tr>';
            }
 
            text += '<tr><td align="center" valign="middle">';
            text += spanRaw + '</td><td align="left" valign="middle">';
-           text += '<input type="checkbox" class="checkbox" id="d'+controlPort+'" '+ (ports[controlPort].d ? 'checked' : '') + 
+           text += '<input type="checkbox" class="checkbox" id="RawXP'+numXP+'" '+ ($('#RawXP'+numXP).val() ? 'checked' : '') + 
                    ' onChange="RawChanged('+controlPort+');"/>&nbsp;';
            //text += '</td><td align="left" valign="middle">';
-           text += '<label id="lbld'+controlPort+'" for="d'+controlPort+'">'+(ports[controlPort].d ? 'Отключить защиту от дребезга' : 'Включить защиту от дребезга') + '</label>';
+           text += '<label id="lblRawXP'+numXP+'" for="RawXP'+numXP+'">'+($('#RawXP'+numXP).val() ? 'Отключить защиту от дребезга' : 'Включить защиту от дребезга') + '</label>';
            text += '</td></tr>';
 
            text += '<tr><td align="center" valign="middle">';
            text += spanDisp + '</td><td align="left" valign="middle">';
            text += 'Порт дисплея (Disp):&nbsp;';
-           text += '<input id="disp'+controlPort+'" type="text" value="' + (ports[controlPort].disp  || '' ) + 
+           text += '<input id="dispXP'+numXP+'" type="text" value="' + ($('#dispXP'+numXP).val()  || '' ) + 
                    '" onChange="dispChanged('+controlPort+');" maxsize="2"/>';
            text += '</td></tr>';
 
@@ -2118,7 +2154,7 @@ var cPortMode_ClickMode = 'ClickMode';
            text += '<tr><td align="center" valign="middle">';
            text += spanDef + '</td><td align="left" valign="middle">';
            text += '<input type="checkbox" class="checkbox" id="d'+controlPort+'" '+ (ports[controlPort].d ? 'checked' : '') + 
-                   ' onChange="dChanged('+controlPort+');"/>&nbsp;';
+                   ' onChange="d2Changed('+controlPort+');"/>&nbsp;';
            text += '<label id="lbl'+controlPort+'" for="d'+controlPort+'">'+(ports[controlPort].d ? 'Включено по умолчанию' : 'Выключено по умолчанию') + '</label>';
            text += '</td></tr>';
 
@@ -2183,7 +2219,7 @@ var cPortMode_ClickMode = 'ClickMode';
            text += spanSen + '</td><td align="left" valign="middle">';
            text += '<font color=red><b>ВНИМАНИЕ! Положение джампера должно быть нижнее!</b></font><br>';
            text += 'Тип устройства (DSen):&nbsp;';
-           text += '<select id="d'+controlPort+'" onChange="dChanged('+controlPort+');">';
+           text += '<select id="d'+controlPort+'" onChange="d1Changed('+controlPort+');">';
            text += '<option value="1" ' + ((ports[controlPort].d == 1) ? 'selected' : '') + '>DHT11 (Температура и влажность)</option>';
            text += '<option value="2" ' + ((ports[controlPort].d == 2) ? 'selected' : '') + '>DHT22 (Температура и влажность)</option>';
            text += '<option value="3" ' + ((ports[controlPort].d == 3) ? 'selected' : '') + '>DS18B20 или другой 1-Wire датчик</option>';
@@ -2383,6 +2419,8 @@ var cPortMode_ClickMode = 'ClickMode';
        var newNetRunOnlyWhenServerOut = $('#nafXP' + numXP ).val();
        var newPortMode = $('#mXP' + numXP ).val();
        var newSend2ServerAlwaysPressRelease = $('#miscXP' + numXP ).val();
+       var newTremorDefenceDisabled = $('#RawXP' + numXP ).val();
+       var newDisplayPort = $('#dispXP' + numXP ).val();
 
        sendTo(null, 'savePort', {  portNum: controlPort, 
                                       room: newroom, 
@@ -2393,7 +2431,9 @@ var cPortMode_ClickMode = 'ClickMode';
                                   netAction: newNetAction,
                                   netRunOnlyWhenServerOut: newNetRunOnlyWhenServerOut,
                                   portMode: newPortMode,
-                                  send2ServerAlwaysPressRelease: newSend2ServerAlwaysPressRelease
+                                  send2ServerAlwaysPressRelease: newSend2ServerAlwaysPressRelease,
+                                  tremorDefenceDisabled: newTremorDefenceDisabled,
+                                  displayPort: newDisplayPort
                                 }, 
           function (msg) {
              if (!msg || msg.error) {

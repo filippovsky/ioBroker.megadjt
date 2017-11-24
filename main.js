@@ -2753,6 +2753,8 @@ function savePort(obj) {
    adapter.log.debug( 'obj.message.netRunOnlyWhenServerOut = '+ obj.message.netRunOnlyWhenServerOut );
    adapter.log.debug( 'obj.message.portMode = '+ obj.message.portMode );
    adapter.log.debug( 'obj.message.send2ServerAlwaysPressRelease = '+ obj.message.send2ServerAlwaysPressRelease );
+   adapter.log.debug( 'obj.message.tremorDefenceDisabled = '+ obj.message.tremorDefenceDisabled );
+   adapter.log.debug( 'obj.message.displayPort = '+ obj.message.displayPort );
 
    var portNum = obj.message.portNum;
    var room    = obj.message.room;
@@ -2764,6 +2766,8 @@ function savePort(obj) {
    var netRunOnlyWhenServerOut = obj.message.netRunOnlyWhenServerOut;
    var portMode = obj.message.portMode;
    var send2ServerAlwaysPressRelease = obj.message.send2ServerAlwaysPressRelease;
+   var tremorDefenceDisabled = obj.message.tremorDefenceDisabled;
+   var displayPort = obj.message.displayPort;
 
    if (defaultRunAlways == 1) {
       defaultRunAlways = true;
@@ -2779,6 +2783,11 @@ function savePort(obj) {
       send2ServerAlwaysPressRelease = true;
    } else {
       send2ServerAlwaysPressRelease = false;
+   }
+   if (tremorDefenceDisabled == 1) {
+      tremorDefenceDisabled = true;
+   } else {
+      tremorDefenceDisabled = false;
    }
 
 
@@ -2822,6 +2831,8 @@ function savePort(obj) {
       netRunOnlyWhenServerOut = false;
       portMode = cPortMode_PressOnly;
       send2ServerAlwaysPressRelease = false;
+      tremorDefenceDisabled = false;
+      displayPort = '';
    }
 
    adapter.getState( adapter.namespace + '.ports.' + portNum + '.defaultAction',
@@ -2890,6 +2901,28 @@ function savePort(obj) {
          if ( oldvalue != send2ServerAlwaysPressRelease ) {
             adapter.setState( 'ports.' + portNum + '.send2ServerAlwaysPressRelease', {val: send2ServerAlwaysPressRelease, ack: true});
             adapter.log.info( 'ports.' + portNum + '.send2ServerAlwaysPressRelease : '+ oldvalue + ' -> ' + send2ServerAlwaysPressRelease );
+         }
+      }
+   );
+
+   adapter.getState( adapter.namespace + '.ports.' + portNum + '.tremorDefenceDisabled',
+      function (err, state ) {
+         var oldvalue = "";
+         if ( state ) oldvalue = state.val;
+         if ( oldvalue != tremorDefenceDisabled ) {
+            adapter.setState( 'ports.' + portNum + '.tremorDefenceDisabled', {val: tremorDefenceDisabled, ack: true});
+            adapter.log.info( 'ports.' + portNum + '.tremorDefenceDisabled : '+ oldvalue + ' -> ' + tremorDefenceDisabled );
+         }
+      }
+   );
+
+   adapter.getState( adapter.namespace + '.ports.' + portNum + '.displayPort',
+      function (err, state ) {
+         var oldvalue = "";
+         if ( state ) oldvalue = state.val;
+         if ( oldvalue != displayPort ) {
+            adapter.setState( 'ports.' + portNum + '.displayPort', {val: displayPort, ack: true});
+            adapter.log.info( 'ports.' + portNum + '.displayPort : '+ oldvalue + ' -> ' + displayPort );
          }
       }
    );
