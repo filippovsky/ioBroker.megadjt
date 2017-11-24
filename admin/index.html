@@ -2816,6 +2816,9 @@ var cPortMode_ClickMode = 'ClickMode';
                     showMessage(msg.error, _('Error'), 'alert');
                     return;
                 }
+
+                showMessage('Настройки портов считаны с Меги', _('Error'), 'alert');
+             /*
                 //OFF;OFF/0;OFF/0;25;temp:45.6;temp:45.6/hum:27
                 var _ports = msg.response ? msg.response.split(';') : [];
                 var settingsPorts =  msg.ports || [];
@@ -2838,12 +2841,6 @@ var cPortMode_ClickMode = 'ClickMode';
                         aPorts[p].misc    = aPorts[p].misc || 0;
                         aPorts[p].d       = aPorts[p].d    || 0;
                         aPorts[p].disp    = aPorts[p].disp || 0; // мое 0.7.0
-
-                        // Данная галочка говорит нам, что: если сервер доступен то используется режим P&R. Если нет, то: mode P(0), act 7:2
-                        /*if (aPorts[p].misc) {
-                            aPorts[p].m = 1;
-                        }*/
-
                         aPorts[p].long    = !!ports[p].long;
                         aPorts[p].double  = !!ports[p].double;
                         aPorts[p].role    = ports[p].role || 'state';
@@ -2886,11 +2883,6 @@ var cPortMode_ClickMode = 'ClickMode';
                         if (aPorts[p].d == 4) {
                             aPorts[p].role    = ports[p].role || 'state';
                         }
-                    /*} else if (_ports[p].indexOf('temp:') != -1) {  ///NAUJAS
-                        // temperature - internal sensor
-                        aPorts[p].pty     = 4;
-                        aPorts[p].name    = ports[p].name || ('P' + p);
-                        aPorts[p].role    = ports[p].role || 'value.temperature';*/
                     } else
                     if (aPorts[p].pty == 4) {
                         // I2C sensor
@@ -2922,10 +2914,11 @@ var cPortMode_ClickMode = 'ClickMode';
 
                 }
                 ports = aPorts;
-
+              */
                 onchange();
 
                 //showPorts();
+              
             });
         }
     }
