@@ -3129,5 +3129,4 @@ function readCfgFromMega ( obj ) {
     } else {
         if (obj.callback) adapter.sendTo(obj.from, obj.command, {error: 'invalid address'}, obj.callback);
     }
-
 }
