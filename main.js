@@ -510,8 +510,16 @@ By default working directory/adapter is "javascript.0".
 })
 
  */
+
+   var dir = adapter.adapterDir;
+   if ( !dir ) {
+      adapter.log.warn('Не удалось определить каталог адаптера. Перепрошивка отменена.');
+      return;
+   }
+
    adapter.log.debug('считываем настройки Меги из файла '+adapter.namespace +' -- '+filename);
-   readFile ( adapter.namespace, '/firmware/last.cfg', function(error, data) {
+   adapter.readFile ( adapter, dir + '/firmware/last.cfg', '', function(error, data) {
+           adapter.log.debug( 'Error:' + error );
            adapter.log.debug( data );
      }
    );
