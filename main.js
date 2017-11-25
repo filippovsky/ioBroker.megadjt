@@ -503,7 +503,7 @@ function ReadFileMegaConfig( filename, callback ) {
 
    adapter.log.debug('считываем настройки Меги из файла '+adapter.namespace +' -- '+dir + '/firmware/' + adapter.instance + '_' + filename);
 
-   fs.readFile ( dir + '/firmware/'+adapter.instance + '_' + filename, { encoding : 'cp1251' }, function(error, data) {
+   fs.readFile ( dir + '/firmware/'+adapter.instance + '_' + filename, { encoding : 'utf8' }, function(error, data) {
            if (error) adapter.log.error( 'Error:' + error );
            adapter.log.debug( 'Data:' + data );
            //var parts = data.split('\n');
