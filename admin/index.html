@@ -705,11 +705,12 @@ var cPortMode_ClickMode = 'ClickMode';
          });
         $('#xp1model').change(function () {
             showXP( 1 );
+            imagePorts( 1 );
+            if ( SelectedPortXP == 1 ) { 
+               selectPort( SelectedPortXP, SelectedPort ); // перерисовываем данные о уже выбраном порту
+            }
             $('#xp1model').val($(this).val()).trigger('change');
         });
-
-         //onchange();  
-//        $('#xp1model').onChange();
 
       });
 
@@ -724,6 +725,10 @@ var cPortMode_ClickMode = 'ClickMode';
          });
         $('#xp2model').change(function () {
             showXP( 2 );
+            imagePorts( 2 );
+            if ( SelectedPortXP == 2 ) { 
+               selectPort( SelectedPortXP, SelectedPort ); // перерисовываем данные о уже выбраном порту
+            }
             $('#xp2model').val($(this).val()).trigger('change');
         });
 
@@ -2247,7 +2252,7 @@ var cPortMode_ClickMode = 'ClickMode';
   */
 
         text += '<tr><td align="center" valign="middle">&nbsp;<td align=center valign=middle>';
-        text += '    <button class="translateB" id="savePort" onClick="savePort('+controlPort+');">Сохранить настройки порта</button>';
+        text += '    <button class="translateB" id="savePortBtn" onClick="savePort('+controlPort+');">Сохранить настройки порта</button>';
         text += '</td></tr>';
 
         document.getElementById( "xp" + numXP + "_port_preset" ).innerHTML = text;
@@ -2409,11 +2414,11 @@ var cPortMode_ClickMode = 'ClickMode';
 
     // ------------------------------------------------------------------------------------
     function savePort ( controlPort ) {
-       $('#savePort').button('disable');
        $('#write').button('disable');
        $('#autoDetect').button('disable');
        $('#ipchange').button('disable');
        $('#updateFirmware').button('disable');
+       $('#savePortBtn').button('disable');
 
         var numXP = 0;
         if ( controlPort < 15 ) {
@@ -2454,7 +2459,7 @@ var cPortMode_ClickMode = 'ClickMode';
              $('#autoDetect').button('enable');
              $('#ipchange').button('enable');
              $('#updateFirmware').button('enable');
-             $('#savePort').button('enable');
+             $('#savePortBtn').button('enable');
 
              if (!msg || msg.error) {
                 showMessage(msg.error, _('Error'), 'alert');
