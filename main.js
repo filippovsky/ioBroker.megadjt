@@ -523,6 +523,7 @@ function parseMegaCfgLine ( line ) {
    var nodeName;
    var name;
 
+   adapter.log.debug('Распознание строки настройки: '+line);
    parts = line.split('&');
    for (var i=0; i < parts.length; i++ ) {
       param = parts[i].split('=');
@@ -556,6 +557,7 @@ function parseMegaCfgLine ( line ) {
 
    nodeName = adapter.namespace + '.ports.' + pn;
    if ( pty == cNPortType_StandartIn ) {
+      adapter.log.debug('Настраиваем порт '+pn+' как стандартный вход');
       adapter.setState( nodeName + '.portType', {val: cPortType_StandartIn, ack: true});
       adapter.setState( nodeName + '.counter', {val: 0, ack: true}); //?
       adapter.setState( nodeName + '.currentState', {val: false, ack: true}); //?
@@ -578,6 +580,7 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.digitalSensorType', {val: '', ack: true}); 
    } else /*if ( pty == cNPortType_NotConnected )*/ {
 // остальные типы портов пока не реализованы, пишем их как неподключенные
+      adapter.log.debug('Настраиваем порт '+pn+' как неподключенный');
       adapter.setState( nodeName + '.portType', {val: cPortType_NotConnected, ack: true});
       adapter.setState( nodeName + '.counter', {val: 0, ack: true});
       adapter.setState( nodeName + '.currentState', {val: false, ack: true}); 
