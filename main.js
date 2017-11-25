@@ -522,8 +522,8 @@ By default working directory/adapter is "javascript.0".
    adapter.log.debug('adapter.instance: '+ adapter.instance );
 
    adapter.log.debug('считываем настройки Меги из файла '+adapter.namespace +' -- '+dir + '/firmware/' + adapter.instance + '_' + filename);
-//   adapter.readFile ( adapter, dir + '/firmware/'+adapter.instance + '_' + filename, '', function(error, data) {
-   adapter.readFile ( dir + '/firmware/'+adapter.instance + '_' + filename, '', function(error, data) {
+   //adapter.readFile ( dir + '/firmware/'+adapter.instance + '_' + filename, '', function(error, data) {
+   adapter.readFile ( '/firmware/'+adapter.instance + '_' + filename, '', function(error, data) {
            adapter.log.error( 'Error:' + error );
            adapter.log.debug( 'Data:' + data );
      }
