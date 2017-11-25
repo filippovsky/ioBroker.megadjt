@@ -3108,7 +3108,7 @@ function savePort(obj) {
    //---------- передаем данные в Мегу
    var url = 'pn=' + portNum;
    if ( portType == cPortType_NotConnected ) {
-      url += '&pty='+cNPortType_NotConnected + '&ecmd=&eth=&disp=&af=&naf=&misc=&d=&m=';
+      url += '&pty='+cNPortType_NotConnected + '&ecmd=&eth=&disp=&af=0&naf=0&misc=0&d=0&m=0';
    } else if ( portType == cPortType_StandartIn ) {
       url += '&pty='+cNPortType_StandartIn;
       url += '&ecmd='+encodeURIComponent((defaultAction || '').trim())
@@ -3117,22 +3117,22 @@ function savePort(obj) {
       if (defaultRunAlways) {
          url += '&af=1';
       } else {
-         url += '&af='; // ?
+         url += '&af=0'; // ?
       }
       if (netRunOnlyWhenServerOut) {
          url += '&naf=1';
       } else {
-         url += '&naf='; // ?
+         url += '&naf=0'; // ?
       }
       if (send2ServerAlwaysPressRelease) {
          url += '&misc=1';
       } else {
-         url += '&misc='; // ?
+         url += '&misc=0'; // ?
       }
       if (tremorDefenceDisabled) {
          url += '&d=1';
       } else {
-         url += '&d='; // ?
+         url += '&d=0'; // ?
       }
       if ( portMode == cPortMode_PressOnly ) {
          url += '&m=' + cNPortMode_PressOnly;
