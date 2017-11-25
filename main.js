@@ -499,11 +499,20 @@ function ReadFileMegaConfig( filename, callback ) {
    fs.readFile ( dir + '/firmware/'+adapter.instance + '_' + filename, function(error, data) {
            if (error) adapter.log.error( 'Error:' + error );
            adapter.log.debug( 'Data:' + data );
-           var parts = data.split(0x0A);
+           var parts = data.split('\n');
            adapter.log.warn( 'Data[5]:' + parts[5] );
            if (callback) callback( error, data );
      }
    ); 
+/*
+fs.readFile('large.txt', { encoding : 'utf8' },
+  (err, data) => {
+    if (err) throw err;
+    data.split('\n').forEach(line => {
+      doSomethingWithLine(line);
+    });
+  });
+*/
 
 }
 
