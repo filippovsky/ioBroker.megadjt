@@ -1152,6 +1152,9 @@ function detectPortConfig(ip, pass, length, callback, port, result) {
 
 // Получение конфигурации Меги из устройства -------------------------------------------------------------------------
 function detectDeviceConfig(ip, pass, callback) {
+    readMegaConfig2File( 'last.cfg' );
+    return;
+
     var parts = ip.split(':');
     var options = {
         host: parts[0],
@@ -1160,6 +1163,8 @@ function detectDeviceConfig(ip, pass, callback) {
     };
 
     adapter.log.info('read config from port: http://' + ip + options.path);
+
+
 
     http.get(options, function (res) {
         res.setEncoding('utf8');
@@ -1428,7 +1433,7 @@ function getPortsState(ip, password, callback) {
         path: '/' + password + '/?cmd=all'
     };
 
-    adapter.log.debug('getPortState http://' + options.host + options.path);
+    adapter.log.debug('getPortsState http://' + options.host + options.path);
 
     http.get(options, function (res) {
         var xmldata = '';
@@ -3078,5 +3083,5 @@ function readLink(link, callback) {
     }
 }
 */
-
+//------------------------------------------------------------------------------------------------
 
