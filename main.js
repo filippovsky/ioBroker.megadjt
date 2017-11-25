@@ -45,10 +45,23 @@ var cPortType_DigitalSensor  = 'DigitalSensor'; //3 цифровой вход ds
 var cPortType_I2C  = 'I2C'; // 4 
 var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для аналоговых датчиков
 
+var cNPortType_NotConnected = 255; 
+var cNPortType_StandartIn  = 0;    
+var cNPortType_Out = 1;           
+var cNPortType_DigitalSensor  = 3;
+var cNPortType_I2C  = 4;
+var cNPortType_AnalogSensor  = 2; 
+
 var cPortMode_PressOnly = 'PressOnly';
 var cPortMode_PressAndRelease = 'PressAndRelease';
 var cPortMode_ReleaseOnly = 'ReleaseOnly';
 var cPortMode_ClickMode = 'ClickMode';
+
+var cNPortMode_PressOnly = 0;
+var cNPortMode_PressAndRelease = 1;
+var cNPortMode_ReleaseOnly = 2;
+var cNPortMode_ClickMode = 3;
+
 
 var cDigitalSensorTypeDS18B20 = 'DS18B20';
 var cDigitalSensorTypeDHT11   = 'DHT11';
@@ -482,11 +495,124 @@ function updateFirmware( message ) {
 }
 //--------------------------------------------------------------------------------------------------------
 // обработка одной строки файла конфигурации Меги
+/*
 function readLineFromMegaCfgLine( line ) {
     var matched = line.match(/pn=3&(.*?)/);
     if (matched) {
        adapter.log.debug('строка порта 3:' + line );
    }
+}
+*/
+//---------------------------------------------------------------------------------------------------------
+// разбираем файл настроек Иеги и выставляем значения параметров
+function parseMegaCfgLine ( line ) {
+   var parts = [];
+   var param = [];
+   var state;
+   var value;
+   var pn;
+   var pty;
+   var ecmd;
+   var af;
+   var eth;
+   var naf;
+   var misc;
+   var d;
+   var disp;
+   var m;
+   var nodeName;
+   var name;
+
+   parts = line.split('&');
+   for (var i=0; i < parts.length; i++ ) {
+      param = parts[i].split('=');
+      state = param[0];
+      value = param[1];
+      if ( state == 'pn'   )    pn   = value || '';
+      if ( state == 'pty'  )    pty  = parseInt(value,10) || cNPortType_NotConnected;
+      if ( state == 'ecmd' )    ecmd = value || '';
+      if ( state == 'af'   )    af   = value;
+      if ( state == 'eth'  )    eth  = value || '';
+      if ( state == 'naf'  )    naf  = value;
+      if ( state == 'm'    )    m    = parseInt(value,10) || cNPortMode_PressOnly;
+      if ( state == 'misc' )    misc = value;
+      if ( state == 'd'    )    d    = value;
+      if ( state == 'disp' )    disp = value || '';
+   }
+
+   if (!pn) return; 
+   if ((!af) || (af == 'ð') || (af == 0) || (af == '0')) af = false;
+   if ((!naf) || (naf == 'ð') || (naf == 0) || (naf == '0')) naf = false;
+   if ((!misc) || (misc == 'ð') || (misc == 0) || (misc == '0')) misc = false;
+
+/* здесь хорошо бы проверить на соответствие исполнительного модуля
+   adapter.getState( adapter.namespace + '.controller.xp1model',
+      function (err, state ) {
+         if ( pty == cNPortType_StandartIn )
+      }
+   );
+*/
+
+
+   nodeName = adapter.namespace + '.ports.' + pn;
+   if ( pty == cNPortType_StandartIn ) {
+      adapter.setState( nodeName + '.portType', {val: cPortType_StandartIn, ack: true});
+      adapter.setState( nodeName + '.counter', {val: 0, ack: true}); //?
+      adapter.setState( nodeName + '.currentState', {val: false, ack: true}); //?
+      adapter.setState( nodeName + '.defaultAction', {val: ecmd, ack: true}); 
+      adapter.setState( nodeName + '.defaultRunAlways', {val: af, ack: true}); 
+      adapter.setState( nodeName + '.netAction', {val: eth, ack: true}); 
+      adapter.setState( nodeName + '.netRunOnlyWhenServerOut', {val: naf, ack: true}); 
+      adapter.setState( nodeName + '.send2ServerAlwaysPressRelease', {val: misc, ack: true}); 
+      if ( m == cNPortMode_PressOnly ) adapter.setState( nodeName + '.portMode', {val: cPortMode_PressOnly, ack: true}); 
+      else if ( m == cNPortMode_PressAndRelease ) adapter.setState( nodeName + '.portMode', {val: cPortMode_PressAndRelease, ack: true}); 
+      else if ( m == cNPortMode_ReleaseOnly ) adapter.setState( nodeName + '.portMode', {val: cPortMode_ReleaseOnly, ack: true}); 
+      else if ( m == cNPortMode_ClickMode ) { 
+          adapter.setState( nodeName + '.portMode', {val: cPortMode_ClickMode, ack: true}); 
+          adapter.setState( nodeName + '.send2ServerAlwaysPressRelease', {val: false, ack: true}); 
+      }
+      if ((!d) || (d == 'ð') || (d == 0) || (d == '0')) d = false;
+      adapter.setState( nodeName + '.tremorDefenceDisabled', {val: d, ack: true}); 
+      adapter.setState( nodeName + '.displayPort', {val: disp, ack: true}); 
+      adapter.setState( nodeName + '.defaultState', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.digitalSensorType', {val: '', ack: true}); 
+   } else /*if ( pty == cNPortType_NotConnected )*/ {
+// остальные типы портов пока не реализованы, пишем их как неподключенные
+      adapter.setState( nodeName + '.portType', {val: cPortType_NotConnected, ack: true});
+      adapter.setState( nodeName + '.counter', {val: 0, ack: true});
+      adapter.setState( nodeName + '.currentState', {val: false, ack: true}); 
+      adapter.setState( nodeName + '.room', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.func', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.defaultAction', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.defaultRunAlways', {val: false, ack: true}); 
+      adapter.setState( nodeName + '.netAction', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.netRunOnlyWhenServerOut', {val: false, ack: true}); 
+      adapter.setState( nodeName + '.portMode', {val: cPortMode_PressOnly, ack: true}); 
+      adapter.setState( nodeName + '.send2ServerAlwaysPressRelease', {val: false, ack: true}); 
+      adapter.setState( nodeName + '.tremorDefenceDisabled', {val: false, ack: true}); 
+      adapter.setState( nodeName + '.displayPort', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.defaultState', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.digitalSensorType', {val: '', ack: true}); 
+  }
+
+
+/*   
+
+var cNPortType_Out = 1;           
+var cNPortType_DigitalSensor  = 3;
+var cNPortType_I2C  = 4;
+var cNPortType_AnalogSensor  = 2; 
+
+var cPortType_StandartIn  = 'StandartIn';    //0
+var cPortType_ReleOut = 'ReleOut';           //1
+var cPortType_DimmedOut = 'DimmedOut'; //1
+var cPortType_SimistorOut = 'SimistorOut'; //1
+var cPortType_DigitalSensor  = 'DigitalSensor'; //3 цифровой вход dsen
+var cPortType_I2C  = 'I2C'; // 4 
+var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для аналоговых датчиков
+*/
+
+   
 }
 //--------------------------------------------------------------------------------------------------------
 //Считывание настроек Меги из файла
@@ -506,24 +632,12 @@ function ReadFileMegaConfig( filename, callback ) {
    fs.readFile ( dir + '/firmware/'+adapter.instance + '_' + filename, { encoding : 'utf8' }, function(error, data) {
            if (error) adapter.log.error( 'Error:' + error );
            adapter.log.debug( 'Data:' + data );
-           //var parts = data.split('\n');
-           //adapter.log.warn( 'Data[5]:' + parts[5] );
            data.split('\n').forEach( line => {
-              readLineFromMegaCfgLine( line );
+              parseMegaCfgLine ( line )
            });
            if (callback) callback( error, data );
      }
    ); 
-/*
-fs.readFile('large.txt', { encoding : 'utf8' },
-  (err, data) => {
-    if (err) throw err;
-    data.split('\n').forEach(line => {
-      doSomethingWithLine(line);
-    });
-  });
-*/
-
 }
 
 
