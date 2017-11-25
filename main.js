@@ -499,7 +499,7 @@ function ReadFileMegaConfig( filename, callback ) {
    fs.readFile ( dir + '/firmware/'+adapter.instance + '_' + filename, function(error, data) {
            if (error) adapter.log.error( 'Error:' + error );
            adapter.log.debug( 'Data:' + data );
-           var parts = data.split(0xOA);
+           var parts = data.split(0x0A);
            adapter.log.warn( 'Data[5]:' + parts[5] );
            if (callback) callback( error, data );
      }
