@@ -45,23 +45,22 @@ var cPortType_DigitalSensor  = 'DigitalSensor'; //3 цифровой вход ds
 var cPortType_I2C  = 'I2C'; // 4 
 var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для аналоговых датчиков
 
-var cNPortType_NotConnected = 255; 
-var cNPortType_StandartIn  = 0;    
-var cNPortType_Out = 1;           
-var cNPortType_DigitalSensor  = 3;
-var cNPortType_I2C  = 4;
-var cNPortType_AnalogSensor  = 2; 
+var cNPortType_NotConnected = '255'; 
+var cNPortType_StandartIn  = '0';    
+var cNPortType_Out = '1';           
+var cNPortType_DigitalSensor  = '3';
+var cNPortType_I2C  = '4';
+var cNPortType_AnalogSensor  = '2'; 
 
 var cPortMode_PressOnly = 'PressOnly';
 var cPortMode_PressAndRelease = 'PressAndRelease';
 var cPortMode_ReleaseOnly = 'ReleaseOnly';
 var cPortMode_ClickMode = 'ClickMode';
 
-var cNPortMode_PressOnly = 0;
-var cNPortMode_PressAndRelease = 1;
-var cNPortMode_ReleaseOnly = 2;
-var cNPortMode_ClickMode = 3;
-
+var cNPortMode_PressOnly = '0';
+var cNPortMode_PressAndRelease = '1';
+var cNPortMode_ReleaseOnly = '2';
+var cNPortMode_ClickMode = '3';
 
 var cDigitalSensorTypeDS18B20 = 'DS18B20';
 var cDigitalSensorTypeDHT11   = 'DHT11';
@@ -530,12 +529,12 @@ function parseMegaCfgLine ( line ) {
       state = param[0];
       value = param[1];
       if ( state == 'pn'   )    pn   = value || '';
-      if ( state == 'pty'  )    pty  = parseInt(value,10) || cNPortType_NotConnected;
+      if ( state == 'pty'  )    pty  = value || cNPortType_NotConnected;
       if ( state == 'ecmd' )    ecmd = value || '';
       if ( state == 'af'   )    af   = value;
       if ( state == 'eth'  )    eth  = value || '';
       if ( state == 'naf'  )    naf  = value;
-      if ( state == 'm'    )    m    = parseInt(value,10) || cNPortMode_PressOnly;
+      if ( state == 'm'    )    m    = value || cNPortMode_PressOnly;
       if ( state == 'misc' )    misc = value;
       if ( state == 'd'    )    d    = value;
       if ( state == 'disp' )    disp = value || '';
