@@ -3176,15 +3176,21 @@ var cNPortType_AnalogSensor  = '2';
         res.on('end', function () {
             if (res.statusCode != 200) {
                 adapter.log.warn('Response code: ' + res.statusCode + ' - ' + data);
-                if (obj.callback)  obj.callback(res.statusCode, data); 
+                if (obj.callback) {
+                   adapter.sendTo(obj.from, obj.command, {error: res.statusCode, response: data}, obj.callback);
+                }
             } else {
                 adapter.log.debug('Response: ' + data);
-                if (obj.callback)  obj.callback(null, data);
+                if (obj.callback) {
+                   adapter.sendTo(obj.from, obj.command, {error: '', response: data}, obj.callback);
+                }
             }
 
         });
     }).on('error', function (err) {
-       if (obj.callback)  obj.callback(err, null);
+        if (obj.callback) {
+           adapter.sendTo(obj.from, obj.command, {error: err, response: null}, obj.callback);
+        }
     });
 
 }
