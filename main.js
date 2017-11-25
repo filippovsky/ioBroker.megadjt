@@ -477,6 +477,46 @@ function updateFirmware( message ) {
    });
 }
 
+//--------------------------------------------------------------------------------------------------------
+//Считывание настроек Меги из файла
+function ReadFileMegaConfig( filename ) {
+ /*
+  readFile = function readFile(adapter, filename, options, callback)
+  writeFile = function writeFile(adapter, filename, data, mimeType, callback)
+
+var fs = require('fs');
+var date = formatDate(new Date(res.result[0].ReceivingDateTime), 'YYYY-MM-DD');
+readFile ('/opt/iobroker/log/iobroker.log.'+date, function (error, bytes) {
+     if(bytes.indexOf('Ошибка') > 0){
+          exec('/bin/bash /opt/iobroker/tmp/restart.sh');
+     }
+
+readFile (adapter, fileName, function (error, bytes) {})
+The result will be given in callback. Read file from DB from folder "javascript".
+
+Argument adapter can be omitted.
+
+// read vis views
+readFile('vis.0', '/main/vis-views.json', function (error, data) {
+    console.log(data.substring(0, 50));
+});
+
+// The same as
+//readFile('/../vis.0/main/vis-views.json', function (error) {
+//     console.log(data.substring(0, 50));
+//});
+By default working directory/adapter is "javascript.0".
+
+})
+
+ */
+   adapter.log.debug('считываем настройки Меги из файла '+adapter.namespace +' -- '+filename);
+   readFile ( adapter.namespace, '/firmware/last.cfg', function(error, data) {
+           adapter.log.debug( data );
+     }
+   );
+}
+
 
 // Функция считывания настроек Меги в файл ---------------------------------------------------------------
 function readMegaConfig2File( filename ) {
@@ -1147,6 +1187,8 @@ function detectDeviceConfig(ip, pass, callback) {
     });
     //-------------------------------------------------------
     readMegaConfig2File( 'last.cfg' );
+
+    ReadFileMegaConfig( 'last.cfg' ); // ?
 
 }
 
