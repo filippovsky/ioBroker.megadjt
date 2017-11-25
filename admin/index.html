@@ -461,6 +461,8 @@ span:hover::before {
    var active    = false;
    var megadjt_setup = [];   
    var portsColor = [];
+   var SelectedPort = 0;
+   var SelectedPortXP = 1;
 
 //   var portState = [];
 
@@ -724,6 +726,10 @@ var cPortMode_ClickMode = 'ClickMode';
             showXP( 2 );
             $('#xp2model').val($(this).val()).trigger('change');
         });
+
+        imagePorts( 1 );
+        imagePorts( 2 );
+        selectPort( SelectedPortXP, SelectedPort ); // перерисовываем данные о уже выбраном порту
 
          //onchange();
       });
@@ -2253,6 +2259,9 @@ var cPortMode_ClickMode = 'ClickMode';
        var divMoreId = 'xp' + numXP + '_more';
        var controlPort = portNum;
        var portNumTxt  = portNum;
+       SelectedPort = portNum;
+       SelectedPortXP = numXP;
+
 
        if (numXP == 2) {
           controlPort = 15 + portNum;
@@ -2826,6 +2835,7 @@ var cPortMode_ClickMode = 'ClickMode';
     
                 showMessage('Настройки портов считаны с Меги', _('Error'), 'alert');
 
+                selectPort( SelectedPortXP, SelectedPort ); // перерисовываем данные о уже выбраном порту
 
 
              /*
