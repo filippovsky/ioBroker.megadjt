@@ -1331,7 +1331,6 @@ var cPortMode_ClickMode = 'ClickMode';
              }
           }
 
-          //portstate = $('#portState' + k ).val();
           if (portsColor[k] )  {
               portstate = portsColor[k];
           } else {
@@ -2818,8 +2817,17 @@ var cPortMode_ClickMode = 'ClickMode';
                     return;
                 }
 
-
+                for ( var i = 0; i <= 37; i++ ) {
+                   var name = adapter + '.' + instance + '.ports.'+i+'.portType'
+                   socket.emit('getState',  name, function (err, state) {
+                      portsColor[i] = state.val;
+                   });
+                }
+    
                 showMessage('Настройки портов считаны с Меги', _('Error'), 'alert');
+
+
+
              /*
                 //OFF;OFF/0;OFF/0;25;temp:45.6;temp:45.6/hum:27
                 var _ports = msg.response ? msg.response.split(';') : [];
