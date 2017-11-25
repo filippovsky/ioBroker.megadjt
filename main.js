@@ -483,7 +483,7 @@ function updateFirmware( message ) {
 
 //--------------------------------------------------------------------------------------------------------
 //Считывание настроек Меги из файла
-function ReadFileMegaConfig( filename ) {
+function ReadFileMegaConfig( filename, callback ) {
  /*
   readFile = function readFile(adapter, filename, options, callback)
   writeFile = function writeFile(adapter, filename, data, mimeType, callback)
@@ -529,8 +529,9 @@ By default working directory/adapter is "javascript.0".
    //adapter.readFile ( dir + '/firmware/'+adapter.instance + '_' + filename, '', function(error, data) {
 
    fs.readFile ( dir + '/firmware/'+adapter.instance + '_' + filename, function(error, data) {
-           adapter.log.error( 'Error:' + error );
+           if (error) adapter.log.error( 'Error:' + error );
            adapter.log.debug( 'Data:' + data );
+           if (callback) callback( error, data );
      }
    ); 
 /*
