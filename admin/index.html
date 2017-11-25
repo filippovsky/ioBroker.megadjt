@@ -2409,6 +2409,12 @@ var cPortMode_ClickMode = 'ClickMode';
 
     // ------------------------------------------------------------------------------------
     function savePort ( controlPort ) {
+       $('#savePort').button('disable');
+       $('#write').button('disable');
+       $('#autoDetect').button('disable');
+       $('#ipchange').button('disable');
+       $('#updateFirmware').button('disable');
+
         var numXP = 0;
         if ( controlPort < 15 ) {
            numXP = 1;
@@ -2444,11 +2450,18 @@ var cPortMode_ClickMode = 'ClickMode';
                                   displayPort: newDisplayPort
                                 }, 
           function (msg) {
+             $('#write').button('enable');
+             $('#autoDetect').button('enable');
+             $('#ipchange').button('enable');
+             $('#updateFirmware').button('enable');
+             $('#savePort').button('enable');
+
              if (!msg || msg.error) {
                 showMessage(msg.error, _('Error'), 'alert');
                 return;
              }
              showMessage('Состояние порта сохранено', _('Error'), 'alert');
+
           }
         );
     }
@@ -2497,14 +2510,10 @@ var cPortMode_ClickMode = 'ClickMode';
             if (!port || port == 80) {
                 port = '';
             }
-            writeConfig($('#ip').val(), $('#password').val(), port, ports);
-        });
+            showMessage('Функция еще не реализована. Каждый порт сохраняется самостоятельно.', _('Error'), 'alert');
 
-        /*$('#savePort').button({
-            icons: {primary: 'ui-icon-disk'}
-        }).click(function() {
-            savePort();
-        });*/
+            //writeConfig($('#ip').val(), $('#password').val(), port, ports);
+        });
 
         // read if instance is active or enabled
         socket.emit('getState', 'system.adapter.' + adapter + '.' + instance + '.alive', function (err, state) {
