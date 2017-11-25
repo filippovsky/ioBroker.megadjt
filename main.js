@@ -190,8 +190,12 @@ adapter.on('message', function (obj) {
                 discoverMega(obj);
                 break;
 
-            case 'detectPorts':
+            /*case 'detectPorts':
                 detectPorts(obj);
+                break;*/
+
+            case 'readCfgFromMega':
+                readCfgFromMega(obj);
                 break;
 
             case 'savePort':
@@ -550,36 +554,40 @@ By default working directory/adapter is "javascript.0".
 
 
 // Функция считывания настроек Меги в файл ---------------------------------------------------------------
-function readMegaConfig2File( filename ) {
-   //return;
+function readMegaConfig2File( filename, callback ) {
    var parts = adapter.config.ip.split(':');
    var ip = parts[0];
    var pass = adapter.config.password;
    var cmd = '';
    var filename0 = filename || 'last.cfg';
    var filename1 = adapter.instance + '_' + filename0;
-   //var uplevel = '../../';
-   
+   var CBerror = '';
    var dir ='';
+
    adapter.log.info('Считываем настройки Меги ip=' + ip );
    if ( !ip ) {
-      adapter.log.warn('Не передан IP-адрес Меги. Считывание настроек отменено.');
+      CBerror = 'Не передан IP-адрес Меги. Считывание настроек отменено.';
+      adapter.log.error(CBerror);
+      if (callback) callback( CBerror );
       return;
    }
    if ( !pass ) {
-      adapter.log.warn('Не передан пароль Меги. Считывание настроек отменено.');
+      CBerror = 'Не передан пароль Меги. Считывание настроек отменено.';
+      adapter.log.error( CBerror );
+      if (callback) callback( CBerror );
       return;
    }
    dir = adapter.adapterDir;
    if ( !dir ) {
-      adapter.log.warn('Не удалось определить каталог адаптера. Перепрошивка отменена.');
+      CBerror = 'Не удалось определить каталог адаптера.';
+      adapter.log.error( CBerror );
+      if (callback) callback( CBerror );
       return;
    }
    dir = dir + '/firmware';
-   //var dir1 = '../../files/iobroker.megadjt' ;
 
-//   cmd = 'mkdir '+dir+'/'+dir1+'|chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --ip '+ip+' --read-conf '+dir1+'/'+filename1+' -p '+pass;
    adapter.log.debug('Каталог конфига: '+dir +' Файл: ' + filename1 );
+
    cmd = 'chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --ip '+ip+' --read-conf '+filename1+' -p '+pass;
 
    adapter.log.debug(cmd);
@@ -590,6 +598,7 @@ function readMegaConfig2File( filename ) {
         if (error) {
            adapter.log.error( error.code );
            adapter.log.error( error );
+           CBerror = error;
         }
         if ( stdout ) {
            adapter.log.info( stdout );
@@ -597,27 +606,11 @@ function readMegaConfig2File( filename ) {
         if ( stderr ) {
            adapter.log.error( stderr );
         }
-        adapter.log.info('Настройки Меги считаны в файл '+filename1);
-        ReadFileMegaConfig( filename0 ); // имя файла передаем без номера инстанции
-/*
-//        var cmd1 = 'cd '+dir+'|cd '+uplevel+'|cd etc|mkdir iobroker.megadjt|cd '+dir+'|cp --remove-destination ./'+filename1+' '+uplevel+'etc/iobroker.megadjt/'+filename1;
-        var cmd1 = 'mkdir -p '+uplevel+'etc/iobroker.megadjt|cp --remove-destination ./'+filename1+' '+uplevel+'etc/iobroker.megadjt/'+filename1;
-        adapter.log.debug(cmd1);
-        var p1=process.exec( cmd1, 
-                             { cwd: dir  },
-                             function (error, stdout, stderr) {
-                                if (error) {
-                                   adapter.log.error( error.code );
-                                   adapter.log.error( error );
-                                }
-                                if ( stdout ) {
-                                   adapter.log.info( stdout );
-                                }
-                                if ( stderr ) {
-                                   adapter.log.error( stderr );
-                                }
-                                adapter.log.info('Файл с настройками Меги перенесен в папку iobroker: etc/iobroker.megadjt/'+filename1);
-                             });*/
+        adapter.log.info('Настройки Меги считаны в файл ' + filename1 );
+        // ReadFileMegaConfig( filename0 ); // имя файла передаем без номера инстанции
+        if (callback) { 
+           callback( CBerror );
+        }
    });
 }
 
@@ -1152,9 +1145,25 @@ function detectPortConfig(ip, pass, length, callback, port, result) {
 
 // Получение конфигурации Меги из устройства -------------------------------------------------------------------------
 function detectDeviceConfig(ip, pass, callback) {
-    readMegaConfig2File( 'last.cfg' );
+    var filename = 'last.cfg';
+    readMegaConfig2File( filename, function( error ) {
+       if ( error ) {
+          adapter.log.error( error );
+          if ( callback ) callback( error, null );
+       } else {
+          ReadFileMegaConfig( filename, function( error, data ) {
+             if ( error ) {
+                adapter.log.error( error );
+                if ( callback ) callback( error, null );
+             } else {
+                if ( callback ) callback( null, data );
+             }
+          });          
+       }
+    });
     return;
-
+    //--------------------------
+    /*
     var parts = ip.split(':');
     var options = {
         host: parts[0],
@@ -1225,7 +1234,7 @@ function detectDeviceConfig(ip, pass, callback) {
     });
     //-------------------------------------------------------
     readMegaConfig2File( 'last.cfg' );
-
+    */
     //ReadFileMegaConfig( 'last.cfg' ); // ?
 
 }
@@ -3084,4 +3093,40 @@ function readLink(link, callback) {
 }
 */
 //------------------------------------------------------------------------------------------------
+function readCfgFromMega ( obj ) {
+    var ip;
+    var password;
+    var filename = 'last.cfg';
 
+    if (obj && obj.message && typeof obj.message == 'object') {
+        ip       = obj.message.ip;
+        password = obj.message.password;
+    } else {
+        ip       = obj ? obj.message : '';
+        password = adapter.config.password;
+    }
+    if (ip && ip != '0.0.0.0') {
+       readMegaConfig2File( filename, function( err ) {
+          if ( err ) {
+             adapter.log.error( err );
+             if (obj.callback) adapter.sendTo( obj.from, obj.command, {error: err}, obj.callback);
+          } else {
+             // читаем настройки из файла
+             ReadFileMegaConfig( filename, function( err, data ) {
+                if ( err ) {
+                   adapter.log.error( err );
+                   if (obj.callback) adapter.sendTo( obj.from, obj.command, {error: err}, obj.callback);
+                } else {
+                   //adapter.log.debug( data );
+                   if (obj.callback) {
+                      adapter.sendTo(obj.from, obj.command, {error: err, response: data}, obj.callback);
+                   }
+                }
+             });
+          }          
+      });
+    } else {
+        if (obj.callback) adapter.sendTo(obj.from, obj.command, {error: 'invalid address'}, obj.callback);
+    }
+
+}

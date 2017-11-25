@@ -2798,14 +2798,15 @@ var cPortMode_ClickMode = 'ClickMode';
             return;
         }
 
-        if (window.confirm(_('Information will be merged. Are you sure?'))) {
+        if (window.confirm(_('Существующие настройки на сервере будут сброшены считанными из Меги. Вы уверены?'))) {
 
             $('#write').button('disable');
             $('#autoDetect').button('disable');
             $('#ipchange').button('disable');
             $('#updateFirmware').button('disable');
 
-            sendTo(null, 'detectPorts', {ip: ip, password: pass}, function (msg) {
+            //sendTo(null, 'detectPorts', {ip: ip, password: pass}, function (msg) {
+            sendTo(null, 'readCfgFromMega', {ip: ip, password: pass}, function (msg) {
 
                 $('#write').button('enable');
                 $('#autoDetect').button('enable');

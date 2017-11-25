@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.16.7",
+        "version":                  "0.16.8",
         "news": {
             "0.14.0": {
                 "en":               "sms service added",
@@ -112,7 +112,7 @@
         "longPress":                700,
         "doublePress":              600,
         "ports":                    [],
-        "testState":                ""
+        "portsColor":               []
     },
     "instanceObjects": [
         {
