@@ -538,7 +538,8 @@ function readMegaConfig2File( filename ) {
    var ip = parts[0];
    var pass = adapter.config.password;
    var cmd = '';
-   var filename1 = adapter.instance + '_' + filename || adapter_instance + '_last.cfg';
+   var filename0 = filename || 'last.cfg';
+   var filename1 = adapter.instance + '_' + filename0;
    //var uplevel = '../../';
    
    var dir ='';
@@ -579,7 +580,7 @@ function readMegaConfig2File( filename ) {
            adapter.log.error( stderr );
         }
         adapter.log.info('Настройки Меги считаны в файл '+filename1);
-        ReadFileMegaConfig( filename1 );
+        ReadFileMegaConfig( filename0 ); // имя файла передаем без номера инстанции
 /*
 //        var cmd1 = 'cd '+dir+'|cd '+uplevel+'|cd etc|mkdir iobroker.megadjt|cd '+dir+'|cp --remove-destination ./'+filename1+' '+uplevel+'etc/iobroker.megadjt/'+filename1;
         var cmd1 = 'mkdir -p '+uplevel+'etc/iobroker.megadjt|cp --remove-destination ./'+filename1+' '+uplevel+'etc/iobroker.megadjt/'+filename1;
