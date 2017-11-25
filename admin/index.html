@@ -2836,9 +2836,6 @@ var cPortMode_ClickMode = 'ClickMode';
     
                 showMessage('Настройки портов считаны с Меги', _('Error'), 'alert');
 
-                selectPort( SelectedPortXP, SelectedPort ); // перерисовываем данные о уже выбраном порту
-
-
              /*
                 //OFF;OFF/0;OFF/0;25;temp:45.6;temp:45.6/hum:27
                 var _ports = msg.response ? msg.response.split(';') : [];
@@ -2938,6 +2935,8 @@ var cPortMode_ClickMode = 'ClickMode';
               */
                 imagePorts( 1 ); //?
                 imagePorts( 2 ); //?
+                selectPort( SelectedPortXP, SelectedPort ); // перерисовываем данные о уже выбраном порту
+
                 onchange();
 
                 //showPorts();
