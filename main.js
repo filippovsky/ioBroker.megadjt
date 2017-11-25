@@ -480,7 +480,14 @@ function updateFirmware( message ) {
         }
    });
 }
-
+//--------------------------------------------------------------------------------------------------------
+// обработка одной строки файла конфигурации Меги
+function readLineFromMegaCfgLine( line ) {
+    var matched = line.match(/pn=3&(.*?)/);
+    if (matched) {
+       adapter.log.debug('строка порта 3:' + line );
+   }
+}
 //--------------------------------------------------------------------------------------------------------
 //Считывание настроек Меги из файла
 function ReadFileMegaConfig( filename, callback ) {
@@ -496,11 +503,14 @@ function ReadFileMegaConfig( filename, callback ) {
 
    adapter.log.debug('считываем настройки Меги из файла '+adapter.namespace +' -- '+dir + '/firmware/' + adapter.instance + '_' + filename);
 
-   fs.readFile ( dir + '/firmware/'+adapter.instance + '_' + filename, function(error, data) {
+   fs.readFile ( dir + '/firmware/'+adapter.instance + '_' + filename, { encoding : 'windows-1251' }, function(error, data) {
            if (error) adapter.log.error( 'Error:' + error );
            adapter.log.debug( 'Data:' + data );
-           var parts = data.split('\n');
-           adapter.log.warn( 'Data[5]:' + parts[5] );
+           //var parts = data.split('\n');
+           //adapter.log.warn( 'Data[5]:' + parts[5] );
+           data.split('\n').forEach( line => {
+              readLineFromMegaCfgLine( line );
+           });
            if (callback) callback( error, data );
      }
    ); 
