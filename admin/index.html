@@ -442,6 +442,7 @@ span:hover::before {
         "Ok":                   {"en": "Ok",                    "de": "Ok",                         "ru": "Ok"},
         "Cancel":               {"en": "Cancel",                "de": "Abrechen",                   "ru": "Отмена"},
         "Error":                {"en": "Error",                 "de": "Fehler",                     "ru": "Ошибка"},
+        "Info":                 {"en": "Information",           "de": "Information",                "ru": "Информация"},
         "Find devices":         {"en": "Find devices",          "de": "Suche Geräte",               "ru": "Искать устройства"},
         "Nothing found":        {"en": "Nothing found",         "de": "Nichts gefunden",            "ru": "Ничего не найдено"},
         "PWM:":                 {"en": "PWM:",                  "de": "PWM:",                       "ru": "PWM:"},
@@ -2465,7 +2466,7 @@ var cPortMode_ClickMode = 'ClickMode';
                 showMessage(msg.error, _('Error'), 'alert');
                 return;
              }
-             showMessage('Состояние порта сохранено', _('Error'), 'alert');
+             showMessage('Состояние порта сохранено', _('Info'), 'info');
 
           }
         );
@@ -2847,7 +2848,7 @@ var cPortMode_ClickMode = 'ClickMode';
                    });
                 }
     
-                showMessage('Настройки портов считаны с Меги', _('Error'), 'alert');
+                showMessage('Настройки портов считаны с Меги', _('Info'), 'info');
 
              /*
                 //OFF;OFF/0;OFF/0;25;temp:45.6;temp:45.6/hum:27
@@ -3059,7 +3060,7 @@ var cPortMode_ClickMode = 'ClickMode';
                 showMessage(error, _('Error'), 'alert');
                 return;
             } else {
-                showMessage(_('OK'), _('Success'), 'info');
+                showMessage(_('OK'), _('Info'), 'info');
                 if (changed) saveSettings();
             }
         });

@@ -3108,7 +3108,7 @@ function savePort(obj) {
    //---------- передаем данные в Мегу
    var url = 'pn=' + portNum;
    if ( portType == cPortType_NotConnected ) {
-      url += '&pty='+cNPortType_NotConnected;
+      url += '&pty='+cNPortType_NotConnected + '&ecmd=&eth=&disp=&af=&naf=&misc=&d=&m=';
    } else if ( portType == cPortType_StandartIn ) {
       url += '&pty='+cNPortType_StandartIn;
       url += '&ecmd='+encodeURIComponent((defaultAction || '').trim())
@@ -3127,7 +3127,7 @@ function savePort(obj) {
       if (send2ServerAlwaysPressRelease) {
          url += '&misc=1';
       } else {
-         url += '&naf='; // ?
+         url += '&misc='; // ?
       }
       if (tremorDefenceDisabled) {
          url += '&d=1';
