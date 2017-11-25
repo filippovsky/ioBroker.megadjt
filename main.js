@@ -484,37 +484,6 @@ function updateFirmware( message ) {
 //--------------------------------------------------------------------------------------------------------
 //Считывание настроек Меги из файла
 function ReadFileMegaConfig( filename, callback ) {
- /*
-  readFile = function readFile(adapter, filename, options, callback)
-  writeFile = function writeFile(adapter, filename, data, mimeType, callback)
-
-var fs = require('fs');
-var date = formatDate(new Date(res.result[0].ReceivingDateTime), 'YYYY-MM-DD');
-readFile ('/opt/iobroker/log/iobroker.log.'+date, function (error, bytes) {
-     if(bytes.indexOf('Ошибка') > 0){
-          exec('/bin/bash /opt/iobroker/tmp/restart.sh');
-     }
-
-readFile (adapter, fileName, function (error, bytes) {})
-The result will be given in callback. Read file from DB from folder "javascript".
-
-Argument adapter can be omitted.
-
-// read vis views
-readFile('vis.0', '/main/vis-views.json', function (error, data) {
-    console.log(data.substring(0, 50));
-});
-
-// The same as
-//readFile('/../vis.0/main/vis-views.json', function (error) {
-//     console.log(data.substring(0, 50));
-//});
-By default working directory/adapter is "javascript.0".
-
-})
-
- */
-
    var dir = adapter.adapterDir;
    if ( !dir ) {
       adapter.log.warn('Не удалось определить каталог адаптера. Перепрошивка отменена.');
@@ -526,30 +495,15 @@ By default working directory/adapter is "javascript.0".
    adapter.log.debug('adapter.instance: '+ adapter.instance );
 
    adapter.log.debug('считываем настройки Меги из файла '+adapter.namespace +' -- '+dir + '/firmware/' + adapter.instance + '_' + filename);
-   //adapter.readFile ( dir + '/firmware/'+adapter.instance + '_' + filename, '', function(error, data) {
 
    fs.readFile ( dir + '/firmware/'+adapter.instance + '_' + filename, function(error, data) {
            if (error) adapter.log.error( 'Error:' + error );
            adapter.log.debug( 'Data:' + data );
+           var parts = data.split(0xOA);
+           adapter.log.warn( 'Data[5]:' + parts[5] );
            if (callback) callback( error, data );
      }
    ); 
-/*
-
-            adapter.readFile(id, url, null, function (err, buffer, mimeType) {
-                if (!buffer || err) {
-                    res.contentType('text/html');
-                    res.status(404).send('File ' + url + ' not found');
-                } else {
-                    if (mimeType) {
-                        res.contentType(mimeType['content-type'] || mimeType);
-                    } else {
-                        res.contentType('text/javascript');
-                    }
-                    res.send(buffer);
-                }
-            });
-  */
 
 }
 
