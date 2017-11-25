@@ -3,8 +3,10 @@
 ioBroker MegaD-2561 adapter (Version by Filippovsky, based on adapter of ausHaus and BlueFox)
 =================
 
-### Current version: 0.16.28  ( 25.11.2017 23:11 MSK )
-### Текущая версия:  0.16.28  ( 25.11.2017 23:11 MSK )
+### Current version: 0.16.29  ( 25.11.2017 23:26 MSK )
+### Текущая версия:  0.16.29  ( 25.11.2017 23:26 MSK )
+
+### ВАЖНО! Перед установкой внимательно прочтите changelog!
 
 ### ВНИМАНИЕ!! Этот драйвер еще не закончен. Для реальной работы его использовать пока нельзя. Можно использовать для целей общего ознакомления.
 
@@ -17,6 +19,16 @@ ioBroker MegaD-2561 adapter (Version by Filippovsky, based on adapter of ausHaus
 
 
 Lets control the [MegaD-2561](http://www.ab-log.ru/smart-house/ethernet/megad-2561) over ethernet.
+
+### Обработка событий от порта пока не реализована!
+### Кнопка "записать настройки в Мегу" - пока не реализована, не пользуйтесь ей!
+### !! на данный момент поддерживаются ТОЛЬКО тип порта "не подключен" (NC) и стандартный вход (IN).
+### !! Все остальные порты временно распознаются как NC.
+### !! Это важно: При считывании настроек с Меги и записи настроек обратно - все порты Меги кроме NC и IN перейдут НА МЕГЕ в состояние NC !
+
+### !! Тестируется на версии прошивки Меги 4.14b8, поэтому настрйоки, реализованные в более свежих прошивках - не поддерживаются!
+
+
 ## English 
 [по русски](#Русский)
 
@@ -37,43 +49,6 @@ For digital ports only 0, 1 and 2 (toggle) are allowed, for analog ports the val
 The device can report the changes of ports to some web server in form
 ```http://ioBroker:80/?pt=6```  , where 6 is the port number
 
-### Configuration
-
-- IP: IP address of MegaD-2561;
-- MegaD-2561 Name: Name of the MegaD-2561 to assign the port changes, e.g. "DevA". If no name set the adapter instance will be used for that;
-- Port: Listening port on ioBroker. Default value: 80. 
-- Poll interval: poll interval in seconds. All configured input ports will be polled in defined interval;
-- Password: password to access the device (max 3 characters). Default value "sec";
-
-MegaD-2561 can report about changes on some ports if configured. 
-You can configure something like that "http://ioBrokerIP/instance" on MegaD-2561 in "Net"-Field and MegaD-2561 will send reports like this one "http://ioBrokerIP/instance/?pt=7" to ioBroker. 
-That means the button on port 7 was pressed. ioBroker expects instance number (e.g. "0") or defined name of MegaD-2561 (e.g. "DevA"). The "Net" field will look like: "http://192.168.0.8/0/".
-
-### Ports
-All ports, that are desired to be used must be configured in right order. Following settings must be set for every port:
-
-- Name: name of the port. Used by ioBroker;
-- Input: Is the port INPUT(true) or output(false);
-- Switch: Is the port can be ON or OFF (in this case value = TRUE) or just used to send the reports about button press (FALSE);
-- Digital: Analog or digital port. ioBroker expects analog ports with range from 0 to 255.
-- Offset: offset for the **analog** port.
-- Factor:  multiply factor for **anaolog** port.
-- Long press: detect long press on digital port (port have to be SWITCH type)
-- Double click ms: interval for detection of double click
-
-For input:
-```
-ioBrokerValue = MegaValue * factor + offset;
-```
-
-For output: 
-```
-MegaValue = (ioBrokerValue - offset) / factor;
-```
-
-To get the range of the analog value from 100 to 500 set the factor as 400 and offset = 100.
-
-**The order of the ports is very important. The port in first row will be associated with P0 in MegaD-2561. In row number 14 with P13.**
 
 -------------------
 ## Русский        
@@ -122,7 +97,6 @@ ioBrokerЗначение = MegaЗначение * Множитель + Сдви�
 
 Только аналоговые порты принимают во внимание Множитель и Сдвиг.
 
-**Порядок портов очень важен. Порт в первой колонке таблицы ассоциируется с портом P0 на MegaD-2561. Порт в колонке 14 с P13.**          
 
 ### Отправка SMS
 Сохраните текст SMS в переменную megadjt.0.sms.text с признаком ack:false
@@ -133,6 +107,19 @@ ioBrokerЗначение = MegaЗначение * Множитель + Сдви�
 Для отправки SMS в настройках драйвера надо включить галочку "Включить отправку SMS".
           
 ## Changelog
+
+### 0.16.29 (2017-11-25)
+* (filippovsky) 
+Реализовано считывание данных о портах с Меги в ioBroker.
+При сохранении настроек порта - настройки порта сразу сохраняются и в Меге.
+Обработка событий от порта пока не реализована!
+Кнопка "записать настройки в Мегу" - пока не реализована, не пользуйтесь ей!
+!! на данный момент поддерживаются ТОЛЬКО тип порта "не подключен" (NC) и стандартный вход (IN).
+!! Все остальные порты временно распознаются как NC.
+!! Это важно: При считывании настроек с Меги и записи настроек обратно - все порты Меги кроме NC и IN перейдут НА МЕГЕ в состояние NC !
+
+!! Тестируется на версии прошивки Меги 4.14b8, поэтому настрйоки, реализованные в более свежих прошивках - не поддерживаются!
+
 ### 0.14.0 (2017-11-12)
 * (filippovsky) добавлена поддержка отправки SMS-сообщений
 
