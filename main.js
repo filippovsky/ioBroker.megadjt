@@ -519,8 +519,11 @@ By default working directory/adapter is "javascript.0".
       adapter.log.debug('Каталог адаптера: '+ dir );
    }
 
-   adapter.log.debug('считываем настройки Меги из файла '+adapter.namespace +' -- '+dir + '/firmware/' + filename);
-   adapter.readFile ( adapter, dir + '/firmware/'+filename, '', function(error, data) {
+   adapter.log.debug('adapter.instance: '+ adapter.instance );
+
+   adapter.log.debug('считываем настройки Меги из файла '+adapter.namespace +' -- '+dir + '/firmware/' + adapter.instance + '_' + filename);
+//   adapter.readFile ( adapter, dir + '/firmware/'+adapter.instance + '_' + filename, '', function(error, data) {
+   adapter.readFile ( dir + '/firmware/'+adapter.instance + '_' + filename, '', function(error, data) {
            adapter.log.error( 'Error:' + error );
            adapter.log.debug( 'Data:' + data );
      }
@@ -535,8 +538,8 @@ function readMegaConfig2File( filename ) {
    var ip = parts[0];
    var pass = adapter.config.password;
    var cmd = '';
-   var filename1 = filename || 'last.cfg';
-   var uplevel = '../../';
+   var filename1 = adapter.instance + '_' + filename || adapter_instance + '_last.cfg';
+   //var uplevel = '../../';
    
    var dir ='';
    adapter.log.info('Считываем настройки Меги ip=' + ip );
@@ -557,7 +560,7 @@ function readMegaConfig2File( filename ) {
    //var dir1 = '../../files/iobroker.megadjt' ;
 
 //   cmd = 'mkdir '+dir+'/'+dir1+'|chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --ip '+ip+' --read-conf '+dir1+'/'+filename1+' -p '+pass;
-   adapter.log.debug('Каталог конфига: '+dir );
+   adapter.log.debug('Каталог конфига: '+dir +' Файл: ' + filename1 );
    cmd = 'chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --ip '+ip+' --read-conf '+filename1+' -p '+pass;
 
    adapter.log.debug(cmd);
@@ -576,6 +579,7 @@ function readMegaConfig2File( filename ) {
            adapter.log.error( stderr );
         }
         adapter.log.info('Настройки Меги считаны в файл '+filename1);
+        ReadFileMegaConfig( filename1 );
 /*
 //        var cmd1 = 'cd '+dir+'|cd '+uplevel+'|cd etc|mkdir iobroker.megadjt|cd '+dir+'|cp --remove-destination ./'+filename1+' '+uplevel+'etc/iobroker.megadjt/'+filename1;
         var cmd1 = 'mkdir -p '+uplevel+'etc/iobroker.megadjt|cp --remove-destination ./'+filename1+' '+uplevel+'etc/iobroker.megadjt/'+filename1;
@@ -1198,7 +1202,7 @@ function detectDeviceConfig(ip, pass, callback) {
     //-------------------------------------------------------
     readMegaConfig2File( 'last.cfg' );
 
-    ReadFileMegaConfig( 'last.cfg' ); // ?
+    //ReadFileMegaConfig( 'last.cfg' ); // ?
 
 }
 
