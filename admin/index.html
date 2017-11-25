@@ -2448,7 +2448,7 @@ var cPortMode_ClickMode = 'ClickMode';
                 showMessage(msg.error, _('Error'), 'alert');
                 return;
              }
-          
+             showMessage('Состояние порта сохранено', _('Error'), 'alert');
           }
         );
     }
@@ -2814,7 +2814,6 @@ var cPortMode_ClickMode = 'ClickMode';
             $('#ipchange').button('disable');
             $('#updateFirmware').button('disable');
 
-            //sendTo(null, 'detectPorts', {ip: ip, password: pass}, function (msg) {
             sendTo(null, 'readCfgFromMega', {ip: ip, password: pass}, function (msg) {
 
                 $('#write').button('enable');

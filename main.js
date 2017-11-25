@@ -71,8 +71,6 @@ var cDigitalSensorTypeWiegand26   = 'Wiegand26';
 
 
 //            var settings = adapter.config.ports[p];
-//adapter.log.info('Create state test ');
-//                    adapter.setState( 'fw_version_last_known', {val: fw_version_actual, ack: true});
 
 
 //-------------------------------------------------------------------------------------------------------------------
@@ -541,9 +539,9 @@ function parseMegaCfgLine ( line ) {
    }
 
    if (!pn) return; 
-   if ((!af) || (af == 'ð') || (af == 0) || (af == '0')) af = false;
-   if ((!naf) || (naf == 'ð') || (naf == 0) || (naf == '0')) naf = false;
-   if ((!misc) || (misc == 'ð') || (misc == 0) || (misc == '0')) misc = false;
+   if ((!af) || (af == 'ð=') || (af == 0) || (af == '0')) af = false;
+   if ((!naf) || (naf == 'ð=') || (naf == 0) || (naf == '0')) naf = false;
+   if ((!misc) || (misc == 'ð=') || (misc == 0) || (misc == '0')) misc = false;
 
 /* здесь хорошо бы проверить на соответствие исполнительного модуля
    adapter.getState( adapter.namespace + '.controller.xp1model',
@@ -3107,6 +3105,87 @@ function savePort(obj) {
       }
    );
 
+   //---------- передаем данные в Мегу
+   var url = 'pn=' + portNum;
+   if ( portType == cPortType_NotConnected ) {
+      url += '&pty='+cNPortType_NotConnected;
+   } else if ( portType == cPortType_StandartIn ) {
+      url += '&pty='+cNPortType_StandartIn;
+      url += '&ecmd='+encodeURIComponent((defaultAction || '').trim())
+      url += '&eth='+encodeURIComponent((netAction || '').trim())
+      url += '&disp=' + displayPort;
+      if (defaultRunAlways) {
+         url += '&af=1';
+      } else {
+         url += '&af='; // ?
+      }
+      if (netRunOnlyWhenServerOut) {
+         url += '&naf=1';
+      } else {
+         url += '&naf='; // ?
+      }
+      if (send2ServerAlwaysPressRelease) {
+         url += '&misc=1';
+      } else {
+         url += '&naf='; // ?
+      }
+      if (tremorDefenceDisabled) {
+         url += '&d=1';
+      } else {
+         url += '&d='; // ?
+      }
+      if ( portMode == cPortMode_PressOnly ) {
+         url += '&m=' + cNPortMode_PressOnly;
+      } else if ( portMode == cPortMode_PressAndRelease ) {
+         url += '&m=' + cNPortMode_PressAndRelease;
+      } else if ( portMode == cPortMode_ReleaseOnly ) {
+         url += '&m=' + cNPortMode_ReleaseOnly;
+      } else if ( portMode == cPortMode_ClickMode ) {
+         url += '&m=' + cNPortMode_ClickMode;
+      }
+   } else {
+      url += '&pty='+cNPortType_NotConnected;
+   }
+
+
+/*
+var cNPortType_StandartIn  = '0';    
+var cNPortType_Out = '1';           
+var cNPortType_DigitalSensor  = '3';
+var cNPortType_I2C  = '4';
+var cNPortType_AnalogSensor  = '2'; 
+
+      adapter.setState( nodeName + '.defaultState', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.digitalSensorType', {val: '', ack: true}); 
+*/
+    // ----- открываем соединение и передаем данные в Мегу ------------------------------------
+    var parts = adapter.config.ip.split(':');
+
+    var options = {
+        host: parts[0],
+        port: parts[1] || 80,
+        path: '/' + adapter.config.password +'/?' + url
+    };
+
+    http.get(options, function (res) {
+        res.setEncoding('utf8');
+        var data = '';
+        res.on('data', function (chunk) {
+            data += chunk;
+        });
+        res.on('end', function () {
+            if (res.statusCode != 200) {
+                adapter.log.warn('Response code: ' + res.statusCode + ' - ' + data);
+                if (obj.callback)  obj.callback(res.statusCode, data); 
+            } else {
+                adapter.log.debug('Response: ' + data);
+                if (obj.callback)  obj.callback(null, data);
+            }
+
+        });
+    }).on('error', function (err) {
+       if (obj.callback)  obj.callback(err, null);
+    });
 
 }
 
