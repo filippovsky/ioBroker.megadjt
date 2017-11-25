@@ -2418,7 +2418,7 @@ var cPortMode_ClickMode = 'ClickMode';
        $('#autoDetect').button('disable');
        $('#ipchange').button('disable');
        $('#updateFirmware').button('disable');
-       $('#savePortBtn').button('disable');
+       //$('#savePortBtn').button('disable');
 
         var numXP = 0;
         if ( controlPort < 15 ) {
@@ -2459,7 +2459,7 @@ var cPortMode_ClickMode = 'ClickMode';
              $('#autoDetect').button('enable');
              $('#ipchange').button('enable');
              $('#updateFirmware').button('enable');
-             $('#savePortBtn').button('enable');
+             //$('#savePortBtn').button('enable');
 
              if (!msg || msg.error) {
                 showMessage(msg.error, _('Error'), 'alert');
