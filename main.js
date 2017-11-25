@@ -3167,31 +3167,39 @@ var cNPortType_AnalogSensor  = '2';
         path: '/' + adapter.config.password +'/?' + url
     };
 
-    http.get(options, function (res) {
+    // делаем паузу
+    //setTimeout(function () {
+      adapter.log.debug('Отправляем новые настройки на Мегу');
+      http.get(options, function (res) {
         res.setEncoding('utf8');
         var data = '';
         res.on('data', function (chunk) {
             data += chunk;
         });
         res.on('end', function () {
+            adapter.log.debug('Получили ответ Меги:' + data);
             if (res.statusCode != 200) {
                 adapter.log.warn('Response code: ' + res.statusCode + ' - ' + data);
                 if (obj.callback) {
                    adapter.sendTo(obj.from, obj.command, {error: res.statusCode, response: data}, obj.callback);
                 }
             } else {
-                adapter.log.debug('Response: ' + data);
-                if (obj.callback) {
-                   adapter.sendTo(obj.from, obj.command, {error: '', response: data}, obj.callback);
-                }
+                adapter.log.debug('Пауза для перезапуска Меги ... ');
+                setTimeout(function () {
+                  adapter.log.debug('Пауза истекла ... ');
+                  if (obj.callback) {
+                     adapter.sendTo(obj.from, obj.command, {error: '', response: data}, obj.callback);
+                  }
+                }, 3000);
             }
 
         });
-    }).on('error', function (err) {
+      }).on('error', function (err) {
+        adapter.log.error( err );
         if (obj.callback) {
            adapter.sendTo(obj.from, obj.command, {error: err, response: null}, obj.callback);
         }
-    });
+      });
 
 }
 
