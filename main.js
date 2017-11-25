@@ -523,11 +523,29 @@ By default working directory/adapter is "javascript.0".
 
    adapter.log.debug('считываем настройки Меги из файла '+adapter.namespace +' -- '+dir + '/firmware/' + adapter.instance + '_' + filename);
    //adapter.readFile ( dir + '/firmware/'+adapter.instance + '_' + filename, '', function(error, data) {
-   adapter.readFile ( '/firmware/'+adapter.instance + '_' + filename, '', function(error, data) {
+
+   fs.readFile ( dir + '/firmware/'+adapter.instance + '_' + filename, function(error, data) {
            adapter.log.error( 'Error:' + error );
            adapter.log.debug( 'Data:' + data );
      }
-   );
+   ); 
+/*
+
+            adapter.readFile(id, url, null, function (err, buffer, mimeType) {
+                if (!buffer || err) {
+                    res.contentType('text/html');
+                    res.status(404).send('File ' + url + ' not found');
+                } else {
+                    if (mimeType) {
+                        res.contentType(mimeType['content-type'] || mimeType);
+                    } else {
+                        res.contentType('text/javascript');
+                    }
+                    res.send(buffer);
+                }
+            });
+  */
+
 }
 
 
@@ -3026,6 +3044,39 @@ function main() {
     adapter.subscribeStates('*');
     processMessages(true);
 }
+//-------------------------------------------------------------------------------------------------------
+/*
+function readLink(link, callback) {
+    if (link.match(/^https?:\/\//)) {
+        request = request || require('request');
 
+        adapter.log.debug('Request URL: ' + link);
+        request(link, function (error, response, body) {
+            callback(!body ? error || JSON.stringify(response) : null, body, link);
+        });
+    } else {
+        path = path || require('path');
+        fs   = fs   || require('fs');
+        link = link.replace(/\\/g, '/');
+        if (link[0] !== '/' && !link.match(/^[A-Za-z]:/)) {
+            link = path.normalize(__dirname + '/../../' + link);
+        }
+        adapter.log.debug('Read file: ' + link);
+        if (fs.existsSync(link)) {
+            var data;
+            try {
+                data = fs.readFileSync(link);
+            } catch (e) {
+                adapter.log.error('Cannot read file "' + link + '": ' + e);
+                callback(e, null, link);
+                return;
+            }
+            callback(null, data, link);
+        } else {
+            callback('File does not exist', null, link);
+        }
+    }
+}
+*/
 
 
