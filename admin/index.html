@@ -462,8 +462,8 @@ span:hover::before {
    var active    = false;
    var megadjt_setup = [];   
    var portsColor = [];
-   var SelectedPort = 0;
-   var SelectedPortXP = 1;
+   var SelectedPortXP1 = 0;
+   var SelectedPortXP2 = 0;
 
 //   var portState = [];
 
@@ -707,9 +707,7 @@ var cPortMode_ClickMode = 'ClickMode';
         $('#xp1model').change(function () {
             showXP( 1 );
             imagePorts( 1 );
-            if ( SelectedPortXP == 1 ) { 
-               selectPort( SelectedPortXP, SelectedPort ); // перерисовываем данные о уже выбраном порту
-            }
+            selectPort( 1, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
             $('#xp1model').val($(this).val()).trigger('change');
         });
 
@@ -727,15 +725,14 @@ var cPortMode_ClickMode = 'ClickMode';
         $('#xp2model').change(function () {
             showXP( 2 );
             imagePorts( 2 );
-            if ( SelectedPortXP == 2 ) { 
-               selectPort( SelectedPortXP, SelectedPort ); // перерисовываем данные о уже выбраном порту
-            }
+            selectPort( 2, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
             $('#xp2model').val($(this).val()).trigger('change');
         });
 
         imagePorts( 1 );
         imagePorts( 2 );
-        selectPort( SelectedPortXP, SelectedPort ); // перерисовываем данные о уже выбраном порту
+        selectPort( 1, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
+        selectPort( 2, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
 
          //onchange();
       });
@@ -2265,12 +2262,13 @@ var cPortMode_ClickMode = 'ClickMode';
        var divMoreId = 'xp' + numXP + '_more';
        var controlPort = portNum;
        var portNumTxt  = portNum;
-       SelectedPort = portNum;
-       SelectedPortXP = numXP;
 
 
        if (numXP == 2) {
           controlPort = 15 + portNum;
+          SelectedPortXP2 = portNum;
+       } else if ( numXP == 1 ) {
+          SelectedPortXP1 = portNum;
        }
 
        var xp = $("#xp"+numXP+"model option:selected").val();
@@ -2441,6 +2439,8 @@ var cPortMode_ClickMode = 'ClickMode';
        var newSend2ServerAlwaysPressRelease = $('#miscXP' + numXP ).val();
        var newTremorDefenceDisabled = $('#RawXP' + numXP ).val();
        var newDisplayPort = $('#dispXP' + numXP ).val();
+       var xp1model = $('#xp1model').val();
+       var xp2model = $('#xp2model').val();
 
        sendTo(null, 'savePort', {  portNum: controlPort, 
                                       room: newroom, 
@@ -2453,7 +2453,10 @@ var cPortMode_ClickMode = 'ClickMode';
                                   portMode: newPortMode,
                                   send2ServerAlwaysPressRelease: newSend2ServerAlwaysPressRelease,
                                   tremorDefenceDisabled: newTremorDefenceDisabled,
-                                  displayPort: newDisplayPort
+                                  displayPort: newDisplayPort,
+                                       numXP: numXP,
+                                     xp1model: xp1model,
+                                     xp2model: xp2model
                                 }, 
           function (msg) {
              $('#write').button('enable');
@@ -2772,7 +2775,8 @@ var cPortMode_ClickMode = 'ClickMode';
 
         imagePorts(1);//?
         imagePorts(2); //?
-        selectPort( SelectedPortXP, SelectedPort );
+        selectPort( 1, SelectedPortXP1 );
+        selectPort( 2, SelectedPortXP2 );
 
         onChange(false);
         //$('#xp1model').onChange();
@@ -2949,7 +2953,8 @@ var cPortMode_ClickMode = 'ClickMode';
               */
                 imagePorts( 1 ); //?
                 imagePorts( 2 ); //?
-                selectPort( SelectedPortXP, SelectedPort ); // перерисовываем данные о уже выбраном порту
+                selectPort( 1, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
+                selectPort( 2, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
 
                 onchange();
 

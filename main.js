@@ -2933,6 +2933,9 @@ function savePort(obj) {
    adapter.log.debug( 'obj.message.send2ServerAlwaysPressRelease = '+ obj.message.send2ServerAlwaysPressRelease );
    adapter.log.debug( 'obj.message.tremorDefenceDisabled = '+ obj.message.tremorDefenceDisabled );
    adapter.log.debug( 'obj.message.displayPort = '+ obj.message.displayPort );
+   adapter.log.debug( 'obj.message.numXP = '+ obj.message.numXP );
+   adapter.log.debug( 'obj.message.xp1model = '+ obj.message.xp1model );
+   adapter.log.debug( 'obj.message.xp2model = '+ obj.message.xp2model );
 
    var portNum = obj.message.portNum;
    var room    = obj.message.room;
@@ -2946,6 +2949,9 @@ function savePort(obj) {
    var send2ServerAlwaysPressRelease = obj.message.send2ServerAlwaysPressRelease;
    var tremorDefenceDisabled = obj.message.tremorDefenceDisabled;
    var displayPort = obj.message.displayPort;
+   var numXP = obj.message.numXP;
+   var xp1model = obj.message.xp1model;
+   var xp2model = obj.message.xp2model;
 
    if (defaultRunAlways == 1) {
       defaultRunAlways = true;
