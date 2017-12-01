@@ -81,11 +81,13 @@ var cPortMode_PressOnly = 'PressOnly';
 var cPortMode_PressAndRelease = 'PressAndRelease';
 var cPortMode_ReleaseOnly = 'ReleaseOnly';
 var cPortMode_ClickMode = 'ClickMode';
+var cPortMode_SW = 'Switch';
 
 var cNPortMode_PressOnly = '0';
 var cNPortMode_PressAndRelease = '1';
 var cNPortMode_ReleaseOnly = '2';
 var cNPortMode_ClickMode = '3';
+var cNPortMode_SW = '0';
 
 var cDigitalSensorTypeDS18B20 = 'DS18B20';
 var cDigitalSensorTypeDHT11   = 'DHT11';
@@ -572,7 +574,7 @@ function parseMegaCfgLine ( line ) {
       if ( state == 'af'   )    af   = value;
       if ( state == 'eth'  )    eth  = value || '';
       if ( state == 'naf'  )    naf  = value;
-      if ( state == 'm'    )    m    = value || cNPortMode_PressOnly;
+      if ( state == 'm'    )    m    = value || 0;
       if ( state == 'misc' )    misc = value;
       if ( state == 'd'    )    d    = value;
       if ( state == 'disp' )    disp = value || '';
@@ -658,7 +660,7 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.displayPort', {val: '', ack: true}); 
       adapter.setState( nodeName + '.defaultState', {val: '', ack: true}); 
       adapter.setState( nodeName + '.digitalSensorType', {val: '', ack: true}); 
-   } else if ( pty == cNPortType_Out ) {
+   } else if (( pty == cNPortType_Out ) && ( m == cNPortMode_SW )) {
 //    TO DO: Здесь надо как-то распознавать еще симисторные и димируемые выходы с тем же pty
       adapter.log.debug('Настраиваем порт '+pn+' как релейный выход');
       adapter.setState( nodeName + '.portType', {val: cPortType_ReleOut, ack: true});
@@ -668,7 +670,7 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.defaultRunAlways', {val: false, ack: true}); 
       adapter.setState( nodeName + '.netAction', {val: '', ack: true}); 
       adapter.setState( nodeName + '.netRunOnlyWhenServerOut', {val: false, ack: true}); 
-      adapter.setState( nodeName + '.portMode', {val: cPortMode_PressOnly, ack: true}); 
+      adapter.setState( nodeName + '.portMode', {val: cPortMode_SW, ack: true}); 
       adapter.setState( nodeName + '.send2ServerAlwaysPressRelease', {val: false, ack: true}); 
       adapter.setState( nodeName + '.tremorDefenceDisabled', {val: false, ack: true}); 
       adapter.setState( nodeName + '.displayPort', {val: '', ack: true}); 
@@ -3269,7 +3271,8 @@ function savePort(obj) {
       }
    } else if ( portType == cPortType_ReleOut ) {
       url += '&pty='+cNPortType_Out;
-      url += '&ecmd=&eth=&disp=&af=&naf=&misc=&m='; //?
+      url += '&ecmd=&eth=&disp=&af=&naf=&misc='; //?
+      url += '&m=' + cNPortMode_SW ; 
       if (defaultState) {
          url += '&d=1';
       } else {
