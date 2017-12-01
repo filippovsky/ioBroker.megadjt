@@ -30,11 +30,13 @@ ToDO:
     - проверять типы  портов на  соответствие исполнительному модулю. При несоответствии делаем NC.
  надо продумать проверку разных типов выходов, соответствующих одному типу pty (симисторы/реле/ШИМ)
 
-- если порт переводим  в NC - хорошо бы его принудительно выключить xx:0 
+-(?) если порт переводим  в NC - хорошо бы его принудительно выключить xx:0 
 
 - релизовать оставшиеся типы портов
 
 - реализовать st=1, опрос портов, обработку команд, обработку srvloop, отправку команд
+
+- реализовать корректную привязку func и room
 
 */
 
@@ -3393,6 +3395,7 @@ function getXPmodel ( numXP ) {
 }
 */
 //--------------------------------------------------------------------------
+/*
 function isPortTypeCorrect ( portXPNum, numXP, portType ) {
 // portXPnum  - порт конкретного исполнительного модуля, начиная с 0
    var name;
@@ -3406,7 +3409,7 @@ function isPortTypeCorrect ( portXPNum, numXP, portType ) {
       name = 'control';
    }
 
-   if ( name <> 'control' ) {
+   if ( name !== 'control' ) {
       adapter.getState( name, { return function (err, state) {
           if ( !state ) return false;
           xpModel = state.val;
@@ -3558,6 +3561,7 @@ function isPortTypeCorrect ( portXPNum, numXP, portType ) {
      }
    }
 }
+*/
 //---------------------------------------------------------------------------
 /*
 function ptyNum2Char( ptyNum ) {
