@@ -17,6 +17,27 @@
  *      http://ioBroker:8090/?pt=6  , where 6 is the port number
  *
  */
+/* 
+ветки входов для настроек портов:
+savePort - изменение в интерфейсе настроек драйвера
+parseMegaCfgLine - загрузка из файла настроек
+- изменение типа исполнительного модуля в интерфейсе настроек
+- получение настроек портов из Меги - сводится к parseMegaCfgLine 
+- запись настроек из файла в мегу (?)
+----------------------------
+ToDO: 
+- при смене типа исполнительного модуля, при чтении конфигурации из Меги, и при чтении из файла :
+    - проверять типы  портов на  соответствие исполнительному модулю. При несоответствии делаем NC.
+ надо продумать проверку разных типов выходов, соответствующих одному типу pty (симисторы/реле/ШИМ)
+
+- если порт переводим  в NC - хорошо бы его принудительно выключить xx:0 
+
+- релизовать оставшиеся типы портов
+
+- реализовать st=1, опрос портов, обработку команд, обработку srvloop, отправку команд
+
+*/
+
 /* jshint -W097 */// jshint strict:false
 /*jslint node: true */
 "use strict";
@@ -31,7 +52,7 @@ var ports  = {};
 ///var askInternalTemp = false;
 var ask1WireTemp = false;   //1Wire
 var connected = false;
-var fw_version_actual = "4.19b9";
+var fw_version_actual = "4.20b1";
 
 var adapter = utils.adapter(  'megadjt' );
 var sms_ru  = require('sms_ru');
@@ -68,6 +89,17 @@ var cDigitalSensorTypeDHT22   = 'DHT22';
 var cDigitalSensorTypeMarine  = 'iButton/EMMarine';
 var cDigitalSensorType1WBus   = '1WireBUS';
 var cDigitalSensorTypeWiegand26   = 'Wiegand26';
+
+var cXPModelNone   = 'none';
+var cXPModel7I7OR  = '7I7O-R';
+var cXPModel7I7OSD = '7I7O-SD';
+var cXPModel8I7OS  = '8I7O-S';
+var cXPModel8I7OSD = '8I7O-SD';
+var cXPModel14In   = '14-IN';
+var cXPModel14R1   = '14-Rv1.0';
+var cXPModel14R2   = '14-Rv2.0';
+var cXPModel2R     = '2R';
+
 
 
 //            var settings = adapter.config.ports[p];
@@ -501,7 +533,7 @@ function readLineFromMegaCfgLine( line ) {
 }
 */
 //---------------------------------------------------------------------------------------------------------
-// разбираем файл настроек Иеги и выставляем значения параметров
+// разбираем файл настроек Меги и выставляем значения параметров
 function parseMegaCfgLine ( line ) {
    var parts = [];
    var param = [];
@@ -519,6 +551,9 @@ function parseMegaCfgLine ( line ) {
    var m;
    var nodeName;
    var name;
+   var portXPNum;
+   var port_number;
+   var numXP;
 
    adapter.log.debug('Распознание строки настройки: '+line);
    parts = line.split('&');
@@ -544,11 +579,28 @@ function parseMegaCfgLine ( line ) {
    if ((!misc) || (misc == 'ð=') || (misc == 0) || (misc == '0')) misc = false;
 
 /* здесь хорошо бы проверить на соответствие исполнительного модуля
-   adapter.getState( adapter.namespace + '.controller.xp1model',
-      function (err, state ) {
-         if ( pty == cNPortType_StandartIn )
-      }
-   );
+
+   adapter.log.debug('pn = ' + pn );
+   port_number = parseInt( pn, 10 );
+   adapter.log.debug('port_number = ' + port_number );
+   if ( port_number < 15 ) {
+      portXPNum = port_number;
+      numXP = '1';
+   } else if ( port_number < 30 ) {
+      portXPNum = port_number - 15;
+      numXP = '2';
+   } else {
+      portXPNum = port_number;
+      numXP = 'control';
+   }
+   adapter.log.debug('portXPNum = ' + portXPNum );
+   adapter.log.debug('numXP = ' + numXP );
+   if ( isPortTypeCorrect( portXPNum, numXP, pty ) ) {
+   } else {
+       pty = cNPortType_NotConnected
+
+   isPortTypeCorrect ( portXPNum, numXP, portType ) 
+
 */
 
 
@@ -577,6 +629,7 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.digitalSensorType', {val: '', ack: true}); 
    } else /*if ( pty == cNPortType_NotConnected )*/ {
 // остальные типы портов пока не реализованы, пишем их как неподключенные
+/* ToDO: если порт переводим  в NC - хорошо бы его принудительно выключить xx:0 */
       adapter.log.debug('Настраиваем порт '+pn+' как неподключенный');
       adapter.setState( nodeName + '.portType', {val: cPortType_NotConnected, ack: true});
       adapter.setState( nodeName + '.counter', {val: 0, ack: true});
@@ -3009,6 +3062,7 @@ function savePort(obj) {
    );
 
    if ( portType == cPortType_NotConnected ) {
+/* ToDO: если порт переводим  в NC - хорошо бы его принудительно выключить xx:0 */
       defaultAction = '';
       defaultRunAlways = false;
       netAction = '';
@@ -3155,7 +3209,6 @@ function savePort(obj) {
 
 
 /*
-var cNPortType_StandartIn  = '0';    
 var cNPortType_Out = '1';           
 var cNPortType_DigitalSensor  = '3';
 var cNPortType_I2C  = '4';
@@ -3318,3 +3371,213 @@ function readCfgFromMega ( obj ) {
         if (obj.callback) adapter.sendTo(obj.from, obj.command, {error: 'invalid address'}, obj.callback);
     }
 }
+//------------------------------------------------------------------------
+/*
+function getXPmodel ( numXP ) {
+   var Ret  = cXPModelNone ;
+   var name = '';
+   if ( numXP == 1 || numXP == '1' ) {
+      name = 'controller.xp1model';
+   } else if ( numXP == 2 || numXP == '2' ) {
+      name = 'controller.xp2model';
+   } else {
+      return cXPModelNone;
+   }
+
+   adapter.getState( name, function (err, state) {
+      if ( state ) Ret = state.value;
+      return Ret;
+   });
+   adapter
+   return Ret;
+}
+*/
+//--------------------------------------------------------------------------
+function isPortTypeCorrect ( portXPNum, numXP, portType ) {
+// portXPnum  - порт конкретного исполнительного модуля, начиная с 0
+   var name;
+   var xpModel;
+
+   if ( numXP == 1 || numXP == '1' ) {
+      name = 'controller.xp1model';
+   } else if ( numXP == 2 || numXP == '2' ) {
+      name = 'controller.xp2model';
+   } else {
+      name = 'control';
+   }
+
+   if ( name <> 'control' ) {
+      adapter.getState( name, { return function (err, state) {
+          if ( !state ) return false;
+          xpModel = state.val;
+          if ( portType == cPortType_NotConnected ) return true;
+          switch ( xpModel ) {
+             case cXPModelNone:
+                if ( portType <> cPortType_NotConnected ) return false;
+                break;
+
+             case cXPModel7I7OR:
+                if ( portXPNum > 13 ) return false;
+                if ( portXPNum < 7 ) {
+                   if ( portType == cPortType_StandartIn ) {
+                      return true;
+                   } else {
+                      return false;
+                   }
+                } else {
+                    if ( portType == cPortType_ReleOut ) {
+                       return true;
+                    } else {
+                       return false;
+                    }
+                }
+
+             case cXPModel7I7OSD:
+                if ( portXPNum > 13 ) return false;
+                if ( portXPNum < 7 ) {
+                   if ( portType == cPortType_StandartIn ) {
+                      return true;
+                   } else {
+                      return false;
+                   }
+                } else if ( portXPNum == 10 || portXPNum == 12 || portXPNum == 13 ) {
+                   if ( portType == cPortType_DimmedOut ) {
+                      return true;
+                   } else {
+                      return false;
+                   }
+                } else {
+                    if ( portType == cPortType_SimistorOut ) {
+                       return true;
+                    } else {
+                       return false;
+                    }
+                }
+
+             case cXPModel8I7OS:
+                if ( portXPNum > 14 ) return false;
+                if ( portXPNum < 7 ) {
+                   if ( portType == cPortType_StandartIn ) {
+                      return true;
+                   } else {
+                      return false;
+                   }
+                } else if ( portXPNum < 14 ) {
+                   if ( portType == cPortType_SimistorOut ) {
+                      return true;
+                   } else {
+                      return false;
+                   }
+                } else {
+                    if ( portType == cPortType_DigitalSensor ) {
+                       return true;
+                    } else {
+                       return false;
+                    }
+                }
+
+
+             case cXPModel8I7OSD:
+                if ( portXPNum > 14 ) return false;
+                if ( portXPNum < 7 ) {
+                   if ( portType == cPortType_StandartIn ) {
+                      return true;
+                   } else {
+                      return false;
+                   }
+                } else if ( portXPNum == 10 || portXPNum == 12 || portXPNum == 13 ) {
+                   if ( portType == cPortType_DimmedOut ) {
+                      return true;
+                   } else {
+                      return false;
+                   }
+                } else if ( portXPNum < 14 ) {
+                   if ( portType == cPortType_SimistorOut ) {
+                      return true;
+                   } else {
+                      return false;
+                   }
+                } else {
+                    if ( portType == cPortType_DigitalSensor ) {
+                       return true;
+                    } else {
+                       return false;
+                    }
+                }
+
+             case cXPModel14In:
+                if ( portXPNum > 13 ) return false;
+                if ( portType == cPortType_StandartIn ) return true;
+                if ( portType == cPortType_DigitalSensor ) return true;
+                if ( portType == cPortType_I2C ) return true;
+                if ( portXPNum <= 5 ) {
+                   if ( portType == cPortType_AnalogSensor ) {
+                      return true;
+                   }
+                } 
+                return false;
+                break;
+
+             case cXPModel14R1:
+                if ( portXPNum > 13 ) return false;
+                if ( portType == cPortType_ReleOut ) return true;
+                return false;
+                break;
+
+             case cXPModel14R2:
+                if ( portXPNum > 14 ) return false;
+                if ( portXPNum < 14 ) {
+                   if ( portType == cPortType_ReleOut ) return true;
+                } else {
+                   if ( portType == cPortType_DigitalSensor ) return true;
+                }
+                return false;
+                break;
+
+             case cXPModel2R:
+                if ( portXPNum > 1 ) return false;
+                if ( portType == cPortType_ReleOut ) return true;
+                return false;
+                break;
+
+             default:
+                    return false;
+          }
+        }
+      });
+
+   } else {
+     // control
+     if ( portXPNum < 36 ) {
+        if ( portType == cPortType_DigitalSensor ) return true;
+        if ( portType == cPortType_I2C ) return true;
+        return false;
+     } else {
+        if ( portType == cPortType_AnalogSensor ) return true;
+        return false;
+     }
+   }
+}
+//---------------------------------------------------------------------------
+/*
+function ptyNum2Char( ptyNum ) {
+   switch (ptyNum) {
+      case cNPortType_NotConnected: return cPortType_NotConnected;
+      case cNPortType_StandartIn:   return cPortType_StandartIn;
+
+var cNPortType_Out = '1';           
+var cNPortType_DigitalSensor  = '3';
+var cNPortType_I2C  = '4';
+var cNPortType_AnalogSensor  = '2'; 
+
+
+var cPortType_NotConnected = 'NotConnected'; //255
+var cPortType_StandartIn  = 'StandartIn';    //0
+var cPortType_ReleOut = 'ReleOut';           //1
+var cPortType_DimmedOut = 'DimmedOut'; //1
+var cPortType_SimistorOut = 'SimistorOut'; //1
+var cPortType_DigitalSensor  = 'DigitalSensor'; //3 цифровой вход dsen
+var cPortType_I2C  = 'I2C'; // 4 
+var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для аналоговых датчиков
+
+*/
