@@ -1469,7 +1469,6 @@ var cPortMode_ClickMode = 'ClickMode';
         //portState[ controlPort ] = pty;
         portsColor[ controlPort ] = pty;
 
-        
         loadPresetSub( numXP, port ); // при изменении типа порта перерисовываем его описание
     }
     //--------------------------------------------------------------------------------
@@ -1592,16 +1591,27 @@ var cPortMode_ClickMode = 'ClickMode';
         document.getElementById( "lblafXP" + numXP ).innerHTML = text;
     }
     //--------------------------------------------------------------------------------
-    function d2Changed ( controlPort ) {
+    function defaultStateChanged ( controlPort ) {
         var text = "";
-        if ( $("#d"+controlPort ).prop('checked') ) {
-           ports[controlPort].d = 1;
+        var numXP = 0;
+        if ( controlPort < 15 ) {
+           numXP = 1;
+        } else if ( controlPort < 30 ) {
+           numXP = 2;
+        } else {
+           numXP = 0;
+        }
+
+        if ( $('#defaultStateXP'+numXP ).prop('checked') ) {
+           //ports[controlPort].d = 1;
+           $('#defaultStateXP' + numXP).val( 1 );
            text = 'Включено по умолчанию';
         } else {
-           ports[controlPort].d = 0;
+           //ports[controlPort].d = 0;
+           $('#defaultStateXP' + numXP).val( 0 );
            text = 'Выключено по умолчанию';
         }
-        document.getElementById( "lbl" + controlPort ).innerHTML = text; //?lbl
+        document.getElementById( "lblDefaultStateXP" + numXP ).innerHTML = text; //?lbl
     }
     //--------------------------------------------------------------------------------
     function MiscChanged ( controlPort ) {
@@ -1765,6 +1775,18 @@ var cPortMode_ClickMode = 'ClickMode';
        socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.displayPort', function (err, state) {
           if (state) {
               $("#dispXP"+numXP).val( state.val );
+          }
+       });
+
+       socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.defaultState', function (err, state) {
+          if (state) {
+              if ( state.val == true || state.val == 'true') {
+                 $('#defaultStateXP' + numXP ).prop('checked', true);
+                 $("#defaultStateXP" + numXP ).val( 1 );
+              } else {
+                 $('#defaultStateXP' + numXP ).removeAttr('checked');
+                 $("#defaultStateXP" + numXP).val( 0 );
+              }
           }
        });
 
@@ -2161,9 +2183,9 @@ var cPortMode_ClickMode = 'ClickMode';
 
            text += '<tr><td align="center" valign="middle">';
            text += spanDef + '</td><td align="left" valign="middle">';
-           text += '<input type="checkbox" class="checkbox" id="d'+controlPort+'" '+ (ports[controlPort].d ? 'checked' : '') + 
-                   ' onChange="d2Changed('+controlPort+');"/>&nbsp;';
-           text += '<label id="lbl'+controlPort+'" for="d'+controlPort+'">'+(ports[controlPort].d ? 'Включено по умолчанию' : 'Выключено по умолчанию') + '</label>';
+           text += '<input type="checkbox" class="checkbox" id="defaultStateXP'+numXP+'" '+ ( $('#defaultStateXP' + numXP ).val() ? 'checked' : '') + 
+                   ' onChange="defaultStateChanged('+controlPort+');"/>&nbsp;';
+           text += '<label id="lblDefaultStateXP'+numXP+'" for="defaultStateXP'+numXP+'">'+( $('#defaultStateXP' + numXP ).val() ? 'Включено по умолчанию' : 'Выключено по умолчанию') + '</label>';
            text += '</td></tr>';
 
         //-----------------------------------------------------------------------------
@@ -2441,6 +2463,7 @@ var cPortMode_ClickMode = 'ClickMode';
        var newDisplayPort = $('#dispXP' + numXP ).val();
        var xp1model = $('#xp1model').val();
        var xp2model = $('#xp2model').val();
+       var newDefaultState = $('#defaultStateXP' + numXP ).val();
 
        sendTo(null, 'savePort', {  portNum: controlPort, 
                                       room: newroom, 
@@ -2456,7 +2479,8 @@ var cPortMode_ClickMode = 'ClickMode';
                                   displayPort: newDisplayPort,
                                        numXP: numXP,
                                      xp1model: xp1model,
-                                     xp2model: xp2model
+                                     xp2model: xp2model,
+                                  defaultState: newDefaultState
                                 }, 
           function (msg) {
              $('#write').button('enable');

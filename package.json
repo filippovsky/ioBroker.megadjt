@@ -1,6 +1,6 @@
 {
   "name": "iobroker.megadjt",
-  "version": "0.16.38",
+  "version": "0.17.0",
   "description": "Lets control the MegaD-2561 over ethernet (http://www.ab-log.ru/smart-house/ethernet/megad-2561) from ioBroker",
   "author": {
     "name": "filippovsky",
@@ -40,7 +40,7 @@
   "license": "MIT",
   "readme": "![Logo](admin/megad.png)\nioBroker MegaD-2561 adapter\n=================\n\n[![NPM version](http://img.shields.io/npm/v/iobroker.megadjt.svg)](https://www.npmjs.com/package/iobroker.megadjt)\n[![Downloads](https://img.shields.io/npm/dm/iobroker.megadjt.svg)](https://www.npmjs.com/package/iobroker.megadjt)\n[![Tests](https://travis-ci.org/ioBroker/ioBroker.megadjt.svg?branch=master)](https://travis-ci.org/ioBroker/ioBroker.megadjt)\n\n[![NPM](https://nodei.co/npm/iobroker.megadjt.png?downloads=true)](https://nodei.co/npm/iobroker.megadjt/)\n\nLets control the [MegaD-2561](http://www.ab-log.ru/smart-house/ethernet/megad-2561) over ethernet.",
   "readmeFilename": "README.md",
-  "_id": "iobroker.megadjt@0.16.38",
+  "_id": "iobroker.megadjt@0.17.0",
   "_resolved": "https://github.com/filippovsky/ioBroker.megadjt/tarball/master/",
   "_from": "iobroker.megadjt@latest",
   "_npmVersion": "2.15.11",

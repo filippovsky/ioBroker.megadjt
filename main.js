@@ -26,6 +26,8 @@ parseMegaCfgLine - загрузка из файла настроек
 - запись настроек из файла в мегу (?)
 ----------------------------
 ToDO: 
+//    TO DO: parseMegaCfgLine =  надо как-то распознавать еще симисторные и димируемые выходы с тем же pty
+
 - при смене типа исполнительного модуля, при чтении конфигурации из Меги, и при чтении из файла :
     - проверять типы  портов на  соответствие исполнительному модулю. При несоответствии делаем NC.
  надо продумать проверку разных типов выходов, соответствующих одному типу pty (симисторы/реле/ШИМ)
@@ -556,6 +558,7 @@ function parseMegaCfgLine ( line ) {
    var portXPNum;
    var port_number;
    var numXP;
+   var defaultState;
 
    adapter.log.debug('Распознание строки настройки: '+line);
    parts = line.split('&');
@@ -576,6 +579,14 @@ function parseMegaCfgLine ( line ) {
    }
 
    if (!pn) return; 
+   if ( pn < 15 ) {
+      numXP = 1;
+   } else if ( port_number < 30 ) {
+      numXP = 2;
+   } else {
+      numXP = 0; //?
+   }
+
    if ((!af) || (af == 'ð=') || (af == 0) || (af == '0')) af = false;
    if ((!naf) || (naf == 'ð=') || (naf == 0) || (naf == '0')) naf = false;
    if ((!misc) || (misc == 'ð=') || (misc == 0) || (misc == '0')) misc = false;
@@ -629,6 +640,40 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.displayPort', {val: disp, ack: true}); 
       adapter.setState( nodeName + '.defaultState', {val: '', ack: true}); 
       adapter.setState( nodeName + '.digitalSensorType', {val: '', ack: true}); 
+   } else if ( pty == cNPortType_NotConnected ) {
+/* ToDO: если порт переводим  в NC - хорошо бы его принудительно выключить xx:0 */
+      adapter.log.debug('Настраиваем порт '+pn+' как неподключенный');
+      adapter.setState( nodeName + '.portType', {val: cPortType_NotConnected, ack: true});
+      adapter.setState( nodeName + '.counter', {val: 0, ack: true});
+      adapter.setState( nodeName + '.currentState', {val: false, ack: true}); 
+      adapter.setState( nodeName + '.room', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.func', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.defaultAction', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.defaultRunAlways', {val: false, ack: true}); 
+      adapter.setState( nodeName + '.netAction', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.netRunOnlyWhenServerOut', {val: false, ack: true}); 
+      adapter.setState( nodeName + '.portMode', {val: cPortMode_PressOnly, ack: true}); 
+      adapter.setState( nodeName + '.send2ServerAlwaysPressRelease', {val: false, ack: true}); 
+      adapter.setState( nodeName + '.tremorDefenceDisabled', {val: false, ack: true}); 
+      adapter.setState( nodeName + '.displayPort', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.defaultState', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.digitalSensorType', {val: '', ack: true}); 
+   } else if ( pty == cNPortType_ReleOut ) {
+//    TO DO: Здесь надо как-то распознавать еще симисторные и димируемые выходы с тем же pty
+      adapter.log.debug('Настраиваем порт '+pn+' как релейный выход');
+      adapter.setState( nodeName + '.portType', {val: cPortType_ReleOut, ack: true});
+      adapter.setState( nodeName + '.counter', {val: 0, ack: true});
+      adapter.setState( nodeName + '.currentState', {val: false, ack: true}); // ?? либо считать реальный
+      adapter.setState( nodeName + '.defaultAction', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.defaultRunAlways', {val: false, ack: true}); 
+      adapter.setState( nodeName + '.netAction', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.netRunOnlyWhenServerOut', {val: false, ack: true}); 
+      adapter.setState( nodeName + '.portMode', {val: cPortMode_PressOnly, ack: true}); 
+      adapter.setState( nodeName + '.send2ServerAlwaysPressRelease', {val: false, ack: true}); 
+      adapter.setState( nodeName + '.tremorDefenceDisabled', {val: false, ack: true}); 
+      adapter.setState( nodeName + '.displayPort', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.defaultState', {val: d, ack: true}); 
+      adapter.setState( nodeName + '.digitalSensorType', {val: '', ack: true}); 
    } else /*if ( pty == cNPortType_NotConnected )*/ {
 // остальные типы портов пока не реализованы, пишем их как неподключенные
 /* ToDO: если порт переводим  в NC - хорошо бы его принудительно выключить xx:0 */
@@ -658,8 +703,6 @@ var cNPortType_DigitalSensor  = 3;
 var cNPortType_I2C  = 4;
 var cNPortType_AnalogSensor  = 2; 
 
-var cPortType_StandartIn  = 'StandartIn';    //0
-var cPortType_ReleOut = 'ReleOut';           //1
 var cPortType_DimmedOut = 'DimmedOut'; //1
 var cPortType_SimistorOut = 'SimistorOut'; //1
 var cPortType_DigitalSensor  = 'DigitalSensor'; //3 цифровой вход dsen
@@ -2991,22 +3034,24 @@ function savePort(obj) {
    adapter.log.debug( 'obj.message.numXP = '+ obj.message.numXP );
    adapter.log.debug( 'obj.message.xp1model = '+ obj.message.xp1model );
    adapter.log.debug( 'obj.message.xp2model = '+ obj.message.xp2model );
+   adapter.log.debug( 'obj.message.defaultState = '+ obj.message.defaultState );
 
    var portNum = obj.message.portNum;
    var room    = obj.message.room;
    var fnc     = obj.message.fnc;
    var portType = obj.message.portType;
-   var defaultAction = obj.message.defaultAction;
-   var defaultRunAlways = obj.message.defaultRunAlways;
-   var netAction = obj.message.netAction;
-   var netRunOnlyWhenServerOut = obj.message.netRunOnlyWhenServerOut;
-   var portMode = obj.message.portMode;
-   var send2ServerAlwaysPressRelease = obj.message.send2ServerAlwaysPressRelease;
-   var tremorDefenceDisabled = obj.message.tremorDefenceDisabled;
-   var displayPort = obj.message.displayPort;
+   var defaultAction = obj.message.defaultAction || '';
+   var defaultRunAlways = obj.message.defaultRunAlways || 0;
+   var netAction = obj.message.netAction || '';
+   var netRunOnlyWhenServerOut = obj.message.netRunOnlyWhenServerOut || 0;
+   var portMode = obj.message.portMode || cPortMode_PressOnly;
+   var send2ServerAlwaysPressRelease = obj.message.send2ServerAlwaysPressRelease || 0;
+   var tremorDefenceDisabled = obj.message.tremorDefenceDisabled || 0;
+   var displayPort = obj.message.displayPort || '';
    var numXP = obj.message.numXP;
    var xp1model = obj.message.xp1model;
    var xp2model = obj.message.xp2model;
+   var defaultState = obj.message.defaultState || 0;
 
    if (defaultRunAlways == 1) {
       defaultRunAlways = true;
@@ -3027,6 +3072,11 @@ function savePort(obj) {
       tremorDefenceDisabled = true;
    } else {
       tremorDefenceDisabled = false;
+   }
+   if (defaultState == 1) {
+      defaultState = true;
+   } else {
+      defaultState = false;
    }
 
 
@@ -3073,6 +3123,7 @@ function savePort(obj) {
       send2ServerAlwaysPressRelease = false;
       tremorDefenceDisabled = false;
       displayPort = '';
+      defaultState = false;
    }
 
    adapter.getState( adapter.namespace + '.ports.' + portNum + '.defaultAction',
@@ -3167,14 +3218,25 @@ function savePort(obj) {
       }
    );
 
+   adapter.getState( adapter.namespace + '.ports.' + portNum + '.defaultState',
+      function (err, state ) {
+         var oldvalue = "";
+         if ( state ) oldvalue = state.val;
+         if ( oldvalue != defaultState ) {
+            adapter.setState( 'ports.' + portNum + '.defaultState', {val: defaultState, ack: true});
+            adapter.log.info( 'ports.' + portNum + '.defaultState : '+ oldvalue + ' -> ' + defaultState );
+         }
+      }
+   );
+
    //---------- передаем данные в Мегу
    var url = 'pn=' + portNum;
    if ( portType == cPortType_NotConnected ) {
-      url += '&pty='+cNPortType_NotConnected + '&ecmd=&eth=&disp=&af=&naf=&misc=&d=&m=';
+      url += '&pty='+cNPortType_NotConnected + '&ecmd=&eth=&disp=&af=&naf=&misc=&d=&m=&d=';
    } else if ( portType == cPortType_StandartIn ) {
       url += '&pty='+cNPortType_StandartIn;
-      url += '&ecmd='+encodeURIComponent((defaultAction || '').trim())
-      url += '&eth='+encodeURIComponent((netAction || '').trim())
+      url += '&ecmd='+encodeURIComponent((defaultAction || '').trim());
+      url += '&eth='+encodeURIComponent((netAction || '').trim());
       url += '&disp=' + displayPort;
       if (defaultRunAlways) {
          url += '&af=1';
@@ -3204,6 +3266,14 @@ function savePort(obj) {
          url += '&m=' + cNPortMode_ReleaseOnly;
       } else if ( portMode == cPortMode_ClickMode ) {
          url += '&m=' + cNPortMode_ClickMode;
+      }
+   } else if ( portType == cPortType_ReleOut ) {
+      url += '&pty='+cNPortType_ReleOut;
+      url += '&ecmd=&eth=&disp=&af=&naf=&misc=&m='; //?
+      if (defaultState) {
+         url += '&d=1';
+      } else {
+         url += '&d='; // ?
       }
    } else {
       url += '&pty='+cNPortType_NotConnected;
