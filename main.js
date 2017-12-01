@@ -574,7 +574,7 @@ function parseMegaCfgLine ( line ) {
       if ( state == 'af'   )    af   = value;
       if ( state == 'eth'  )    eth  = value || '';
       if ( state == 'naf'  )    naf  = value;
-      if ( state == 'm'    )    m    = value || 0;
+      if ( state == 'm'    )    m    = value || '0';
       if ( state == 'misc' )    misc = value;
       if ( state == 'd'    )    d    = value;
       if ( state == 'disp' )    disp = value || '';
