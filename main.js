@@ -658,7 +658,7 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.displayPort', {val: '', ack: true}); 
       adapter.setState( nodeName + '.defaultState', {val: '', ack: true}); 
       adapter.setState( nodeName + '.digitalSensorType', {val: '', ack: true}); 
-   } else if ( pty == cNPortType_ReleOut ) {
+   } else if ( pty == cNPortType_Out ) {
 //    TO DO: Здесь надо как-то распознавать еще симисторные и димируемые выходы с тем же pty
       adapter.log.debug('Настраиваем порт '+pn+' как релейный выход');
       adapter.setState( nodeName + '.portType', {val: cPortType_ReleOut, ack: true});
@@ -3268,7 +3268,7 @@ function savePort(obj) {
          url += '&m=' + cNPortMode_ClickMode;
       }
    } else if ( portType == cPortType_ReleOut ) {
-      url += '&pty='+cNPortType_ReleOut;
+      url += '&pty='+cNPortType_Out;
       url += '&ecmd=&eth=&disp=&af=&naf=&misc=&m='; //?
       if (defaultState) {
          url += '&d=1';
