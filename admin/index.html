@@ -3210,6 +3210,45 @@ var cNPortMode_SW = '0';
              <td>Прошивка</td>
            </tr>
            <tr>
+             <td><b>4.20b5</td>
+             <td>05.12.2017</td>
+             <td><p align=justify>
+                   Исправлена проблема, проявлявшаяся в том, что если в GW указывать реальный адрес 
+                   шлюза вместо 255.255.255.255 - то netaction не работает вообще.
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.20b5');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.20b4</td>
+             <td>05.12.2017</td>
+             <td><p align=justify>
+                 Добавлено восстановление настроек аппаратного таймера после отправки ИК-команд. 
+                 Актуально, если один и тот же разъем XP1 или XP2 используется и для ИК-передатчика 
+                 и для управления устройствами посредством ШИМ (LED-лентами).
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.20b4');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.20b3</td>
+             <td>03.12.2017</td>
+             <td><p align=justify>
+                  Исправлено отображение отрицательной температуры для BME280 в режиме i2c_par=1
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.20b3');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.20b2</td>
+             <td>03.12.2017</td>
+             <td><p align=justify>
+                  Исправлена ошибка, которая появилась в 4.19b2 и приводила к невозможности сохранить выбранный тип Freq для PWM порта
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.20b2');">Прошить</button></td>
+           </tr>
+           <tr>
              <td><b>4.20b1</td>
              <td>01.12.2017</td>
              <td><p align=justify>
