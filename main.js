@@ -34,7 +34,7 @@ ToDO:
 
 -(?) если порт переводим  в NC - хорошо бы его принудительно выключить xx:0 
 
-- релизовать оставшиеся типы портов
+- реализовать оставшиеся типы портов
 
 - реализовать st=1, опрос портов, обработку команд, обработку srvloop, отправку команд
 
@@ -1430,6 +1430,7 @@ function detectDeviceConfig(ip, pass, callback) {
 
 
 //------------------------------------------------------------------------------------------------------------------
+/*
 // Message is IP address
 function detectPorts(obj) {
     var ip;
@@ -1458,7 +1459,7 @@ function detectPorts(obj) {
         if (obj.callback) adapter.sendTo(obj.from, obj.command, {error: 'invalid address'}, obj.callback);
     }
 }
-
+*/
 
 //---------------------------------------------------------------------------------------------------------------
 function discoverMegaOnIP(ip, callback) {
@@ -1609,7 +1610,7 @@ function getPortStateW(ip, password, port, callback) {                  // 1Wire
 }    
 
 //---------------------------------------------------------------------------------------------------------
-// Get state of ALL ports
+// Получение данных о сотоянии ВСЕХ портов (?cmd=all)
 function getPortsState(ip, password, callback) {
     if (typeof ip == 'function') {
         callback = ip;
@@ -2070,32 +2071,31 @@ function pollStatus(dev) {
         if (data) {
             var _ports = data.split(';');
             var p;
+            var varName;
             for (p = 0; p < _ports.length; p++) {
-                // process extra internal temperature later
-                ///if (!adapter.config.ports[p] || adapter.config.ports[p].pty == 4) continue;
-		if (!adapter.config.ports[p] || adapter.config.ports[p].pty == 3 && adapter.config.ports[p].d == 5) continue;
-                processPortState(p, _ports[p]);
-            }
-            // process extra internal temperature
-            /*if (askInternalTemp) {
-                getInternalTemp(function (err, data) {
-                    for (var po = 0; po < adapter.config.ports.length; po++) {
-                        if (adapter.config.ports[po] && adapter.config.ports[po].pty == 4) {
-                            processPortState(po, data);
-                        }
-                    }
-                });
-            }*/
-	    // process 1Wire 
-            if (ask1WireTemp) {
-                //getPortStateW(function (err, data) {
-                //    for (var po = 0; po < adapter.config.ports.length; po++) {
-                //        if (adapter.config.ports[po] && adapter.config.ports[po].pty == 3 && adapter.config.ports[po].d == 5) {
-                //            processPortStateW(po, data);
-                //        }
-                //    }
-                //});
+               adapter.log.debug('p='+p);
+               varName = 'ports.' + p + 'portType';
+               adapter.log.debug('varName='+varName);
+               adapter.log.debug('_ports['+p+']='+_ports[p]);
 
+               adapter.getState( varName, function(err,state) {
+                  var portType = state.val;
+                  adapter.log.debug('portType='+portType);
+                  if ( portType == cPortType_NotConnected ) {
+                    /// 
+                  } else if ( portType == cPortType_StandartIn ) {
+ 		//if (!adapter.config.ports[p] || adapter.config.ports[p].pty == 3 && adapter.config.ports[p].d == 5) continue;
+                    processPortState(p, _ports[p]);
+                  } else if ( portType == cPortType_ReleOut ) {
+                    processPortState(p, _ports[p]);
+                  } else {
+                      //
+                  }
+               });
+            }
+
+/*	    // process 1Wire 
+            if (ask1WireTemp) {
                 for (var po = 0; po < adapter.config.ports.length; po++) {
                     if (adapter.config.ports[po] && adapter.config.ports[po].pty == 3 && adapter.config.ports[po].d == 5) {
                        getPortStateW( adapter.config.ip,
@@ -2107,10 +2107,8 @@ function pollStatus(dev) {
                                     );
                     }
                 }
-
-
-
             }
+*/
         }
     });
 }
@@ -2889,10 +2887,12 @@ function syncObjects() {
             setInterval(pollStatus, adapter.config.pollInterval * 1000);
         }
 
+/* ??? filippovsky
         if (adapter.config.ip && adapter.config.ip != '0.0.0.0') {
             pollStatus();
             setInterval(pollStatus, adapter.config.pollInterval * 1000);
-        }
+        }*/
+
     });
 }
 //---------------------------------------------------------------------------------------------
@@ -3371,7 +3371,13 @@ function main() {
         getFirmwareVersion();
         //getActual2561FirmwareVersion();
     }
-    syncObjects();
+    ///??  Filippovsky --- syncObjects();
+
+    if (adapter.config.ip && adapter.config.ip != '0.0.0.0') {
+         pollStatus();
+         setInterval(pollStatus, adapter.config.pollInterval * 1000);
+    }
+
     adapter.subscribeStates('*');
     processMessages(true);
 }
