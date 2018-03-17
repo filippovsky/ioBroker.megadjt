@@ -382,21 +382,16 @@ function getFirmwareVersion() {
                  //adapter.log.debug('getFirmwareVersion response for ' + adapter.config.ip + "[" + options.port + ']: ' + xmldata);
                  version = xmldata.replace(/^(.*?)fw\:\s(.*?)\)(.*?)$/, '$2');
                  controller_model = xmldata.replace(/^(.*?)\sby(.*?)$/, '$1');
-                 adapter.log.debug('getFirmwareVersion for ' + adapter.config.ip + "[" + options.port + '] parsed as: ' + version);
+                 //adapter.log.debug('getFirmwareVersion for ' + adapter.config.ip + "[" + options.port + '] parsed as: ' + version);
                  adapter.log.debug('Модель управляющего модуля Меги ' + adapter.config.ip + "[" + options.port + '] распознана как: ' + controller_model);
 
                  if (version) {
-                    adapter.log.debug('getFirmwareVersion сохраняем: ' + version);
+                    //adapter.log.debug('getFirmwareVersion сохраняем: ' + version);
 
-                    //adapter.setState( 'version.firmware', {val: version, ack: true});
-                    //adapter.log.debug('getFirmwareVersion сохранили: ' + version);
-
-                    //adapter.setState( 'fw_version', {val: version, ack: true});
                     adapter.setState( 'firmware.version', {val: version, ack: true});
                     adapter.log.debug('getFirmwareVersion сохранили fw_version: ' + version);
 
                     // Analyse answer and updates staties
-                    // if (callback) callback(obj, version);
                     adapter.log.debug('getFirmwareVersion Актуальная версия прошивки: ' + fw_version_actual);
                     //adapter.setState( 'fw_version_last_known', {val: fw_version_actual, ack: true});
                     adapter.setState( 'firmware.last_known_version', {val: fw_version_actual, ack: true});
@@ -408,7 +403,7 @@ function getFirmwareVersion() {
                     } else {
                           //adapter.setState( 'is_firmware_actual', {val: false, ack: true});
                           adapter.setState( 'firmware.is_actual', {val: false, ack: true});
-                          adapter.log.debug('getFirmwareVersion Текущая версия неактуальна');
+                          adapter.log.warn('getFirmwareVersion Текущая версия неактуальна');
                     }
                     
                     //adapter.createState( 'xp1');
@@ -422,7 +417,7 @@ function getFirmwareVersion() {
                     //adapter.setState( 'version.controller_model', {val: controller_model, ack: true});
                     adapter.setState( 'controller.model', {val: controller_model, ack: true});
                  } else {
-                    adapter.log.debug('Не смогли определить модель управляющего контроллера Меги');
+                    adapter.log.warn('Не смогли определить модель управляющего контроллера Меги');
                  }
 
 
@@ -1809,12 +1804,17 @@ function processPortState(_port, value) {
     var portTypeBranch     = portBranch + 'portType';
     var counterBranch      = portBranch + 'counter';
 
+    adapter.log.debug( 'portTypeBranch='+portTypeBranch );
+
     adapter.getState( portTypeBranch, function(err,state) {
        var portType = state.val;
+       adapter.log.debug( 'portType[' + _port + '] ='+portType );
+
        if (!portType) {
           adapter.log.warn('Неизвестный порт: ' + _port );
           return;
        } 
+
        if ( portType == cPortType_NotConnected ) {
           return;
        }
