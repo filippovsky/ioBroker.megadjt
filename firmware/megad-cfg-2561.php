@@ -119,7 +119,11 @@ if ( array_key_exists('read-conf', $options) || array_key_exists('write-conf', $
 	{
 		echo "Reading configuration... ";
 
-		$pages = array("cf=1", "cf=2", "cf=7", "cf=8");
+		$pages = array("cf=1", "cf=2", "cf=7", "cf=8",);
+
+		for ( $i = 0; $i < 10; $i++ )
+		$pages[] = "cf=10&prn=$i";
+
 		//$pages = array();
 		$page = file_get_contents("http://".$options['ip']."/".$options['p']);
 		$ports = preg_replace("/.*\?pt=(\d+).*/", "$1", $page);
@@ -141,6 +145,7 @@ if ( array_key_exists('read-conf', $options) || array_key_exists('write-conf', $
 			}
 
 			$page = file_get_contents("http://".$options['ip']."/".$options['p']."/?".$pages[$i]);
+			$page = str_replace("<<", "<", $page);
 
 			@$dom->loadHTML($page);
 			//$url = "http://".$options['ip']."/".$options['p']."/?";
@@ -162,6 +167,9 @@ if ( array_key_exists('read-conf', $options) || array_key_exists('write-conf', $
 					}
 					else
 					$value=$inp->getAttribute('value');
+
+					$value = str_replace("&", "%26", $value); // &
+
 					if ( $name != "pt" )
 					{
 						if ( $name == "sl" && empty($value));
@@ -548,7 +556,7 @@ elseif ( $conf_flag == 1 || ( array_key_exists('ip', $options) && array_key_exis
 {}
 else
 {
-	echo "MegaD-2561 management script Ver 2.04\n";
+	echo "MegaD-2561 management script Ver 2.06\n";
 	echo "Available options:\n";
 	echo "--scan (Scanning network for MegaD-328/2561 devices)\n";
 	echo "--ip [current IP address] --new-ip [new IP address] -p [password] (Changing IP-address)\n";

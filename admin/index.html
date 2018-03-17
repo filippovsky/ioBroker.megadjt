@@ -2569,7 +2569,7 @@ var cNPortMode_SW = '0';
             $('#firmware-dialog').dialog( {
                 autoOpen: true,
                 modal:    true,
-                width:    1200,
+                width:    800,
                 height:   600,
                 title:    _('Выбор версии прошивки'),
                 buttons: [
@@ -2605,7 +2605,7 @@ var cNPortMode_SW = '0';
             $('#sms-dialog').dialog( {
                 autoOpen: true,
                 modal:    true,
-                width:    1200,
+                width:    600,
                 height:   600,
                 title:    _('Настройки SMS'),
                 buttons: [
@@ -3210,7 +3210,347 @@ var cNPortMode_SW = '0';
              <td>Прошивка</td>
            </tr>
            <tr>
-             <td><b>4.20b9</td>
+             <td><b>4.26b2</b></td>
+             <td>10.03.2018</td>
+             <td><p align=justify>Добавлена поддержка датчика CO2 T6703
+                 </p>
+                 <p align=justify><a href="https://ab-log.ru/smart-house/ethernet/megad-2561-t6703" target="_blank">Подробная статья</a></p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.26b2');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.26b1</b></td>
+             <td>02.03.2018</td>
+             <td><p align=justify>Улучшена работа с расширителями MCP23017/MCP23008
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.26b1');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.25b9</b></td>
+             <td>02.03.2018</td>
+             <td><p align=justify>Исправлена ошибка в работе функции Net в режиме "удаленного термостата"
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.25b9');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.25b7</b></td>
+             <td>26.02.2018</td>
+             <td><p align=justify>Добавлена кнопка очистки правила в Program
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.25b7');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.25b6</b></td>
+             <td>24.02.2018</td>
+             <td><p align=justify>Исправлена ошибка в работе функции сохранения состояния портов, когда после перезагрузки 
+                            порты восстанавливали свое состояние даже когда соответствующая команда не выполнялась
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.25b6');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.25b5</b></td>
+             <td>21.02.2018</td>
+             <td><p align=justify>Изменено отображение Last Key для считывателей и иных устройств, совместимых с TM (iButton)
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.25b5');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.25b4</b></td>
+             <td>19.02.2018</td>
+             <td><p align=justify>Исправлена ошибка в работе вложенных условий функции Program
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.25b4');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.25b3</b></td>
+             <td>15.02.2018</td>
+             <td><p align=justify>Включена функция Net для портов, настроенных для работы со считывателями iButton/TM, в ситуации присутствия сервера
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.25b3');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.25b2</b></td>
+             <td>14.02.2018</td>
+             <td><p align=justify>Улучшена работа с ADS1115
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.25b2');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.25b1</td>
+             <td>14.02.2018</td>
+             <td><p align=justify>Добавлена обработка Multiple Publish для протокола MQTT
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.25b1');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.24b5</b></td>
+             <td>05.02.2018</td>
+             <td><p align=justify>Добавлена функция вывода часов на дисплеи SSD1306
+                 </p>
+                 <p align=justify>
+                   <img src="firmware/megad-disp-clock.png">
+                 </p>
+                 <p align=justify>Достаточно установить флажок "Clock".</p>
+                 <p align=justify>Но часы можно отображать и с помощью сервера<br>
+                      <a href="http://192.168.0.14/sec/?pt=31&text=_12;30">http://192.168.0.14/sec/?pt=31&text=_12;30</a></p>
+                 <p align=justify>Здесь ";" - используется для вывода ":", так как символ ":" уже занят под знак градуса.<br>
+                    "_" - это пробел для выравнивания относительно края. Для центрирования показаний часов.<br>
+                    Таким образом, при выводе крупных цифр контроллер понимает два пробела: "s" и "_".<br>
+                    "s" - пробел, равный ширине цифры.<br>
+                    "_" - пробел, равный половине ширины цифры.
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.24b5');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.24b2</b></td>
+             <td>02.02.2018</td>
+             <td><p align=justify>Добавлена поддержка ADS1115 - внешнего АЦП с интерфейсом I2C.
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.24b2');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.24b1</b></td>
+             <td>02.02.2018</td>
+             <td><p align=justify>Немного изменен формат выдачи по запросу "get" в протоколе MQTT для составных полей
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.24b1');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.23b5</b></td>
+             <td>31.01.2018</td>
+             <td><p align=justify>Исправлена ошибка в функции группового управления выходами
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.23b5');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.23b3</b></td>
+             <td>26.01.2018</td>
+             <td><p align=justify>
+                    <ul>
+                       <li>Улучшена стабильность работы по протоколу MQTT</li>
+                       <li>При нажатии выключателя по протоколу MQTT дополнительно передается параметр m: 0</li>
+                    </ul>
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.23b3');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.23b2</b></td>
+             <td>25.01.2018</td>
+             <td><p align=justify>Добавлена функция очистки строк для SSD1306
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.23b2');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.22b9</b></td>
+             <td>23.01.2018</td>
+             <td><p align=justify>Удалены кавычки из числовых полей (MQTT)
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.22b9');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.22b8</b></td>
+             <td>23.01.2018</td>
+             <td><p align=justify>
+                   <ul>
+                      <li>Добавлена возможность вывода с помощью сервера мелкого текста на экраны SSD1306</li>
+                   </ul>
+                 </p>
+                 <p align=justify>На дисплей SSD1306 можно вывести значение температуры крупно.<br>
+                    Делается это примерно так: <a href="http://192.168.0.14/sec/?pt=33&text=25.8:">http://192.168.0.14/sec/?pt=33&text=25.8:</a>
+                 </p>
+                 <p align=justify>Теперь можно вывести текст (подпись) мелко<br>
+                     Вот так: <a href="http://192.168.0.14/sec/?pt=31&text=test&col=0&row=0">http://192.168.0.14/sec/?pt=31&text=test&col=0&row=0</a><br>
+                     Здесь <b>col</b> и <b>row</b> - координаты (колонка, ряд), откуда выводить текст.
+                 </p>
+                 <p align=justify>В прошивке заложены русские буквы. Кодовая страница CP866.<br>
+                     Из PHP вывести русские буквы можно примерно так:<br>
+                         file_get_contents("http://192.168.0.14/sec/?pt=31&text=".iconv("utf-8", "cp866", "Улица")."&col=0&row=0");
+                 </p> 
+                 <p align=justify>Пробелы кодируются символом "_".</p>
+                 <p align=justify>Если нам нужно вывести на экран подпись к крупным цифрам, то сначала нужно отправить мелкий текст, а затем крупный.<br>
+                    Примерно так:<br>
+                      file_get_contents("http://192.168.0.14/sec/?pt=31&text=".iconv("utf-8", "cp866", "Улица_1")."&col=0&row=0");<br>
+                      file_get_contents("http://192.168.0.14/sec/?pt=31&text=+27.3:");
+                 </p>
+                 <p align=justify>Это связано с тем, что цифры крупно контроллер выводит за несколько приемов, чтобы не пропустить 
+                       какие-то другие более важные события, и вывод мелкого текста остановит отображение крупных цифр.
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.22b8');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.22b7</b></td>
+             <td>20.01.2018</td>
+             <td><p align=justify>
+                   <ul>
+                      <li>Улучшена работа по протоколу MQTT</li>
+                   </ul>
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.22b7');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.22b4</b></td>
+             <td>11.01.2018</td>
+             <td><p align=justify>
+                   <ul>
+                      <li>Добавлена обработка пауз в Program</li>
+                   </ul>
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.22b4');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.22b3</b></td>
+             <td>09.01.2018</td>
+             <td><p align=justify>
+                   <ul>
+                      <li>Исправлена ошибка, в результате которой некорректно работали паузы в сценариях длиннее 5 минут</li>
+                      <li>Паузы в cron доступны не только для RTC версии</li>
+                   </ul>
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.22b3');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.22b1</b></td>
+             <td>05.01.2018</td>
+             <td><p align=justify>Улучшена работа функции Program
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.22b1');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.21b9</b></td>
+             <td>04.01.2018</td>
+             <td><p align=justify>Улучшена работа по протоколу MQTT
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.21b9');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.21b8</b></td>
+             <td>02.01.2018</td>
+             <td><p align=justify>
+                    <ul>
+                       <li>Добавлена функция "контроллера доступа" для считывателей, работающих по интерфейсу Wiegand</li>
+                       <li>Исправлена ошибка, в результате которой контроллер мог не прошиваться по сети, 
+                           если отдельные порты были настроены как W26</li>
+                       <li>Добавлена обработка подчиненных условий (slave) в Program</li>
+                    </ul>
+                 </p>
+                 <p align=justify>
+                   <img src="firmware/megad-program-and.png">
+                 </p>
+                 <p align=justify>
+                    Данный пример демонстрирует работу подчиненных условий.<br>
+                    Здесь сценарий "7:2" выполнится только в том случае, если и порт P0 и порт P1 будут замкнуты 
+                    (например, нажали две кнопки вместе).
+                 </p>
+                 <p align=justify>"cmd: &amp;1" в условии 0 означает "AND/И обработать условие 1"<br>
+                    В условии 1 устанавливается флажок "Slave", который определяет, что условие не является самостоятельным, 
+                    а является подчиненным.<br>
+                    В общем списке подчиненные условия отображаются с решеткой "#" перед номером.
+                  </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.21b8');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.21b5</b></td>
+             <td>29.12.2017</td>
+             <td><p align=justify>
+                   Изменен принцип формирования MQTT-топиков.<br>
+                   Теперь информация по каждому порту публикуется в отдельном топике.<br>
+                   Пример (сработал порт P6): megad/14/6
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.21b5');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.21b4</b></td>
+             <td>28.12.2017</td>
+             <td><p align=justify>Изменен режим работы PCA9685 (текущий режим: INVRT:0; OUTDRV:1)</p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.21b4');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.21b3</b></td>
+             <td>28.12.2017</td>
+             <td><p align=justify>Добавлена возможность повесить на одну шину DS2413 (MegaD-2W, 1W-MM5) и DS18B20</p>
+                 <p align=justify>Настройка порта: Type: OUT; Mode: DS2413<br>
+                    По клику на ссылку Device List отображается (пример): 85a56a070000:85.00;79c439000000<br>
+                    85.00 - это значение датчика температуры с адресом "85a56a070000".<br>
+                    Настройка порта OUT, поэтому контроллер сам не отправлял команду в шину датчикам на конвертацию температуры.<br>
+                    Даем команду на конвертацию (пример): <a href="http://192.168.0.14/sec/?pt=32&cmd=conv">http://192.168.0.14/sec/?pt=32&cmd=conv</a><br>
+                    Теперь по клику на ссылку Device List отображается (пример): 85a56a070000:24.12;79c439000000</p>
+                 <p align=justify>Таким образом на одной шине (на одном порту контроллера) могут висеть несколько DS2413 и DS18B20.<br>
+                    Сервер должен сам давать команды на конвертацию с нужной ему периодичностью.<br>
+                    В "Device List" по-прежнему не отображается код семейства, а только 7-байтный адрес устройства, 
+                    так как пока есть возможность однозначно идентифицировать датчики температуры по наличию значения температуры.
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.21b3');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.21b2</b></td>
+             <td>27.12.2017</td>
+             <td><p align=justify>
+                    <ul>
+                        <li>В качестве значения параметра "ws" для управления лентой WS2818 можно передавать более 600 байт, что делает возможным управлять всеми чипами ленты индивидуально</li>
+                        <li>Добавлен параметр "chip" для указания количества чипов в ленте (по умолчанию 100)</li>
+                    </ul>
+                  </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.21b2');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.21b1</b></td>
+             <td>23.12.2017</td>
+             <td><p align=justify>Добавлена экспериментальная поддержка ленты на базе чипов WS2818</p>
+                 <p align=justify><a href="https://ab-log.ru/smart-house/ethernet/megad-ws-2018" target="_blank">Подробная статья по этой ссылке</a></p>
+                 <p align=justify>Управлять лентой с помощью контроллера MegaD-2561 очень просто. Нужно просто передать код цвета, состоящий из 3-х байт в 16-ричном формате.</p>
+                 <p align=justify>Включить все диоды красным цветом<br>
+                   <a href="http://192.168.0.14/sec/?pt=35&ws=FF0000">http://192.168.0.14/sec/?pt=35&ws=FF0000</a>
+                 </p>
+                 <p align=justify>Включить диоды красного и синего (зеленого в моем случае) цвета<br>
+                    <a href="http://192.168.0.14/sec/?pt=35&ws=FF00FF">http://192.168.0.14/sec/?pt=35&ws=FF00FF</a>
+                 </p>
+                 <p align=justify>Выключить ленту<br>
+                    <a href="http://192.168.0.14/sec/?pt=35&ws=000000">http://192.168.0.14/sec/?pt=35&ws=000000</a><br>
+                    MegaD-2561 отправит код, состоящий из 3 байт, 100 раз и вся лента загорится определенным цветом.<br>
+                    Но если в качестве параметра передать не 3, а 6 байт, то цвета будут чередоваться.
+                 </p>
+                 <p align=justify>Включить первый сегмент красным, а второй зеленым и т.д. до конца ленты<br>
+                    <a href="http://192.168.0.14/sec/?pt=35&ws=FF000000FF00">http://192.168.0.14/sec/?pt=35&ws=FF000000FF00</a><br>
+                    В текущий момент буфер контроллера может принять до 133 таких RGB команд (133 индивидуальных чипов в ленте.)<br>
+                 </p>
+                 <p align=justify>Параметр <b>"chip"</b> определяет количество чипов, которым мы отправляем команду (по умолчанию 100).<br>
+                    Если, к примеру, в ленте только 10 чипов или нам нужно "зажечь" только первые 10 чипов, а остальные 
+                    оставить без изменения, то мы можем вызывать следующий URL:<br>
+                    Зажигаем 10 первых чипов красным<br>
+                    <a href="http://192.168.0.14/sec/?pt=35&ws=FF0000&chip=10">http://192.168.0.14/sec/?pt=35&ws=FF0000&chip=10</a>
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.21b1');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.20b9</b></td>
              <td>19.12.2017</td>
              <td><p align=justify>
                     <ul>
@@ -3225,7 +3565,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.20b9');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.20b8</td>
+             <td><b>4.20b8</b></td>
              <td>16.12.2017</td>
              <td><p align=justify>
              Добавлена возможность подключать модули, работающие по 1-wire (DS2413), шиной (только внешнее управление).
@@ -3265,7 +3605,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.20b8');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.20b7</td>
+             <td><b>4.20b7</b></td>
              <td>14.12.2017</td>
              <td><p align=justify>
              Добавлена возможность запроса состояния порта по протоколу MQTT (исправленная версия v4.20b6)
@@ -3274,7 +3614,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.20b7');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.20b6</td>
+             <td><b>4.20b6</b></td>
              <td>13.12.2017</td>
              <td><p align=justify>
             Теперь можно отправить в топик "megad/14/cmd" (где 14 - последний байт IP-адреса) команду "get:10" (где 10 - номер порта).</p>
@@ -3288,7 +3628,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.20b6');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.20b5</td>
+             <td><b>4.20b5</b></td>
              <td>05.12.2017</td>
              <td><p align=justify>
                    Исправлена проблема, проявлявшаяся в том, что если в GW указывать реальный адрес 
@@ -3298,7 +3638,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.20b5');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.20b4</td>
+             <td><b>4.20b4</b></td>
              <td>05.12.2017</td>
              <td><p align=justify>
                  Добавлено восстановление настроек аппаратного таймера после отправки ИК-команд. 
@@ -3309,7 +3649,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.20b4');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.20b3</td>
+             <td><b>4.20b3</b></td>
              <td>03.12.2017</td>
              <td><p align=justify>
                   Исправлено отображение отрицательной температуры для BME280 в режиме i2c_par=1
@@ -3318,7 +3658,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.20b3');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.20b2</td>
+             <td><b>4.20b2</b></td>
              <td>03.12.2017</td>
              <td><p align=justify>
                   Исправлена ошибка, которая появилась в 4.19b2 и приводила к невозможности сохранить выбранный тип Freq для PWM порта
@@ -3327,7 +3667,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.20b2');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.20b1</td>
+             <td><b>4.20b1</b></td>
              <td>01.12.2017</td>
              <td><p align=justify>
                        Порт контроллера при любых обстоятельствах, то есть всегда, работает в том режиме, 
@@ -3337,7 +3677,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.20b1');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.19b9</td>
+             <td><b>4.19b9</b></td>
              <td>22.11.2017</td>
              <td><p align=justify>
                        Добавлено восстановление настроек аппаратного таймера после отправки ИК-команд. 
@@ -3351,7 +3691,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.19b9');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.19b8</td>
+             <td><b>4.19b8</b></td>
              <td>22.11.2017</td>
              <td><ul><li><p align=justify>Небольшие косметические изменения в разделе Program</p></li>
                      <li><p align=justify>Добавлена обработка символа "=" как альтернатива ":" в сценариях для улучшения совместимости с некоторым серверным ПО (OpenHab2)</p></li>
@@ -3360,7 +3700,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.19b8');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.19b7</td>
+             <td><b>4.19b7</b></td>
              <td>21.11.2017</td>
              <td><p align=justify>
                     <b><font color=red>Это экспериментальная версия.</font></b><br>
@@ -3383,7 +3723,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.19b7');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.19b6</td>
+             <td><b>4.19b6</b></td>
              <td>20.11.2017</td>
              <td><p align=justify>Исправлена ошибка в процедуре взаимодействия с сервером по протоколу HTTP, которая появилась в версии 4.18b9
                  </p>
@@ -3391,7 +3731,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.19b6');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.19b5</td>
+             <td><b>4.19b5</b></td>
              <td>15.11.2017</td>
              <td><p align=justify>Добавлено управление группой.</p>
                            <p align=justify>Поле Group теперь доступно также для режима "SW", что делает возможным объединение нескольких портов в группу.<br>
@@ -3404,7 +3744,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.19b5');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.19b2</td>
+             <td><b>4.19b2</b></td>
              <td>11.11.2017</td>
              <td><p align=justify>Добавлен режим "SW LINK" (связывание выходов в группы для безопасного управления такими нагрузками, как приводы на два направления).</p>
                  <p align=justify>Теперь существует возможность "залинковать" два или более выходов. Эта функция предполагает, что если один из связанных портов включен, 
@@ -3419,21 +3759,21 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.19b2');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.18b9</td>
+             <td><b>4.18b9</b></td>
              <td>09.11.2017</td>
              <td><p align=justify>Для дисплея SSD1306 IP-адрес помимо P30 также теперь выводится и на "системном" дисплее</p>
              </td>
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.18b9');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.18b7</td>
+             <td><b>4.18b7</b></td>
              <td>07.11.2017</td>
              <td><p align=justify>Реализована команда <b>"2"</b> (переключение) для управления дисплеем SSD1306</p>
              </td>
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.18b7');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.18b6</td>
+             <td><b>4.18b6</b></td>
              <td>02.11.2017</td>
              <td><p align=justify>Реализована команда <b>get</b> для всех портов в режиме PCA9685:<br>
                  <b>http://192.168.0.14/sec/?pt=31&cmd=get</b></p>
@@ -3443,7 +3783,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.18b6');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.18b5</td>
+             <td><b>4.18b5</b></td>
              <td>01.11.2017</td>
              <td><p align=justify>Добавлена поддержка микросхемы PCA9685 (16 ШИМ каналов с разрешением 12-бит)<br>
                  Для SDA-порта выбираем тип PCA9685<br>
@@ -3465,14 +3805,14 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.18b5');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.18b4</td>
+             <td><b>4.18b4</b></td>
              <td>17.10.2017</td>
              <td><p align=justify>Исправлено отображение отрицательных температур для датчиков BME280, HTU21D</p>
              </td>
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.18b4');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.18b2</td>
+             <td><b>4.18b2</b></td>
              <td>17.10.2017</td>
              <td><p align=justify>Добавлена команда 's' для сохранения в энергонезависимой памяти состояния выходов (SW/PWM).</p>
                  <p align=justify>Иногда возникают такие задачи, которые требуют, чтобы после аварийного выключения питания 
@@ -3497,7 +3837,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.18b2');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.18b1</td>
+             <td><b>4.18b1</b></td>
              <td>16.10.2017</td>
              <td><p align=justify>
                   По команде cmd=all отображается состояние только собственных портов контроллера и не отображаются порты модулей-расширителей.
@@ -3507,7 +3847,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.18b1');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.17b8</td>
+             <td><b>4.17b8</b></td>
              <td>13.10.2017</td>
              <td><p align=justify>При включенном режиме Smooth для PWM-порта передача параметра cnt=0 позволяет менять яркость моментально.</p>
                  <p align=justify>Краткое пояснение. Для ШИМ (PWM) портов есть режим Smooth. Это когда можно задать скорость, например, 
@@ -3522,7 +3862,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.17b8');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.17b6</td>
+             <td><b>4.17b6</b></td>
              <td>04.10.2017</td>
              <td><ul><li>Исправлена ошибка версии 4.17b5: при выборе SCL "0", остальные настройки не появлялись.</li>
                      <li>Добавлена поддержка микросхемы расширителя MCP23017</li>
@@ -3533,7 +3873,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.17b6');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.17b5</td>
+             <td><b>4.17b5</b></td>
              <td>03.10.2017</td>
              <td><ul><li>При выборе типа порта I2C/SDA по умолчанию в поле SCL пусто</li></ul>
                 <p align=justify>"ANY" можно использовать с датчиками, но не с теми устройствами, которые требуют инициализации. 
@@ -3546,7 +3886,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.17b5');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.17b4</td>
+             <td><b>4.17b4</b></td>
              <td>29.09.2017</td>
              <td>Добавлена полноценная поддержка MCP23017<br>&nbsp;<br>
                   <p align=justify>
@@ -3559,7 +3899,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.17b4');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.17b3</td>
+             <td><b>4.17b3</b></td>
              <td>25.09.2017</td>
              <td><ul>
                 <li>Исправлены ошибки версии 4.17b2:<br>
@@ -3581,7 +3921,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.17b3');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.17b2</td>
+             <td><b>4.17b2</b></td>
              <td>22.09.2017</td>
              <td>Добавлена поддержка режима IN для расширителя MCP23008
                   <p align=justify>
@@ -3627,7 +3967,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.17b2');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.16b8</td>
+             <td><b>4.16b8</b></td>
              <td>20.09.2017</td>
              <td>С некоторыми условиями добавлена поддержка пауз в командах, поступающих извне (например, от сервера или от другого устройства):
                  <p align=justify>Добавлена поддержка пауз в командах/ответах сервера, yо есть одна деталь. Одновременно может выполняться только одна последовательность команд, содержащая паузу. 
@@ -3638,14 +3978,14 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.16b8');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.16b6</td>
+             <td><b>4.16b6</b></td>
              <td>18.09.2017</td>
              <td>ИК-передатчик теперь поддерживается на шести портах: P10, P12, P13, P25, P27, P28
              </td>
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.16b6');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.16b3</td>
+             <td><b>4.16b3</b></td>
              <td>24.08.2017</td>
              <td><ul>
                <li>В Web-интерфейсе для SDA-порта отображается состояние всех каналов расширителя MCP23008.<br>
@@ -3659,7 +3999,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.16b3');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.15b9</td>
+             <td><b>4.15b9</b></td>
              <td>30.06.2017</td>
              <td>Увеличено поле Net и исправлена ошибка в работе функции Net в некоторых режимах
                   <br><font color=red><b>Обновление только со сбросом настроек!</b></font>
@@ -3667,14 +4007,14 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.15b9');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.15b7</td>
+             <td><b>4.15b7</b></td>
              <td>20.06.2017</td>
              <td>Исправлена ошибка в работе со считывателями, передающими данные по протоколу Wiegand26
              </td>
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.15b7');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.15b6</td>
+             <td><b>4.15b6</b></td>
              <td>14.06.2017</td>
              <td><ul><li>Улучшена работа Act при установленном флажке обязательного выполнения сценария</li>
                      <li>Увеличен размер буфера для ИК-команд</li>
@@ -3684,14 +4024,14 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.15b6');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.15b3</td>
+             <td><b>4.15b3</b></td>
              <td>11.05.2017</td>
              <td>Добавлена поддержка датчика освещенности MAX44009
              </td>
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.15b3');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.15b2</td>
+             <td><b>4.15b2</b></td>
              <td>09.05.2017</td>
              <td><ul><li>Добавлена команда для отображения крупно цифр на дисплеях SSD1306</li>
                      <li>Изменен режим работы TSL2591</li>
@@ -3701,14 +4041,14 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.15b2');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.14b8</td>
+             <td><b>4.14b8</b></td>
              <td>23.04.2017</td>
              <td>Добавлена отправка на сервер "mdid" при старте контроллера (st=1)
              </td>
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.14b8');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.14b7</td>
+             <td><b>4.14b7</b></td>
              <td>21.04.2017 18:52</td>
              <td>- Добавлена поддержка 'd' (выполнение сценария, прописанного в Act) в командах сервера 
                    (ранее эта функция работала только в ответах сервера на сообщения контроллера).   <br>
@@ -3719,7 +4059,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.14b7');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.14b5</td>
+             <td><b>4.14b5</b></td>
              <td>17.04.2017</td>
              <td>- Улучшена стабильность работы с 1-wire bus<br>
                  - Незначительные улучшения работы srv-loop
@@ -3727,7 +4067,7 @@ var cNPortMode_SW = '0';
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.14b5');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.14b2</td>
+             <td><b>4.14b2</b></td>
              <td>08.04.2017 15:10</td>
              <td>Добавлена возможность управления яркостью дисплея<br>
                  <img src="firmware/web-disp-brightness.gif"><br>
@@ -3757,28 +4097,28 @@ while(1)
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.14b2');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.14b1</td>
+             <td><b>4.14b1</b></td>
              <td>06.04.2017 18:17</td>
              <td>Небольшие исправления в функции включения/выключения дисплея стандартными командами (обновление со сбросом EEPROM!)
              </td>
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.14b1');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.13b8</td>
+             <td><b>4.13b8</b></td>
              <td>30.03.2017 17:52</td>
              <td>Улучшена работа с MCP23008
              </td>
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.13b8');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.13b7</td>
+             <td><b>4.13b7</b></td>
              <td>25.03.2017</td>
              <td>Исправлена ошибка, в результате которой сценарий мог не выполняться, если начинался с паузы.
              </td>
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.13b7');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.13b6</td>
+             <td><b>4.13b6</b></td>
              <td>24.03.2017</td>
              <td>Исправлена ситуация, когда контроллер не выполнял команды сервера, если тот 
                  передавал вместе с командами метку UTF-8 BOM.
@@ -3786,14 +4126,14 @@ while(1)
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.13b6');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.13b5</td>
+             <td><b>4.13b5</b></td>
              <td>23.03.2017 10:43</td>
              <td>Улучшена стабильность работы устройства в случае некорректного поведения сервера
              </td>
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.13b5');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.13b4</td>
+             <td><b>4.13b4</b></td>
              <td>22.03.2017 10:43</td>
              <td>Отображение информации на дисплее SSD1306 можно включать/выключать с помощью стандартных команд сценариев "0" и "1" (например, 35:0)<br>
              <i>Пример.</i><br>
@@ -3803,14 +4143,14 @@ while(1)
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.13b4');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.13b3</td>
+             <td><b>4.13b3</b></td>
              <td>20.03.2017 18:44</td>
              <td>Исправлена ошибка: контроллер при подключенном сервере не отрабатывает действие при поднесении ТМ ключа
              </td>
              <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.13b3');">Прошить</button></td>
            </tr>
            <tr>
-             <td><b>4.13b2</td>
+             <td><b>4.13b2</b></td>
              <td>19.03.2017 22:00</td>
              <td>Добавлена поддержка датчиков температуры/давления/(влажности) Bosch BMP280/BME280<br>
                  <img src="firmware/megad-2561-bmx280.gif"><br>
