@@ -1869,9 +1869,9 @@ function processPortState(_port, value) {
 
          var newValue = null;
          if ( portType == cPortType_StandartIn ) {
-            if ( oldState == 'OFF'  && value == 'ON' ) {
+            if ( oldState == false  && value == 'ON' ) {
                newValue = true;
-            } else if ( oldState == 'ON'  && value == 'OFF' ) {
+            } else if ( oldState == true  && value == 'OFF' ) {
                newValue = false;
             }
             if ( newValue != null ) {
@@ -1888,9 +1888,9 @@ function processPortState(_port, value) {
             });
 
          } else if ( portType == cPortType_ReleOut ) {
-            if ( oldState == 'OFF'  && value == 'ON' ) {
+            if ( oldState == false  && value == 'ON' ) {
                newValue = true;
-            } else if ( oldState == 'ON'  && value == 'OFF' ) {
+            } else if ( oldState == true  && value == 'OFF' ) {
                newValue = false;
             }
             if ( newValue != null ) {
