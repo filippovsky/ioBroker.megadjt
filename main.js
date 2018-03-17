@@ -733,7 +733,7 @@ function ReadFileMegaConfig( filename, callback ) {
            if (error) adapter.log.error( 'Error:' + error );
            adapter.log.debug( 'Data:' + data );
            data.split('\n').forEach( line => {
-              parseMegaCfgLine ( line )
+              parseMegaCfgLine ( line );
            });
            if (callback) callback( error, data );
      }
@@ -1822,7 +1822,7 @@ function processPortState(_port, value) {
              return;
           }
 
-          if ( value != null ) {
+          if ( value !== null ) {
              var secondary   = null;
              var new_counter = null;
              var temperature = null;
@@ -1869,9 +1869,9 @@ function processPortState(_port, value) {
 
          var newValue = null;
          if ( portType == cPortType_StandartIn ) {
-            if ( oldState = 'OFF'  && value == 'ON' ) {
+            if ( oldState == 'OFF'  && value == 'ON' ) {
                newValue = true;
-            } else if ( oldState = 'ON'  && value == 'OFF' ) {
+            } else if ( oldState == 'ON'  && value == 'OFF' ) {
                newValue = false;
             }
             if ( newValue != null ) {
@@ -1881,16 +1881,16 @@ function processPortState(_port, value) {
 
             adapter.getState( counterBranch, function(err,state) {
                var oldCounter = state.val;
-               if ( oldCounter <> new_counter ) {
+               if ( oldCounter !== new_counter ) {
                   adapter.log.debug('detected new counter on port [' + _port  + ']: ' + new_counter);
                   adapter.setState( counter, {val: new_counter, ack: true, q: q});
                }
             });
 
          } else if ( portType == cPortType_ReleOut ) {
-            if ( oldState = 'OFF'  && value == 'ON' ) {
+            if ( oldState == 'OFF'  && value == 'ON' ) {
                newValue = true;
-            } else if ( oldState = 'ON'  && value == 'OFF' ) {
+            } else if ( oldState == 'ON'  && value == 'OFF' ) {
                newValue = false;
             }
             if ( newValue != null ) {
