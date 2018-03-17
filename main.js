@@ -1895,7 +1895,7 @@ function processPortState(_port, value) {
             }
             if ( newValue != null ) {
                adapter.log.debug('detected new value on port [' + _port  + ']: ' + newValue);
-               adapter.setState( currentState, {val: newValue, ack: true, q: q});
+               adapter.setState( currentStateBranch, {val: newValue, ack: true, q: q});
             }
          }
       }); 
