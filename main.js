@@ -1809,18 +1809,18 @@ function processPortState(_port, value) {
     var portTypeBranch     = portBranch + 'portType';
     var counterBranch      = portBranch + 'counter';
 
-    adapter.getState( currentStateBranch, function(err,state) {
-       var oldState = state.val;
-       if (!oldState) {
+    adapter.getState( portTypeBranch, function(err,state) {
+       var portType = state.val;
+       if (!portType) {
           adapter.log.warn('Неизвестный порт: ' + _port );
+          return;
+       } 
+       if ( portType == cPortType_NotConnected ) {
           return;
        }
 
-       adapter.getState( portTypeBranch, function(err,state) {
-          var portType = state.val;
-          if ( portType == cPortType_NotConnected ) {
-             return;
-          }
+       adapter.getState( currentStateBranch, function(err,state) {
+          var oldState = state.val;
 
           if ( value !== null ) {
              var secondary   = null;
