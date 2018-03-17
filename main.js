@@ -2074,7 +2074,7 @@ function pollStatus(dev) {
             var varName;
             for (p = 0; p < _ports.length; p++) {
                adapter.log.debug('p='+p);
-               varName = 'ports.' + p + 'portType';
+               varName = 'ports.' + p + '.portType';
                adapter.log.debug('varName='+varName);
                adapter.log.debug('_ports['+p+']='+_ports[p]);
 
