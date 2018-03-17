@@ -1658,53 +1658,6 @@ function getPortsState(ip, password, callback) {
     });
 }
 
-/*function getInternalTemp(ip, password, callback) {
-    //http://192.168.0.14/sec/?tget=1
-    if (typeof ip == 'function') {
-        callback = ip;
-        ip = null;
-    }
-    if (typeof password == 'function') {
-        callback = password;
-        password = null;
-    }
-    password = (password === undefined || password === null) ? adapter.config.password : password;
-    ip       =  ip || adapter.config.ip;
-
-    var parts = ip.split(':');
-
-    var options = {
-        host: parts[0],
-        port: parts[1] || 80,
-        path: '/' + password + '/?tget=1'
-    };
-
-    adapter.log.debug('getInternalTemp http://' + options.host + options.path);
-
-    http.get(options, function (res) {
-        var xmldata = '';
-        res.on('error', function (e) {
-            adapter.log.warn(e);
-        });
-        res.on('data', function (chunk) {
-            xmldata += chunk;
-        });
-        res.on('end', function () {
-            if (res.statusCode != 200) {
-                adapter.log.warn('Response code: ' + res.statusCode + ' - ' + xmldata);
-                if (callback) callback(xmldata);
-            } else {
-                adapter.log.debug('Response for ' + ip + '[tget]: ' + xmldata);
-                // Analyse answer and updates statuses
-                if (callback) callback(null, xmldata);
-            }
-
-        });
-    }).on('error', function (e) {
-        adapter.log.warn('Got error by request to ' + ip + ': ' + e.message);
-        callback(e.message);
-    });
-}*/
 
 //------------------------------------------------------------------------------------------------------------------
 function processClick(port) {
@@ -1850,52 +1803,55 @@ function triggerShortPress(port) {
 
 //------------------------------------------------------------------------------------------------------------------
 function processPortState(_port, value) {
-    //var _ports = adapter.config.ports;
     var q = 0;
-    var portBranch   = 'ports.' + _port + '.';
-    var currentState = portBranch + 'currentState';
-    var portType     = portBranch + 'portType';
-    var counter      = portBranch + 'counter';
-    
-    if (!currentState) {
-       adapter.log.warn('Неизвестный порт: ' + _port );
-       return;
-    }
+    var portBranch         = 'ports.' + _port + '.';
+    var currentStateBranch = portBranch + 'currentState';
+    var portTypeBranch     = portBranch + 'portType';
+    var counterBranch      = portBranch + 'counter';
 
-    if ( portType == cPortType_NotConnected ) {
-       return;
-    }
+    adapter.getState( currentStateBranch, function(err,state) {
+       var oldState = state.val;
+       if (!oldState) {
+          adapter.log.warn('Неизвестный порт: ' + _port );
+          return;
+       }
 
-    if ( value != null ) {
-        var secondary   = null;
-        var new_counter = null;
-        var temperature = null;
-        var humidity    = null;
-        var f;
-        // Value can be OFF/5 or 27/0 or 27 or ON  or DS2413 ON/OFF 
-        // Value can be 30c5b8000000:27.50;32c5b8000000:28.81;31c5b8000000:27.43.......
+       adapter.getState( portTypeBranch, function(err,state) {
+          var portType = state.val;
+          if ( portType == cPortType_NotConnected ) {
+             return;
+          }
 
-        if (typeof value == 'string') {
-            var match_slash = value.split('/');  //t
-            var match_temp  = value.match(/temp:([0-9.-]+)/); //m
-            if (match_temp) {
-                humidity = value.match(/hum:([0-9.]+)/);
-                if (humidity) humidity = parseFloat(humidity[1]);
-                temperature = match_temp[1];
-            } else {
-                value = match_slash[0];
-            }
-            if (match_slash[1] !== undefined && humidity === null) { // counter
-                new_counter = parseInt(match_slash[1], 10);
-            }
-	    if (match_slash[1] == 'OFF') {  // DS2413
-                secondary = 0;
-            } else if (match_slash[1] == 'ON') {
-                secondary = 1;
-            } else if (match_slash[1] == 'NA') {
-                secondary = 0;
-                q = 0x82; // DS2413 not connected
-            }
+          if ( value != null ) {
+             var secondary   = null;
+             var new_counter = null;
+             var temperature = null;
+             var humidity    = null;
+             var f;
+             // Value can be OFF/5 or 27/0 or 27 or ON  or DS2413 ON/OFF 
+             // Value can be 30c5b8000000:27.50;32c5b8000000:28.81;31c5b8000000:27.43.......
+
+             if (typeof value == 'string') {
+                var match_slash = value.split('/');  //t
+                var match_temp  = value.match(/temp:([0-9.-]+)/); //m
+                if (match_temp) {
+                   humidity = value.match(/hum:([0-9.]+)/);
+                   if (humidity) humidity = parseFloat(humidity[1]);
+                   temperature = match_temp[1];
+                } else {
+                   value = match_slash[0];
+                }
+                if (match_slash[1] !== undefined && humidity === null) { // counter
+                   new_counter = parseInt(match_slash[1], 10);
+                }
+                if (match_slash[1] == 'OFF') {  // DS2413
+                   secondary = 0;
+                } else if (match_slash[1] == 'ON') {
+                   secondary = 1;
+                } else if (match_slash[1] == 'NA') {
+                   secondary = 0;
+                   q = 0x82; // DS2413 not connected
+                }
 
 /*          if (value == 'OFF') {
                 value = 0;
@@ -1908,48 +1864,43 @@ function processPortState(_port, value) {
             } else {
                 value = parseFloat(value) || 0;
             }*/
-        }
-    }
+            }
+         }
 
-    if ( portType == cPortType_StandartIn ) {
-       adapter.getState( currentState, function(err,state) {
-          var oldState = state.val;
-          var newValue = null;
-          if ( oldState = 'OFF'  && value == 'ON' ) {
-             newValue = true;
-          } else if ( oldState = 'ON'  && value == 'OFF' ) {
-             newValue = false;
-          }
-          if ( newValue != null ) {
-             adapter.log.debug('detected new value on port [' + _port  + ']: ' + newValue);
-             adapter.setState( currentState, {val: newValue, ack: true, q: q});
-          }
-        });
-       adapter.getState( counter, function(err,state) {
-          var oldCounter = state.val;
-          if ( oldCounter <> new_counter ) {
-             adapter.log.debug('detected new counter on port [' + _port  + ']: ' + new_counter);
-             adapter.setState( counter, {val: new_counter, ack: true, q: q});
-          }
-        });
+         var newValue = null;
+         if ( portType == cPortType_StandartIn ) {
+            if ( oldState = 'OFF'  && value == 'ON' ) {
+               newValue = true;
+            } else if ( oldState = 'ON'  && value == 'OFF' ) {
+               newValue = false;
+            }
+            if ( newValue != null ) {
+               adapter.log.debug('detected new value on port [' + _port  + ']: ' + newValue);
+               adapter.setState( currentStateBranch, {val: newValue, ack: true, q: q});
+            }
 
-    } else if ( portType == cPortType_ReleOut ) {
-       adapter.getState( currentState, function(err,state) {
-          var oldState = state.val;
-          var newValue = null;
-          if ( oldState = 'OFF'  && value == 'ON' ) {
-             newValue = true;
-          } else if ( oldState = 'ON'  && value == 'OFF' ) {
-             newValue = false;
-          }
-          if ( newValue != null ) {
-             adapter.log.debug('detected new value on port [' + _port  + ']: ' + newValue);
-             adapter.setState( currentState, {val: newValue, ack: true, q: q});
-          }
-        });
-    } 
+            adapter.getState( counterBranch, function(err,state) {
+               var oldCounter = state.val;
+               if ( oldCounter <> new_counter ) {
+                  adapter.log.debug('detected new counter on port [' + _port  + ']: ' + new_counter);
+                  adapter.setState( counter, {val: new_counter, ack: true, q: q});
+               }
+            });
 
+         } else if ( portType == cPortType_ReleOut ) {
+            if ( oldState = 'OFF'  && value == 'ON' ) {
+               newValue = true;
+            } else if ( oldState = 'ON'  && value == 'OFF' ) {
+               newValue = false;
+            }
+            if ( newValue != null ) {
+               adapter.log.debug('detected new value on port [' + _port  + ']: ' + newValue);
+               adapter.setState( currentState, {val: newValue, ack: true, q: q});
+            }
+         }
+      }); 
 
+   });
 
 
 /*
@@ -2091,9 +2042,6 @@ function processPortStateW(_port, value) {      //1Wire
 
 //--------------------------------------------------------------------------------------------------------------
 function pollStatus(dev) {
-    /*for (var port = 0; port < adapter.config.ports.length; port++) {
-        getPortState(port, processPortState);
-    }*/
     getPortsState(function (err, data) {
         if (err) {
             adapter.log.warn(err);
@@ -2115,7 +2063,7 @@ function pollStatus(dev) {
             var p;
             var varName;
             for (p = 0; p < _ports.length; p++) {
-               adapter.log.debug('p='+p);
+               /*adapter.log.debug('p='+p);
                varName = 'ports.' + p + '.portType';
                adapter.log.debug('varName='+varName);
                adapter.log.debug('_ports['+p+']='+_ports[p]);
@@ -2123,16 +2071,10 @@ function pollStatus(dev) {
                adapter.getState( varName, function(err,state) {
                   var portType = state.val;
                   adapter.log.debug('portType='+portType);
-                  if ( portType == cPortType_NotConnected ) {
-                    /// 
-                  } else /*if (
-                               ( portType == cPortType_StandartIn ) ||
-                               ( portType == cPortType_ReleOut    ) 
-                            )*/
-                  {
+                  if ( portType != cPortType_NotConnected ) {*/
                     processPortState(p, _ports[p]);
-                  }
-               });
+              /*    }
+               });*/
             }
 
 /*	    // process 1Wire 
