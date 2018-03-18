@@ -89,12 +89,19 @@ var cNPortMode_ReleaseOnly = '2';
 var cNPortMode_ClickMode = '3';
 var cNPortMode_SW = '0';
 
-var cDigitalSensorTypeDS18B20 = 'DS18B20';
-var cDigitalSensorTypeDHT11   = 'DHT11';
-var cDigitalSensorTypeDHT22   = 'DHT22';
-var cDigitalSensorTypeMarine  = 'iButton/EMMarine';
-var cDigitalSensorType1WBus   = '1WireBUS';
-var cDigitalSensorTypeWiegand26   = 'Wiegand26';
+var cDigitalSensorTypeDS18B20 = 'DS18B20'; //3
+var cDigitalSensorTypeDHT11   = 'DHT11'; //1
+var cDigitalSensorTypeDHT22   = 'DHT22'; //2
+var cDigitalSensorTypeMarine  = 'iButton/EMMarine';//4
+var cDigitalSensorType1WBus   = '1WireBUS';//5
+var cDigitalSensorTypeWiegand26   = 'Wiegand26';//6
+
+var cNDigitalSensorTypeDS18B20 = 3;
+var cNDigitalSensorTypeDHT11   = 1;
+var cNDigitalSensorTypeDHT22   = 2;
+var cNDigitalSensorTypeMarine  = 4;
+var cNDigitalSensorType1WBus   = 5;
+var cNDigitalSensorTypeWiegand26   = 6;
 
 var cXPModelNone   = 'none';
 var cXPModel7I7OR  = '7I7O-R';
@@ -556,6 +563,8 @@ function parseMegaCfgLine ( line ) {
    var port_number;
    var numXP;
    var defaultState;
+   var dSRV;
+   var mSRV;
 
    adapter.log.debug('Распознание строки настройки: '+line);
    parts = line.split('&');
@@ -637,6 +646,9 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.displayPort', {val: disp, ack: true}); 
       adapter.setState( nodeName + '.defaultState', {val: '', ack: true}); 
       adapter.setState( nodeName + '.digitalSensorType', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.temperature', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.humidity', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.digitalSensorMode', {val: '', ack: true}); 
    } else if ( pty == cNPortType_NotConnected ) {
 /* ToDO: если порт переводим  в NC - хорошо бы его принудительно выключить xx:0 */
       adapter.log.debug('Настраиваем порт '+pn+' как неподключенный');
@@ -655,6 +667,10 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.displayPort', {val: '', ack: true}); 
       adapter.setState( nodeName + '.defaultState', {val: '', ack: true}); 
       adapter.setState( nodeName + '.digitalSensorType', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.temperature', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.humidity', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.digitalSensorMode', {val: '', ack: true}); 
+
    } else if (( pty == cNPortType_Out ) && ( m == cNPortMode_SW )) {
 //    TO DO: Здесь надо как-то распознавать еще симисторные и димируемые выходы с тем же pty
       adapter.log.debug('Настраиваем порт '+pn+' как релейный выход');
@@ -671,6 +687,52 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.displayPort', {val: '', ack: true}); 
       adapter.setState( nodeName + '.defaultState', {val: d, ack: true}); 
       adapter.setState( nodeName + '.digitalSensorType', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.temperature', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.humidity', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.digitalSensorMode', {val: '', ack: true}); 
+
+   } else if ( pty == cNPortType_DigitalSensor ) {
+      adapter.log.debug('Настраиваем порт '+pn+' как цифровой вход');
+      adapter.setState( nodeName + '.portType', {val: cPortType_DigitalSensor, ack: true});
+      adapter.setState( nodeName + '.counter', {val: 0, ack: true});
+      adapter.setState( nodeName + '.currentState', {val: '', ack: true}); // ?? либо считать реальный
+      adapter.setState( nodeName + '.defaultAction', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.defaultRunAlways', {val: false, ack: true}); 
+      adapter.setState( nodeName + '.netAction', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.netRunOnlyWhenServerOut', {val: false, ack: true}); 
+      adapter.setState( nodeName + '.portMode', {val: cPortMode_SW, ack: true}); 
+      adapter.setState( nodeName + '.send2ServerAlwaysPressRelease', {val: false, ack: true}); 
+      adapter.setState( nodeName + '.tremorDefenceDisabled', {val: false, ack: true}); 
+      adapter.setState( nodeName + '.displayPort', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.defaultState', {val: '', ack: true}); 
+      if ( d == cNDigitalSensorTypeDS18B20 ) {
+         dSRV = cDigitalSensorTypeDS18B20;
+      } else if ( d == cNDigitalSensorTypeDHT11 ) {
+         dSRV = cDigitalSensorTypeDHT11;
+      } else if ( d == cNDigitalSensorTypeDHT22 ) {
+         dSRV = cDigitalSensorTypeDHT22;
+      } else if ( d == cNDigitalSensorTypeMarine ) {
+         dSRV = cDigitalSensorTypeMarine;
+      } else if ( d == cNDigitalSensorType1WBus ) {
+         dSRV = cDigitalSensorType1WBus;
+      } else if ( d == cNDigitalSensorTypeWiegand26 ) {
+         dSRV = cDigitalSensorTypeWiegand26;
+      }
+      adapter.setState( nodeName + '.digitalSensorType', {val: dSRV, ack: true}); 
+      adapter.setState( nodeName + '.temperature', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.humidity', {val: '', ack: true}); 
+      if ( m == 0 ) {
+         mSRV = 'Norm';
+      } else if ( m == 1 ) {
+         mSRV = '>';
+      } else if ( m == 2 ) {
+         mSRV = '<';
+      } else if ( m == 3 ) {
+         mSRV = '<>';
+      }
+      adapter.setState( nodeName + '.digitalSensorMode', {val: mSRV, ack: true}); 
+
+
    } else /*if ( pty == cNPortType_NotConnected )*/ {
 // остальные типы портов пока не реализованы, пишем их как неподключенные
 /* ToDO: если порт переводим  в NC - хорошо бы его принудительно выключить xx:0 */
@@ -690,6 +752,10 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.displayPort', {val: '', ack: true}); 
       adapter.setState( nodeName + '.defaultState', {val: '', ack: true}); 
       adapter.setState( nodeName + '.digitalSensorType', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.temperature', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.humidity', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.digitalSensorMode', {val: '', ack: true}); 
+
   }
 
 
@@ -2991,6 +3057,7 @@ function configInit() {
        createConfigItemIfNotExists ( 'ports.'+ i + '.counter', 'statenum', 'Счетчик срабатываний порта ' + i, 0 );
        createConfigItemIfNotExists ( 'ports.'+ i + '.temperature', 'statetemperature', 'Температура', null );
        createConfigItemIfNotExists ( 'ports.'+ i + '.humidity', 'statehumidity', 'Влажность', null );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.digitalSensorMode', 'state', 'Режим работы датчика', '' );
    }
 
 /*
@@ -3039,6 +3106,8 @@ function savePort(obj) {
    adapter.log.debug( 'obj.message.xp1model = '+ obj.message.xp1model );
    adapter.log.debug( 'obj.message.xp2model = '+ obj.message.xp2model );
    adapter.log.debug( 'obj.message.defaultState = '+ obj.message.defaultState );
+   adapter.log.debug( 'obj.message.digSensorType = '+ obj.message.digSensorType );
+   adapter.log.debug( 'obj.message.digSensorMode = '+ obj.message.digSensorMode );
 
    var portNum = obj.message.portNum;
    var room    = obj.message.room;
@@ -3056,6 +3125,8 @@ function savePort(obj) {
    var xp1model = obj.message.xp1model;
    var xp2model = obj.message.xp2model;
    var defaultState = obj.message.defaultState || 0;
+   var digSensorType = obj.message.digSensorType || ''; //?
+   var digSensorMode = obj.message.digSensorMode || ''; //?
 
    if (defaultRunAlways == 1) {
       defaultRunAlways = true;
@@ -3233,6 +3304,28 @@ function savePort(obj) {
       }
    );
 
+   adapter.getState( adapter.namespace + '.ports.' + portNum + '.digitalSensorType',
+      function (err, state ) {
+         var oldvalue = "";
+         if ( state ) oldvalue = state.val;
+         if ( oldvalue != digSensorType ) {
+            adapter.setState( 'ports.' + portNum + '.digitalSensorType', {val: digSensorType, ack: true});
+            adapter.log.info( 'ports.' + portNum + '.digitalSensorType : '+ oldvalue + ' -> ' + digSensorType );
+         }
+      }
+   );
+
+   adapter.getState( adapter.namespace + '.ports.' + portNum + '.digitalSensorMode',
+      function (err, state ) {
+         var oldvalue = "";
+         if ( state ) oldvalue = state.val;
+         if ( oldvalue != digSensorMode ) {
+            adapter.setState( 'ports.' + portNum + '.digitalSensorMode', {val: digSensorMode, ack: true});
+            adapter.log.info( 'ports.' + portNum + '.digitalSensorMode : '+ oldvalue + ' -> ' + digSensorMode );
+         }
+      }
+   );
+
    //---------- передаем данные в Мегу
    var url = 'pn=' + portNum;
    if ( portType == cPortType_NotConnected ) {
@@ -3280,6 +3373,39 @@ function savePort(obj) {
       } else {
          url += '&d='; // ?
       }
+   } else if ( portType == cPortType_DigitalSensor ) {
+      url += '&pty='+cNPortType_DigitalSensor;
+      if ( digSensorType == cDigitalSensorTypeDS18B20 ) {
+         url += '&d=' + cNDigitalSensorTypeDS18B20;
+      } else if ( digSensorType == cDigitalSensorTypeDHT11 ) {
+         url += '&d=' + cNDigitalSensorTypeDHT11;
+      } else if ( digSensorType == cDigitalSensorTypeDHT22 ) {
+         url += '&d=' + cNDigitalSensorTypeDHT22;
+      } else if ( digSensorType == cDigitalSensorTypeMarine ) {
+         url += '&d=' + cNDigitalSensorTypeMarine;
+      } else if ( digSensorType == cDigitalSensorType1WBus ) {
+         url += '&d=' + cNDigitalSensorType1WBus;
+      } else if ( digSensorType == cDigitalSensorTypeWiegand26 ) {
+         url += '&d=' + cNDigitalSensorTypeWiegand26;
+      }
+      if ( digSensorMode == 'Norm' ) {
+         url += '&m=0';
+      } else if ( digSensorMode == '>' ) {
+         url += '&m=1';
+      } else if ( digSensorMode == '<' ) {
+         url += '&m=2';
+      } else if ( digSensorMode == '<>' ) {
+         url += '&m=3';
+      } else  {
+         url += '&m=0'; // ?
+      }
+
+
+
+/*      url += '&ecmd=&eth=&disp=&af=&naf=&misc='; //?
+      url += '&m=' + cNPortMode_SW ; 
+      */
+
    } else {
       url += '&pty='+cNPortType_NotConnected;
    }
