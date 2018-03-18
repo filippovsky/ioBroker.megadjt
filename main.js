@@ -1803,12 +1803,14 @@ function processPortState(_port, value) {
     var currentStateBranch = portBranch + 'currentState';
     var portTypeBranch     = portBranch + 'portType';
     var counterBranch      = portBranch + 'counter';
+    var temperatureBranch  = portBranch + 'temperature';
+    var humidityBranch     = portBranch + 'humidity';
 
-    adapter.log.debug( 'portTypeBranch='+portTypeBranch );
+    //adapter.log.debug( 'portTypeBranch='+portTypeBranch );
 
     adapter.getState( portTypeBranch, function(err,state) {
        var portType = state.val;
-       adapter.log.debug( 'portType[' + _port + '] ='+portType );
+       //adapter.log.debug( 'portType[' + _port + '] ='+portType );
 
        if (!portType) {
           adapter.log.warn('Неизвестный порт: ' + _port );
@@ -1887,7 +1889,7 @@ function processPortState(_port, value) {
                }
             });
 
-         } else if ( portType == cPortType_ReleOut ) {
+         } else if ( portType == cPortType_ReleOut || portType == cPortType_SimistorOut ) {
             if ( oldState == false  && value == 'ON' ) {
                newValue = true;
             } else if ( oldState == true  && value == 'OFF' ) {
@@ -1897,6 +1899,25 @@ function processPortState(_port, value) {
                adapter.log.debug('detected new value on port [' + _port  + ']: ' + newValue);
                adapter.setState( currentStateBranch, {val: newValue, ack: true, q: q});
             }
+         } else if ( portType == cPortType_DigitalSensor ) {
+            if ( oldState !=  value ) {
+               adapter.log.debug('detected new value on port [' + _port  + ']: ' + newValue);
+               adapter.setState( currentStateBranch, {val: newValue, ack: true, q: q});
+               if ( temperature != null ) {
+                  adapter.getState( temperatureBranch, function(err,state) {
+                     if ( state.val != temperature ) {
+                        adapter.setState( temperatureBranch, {val: state.val, ack: true, q: q});
+                     }
+                  });
+               }
+               if ( humidity != null ) {
+                  adapter.getState( humidityBranch, function(err,state) {
+                     if ( state.val != humidity ) {
+                        adapter.setState( humidityBranch, {val: state.val, ack: true, q: q});
+                     }
+                  });
+               }
+            }
          }
       }); 
 
@@ -1904,9 +1925,7 @@ function processPortState(_port, value) {
 
 
 /*
-var cPortType_ReleOut = 'ReleOut';           //1
 var cPortType_DimmedOut = 'DimmedOut'; //1
-var cPortType_SimistorOut = 'SimistorOut'; //1
 var cPortType_DigitalSensor  = 'DigitalSensor'; //3 цифровой вход dsen
 var cPortType_I2C  = 'I2C'; // 4 
 var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для аналоговых датчиков
@@ -1918,14 +1937,6 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
 
                 adapter.log.debug('detected new value on port [' + _port + ']: ' + value + ', calc state ' + f);
                 adapter.setState(_ports[_port].id, {val: f, ack: true, q: q});
-            } else
-            if (_ports[_port].pty == 3) {
-                if (_ports[_port].value != value || _ports[_port].q != q) {
-                    adapter.setState(_ports[_port].id, {val: value, ack: true, q: q});
-                }
-                if (secondary !== null && (_ports[_port].secondary != secondary || _ports[_port].q != q)) {
-                    adapter.setState(_ports[_port].id + '_humidity', {val: secondary, ack: true, q: q});
-                }
             } else
             if (_ports[_port].pty == 4) { //NEW
                 if (_ports[_port].value != value || _ports[_port].q != q) {
@@ -2063,18 +2074,7 @@ function pollStatus(dev) {
             var p;
             var varName;
             for (p = 0; p < _ports.length; p++) {
-               /*adapter.log.debug('p='+p);
-               varName = 'ports.' + p + '.portType';
-               adapter.log.debug('varName='+varName);
-               adapter.log.debug('_ports['+p+']='+_ports[p]);
-
-               adapter.getState( varName, function(err,state) {
-                  var portType = state.val;
-                  adapter.log.debug('portType='+portType);
-                  if ( portType != cPortType_NotConnected ) {*/
-                    processPortState(p, _ports[p]);
-              /*    }
-               });*/
+                processPortState(p, _ports[p]);
             }
 
 /*	    // process 1Wire 
@@ -2887,7 +2887,7 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
    var role = "";
    var subtype = "";
    var typeObj = "";
-
+   var unit = null;
 
    found = false;
    adapter.getObject( name, function(err,obj) {
@@ -2915,6 +2915,22 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
             role = 'state';
             subtype = 'number';
             typeObj = 'state';
+         } else if ( type == 'statetemperature' ) {
+            role = 'value.temperature';
+            subtype = 'number';
+            typeObj = 'state';
+            unit = '°C';
+            /*                def: 0,
+                            min: -30,
+                            max: 30,*/
+         } else if ( type == 'statehumidity' ) {
+            role = 'value.humidity';
+            subtype = 'number';
+            typeObj = 'state';
+            unit = '%';
+            /*                    def: 0,
+                                min: 0,
+                                max: 100,*/
          }
          obj = {
                     _id: id,
@@ -2926,7 +2942,8 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
                              read: true,
                               def: "",
                              desc: desc,
-                             type: subtype
+                             type: subtype,
+                             unit: unit
                          },
                  native: {},
                    type: typeObj
@@ -2972,6 +2989,8 @@ function configInit() {
        createConfigItemIfNotExists ( 'ports.'+ i + '.digitalSensorType', 'state', 'Тип цифрового датчика', '' );
        createConfigItemIfNotExists ( 'ports.'+ i + '.currentState', 'statebool', 'Текущее состояние порта ВКЛ/ВЫКЛ', 'false' );
        createConfigItemIfNotExists ( 'ports.'+ i + '.counter', 'statenum', 'Счетчик срабатываний порта ' + i, 0 );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.temperature', 'statetemperature', 'Температура', null );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.humidity', 'statehumidity', 'Влажность', null );
    }
 
 /*
@@ -3252,7 +3271,7 @@ function savePort(obj) {
       } else if ( portMode == cPortMode_ClickMode ) {
          url += '&m=' + cNPortMode_ClickMode;
       }
-   } else if ( portType == cPortType_ReleOut ) {
+   } else if ( portType == cPortType_ReleOut || portType == cPortType_SimistorOut ) {
       url += '&pty='+cNPortType_Out;
       url += '&ecmd=&eth=&disp=&af=&naf=&misc='; //?
       url += '&m=' + cNPortMode_SW ; 
