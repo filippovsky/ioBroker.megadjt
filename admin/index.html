@@ -1787,20 +1787,21 @@ var cNDigitalSensorTypeWiegand26   = 6;
           }
        });
 
-
-       socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.portMode', function (err, state) {
-          if (state) {
-              $("#mXP"+numXP).val( state.val );
-              $('#mXP'+numXP+' option:selected').val(state.val);
-              $('#mXP'+numXP+' select').val(state.val);
-              $('#mXP'+numXP+' option').each(function() {
+       if ( $('#portTypeXP'+numXP).val() == cPortType_StandartIn ) {
+          socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.portMode', function (err, state) {
+             if (state) {
+                $("#mXP"+numXP).val( state.val );
+                $('#mXP'+numXP+' option:selected').val(state.val);
+                $('#mXP'+numXP+' select').val(state.val);
+                $('#mXP'+numXP+' option').each(function() {
                    if($(this).val() == state.val) {
                          $(this).prop("selected", true);
                    }
-              });
-              mChanged( controlPort ); // ?
-          }
-       });
+                });
+                mChanged( controlPort ); // ?
+             }
+          });
+        }
 
        socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.send2ServerAlwaysPressRelease', function (err, state) {
           if (state) {
