@@ -565,7 +565,39 @@ var cNDigitalSensorTypeWiegand26   = 6;
       var sms_enabled = false;
       var sms_phones  = "";
       var id = "";
+
+      var id00 = adapter + '.' + instance;
+      var obj = {};
+
+      socket.emit('getObject', id, function (err, baseObj ) {
+          showMessage( baseObj.ports.0.portType.val  , 'baseObj.ports.0.portType.val', 'alert');
+      }
  
+/*
+          var id = 'system.adapter.' + adapter + '.' + instance;
+
+        var obj = {};
+        $('.value').each(function () {
+            var $this = $(this);
+            if ($this.attr('type') == 'checkbox') {
+                obj[$this.attr('id')] = $this.prop('checked');
+            } else {
+                obj[$this.attr('id')] = $this.val();
+            }
+        });
+
+        // Get edited table
+        obj.ports = ports;
+
+        socket.emit('getObject', id, function (err, oldObj) {
+            if (!oldObj) oldObj = {};
+
+            for (var a in obj) {
+                oldObj.native[a] = obj[a];
+            }
+
+*/
+
       /*for (var i = 0; i <= 37; i++ ) {
           id = adapter + '.' + instance + '.ports.' + i + '.portType';
           socket.emit('getState',  id, function (err, state) {
