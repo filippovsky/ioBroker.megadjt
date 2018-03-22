@@ -569,7 +569,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
       var id00 = adapter + '.' + instance;
       var obj = {};
 
-      socket.emit('getObject', id, function (err, baseObj ) {
+      socket.emit('getObject', id00, function (err, baseObj ) {
           showMessage( baseObj.ports.0.portType.val  , 'baseObj.ports.0.portType.val', 'alert');
       });
  
