@@ -621,7 +621,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
           });
       //}
 
-       txt = JSON.stringify( MegaSetup );
+       //txt = JSON.stringify( MegaSetup );
+       txt = MegaSetup.ports[i].portType;
        $('#MegaSetup').val( txt );
  
       socket.emit('getState',  adapter + '.' + instance + '.ports.0.portType', function (err, state) {
