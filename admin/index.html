@@ -568,6 +568,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
       getObject( id00, function ( err, obj ) {
          MegaSetup = obj;
+         $('#MegaSetup').val( MegaSetup );
+
       });
  //     return;
  
@@ -3355,7 +3357,11 @@ var cNDigitalSensorTypeWiegand26   = 6;
        <option value="14-Rv2.0">Релейный модуль 14-R версия 2.0</option>
        <option value="2R">Релейный минимодуль 2-R</option>
     </select>
+    <textarea div id="MegaSetup"></textarea>
+
     <br>
+
+
 
     <div id="divxp1"></div>
     <div id="divxp2"></div>
