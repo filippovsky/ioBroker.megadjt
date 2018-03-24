@@ -502,6 +502,7 @@ var cNDigitalSensorType1WBus   = 5;
 var cNDigitalSensorTypeWiegand26   = 6;
 
    //------------------------------------------------------------------------------------------------
+   /*
    function getFirmwareVersion () {
       var fw_version = "";
       var fw_version_last_known = "";
@@ -523,6 +524,31 @@ var cNDigitalSensorTypeWiegand26   = 6;
                document.getElementById( 'fw_version_last_known' ).style.backgroundColor = "pink";
             }
             //onchange();  
+         });
+      });
+   }
+   */
+
+   function getFirmwareVersion () {
+      var currentVersion = "";
+      var freshVersion   = "";
+      var currentVersionId = adapter + '.' + instance + '.firmware.version';
+      var freshVersionId   = adapter + '.' + instance + '.firmware.last_known_version';
+
+      getState( currentVersionId, function ( err, state ) {
+         currentVersion = state.val;
+         $('#currentVersion').val( currentVersion );
+         getState( freshVersionId, function ( err, state ) {
+            freshVersion = state.val;
+            $('#freshVersion').val( freshVersion );
+            if ( currentVersion == freshVersion ) {
+               document.getElementById( 'currentVersion' ).style.backgroundColor = "lightgreen";
+               document.getElementById( 'freshVersion' ).style.backgroundColor = "lightgreen";
+            } else {
+               document.getElementById( 'currentVersion' ).style.backgroundColor = "yellow";
+               document.getElementById( 'freshVersion' ).style.backgroundColor = "pink";
+            }
+            onchange();  // ?
          });
       });
    }
@@ -3303,9 +3329,9 @@ var cNDigitalSensorTypeWiegand26   = 6;
             <td colspan=2><input  class="value" id="pollInterval"  maxlength="3"/></td>
         </tr>
         <tr><td class="translate" style="text-align: right">Current firmware version:</td>
-            <td><input readonly class="value" id="fw_version"  maxlength="10"/></td>
+            <td><input readonly class="value" id="currentVersion"  maxlength="10"/></td>
             <td class="translate" style="text-align: right">Last known firmware version:</td>
-            <td><input readonly class="value" id="fw_version_last_known"  maxlength="10"/></td>
+            <td><input readonly class="value" id="freshVersion"  maxlength="10"/></td>
             <td><button class="translateB" id="updateFirmware">Update Firmware</button></td>
         </tr>
         <tr><td class="translate" style="text-align: right">ioBroker Web Port:</td>
