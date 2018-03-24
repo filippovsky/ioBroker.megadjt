@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.19.14",
+        "version":                  "0.19.15",
         "news": {
             "0.16.29": {
                 "en":               "See changelog in Readme.md!",
@@ -108,11 +108,7 @@
         }
     },
     "native": {
-        "ip":                       "",
-        "name":                     "",
-        "port":                     91,
         "pollInterval":             600,
-        "password":                 "sec",
         "longPress":                700,
         "doublePress":              600,
         "ports":                    [],

@@ -61,6 +61,14 @@ var fw_version_actual = "4.26b3";
 var adapter = utils.adapter(  'megadjt' );
 var sms_ru  = require('sms_ru');
 
+//var IP_And_Port;  // ip + port
+//var Host;
+var IP;
+var IPPort;
+var Password;
+var ControllerName;
+var ServerPort;
+
 var cPortType_NotConnected = 'NotConnected'; //255
 var cPortType_StandartIn  = 'StandartIn';    //0
 var cPortType_ReleOut = 'ReleOut';           //1
@@ -356,19 +364,19 @@ function getActual2561FirmwareVersion() {
 // Функция получения версии прошивки Меги ---------------------------------------------------
 function getFirmwareVersion() {
     var version = '';
-    var parts = adapter.config.ip.split(':');
+    //var parts = adapter.config.ip.split(':');
     var actual_version = '';
     var controller_model = '';
 
     var options = {
-        host: parts[0],
-        port: parts[1] || 80,
-        path: '/' + adapter.config.password
+        host: IP,
+        port: IPPort,
+        path: '/' + Password
     };
-    if (!options.host) {
+    if (!IP) {
        adapter.log.warn('getFirmwareVersion not executed, because host is null');
     } else {
-       adapter.log.debug('getFirmwareVersion http://' + options.host + options.path);
+       adapter.log.debug('getFirmwareVersion http://' + IP + options.path);
 
        http.get(options, function (res) {
           var xmldata = '';
@@ -390,7 +398,7 @@ function getFirmwareVersion() {
                  version = xmldata.replace(/^(.*?)fw\:\s(.*?)\)(.*?)$/, '$2');
                  controller_model = xmldata.replace(/^(.*?)\sby(.*?)$/, '$1');
                  //adapter.log.debug('getFirmwareVersion for ' + adapter.config.ip + "[" + options.port + '] parsed as: ' + version);
-                 adapter.log.debug('Модель управляющего модуля Меги ' + adapter.config.ip + "[" + options.port + '] распознана как: ' + controller_model);
+                 adapter.log.debug('Модель управляющего модуля Меги ' + IP + "[" + IPPort + '] распознана как: ' + controller_model);
 
                  if (version) {
                     //adapter.log.debug('getFirmwareVersion сохраняем: ' + version);
@@ -440,9 +448,9 @@ function getFirmwareVersion() {
 
 // Функция перепрошивки Меги ---------------------------------------------------------------
 function updateFirmware( message ) {
-   var parts = adapter.config.ip.split(':');
-   var ip = parts[0];
-   var pass = adapter.config.password;
+   //var parts = adapter.config.ip.split(':');
+   //var ip = parts[0];
+   //var pass = adapter.config.password;
    var cmd = '';
    var cmd1 = '';
    var targetVersion = '';
@@ -466,12 +474,12 @@ function updateFirmware( message ) {
    }
 
    var dir ='';
-   adapter.log.info('Вызвана функция перепрошивки Меги ip=' + ip +' до версии '+targetVersion);
-   if ( !ip ) {
+   adapter.log.info('Вызвана функция перепрошивки Меги ip=' + IP +' до версии '+targetVersion);
+   if ( !IP ) {
       adapter.log.warn('Не передан IP-адрес Меги. Перепрошивка отменена.');
       return;
    }
-   if ( !pass ) {
+   if ( !Password ) {
       adapter.log.warn('Не передан пароль Меги. Перепрошивка отменена.');
       return;
    }
@@ -485,9 +493,9 @@ function updateFirmware( message ) {
    if (targetVersion === 'bootloader') {
       cmd = 'chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --fw '+fw_version_actual+'.hex -f -e';
    } else {
-      cmd = 'chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --fw '+targetVersion+'.hex -p '+pass+' --ee --ip '+ip;
+      cmd = 'chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --fw '+targetVersion+'.hex -p ' + Password +' --ee --ip '+ IP;
    }
-   cmd1 = 'php ./megad-cfg-2561.php  --ip 192.168.0.14 --new-ip '+ip+' -p sec';
+   cmd1 = 'php ./megad-cfg-2561.php  --ip 192.168.0.14 --new-ip '+ IP +' -p sec'; // ???
 
    adapter.log.debug(cmd);
    
@@ -804,23 +812,23 @@ function ReadFileMegaConfig( filename, callback ) {
 
 // Функция считывания настроек Меги в файл ---------------------------------------------------------------
 function readMegaConfig2File( filename, callback ) {
-   var parts = adapter.config.ip.split(':');
-   var ip = parts[0];
-   var pass = adapter.config.password;
+   //var parts = adapter.config.ip.split(':');
+   //var ip = parts[0];
+   //var pass = adapter.config.password;
    var cmd = '';
    var filename0 = filename || 'last.cfg';
    var filename1 = adapter.instance + '_' + filename0;
    var CBerror = '';
    var dir ='';
 
-   adapter.log.info('Считываем настройки Меги ip=' + ip );
-   if ( !ip ) {
+   adapter.log.info('Считываем настройки Меги ip=' + IP );
+   if ( !IP ) {
       CBerror = 'Не передан IP-адрес Меги. Считывание настроек отменено.';
       adapter.log.error(CBerror);
       if (callback) callback( CBerror );
       return;
    }
-   if ( !pass ) {
+   if ( !Password ) {
       CBerror = 'Не передан пароль Меги. Считывание настроек отменено.';
       adapter.log.error( CBerror );
       if (callback) callback( CBerror );
@@ -837,7 +845,7 @@ function readMegaConfig2File( filename, callback ) {
 
    adapter.log.debug('Каталог конфига: '+dir +' Файл: ' + filename1 );
 
-   cmd = 'chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --ip '+ip+' --read-conf '+filename1+' -p '+pass;
+   cmd = 'chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --ip '+ IP +' --read-conf '+filename1+' -p '+ Password;
 
    adapter.log.debug(cmd);
    
@@ -920,11 +928,11 @@ function writeConfigOne(ip, pass, _settings, callback, port, errors) {
         return callback(errors);
     }
 
-    var parts = ip.split(':');
+    //var parts = ip.split(':');
     var options = {
-        host: parts[0],
-        port: parts[1] || 80,
-        path: '/' + pass + '/?pn=' + port
+        host: IP,
+        port: IPPort,
+        path: '/' + Password + '/?pn=' + port
     };
 
     //http://192.168.0.14/sec/?pn=1&pty=0...
@@ -1191,26 +1199,26 @@ function writeConfigDevice(ip, pass, config, callback) {
     //pr: Пресет. Значения: 0 - пресет не установлен, 1 - пресет для исполнительного модуля MegaD-7I7O
     //tc: Проверка значений встроенного температурного сенсора. Значения: 0 - не проверять, 1 - проверять
     //at: Значение температуры, при достижении которого в случае, если задана проверка встроенного температурного датчика, устройство будет отправлять сообщения на сервер
-    var parts = ip.split(':');
+    //var parts = ip.split(':');
     var options = {
-        host: parts[0],
-        port: parts[1] || 80,
-        path: '/' + pass + '/?cf=1'
+        host: IP,
+        port: IPPort,
+        path: '/' + Password + '/?cf=1'
     };
 
-    if (config.eip !== undefined && config.eip != ip)   options.path += '&eip=' + config.eip;
-    if (config.pwd !== undefined && config.pwd != pass) options.path += '&pwd=' + config.pwd;
+    if (config.eip !== undefined && config.eip != IP)   options.path += '&eip=' + config.eip;
+    if (config.pwd !== undefined && config.pwd != Password) options.path += '&pwd=' + config.pwd;
 
     if (config.eip === undefined && config.pwd === undefined) {
-        var sip = findIp(config.eip || ip);
+        var sip = findIp(config.eip || IP);
         if (!sip) {
-            return callback('Device with "' + ip + '" is not reachable from ioBroker.');
+            return callback('Device with "' + IP + '" is not reachable from ioBroker.');
         }
-        options.path += '&sip=' + sip + (config.port ? ':' + config.port : '');
+        options.path += '&sip=' + sip + ( ServerPort ? ':' + ServerPort : '');
         options.path += '&sct=' + encodeURIComponent(adapter.instance + '/');
     }
 
-    adapter.log.info('Write config for device: http://' + ip + options.path);
+    adapter.log.info('Write config for device: http://' + IP + options.path);
 
     http.get(options, function (res) {
         res.setEncoding('utf8');
@@ -1244,7 +1252,7 @@ function writeConfig(obj) {
         config   = obj.message.config;
     } else {
         ip       = obj ? obj.message : '';
-        password = adapter.config.password;
+        password = Password;
         _ports   = adapter.config.ports;
         config   = adapter.config;
     }
@@ -1295,14 +1303,14 @@ function detectPortConfig(ip, pass, length, callback, port, result) {
         }
     }
 
-    var parts = ip.split(':');
+    //var parts = ip.split(':');
     var options = {
-        host: parts[0],
-        port: parts[1] || 80,
-        path: '/' + pass + '/?pt=' + port
+        host: IP,
+        port: IPPort,
+        path: '/' + Password + '/?pt=' + port
     };
 
-    adapter.log.info('read config from port: http://' + ip + options.path);
+    adapter.log.info('read config from port: http://' + IP + options.path);
 
     http.get(options, function (res) {
         res.setEncoding('utf8');
@@ -1589,14 +1597,14 @@ function discoverMega(obj) {
 //--------------------------------------------------------------------------------------------------------------------
 // Get State of ONE port
 function getPortState(port, callback) {
-    var parts = adapter.config.ip.split(':');
+    //var parts = adapter.config.ip.split(':');
 
     var options = {
-        host: parts[0],
-        port: parts[1] || 80,
-        path: '/' + adapter.config.password + '/?pt=' + port + '&cmd=get'
+        host: IP,
+        port: IPPort,
+        path: '/' + Password + '/?pt=' + port + '&cmd=get'
     };
-    adapter.log.debug('getPortState http://' + options.host + options.path);
+    adapter.log.debug('getPortState http://' + IP + options.path);
 
     http.get(options, function (res) {
         var xmldata = '';
@@ -1611,7 +1619,7 @@ function getPortState(port, callback) {
             if (res.statusCode != 200) {
                 adapter.log.warn('Response code: ' + res.statusCode + ' - ' + xmldata);
             }
-            adapter.log.debug('response for ' + adapter.config.ip + "[" + port + ']: ' + xmldata);
+            adapter.log.debug('response for ' + IP + "[" + port + ']: ' + xmldata);
             // Analyse answer and updates staties
             if (callback) callback(port, xmldata);
         });
@@ -1631,18 +1639,18 @@ function getPortStateW(ip, password, port, callback) {                  // 1Wire
         callback = password;
         password = null;
     }
-    password = (password === undefined || password === null) ? adapter.config.password : password;
-    ip       =  ip || adapter.config.ip;
+    password = (password === undefined || password === null) ? Password : password;
+    ip       =  ip || IP;
     
     var parts = ip.split(':');
 
     var options = {
-	host: parts[0],
-        port: parts[1] || 80,
-        path: '/' + password + '/?pt=' + port + '&cmd=list'
+	host: IP,
+        port: IPPort,
+        path: '/' + Password + '/?pt=' + port + '&cmd=list'
     };
 
-    adapter.log.debug('getPortStateW http://' + options.host + options.path);
+    adapter.log.debug('getPortStateW http://' + IP + options.path);
 
     http.get(options, function (res) {
         var xmldata = '';
@@ -1657,7 +1665,7 @@ function getPortStateW(ip, password, port, callback) {                  // 1Wire
                 adapter.log.warn('Response code: ' + res.statusCode + ' - ' + xmldata);
                 //if (callback) callback(xmldata);
             } else {
-                adapter.log.debug('Response for ' + ip + "[" + port + ']: ' + xmldata);
+                adapter.log.debug('Response for ' + IP + "[" + port + ']: ' + xmldata);
                 // Analyse answer and updates statuses
 		//if (callback) callback(null, xmldata);
                 if (callback) callback(port, xmldata);
@@ -1665,7 +1673,7 @@ function getPortStateW(ip, password, port, callback) {                  // 1Wire
 
         });
     }).on('error', function (e) {
-        adapter.log.warn('Got error by request to ' + ip + ': ' + e.message);
+        adapter.log.warn('Got error by request to ' + IP + ': ' + e.message);
         callback(e.message);
     });
 }    
@@ -1681,18 +1689,18 @@ function getPortsState(ip, password, callback) {
         callback = password;
         password = null;
     }
-    password = (password === undefined || password === null) ? adapter.config.password : password;
-    ip       =  ip || adapter.config.ip;
+    password = (password === undefined || password === null) ? Password : password;
+    ip       =  ip || IP;
 
     var parts = ip.split(':');
 
     var options = {
-        host: parts[0],
-        port: parts[1] || 80,
-        path: '/' + password + '/?cmd=all'
+        host: IP,
+        port: IPPort,
+        path: '/' + Password + '/?cmd=all'
     };
 
-    adapter.log.debug('getPortsState http://' + options.host + options.path);
+    adapter.log.debug('getPortsState http://' + IP + options.path);
 
     http.get(options, function (res) {
         var xmldata = '';
@@ -1707,14 +1715,14 @@ function getPortsState(ip, password, callback) {
                 adapter.log.warn('Response code: ' + res.statusCode + ' - ' + xmldata);
                 if (callback) callback(xmldata);
             } else {
-                adapter.log.debug('Response for ' + ip + '[all]: ' + xmldata);
+                adapter.log.debug('Response for ' + IP + '[all]: ' + xmldata);
                 // Analyse answer and updates statuses
                 if (callback) callback(null, xmldata);
             }
 
         });
     }).on('error', function (e) {
-        adapter.log.warn('Got error by request to ' + ip + ': ' + e.message);
+        adapter.log.warn('Got error by request to ' + IP + ': ' + e.message);
         callback(e.message);
     });
 }
@@ -2124,12 +2132,12 @@ function pollStatus(dev) {
             adapter.log.warn(err);
             if (connected) {
                 connected = false;
-                adapter.log.warn('Device "' + adapter.config.ip + '" is disconnected');
+                adapter.log.warn('Device "' + IP + '" is disconnected');
                 adapter.setState('info.connection', false, true);
             }
         } else {
             if (!connected) {
-                adapter.log.info('Device "' + adapter.config.ip + '" is connected');
+                adapter.log.info('Device "' + IP + '" is connected');
                 connected = true;
                 adapter.setState('info.connection', true, true);
             }
@@ -2188,7 +2196,7 @@ function restApi(req, res) {
     var parts  = url.split('/');
     var device = parts[1];
 
-    if (!device || (device != adapter.instance && (!adapter.config.name || device != adapter.config.name))) {
+    if (!device || (device != adapter.instance && (!ControllerName || device != ControllerName))) {
         if (device && values.pt !== undefined) {
             // Try to find name of the instance
             if (parseInt(device, 10) == device) {
@@ -2258,14 +2266,14 @@ function restApi(req, res) {
 function sendCommand(port, value) {
     var data = 'cmd=' + port + ':' + value;
 
-    var parts = adapter.config.ip.split(':');
+    //var parts = adapter.config.ip.split(':');
 
     var options = {
-        host: parts[0],
-        port: parts[1] || 80,
-        path: '/' + adapter.config.password + '/?' + data
+        host: IP,
+        port: IPPort,
+        path: '/' + Password + '/?' + data
     };
-    adapter.log.debug('Send command "' + data + '" to ' + adapter.config.ip);
+    adapter.log.debug('Send command "' + data + '" to ' + IP);
 
     // Set up the request
     http.get(options, function (res) {
@@ -2305,14 +2313,14 @@ function sendCommandToDSA(port, value) {          //DS2413 port A
     //http://192.168.1.14/sec/?cmd=7A:0 or &cmd=7A:1
     var data = 'cmd=' + port + 'A' + ':' + value;
     
-    var parts = adapter.config.ip.split(':');
+    //var parts = adapter.config.ip.split(':');
 
     var options = {
-        host: parts[0],
-        port: parts[1] || 80,
-        path: '/' + adapter.config.password + '/?' + data
+        host: IP,
+        port: IPPort,
+        path: '/' + Password + '/?' + data
     };
-    adapter.log.debug('Send command "' + data + '" to ' + adapter.config.ip);
+    adapter.log.debug('Send command "' + data + '" to ' + IP);
 
     // Set up the request
     http.get(options, function (res) {
@@ -2343,14 +2351,14 @@ function sendCommandToDSB(port, value) {          //DS2413 port B
     //http://192.168.1.14/sec/?cmd=7A:0 or &cmd=7A:1
     var data = 'cmd=' + port + 'B' + ':' + value;
     
-    var parts = adapter.config.ip.split(':');
+    //var parts = adapter.config.ip.split(':');
 
     var options = {
-        host: parts[0],
-        port: parts[1] || 80,
-        path: '/' + adapter.config.password + '/?' + data
+        host: IP,
+        port: IPPort,
+        path: '/' + Password + '/?' + data
     };
-    adapter.log.debug('Send command "' + data + '" to ' + adapter.config.ip);
+    adapter.log.debug('Send command "' + data + '" to ' + IP);
 
     // Set up the request
     http.get(options, function (res) {
@@ -2381,14 +2389,14 @@ function sendCommandToCounter(port, value) {
     //'http://192.168.0.52/sec/?pt=2&cnt=0'
     var data = 'pt=' + port + '&cnt=' + (value || 0);
 
-    var parts = adapter.config.ip.split(':');
+    //var parts = adapter.config.ip.split(':');
 
     var options = {
-        host: parts[0],
-        port: parts[1] || 80,
-        path: '/' + adapter.config.password + '/?' + data
+        host: IP,
+        port: IPPort,
+        path: '/' + Password + '/?' + data
     };
-    adapter.log.debug('Send command "' + data + '" to ' + adapter.config.ip);
+    adapter.log.debug('Send command "' + data + '" to ' + IP );
 
     // Set up the request
     http.get(options, function (res) {
@@ -2931,7 +2939,7 @@ function syncObjects() {
             }
         }
 
-        if (adapter.config.ip && adapter.config.ip != '0.0.0.0') {
+        if ( IP && IP != '0.0.0.0') {
             pollStatus();
             setInterval(pollStatus, adapter.config.pollInterval * 1000);
         }
@@ -3038,6 +3046,11 @@ function configInit() {
    createConfigItemIfNotExists ( 'controller.model', 'state', 'Модель контроллера', '' );
    createConfigItemIfNotExists ( 'controller.xp1model', 'state', 'Модель исполнительного модуля на XP1', 'none' );
    createConfigItemIfNotExists ( 'controller.xp2model', 'state', 'Модель исполнительного модуля на XP2', 'none' );
+   createConfigItemIfNotExists ( 'controller.ip', 'state', 'IP-адрес контроллера', '' );
+   createConfigItemIfNotExists ( 'controller.ipport', 'statenum', 'IP-порт контроллера', 80 );
+   createConfigItemIfNotExists ( 'controller.password', 'state', 'Пароль контроллера', '' );
+   createConfigItemIfNotExists ( 'controller.name', 'state', 'Имя контроллера', '' );
+   createConfigItemIfNotExists ( 'controller.serverPort', 'statenum', 'Порт сервера', 91 );
 
    for ( i=0; i <= 37; i ++ ) {
        createConfigItemIfNotExists ( 'ports.'+ i + '.room', 'state', 'Комната, к которой привязан порт ' + i, '' );
@@ -3060,8 +3073,35 @@ function configInit() {
        createConfigItemIfNotExists ( 'ports.'+ i + '.digitalSensorMode', 'state', 'Режим работы датчика', '' );
    }
 
-/*
-adapter.getState('sms.apikey0', function (err, state) {
+   adapter.getState(adapter.namespace + '.controller.ip', function (err, state_ip) {
+      if (state_ip) {
+         IP = state_ip.val;
+      }
+      adapter.getState(adapter.namespace + '.controller.ipport', function (err, state_port) {
+         if (state_port) {
+            IPPort = state_port.val || 80;
+         } else {
+            IPPort = 80;
+         }
+         adapter.getState(adapter.namespace + '.controller.password', function (err, state_pwd) {
+            if (state_pwd) {
+               Password = state_pwd.val;
+            }
+            adapter.getState(adapter.namespace + '.controller.name', function (err, state_name) {
+               if (state_name) {
+                  ControllerName = state_name.val;
+               }
+               adapter.getState(adapter.namespace + '.controller.serverPort', function (err, state_srv) {
+                  if (state_srv) {
+                     ServerPort = state_srv.val;
+                  }
+               });
+            });
+         });
+      });
+   });
+
+   /*
     adapter.log.info(
           'State ' + adapter.namespace + '.sms.apikey0 -' + 
           '  Value: '        + state.val + 
@@ -3070,7 +3110,7 @@ adapter.getState('sms.apikey0', function (err, state) {
           ', last changed: ' + state.lc
     ); 
 }); 
-*/
+ */
 
 }
 //--------------------------------------------------------------------------------------------
@@ -3421,12 +3461,12 @@ var cNPortType_AnalogSensor  = '2';
       adapter.setState( nodeName + '.digitalSensorType', {val: '', ack: true}); 
 */
     // ----- открываем соединение и передаем данные в Мегу ------------------------------------
-    var parts = adapter.config.ip.split(':');
+    //var parts = adapter.config.ip.split(':');
 
     var options = {
-        host: parts[0],
-        port: parts[1] || 80,
-        path: '/' + adapter.config.password +'/?' + url
+        host: IP,
+        port: IPPort,
+        path: '/' + Password +'/?' + url
     };
 
     // делаем паузу
@@ -3480,14 +3520,14 @@ function main() {
     configInit();
     //debugAllStates();
     
-    if (adapter.config.ip) {
-        adapter.config.port = parseInt(adapter.config.port, 10) || 0;
-        if (adapter.config.port) {
+    if ( IP ) {
+        ServerPort = parseInt( ServerPort, 10) || 0;
+        if ( ServerPort ) {
             server = require('http').createServer(restApi);
 
-            adapter.getPort(adapter.config.port, function (port) {
-                if (port != adapter.config.port && !adapter.config.findNextPort) {
-                    adapter.log.warn('port ' + adapter.config.port + ' already in use');
+            adapter.getPort( ServerPort, function (port) {
+                if (port != ServerPort && !adapter.config.findNextPort) {
+                    adapter.log.warn('port ' + ServerPort + ' already in use');
                 } else {
                     server.listen(port);
                     adapter.log.info('http server listening on port ' + port);
@@ -3501,7 +3541,7 @@ function main() {
     }
     ///??  Filippovsky --- syncObjects();
 
-    if (adapter.config.ip && adapter.config.ip != '0.0.0.0') {
+    if ( IP && IP != '0.0.0.0') {
          pollStatus();
          setInterval(pollStatus, adapter.config.pollInterval * 1000);
     }
@@ -3545,18 +3585,18 @@ function readLink(link, callback) {
 */
 //------------------------------------------------------------------------------------------------
 function readCfgFromMega ( obj ) {
-    var ip;
-    var password;
+    //var ip;
+    //var password;
     var filename = 'last.cfg';
-
+    /*
     if (obj && obj.message && typeof obj.message == 'object') {
         ip       = obj.message.ip;
         password = obj.message.password;
     } else {
         ip       = obj ? obj.message : '';
         password = adapter.config.password;
-    }
-    if (ip && ip != '0.0.0.0') {
+    } */
+    if (IP && IP != '0.0.0.0') {
        readMegaConfig2File( filename, function( err ) {
           if ( err ) {
              adapter.log.error( err );
