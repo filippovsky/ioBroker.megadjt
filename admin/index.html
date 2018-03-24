@@ -463,7 +463,7 @@ span:hover::before {
    var portsColor = [];
    var SelectedPortXP1 = 0;
    var SelectedPortXP2 = 0;
-   var MegaSetup = {};
+   var MegaSetup;
 
 var cPortType_NotConnected = 'NotConnected'; //255
 var cPortType_StandartIn  = 'StandartIn';    //0
@@ -564,7 +564,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
       var sms_phones  = "";
       var id = "";
 
-      var id00 = adapter + '.' + instance;
+      var id00 = adapter + '.' + instance + '.ports.0.portType';
 
       getObject( id00, function ( err, obj ) {
          MegaSetup = obj;
