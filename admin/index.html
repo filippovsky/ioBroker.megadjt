@@ -613,12 +613,13 @@ var cNDigitalSensorTypeWiegand26   = 6;
           });
       } */
 
-      for ( i = 0; i <= 37; i++ ) {
+      //for ( i = 0; i <= 37; i++ ) {
+      i = 0;
           id = adapter + '.' + instance + '.ports.' + i + '.portType';
           getState ( id, function (err, state) {
              MegaSetup.ports[i].portType = state.val; 
           });
-      }
+      //}
 
        txt = JSON.stringify( MegaSetup );
        $('#MegaSetup').val( txt );
