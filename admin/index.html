@@ -459,12 +459,11 @@ span:hover::before {
    var ports     = [];
    var functions = [];
    var active    = false;
-   var megadjt_setup = [];   
+   //var megadjt_setup = [];   
    var portsColor = [];
    var SelectedPortXP1 = 0;
    var SelectedPortXP2 = 0;
-
-//   var portState = [];
+   var MegaSetup = {};
 
 var cPortType_NotConnected = 'NotConnected'; //255
 var cPortType_StandartIn  = 'StandartIn';    //0
@@ -502,33 +501,6 @@ var cNDigitalSensorType1WBus   = 5;
 var cNDigitalSensorTypeWiegand26   = 6;
 
    //------------------------------------------------------------------------------------------------
-   /*
-   function getFirmwareVersion () {
-      var fw_version = "";
-      var fw_version_last_known = "";
-
-      //socket.emit('getState',  adapter + '.' + instance + '.fw_version', function (err, state) {
-      socket.emit('getState',  adapter + '.' + instance + '.firmware.version', function (err, state) {
-         fw_version = state.val;
-         $('#fw_version').val(fw_version);
-
-         //socket.emit('getState',  adapter + '.' + instance + '.fw_version_last_known', function (err, state) {
-         socket.emit('getState',  adapter + '.' + instance + '.firmware.last_known_version', function (err, state) {
-            fw_version_last_known = state.val;
-            $('#fw_version_last_known').val(fw_version_last_known);
-            if  ( fw_version === fw_version_last_known ) {
-               document.getElementById( 'fw_version' ).style.backgroundColor = "lightgreen";
-               document.getElementById( 'fw_version_last_known' ).style.backgroundColor = "lightgreen";
-            } else {
-               document.getElementById( 'fw_version' ).style.backgroundColor = "yellow";
-               document.getElementById( 'fw_version_last_known' ).style.backgroundColor = "pink";
-            }
-            //onchange();  
-         });
-      });
-   }
-   */
-
    function getFirmwareVersion () {
       var currentVersion = "";
       var freshVersion   = "";
@@ -593,7 +565,12 @@ var cNDigitalSensorTypeWiegand26   = 6;
       var id = "";
 
       var id00 = adapter + '.' + instance;
-      var obj = {};
+
+      getObject( id00, function ( err, obj ) {
+         MegaSetup = obj;
+         showMessage( obj.ports.0.portType, 'info0porttype', 'alert' );
+      });
+ 
 //http://192.168.1.35:8087/getPlainValue/megadjt.0.ports.27.portType
 /*      socket.emit('getObject', id00, function (err, baseObj ) {
           showMessage( baseObj.ports.0.portType.val  , 'baseObj.ports.0.portType.val', 'alert');
