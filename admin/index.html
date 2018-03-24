@@ -568,8 +568,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
       getObject( id00, function ( err, obj ) {
          MegaSetup = obj;
-         showMessage( obj.ports.0.portType, 'info0porttype', 'alert' );
       });
+      return;
  
 //http://192.168.1.35:8087/getPlainValue/megadjt.0.ports.27.portType
 /*      socket.emit('getObject', id00, function (err, baseObj ) {
@@ -2744,6 +2744,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         getFirmwareVersion();
         getAdapterStates();
 
+
         $('#updateFirmware').button({
             icons: {primary: 'ui-icon-refresh'}
         }).click(function () {
@@ -3036,6 +3037,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
             showMessage(_('Enable adapter first'), 'Warning', 'info');
             return;
         }
+
+        showMessage( MegaSetup.ports.0.portType, 'info0porttype', 'alert' );
 
         if (window.confirm(_('Существующие настройки на сервере будут сброшены считанными из Меги. Вы уверены?'))) {
 
