@@ -562,19 +562,19 @@ var cNDigitalSensorTypeWiegand26   = 6;
       var sms_apiKey  = "";
       var sms_enabled = false;
       var sms_phones  = "";
-      var id = "";
-      var txt;
+      var id;
+      var i;
 
 
       var id00 = adapter + '.' + instance + '.ports.0.portType';
 
       getObject( id00, function ( err, obj ) {
          MegaSetup = obj;
-         txt = MegaSetup.val;
+         txt = JSON.stringify( MegaSetup );
          $('#MegaSetup').val( txt );
-
       });
  //     return;
+
  
 //http://192.168.1.35:8087/getPlainValue/megadjt.0.ports.27.portType
 /*      socket.emit('getObject', id00, function (err, baseObj ) {
@@ -613,6 +613,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
           });
       } */
 
+ 
       socket.emit('getState',  adapter + '.' + instance + '.ports.0.portType', function (err, state) {
          portsColor[0] = state.val;
       });
