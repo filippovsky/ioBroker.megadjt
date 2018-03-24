@@ -563,12 +563,15 @@ var cNDigitalSensorTypeWiegand26   = 6;
       var sms_enabled = false;
       var sms_phones  = "";
       var id = "";
+      var txt;
+
 
       var id00 = adapter + '.' + instance + '.ports.0.portType';
 
       getObject( id00, function ( err, obj ) {
          MegaSetup = obj;
-         $('#MegaSetup').val( MegaSetup );
+         txt = MegaSetup.val;
+         $('#MegaSetup').val( txt );
 
       });
  //     return;
