@@ -555,8 +555,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
       socket.emit('setState',  adapter + '.' + instance + '.sms.enabled', obj );
       //http://192.168.1.35:8087/set/megadjt.0.sms.apikey0?value=123&prettyPrint
     }
-
-
+/*
    //--------------------------------------------------------------------------------
    function getAdapterStates () {
       var sms_apiKey  = "";
@@ -566,7 +565,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
       var i;
       var txt;
 
-/*
+/--
       var id00 = adapter + '.' + instance + '.ports.0.portType';
 
       getObject( id00, function ( err, obj ) {
@@ -574,14 +573,14 @@ var cNDigitalSensorTypeWiegand26   = 6;
          txt = JSON.stringify( MegaSetup );
          $('#MegaSetup').val( txt );
       });
-*/
+--/
 
 //http://192.168.1.35:8087/getPlainValue/megadjt.0.ports.27.portType
-/*      socket.emit('getObject', id00, function (err, baseObj ) {
+/--      socket.emit('getObject', id00, function (err, baseObj ) {
           showMessage( baseObj.ports.0.portType.val  , 'baseObj.ports.0.portType.val', 'alert');
       });
-  */
-/*
+ --/
+/--
           var id = 'system.adapter.' + adapter + '.' + instance;
 
         var obj = {};
@@ -604,26 +603,26 @@ var cNDigitalSensorTypeWiegand26   = 6;
                 oldObj.native[a] = obj[a];
             }
 
-*/
+--/
 
-      /*for (var i = 0; i <= 37; i++ ) {
+      /--for (var i = 0; i <= 37; i++ ) {
           id = adapter + '.' + instance + '.ports.' + i + '.portType';
           socket.emit('getState',  id, function (err, state) {
               portsColor[i] = state.val;
           });
-      } */
+      } --/
 
-      //for ( i = 0; i <= 37; i++ ) {
+      /--for ( i = 0; i <= 37; i++ ) {
       i = 0;
           id = adapter + '.' + instance + '.ports.' + i + '.portType';
           getState ( id, function (err, state) {
              MegaSetup.ports[i].portType = state.val; 
           });
-      //}
+      }--/
 
        //txt = JSON.stringify( MegaSetup );
-       txt = MegaSetup.ports[i].portType;
-       $('#MegaSetup').val( txt );
+       //txt = MegaSetup.ports[i].portType;
+       //$('#MegaSetup').val( txt );
  
       socket.emit('getState',  adapter + '.' + instance + '.ports.0.portType', function (err, state) {
          portsColor[0] = state.val;
@@ -740,6 +739,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
          portsColor[37] = state.val;
       });
   
+
       socket.emit('getState',  adapter + '.' + instance + '.sms.apiKey', function (err, state) {
          sms_apiKey = state.val;
          $('#sms_apiKey').val(sms_apiKey);
@@ -803,6 +803,204 @@ var cNDigitalSensorTypeWiegand26   = 6;
         imagePorts( 1 );
         imagePorts( 2 );
         selectPort( 1, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
+        selectPort( 2, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
+
+         //onchange();
+      });
+
+   }
+
+*/
+
+   //--------------------------------------------------------------------------------
+   function getAdapterStates () {
+      var sms_apiKey  = "";
+      var sms_enabled = false;
+      var sms_phones  = "";
+      var id;
+      var i;
+
+      getState( adapter + '.' + instance + '.ports.0.portType', function (err, state) {
+         portsColor[0] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.1.portType', function (err, state) {
+         portsColor[1] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.2.portType', function (err, state) {
+         portsColor[2] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.3.portType', function (err, state) {
+         portsColor[3] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.4.portType', function (err, state) {
+         portsColor[4] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.5.portType', function (err, state) {
+         portsColor[5] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.6.portType', function (err, state) {
+         portsColor[6] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.7.portType', function (err, state) {
+         portsColor[7] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.8.portType', function (err, state) {
+         portsColor[8] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.9.portType', function (err, state) {
+         portsColor[9] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.10.portType', function (err, state) {
+         portsColor[10] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.11.portType', function (err, state) {
+         portsColor[11] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.12.portType', function (err, state) {
+         portsColor[12] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.13.portType', function (err, state) {
+         portsColor[13] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.14.portType', function (err, state) {
+         portsColor[14] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.15.portType', function (err, state) {
+         portsColor[15] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.16.portType', function (err, state) {
+         portsColor[16] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.17.portType', function (err, state) {
+         portsColor[17] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.18.portType', function (err, state) {
+         portsColor[18] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.19.portType', function (err, state) {
+         portsColor[19] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.20.portType', function (err, state) {
+         portsColor[20] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.21.portType', function (err, state) {
+         portsColor[21] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.22.portType', function (err, state) {
+         portsColor[22] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.23.portType', function (err, state) {
+         portsColor[23] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.24.portType', function (err, state) {
+         portsColor[24] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.25.portType', function (err, state) {
+         portsColor[25] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.26.portType', function (err, state) {
+         portsColor[26] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.27.portType', function (err, state) {
+         portsColor[27] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.28.portType', function (err, state) {
+         portsColor[28] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.29.portType', function (err, state) {
+         portsColor[29] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.30.portType', function (err, state) {
+         portsColor[30] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.31.portType', function (err, state) {
+         portsColor[31] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.32.portType', function (err, state) {
+         portsColor[32] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.33.portType', function (err, state) {
+         portsColor[33] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.34.portType', function (err, state) {
+         portsColor[34] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.35.portType', function (err, state) {
+         portsColor[35] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.36.portType', function (err, state) {
+         portsColor[36] = state.val;
+      });
+      getState( adapter + '.' + instance + '.ports.37.portType', function (err, state) {
+         portsColor[37] = state.val;
+      });
+  
+
+      getState( adapter + '.' + instance + '.sms.apiKey', function (err, state) {
+         sms_apiKey = state.val;
+         $('#sms_apiKey').val(sms_apiKey);
+         $('#sms_apiKey').change(smsApiKeyChanged);
+         //onchange();  
+      });
+
+      getState( adapter + '.' + instance + '.sms.enabled', function (err, state) {
+         sms_enabled = state.val;
+         if (sms_enabled == true || sms_enabled == 'true' ) {
+            $('#sms_enabled').prop('checked', true);
+         } else {
+            $('#sms_enabled').removeAttr('checked');
+         }
+         $('#sms_enabled').change(smsEnabledChanged);
+         //onchange();  
+      });
+
+      getState( adapter + '.' + instance + '.sms.phones', function (err, state) {
+         sms_phones = state.val;
+         $('#sms_phones').val(sms_phones);
+         $('#sms_phones').change(smsPhonesChanged);
+         //onchange();  
+      });
+
+      getState( adapter + '.' + instance + '.controller.xp1model', function (err, state) {
+         $('#xp1model').val(state.val);
+         $('#xp1model option:selected').val(state.val);
+         $("#xp1model select").val(state.val);
+         $('#xp1model option').each(function() {
+             if($(this).val() == state.val) {
+                 $(this).prop("selected", true);
+             }
+         });
+        $('#xp1model').change(function () {
+            showXP( 1 );
+            imagePorts( 1 );
+            selectPort( 1, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
+            $('#xp1model').val($(this).val()).trigger('change');
+        });
+
+        imagePorts( 1 );
+        selectPort( 1, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
+
+      });
+
+      getState(  adapter + '.' + instance + '.controller.xp2model', function (err, state) {
+         $('#xp2model option:selected').val(state.val);
+         $('#xp2model').val(state.val);
+         $("#xp2model select").val(state.val);
+         $('#xp2model option').each(function() {
+             if($(this).val() == state.val) {
+                 $(this).prop("selected", true);
+             }
+         });
+        $('#xp2model').change(function () {
+            showXP( 2 );
+            imagePorts( 2 );
+            selectPort( 2, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
+            $('#xp2model').val($(this).val()).trigger('change');
+        });
+
+        //imagePorts( 1 );
+        imagePorts( 2 );
+        //selectPort( 1, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
         selectPort( 2, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
 
          //onchange();
