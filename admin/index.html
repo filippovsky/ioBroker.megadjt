@@ -565,7 +565,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
       var id;
       var i;
 
-
+/*
       var id00 = adapter + '.' + instance + '.ports.0.portType';
 
       getObject( id00, function ( err, obj ) {
@@ -573,7 +573,14 @@ var cNDigitalSensorTypeWiegand26   = 6;
          txt = JSON.stringify( MegaSetup );
          $('#MegaSetup').val( txt );
       });
- //     return;
+*/
+      var id00 = adapter + '.' + instance ;
+
+      getState( id00, function ( err, obj ) {
+         MegaSetup = obj;
+         txt = JSON.stringify( MegaSetup );
+         $('#MegaSetup').val( txt );
+      });
 
  
 //http://192.168.1.35:8087/getPlainValue/megadjt.0.ports.27.portType
