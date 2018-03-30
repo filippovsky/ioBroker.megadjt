@@ -829,7 +829,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
       });
       getState( adapter + '.' + instance + '.controller.ipport', function (err, state) {
          if (!state.val) {
-             state.val = 80;
+             state.val = '80';
          }
          $('#ipport').val( state.val );
          onChange();
@@ -3546,7 +3546,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
                 <button id="buttonsms" class="translateB">SMS Setup</button>
             </td>
         </tr>
-        <tr><td class="translate" style="text-align: right">IP:</td>
+        <tr><td class="translate" style="text-align: right">IP-Порт контроллера:</td>
             <td><input  class="value" id="ipport"/></select></td>
             <td style="padding-left: 10px"> &nbsp;
             </td>
