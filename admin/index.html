@@ -520,7 +520,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
                document.getElementById( 'currentVersion' ).style.backgroundColor = "yellow";
                document.getElementById( 'freshVersion' ).style.backgroundColor = "pink";
             }
-            onchange();  // ?
+            //onchange();  // ?
+            onChange();
          });
       });
    }
@@ -819,6 +820,14 @@ var cNDigitalSensorTypeWiegand26   = 6;
       var sms_phones  = "";
       var id;
       var i;
+      var ip = "";
+
+      getState( adapter + '.' + instance + '.controller.ip', function (err, state) {
+         $('#ip').val( state.val );
+         onChange();
+         //   onchange();  // ?
+      });
+
 
       getState( adapter + '.' + instance + '.ports.0.portType', function (err, state) {
          portsColor[0] = state.val;
@@ -2956,9 +2965,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
         });
 
 
-        getFirmwareVersion();
         getAdapterStates();
-
+        getFirmwareVersion();
 
         $('#updateFirmware').button({
             icons: {primary: 'ui-icon-refresh'}
@@ -3215,6 +3223,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
     // you have to make sure the callback is called with the settings object as first param!
     function save(callback) {
         // example: select elements with class=value and build settings object
+        var ip;
+
         var obj = {};
         $('.value').each(function () {
             var $this = $(this);
@@ -3242,6 +3252,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
            obj1 = {  val: newvalue, ack: true };
            socket.emit('setState',  adapter + '.' + instance + '.ports.' + i + '.room', obj1 );
         } */
+
+        ip = $('#ip').val();
+        obj1 = { val: ip, ack: true };
+        socket.emit('setState',  adapter + '.' + instance + '.controller.ip', obj1 );
 
         callback(obj);
     }
