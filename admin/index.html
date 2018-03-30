@@ -508,21 +508,23 @@ var cNDigitalSensorTypeWiegand26   = 6;
       var freshVersionId   = adapter + '.' + instance + '.firmware.last_known_version';
 
       getState( currentVersionId, function ( err, state ) {
-         currentVersion = state.val;
-         $('#currentVersion').val( currentVersion );
-         getState( freshVersionId, function ( err, state ) {
-            freshVersion = state.val;
-            $('#freshVersion').val( freshVersion );
-            if ( currentVersion == freshVersion ) {
-               document.getElementById( 'currentVersion' ).style.backgroundColor = "lightgreen";
-               document.getElementById( 'freshVersion' ).style.backgroundColor = "lightgreen";
-            } else {
-               document.getElementById( 'currentVersion' ).style.backgroundColor = "yellow";
-               document.getElementById( 'freshVersion' ).style.backgroundColor = "pink";
-            }
-            //onchange();  // ?
-            onChange();
-         });
+         if ( state ) {
+            currentVersion = state.val;
+            $('#currentVersion').val( currentVersion );
+            getState( freshVersionId, function ( err, state ) {
+               freshVersion = state.val;
+               $('#freshVersion').val( freshVersion );
+               if ( currentVersion == freshVersion ) {
+                  document.getElementById( 'currentVersion' ).style.backgroundColor = "lightgreen";
+                  document.getElementById( 'freshVersion' ).style.backgroundColor = "lightgreen";
+               } else {
+                  document.getElementById( 'currentVersion' ).style.backgroundColor = "yellow";
+                  document.getElementById( 'freshVersion' ).style.backgroundColor = "pink";
+               }
+               //onchange();  // ?
+               onChange();
+            });
+         }
       });
    }
 
