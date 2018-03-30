@@ -827,6 +827,13 @@ var cNDigitalSensorTypeWiegand26   = 6;
          onChange();
          //   onchange();  // ?
       });
+      getState( adapter + '.' + instance + '.controller.ipport', function (err, state) {
+         if (!state.val) {
+             state.val = 80;
+         }
+         $('#ipport').val( state.val );
+         onChange();
+      });
 
 
       getState( adapter + '.' + instance + '.ports.0.portType', function (err, state) {
@@ -3224,7 +3231,9 @@ var cNDigitalSensorTypeWiegand26   = 6;
     function save(callback) {
         // example: select elements with class=value and build settings object
         var ip;
+        var state;
 
+        /*
         var obj = {};
         $('.value').each(function () {
             var $this = $(this);
@@ -3234,9 +3243,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
                 obj[$this.attr('id')] = $this.val();
             }
         });
+        */
 
         // Get edited table
-        obj.ports = ports;
+        //obj.ports = ports;
 
         var xpmodel = $('#xp1model option:selected').val();
         var obj1 = {  val: xpmodel, ack: true };
@@ -3257,7 +3267,11 @@ var cNDigitalSensorTypeWiegand26   = 6;
         obj1 = { val: ip, ack: true };
         socket.emit('setState',  adapter + '.' + instance + '.controller.ip', obj1 );
 
-        callback(obj);
+        state = $('#ipport').val();
+        obj1 = { val: state, ack: true };
+        socket.emit('setState',  adapter + '.' + instance + '.controller.ipport', obj1 );
+
+        //callback(obj);
     }
 
     //--------------------------------------------------------------------------------------
@@ -3530,6 +3544,14 @@ var cNDigitalSensorTypeWiegand26   = 6;
             </td>
             <td colspan=2 style="padding-left: 10px">
                 <button id="buttonsms" class="translateB">SMS Setup</button>
+            </td>
+        </tr>
+        <tr><td class="translate" style="text-align: right">IP:</td>
+            <td><input  class="value" id="ipport"/></select></td>
+            <td style="padding-left: 10px"> &nbsp;
+            </td>
+            <td colspan=2 style="padding-left: 10px">
+                 &nbsp;
             </td>
         </tr>
         <tr><td class="translate" style="text-align: right">MegaD Name:</td>
