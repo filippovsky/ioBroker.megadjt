@@ -814,7 +814,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 */
 
    //--------------------------------------------------------------------------------
-   function getAdapterStates () {
+   function getAdapterStates ( ) {
       var sms_apiKey  = "";
       var sms_enabled = false;
       var sms_phones  = "";
@@ -3367,13 +3367,16 @@ var cNDigitalSensorTypeWiegand26   = 6;
                     return;
                 }
 
+                
                 for ( var i = 0; i <= 37; i++ ) {
                    var name = adapter + '.' + instance + '.ports.'+i+'.portType'
                    socket.emit('getState',  name, function (err, state) {
                       portsColor[i] = state.val;
                    });
-                }
-    
+                } 
+
+                getAdapterStates(); // ?
+
                 showMessage('Настройки портов считаны с Меги', _('Info'), 'info');
 
              /*
