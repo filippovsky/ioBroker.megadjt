@@ -199,7 +199,6 @@ adapter.on('stateChange', function (id, state) {
 
         adapter.log.info('try to control ' + id + ' with ' + state.val);
 
-
         if (parseFloat(state.val) == state.val) {
             // If number => set position
             state.val = parseFloat(state.val);
@@ -3114,11 +3113,11 @@ function setGlobal ( callback ) {
                   if (state_srv) {
                      ServerPort = state_srv.val;
                   }
-   adapter.log.debug('IP='||IP);
-   adapter.log.debug('IPPort='||IPPort);
-   adapter.log.debug('Password='||Password);
-   adapter.log.debug('ControllerName='||ControllerName);
-   adapter.log.debug('ServerPort='||ServerPort);
+   adapter.log.debug('IP='+IP);
+   adapter.log.debug('IPPort='+IPPort);
+   adapter.log.debug('Password='+Password);
+   adapter.log.debug('ControllerName='+ControllerName);
+   adapter.log.debug('ServerPort='+ServerPort);
                });
             });
          });
@@ -3558,11 +3557,11 @@ function main() {
                        if (state_srv) {
                           ServerPort = state_srv.val;
                        }
-                       adapter.log.debug('IP='||IP);
-                       adapter.log.debug('IPPort='||IPPort);
-                       adapter.log.debug('Password='||Password);
-                       adapter.log.debug('ControllerName='||ControllerName);
-                       adapter.log.debug('ServerPort='||ServerPort);
+                       adapter.log.debug('IP='+IP);
+                       adapter.log.debug('IPPort='+IPPort);
+                       adapter.log.debug('Password='+Password);
+                       adapter.log.debug('ControllerName='+ControllerName);
+                       adapter.log.debug('ServerPort='+ServerPort);
                        //------------------------------------------------------
                
                        if ( IP ) {
@@ -3657,7 +3656,7 @@ function readCfgFromMega ( obj ) {
         password = adapter.config.password;
     } */
     adapter.log.debug( 'readCfgFromMega start' );
-    adapter.log.debug( 'IP = ' || IP );
+    adapter.log.debug( 'IP = ' + IP );
     if (IP && IP != '0.0.0.0') {
        readMegaConfig2File( filename, function( err ) {
           if ( err ) {
