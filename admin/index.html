@@ -3199,12 +3199,12 @@ var cNDigitalSensorTypeWiegand26   = 6;
             var val = $(this).val();
             if (!val || val == '0.0.0.0') {
                 $('#autoDetect').button('disable');
-                $('#write').button('disable');
+                //$('#write').button('disable');
                 $('#ipchange').button('disable');
                 $('#updateFirmware').button('disable');
             } else {
                 $('#autoDetect').button('enable');
-                $('#write').button('enable');
+                //$('#write').button('enable');
                 $('#ipchange').button('enable');
                 $('#updateFirmware').button('enable');
             }
