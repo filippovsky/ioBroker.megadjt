@@ -3276,7 +3276,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         var ip;
         var state;
 
-        /*
+        
         var obj = {};
         $('.value').each(function () {
             var $this = $(this);
@@ -3286,7 +3286,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
                 obj[$this.attr('id')] = $this.val();
             }
         });
-        */
+        
 
         // Get edited table
         //obj.ports = ports;
@@ -3331,9 +3331,9 @@ var cNDigitalSensorTypeWiegand26   = 6;
         socket.emit('setState',  adapter + '.' + instance + '.firmware.version', obj1 );
   */
         //callback(obj);
-       /* if (callback) {
-            callback;
-        }*/
+        if (callback) {
+            callback(obj);
+        }
 
     }
 
