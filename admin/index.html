@@ -3284,7 +3284,24 @@ var cNDigitalSensorTypeWiegand26   = 6;
         obj1 = { val: state, ack: true };
         socket.emit('setState',  adapter + '.' + instance + '.controller.ipport', obj1 );
 
-        //callback(obj);
+        state = $('#name').val();
+        obj1 = { val: state, ack: true };
+        socket.emit('setState',  adapter + '.' + instance + '.controller.name', obj1 );
+
+//password serverPort firmware.version last_known_version is_actual
+        state = $('#password').val();
+        obj1 = { val: state, ack: true };
+        socket.emit('setState',  adapter + '.' + instance + '.controller.password', obj1 );
+
+        state = $('#port').val();
+        obj1 = { val: state, ack: true };
+        socket.emit('setState',  adapter + '.' + instance + '.controller.serverPort', obj1 );
+
+        state = $('#currentVersion').val();
+        obj1 = { val: state, ack: true };
+        socket.emit('setState',  adapter + '.' + instance + '.firmware.version', obj1 );
+
+        callback(obj);
     }
 
     //--------------------------------------------------------------------------------------
