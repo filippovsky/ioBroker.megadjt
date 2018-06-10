@@ -212,9 +212,6 @@ if ( array_key_exists('read-conf', $options) || array_key_exists('write-conf', $
 			}
 
 			$url = preg_replace("/&$/", "", $url);
-			if ( !preg_match("/^cf=1&/", $url) && $i < count($pages) - 1 )
-			//if ( !preg_match("/^cf=1&/", $url) )
-			$url .= "&nr=1";
 			fwrite($fh, "$url\n");
 		}
 
@@ -559,7 +556,7 @@ elseif ( $conf_flag == 1 || ( array_key_exists('ip', $options) && array_key_exis
 {}
 else
 {
-	echo "MegaD-2561 management script Ver 2.08\n";
+	echo "MegaD-2561 management script Ver 2.06\n";
 	echo "Available options:\n";
 	echo "--scan (Scanning network for MegaD-328/2561 devices)\n";
 	echo "--ip [current IP address] --new-ip [new IP address] -p [password] (Changing IP-address)\n";
@@ -659,7 +656,6 @@ if ( array_key_exists('write-conf', $options) && $conf_flag == 1 )
 	for ( $i = 0; $i < count($wconf); $i++ )
 	{
 		$wconf[$i] = preg_replace("/\n|\r/", "", $wconf[$i]);
-		$result = "";
 		if ( array_key_exists('ee', $options) && $i == 0 )
 		{
 			if ( array_key_exists('new-ip', $options) )
@@ -669,24 +665,18 @@ if ( array_key_exists('write-conf', $options) && $conf_flag == 1 )
 		}
 		else
 		{
-			$result = file_get_contents("http://".$options['ip']."/".$options['p']."/?".$wconf[$i]);
+			file_get_contents("http://".$options['ip']."/".$options['p']."/?".$wconf[$i]);
 			//echo "http://".$options['ip']."/".$options['p']."/?".$wconf[$i]."\n";
 			if ( $i == 0 && preg_match("/&pwd=/", $wconf[$i]) )
 			$options['p'] = trim(preg_replace("/.*&pwd=(.*)&.*?/U", "$1", $wconf[$i]));
 
 		}
 		//echo $wconf[$i]."\n";
-
-		if ( preg_match("/&nr=1$/", $wconf[$i]) && preg_match("/Done$/", $result) )
-		usleep(10000);
-		else
 		usleep(100000);
-
-		if ( !preg_match("/^cf/", $wconf[$i]) && ( !preg_match("/&nr=1$/", $wconf[$i]) || !preg_match("/Done$/", $result) ) )
+		if ( !preg_match("/^cf/", $wconf[$i]) )
 		{
-			//echo ".";
 			file_get_contents("http://".$options['ip']."/".$options['p']."/?".$wconf[$i]);
-			usleep(10000);
+			usleep(100000);
 		}
 	}
 
