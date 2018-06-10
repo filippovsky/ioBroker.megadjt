@@ -827,7 +827,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
       getState( adapter + '.' + instance + '.controller.ip', function (err, state) {
          if (state) {
             $('#ip').val( state.val );
-            //onChange();
+            onChange();//?
             getState( adapter + '.' + instance + '.controller.ipport', function (err, state) {
                if (state) {
                   if (state.val == '') {
@@ -2964,11 +2964,11 @@ var cNDigitalSensorTypeWiegand26   = 6;
     //-------------------------------------------------------------------------------------
     // the function loadSettings has to exist ...
     function load(settings, onChange) {
-        if (!settings) return;
+        //if (!settings) return;
 
-        if (settings.longPress === undefined) settings.longPress = 400;
+        //if (settings.longPress === undefined) settings.longPress = 400;
 
-        $('.value').each(function () {
+  /*      $('.value').each(function () {
             var key = $(this).attr('id');
             // example: select elements with id=key and class=value and insert value
             if ($(this).attr('type') == 'checkbox') {
@@ -2987,9 +2987,9 @@ var cNDigitalSensorTypeWiegand26   = 6;
                     onChange();
                 });
             }
-        });
+        });*/
 
-        ports = settings.ports || [];
+        //ports = settings.ports || [];
 
         $('#autoDetect').button({
             icons: {primary: 'ui-icon-refresh'}
@@ -2997,6 +2997,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
             autoDetect($('#ip').val(), $('#password').val());
         });
 
+/*
         $('#write').button({
             icons: {primary: 'ui-icon-disk'}
         }).click(function() {
@@ -3009,6 +3010,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
             //writeConfig($('#ip').val(), $('#password').val(), port, ports);
         });
+*/
 
         // read if instance is active or enabled
         socket.emit('getState', 'system.adapter.' + adapter + '.' + instance + '.alive', function (err, state) {
@@ -3093,7 +3095,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
         readRooms();
 
-        
+/*        
         $('#add').button({
             icons: {primary: 'ui-icon-plusthick'}
         }).click(function () {
@@ -3130,6 +3132,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
             //showPorts();
         });
+*/
 
         $('#ipchange').button({
             icons: {primary: 'ui-icon-note'}
@@ -3240,9 +3243,9 @@ var cNDigitalSensorTypeWiegand26   = 6;
             });
         }).css({'font-size': '0.7em'});
 
-        $('#ips').change(function () {
+  /*      $('#ips').change(function () {
             $('#ip').val($(this).val()).trigger('change');
-        });
+        });*/
 
 
         $('#xp1model').change(function () {
