@@ -1958,7 +1958,7 @@ function processPortState(_port, value) {
                var oldCounter = state.val;
                if ( oldCounter !== new_counter ) {
                   adapter.log.debug('detected new counter on port [' + _port  + ']: ' + new_counter);
-                  adapter.setState( counter, {val: new_counter, ack: true, q: q});
+                  adapter.setState( counterBranch, {val: new_counter, ack: true, q: q});
                }
             });
 
