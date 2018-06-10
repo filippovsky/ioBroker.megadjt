@@ -3095,11 +3095,20 @@ function configInit() {
                   if (state_srv) {
                      ServerPort = state_srv.val;
                   }
+
+   adapter.log.debug('IP='||IP);
+   adapter.log.debug('IPPort='||IPPort);
+   adapter.log.debug('Password='||Password);
+   adapter.log.debug('ControllerName='||ControllerName);
+   adapter.log.debug('ServerPort='||ServerPort);
+
                });
             });
          });
       });
    });
+
+
 
    /*
     adapter.log.info(
@@ -3518,8 +3527,10 @@ function main() {
     adapter.setState('info.connection', false, true);
 
     configInit();
-    debugAllStates();//
-    
+    //debugAllStates();//
+
+    adapter.log.debug('IP='||IP);
+   
     if ( IP ) {
         ServerPort = parseInt( ServerPort, 10) || 0;
         if ( ServerPort ) {
@@ -3545,8 +3556,9 @@ function main() {
     ///??  Filippovsky --- syncObjects();
 
     if ( IP && IP != '0.0.0.0') {
- 
+         adapter.log.debug('getFirmwareVersion start');
          getFirmwareVersion();
+         adapter.log.debug('getFirmwareVersion stop');
 
          pollStatus();
          setInterval(pollStatus, adapter.config.pollInterval * 1000);
