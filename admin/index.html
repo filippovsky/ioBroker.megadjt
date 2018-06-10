@@ -843,6 +843,37 @@ var cNDigitalSensorTypeWiegand26   = 6;
          }
       });
 
+      getState( adapter + '.' + instance + '.controller.name', function (err, state) {
+         if (state) {
+            $('#name').val( state.val );
+         }
+      });
+
+      getState( adapter + '.' + instance + '.controller.password', function (err, state) {
+         if (state) {
+            $('#password').val( state.val );
+         }
+      });
+
+      getState( adapter + '.' + instance + '.controller.serverPort', function (err, state) {
+         if (state) {
+            $('#port').val( state.val );
+         }
+      });
+
+      /*getState( adapter + '.' + instance + '.firmware.version', function (err, state) {
+         if (state) {
+            $('#currentVersion').val( state.val );
+         }
+      });
+
+      getState( adapter + '.' + instance + '.firmware.last_known_version', function (err, state) {
+         if (state) {
+            $('#freshVersion').val( state.val );
+         }
+      });
+      */
+
 
       getState( adapter + '.' + instance + '.ports.0.portType', function (err, state) {
          portsColor[0] = state.val;
@@ -3284,11 +3315,11 @@ var cNDigitalSensorTypeWiegand26   = 6;
         obj1 = { val: state, ack: true };
         socket.emit('setState',  adapter + '.' + instance + '.controller.ipport', obj1 );
 
+//password serverPort firmware.version last_known_version is_actual
         state = $('#name').val();
         obj1 = { val: state, ack: true };
         socket.emit('setState',  adapter + '.' + instance + '.controller.name', obj1 );
 
-//password serverPort firmware.version last_known_version is_actual
         state = $('#password').val();
         obj1 = { val: state, ack: true };
         socket.emit('setState',  adapter + '.' + instance + '.controller.password', obj1 );
