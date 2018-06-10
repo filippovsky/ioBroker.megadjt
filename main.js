@@ -3046,9 +3046,9 @@ function configInit() {
    createConfigItemIfNotExists ( 'controller.model', 'state', 'Модель контроллера', '' );
    createConfigItemIfNotExists ( 'controller.xp1model', 'state', 'Модель исполнительного модуля на XP1', 'none' );
    createConfigItemIfNotExists ( 'controller.xp2model', 'state', 'Модель исполнительного модуля на XP2', 'none' );
-   createConfigItemIfNotExists ( 'controller.ip', 'state', 'IP-адрес контроллера', '' );
+   createConfigItemIfNotExists ( 'controller.ip', 'state', 'IP-адрес контроллера', '192.168.0.14' );
    createConfigItemIfNotExists ( 'controller.ipport', 'statenum', 'IP-порт контроллера', 80 );
-   createConfigItemIfNotExists ( 'controller.password', 'state', 'Пароль контроллера', '' );
+   createConfigItemIfNotExists ( 'controller.password', 'state', 'Пароль контроллера', 'sec' );
    createConfigItemIfNotExists ( 'controller.name', 'state', 'Имя контроллера', '' );
    createConfigItemIfNotExists ( 'controller.serverPort', 'statenum', 'Порт сервера', 91 );
 
@@ -3518,7 +3518,7 @@ function main() {
     adapter.setState('info.connection', false, true);
 
     configInit();
-    //debugAllStates();
+    debugAllStates();//
     
     if ( IP ) {
         ServerPort = parseInt( ServerPort, 10) || 0;
@@ -3536,14 +3536,22 @@ function main() {
         } else {
             adapter.log.info('No port specified');
         }
-        getFirmwareVersion();
+        //getFirmwareVersion();
         //getActual2561FirmwareVersion();
+    } else {
+        adapter.log.warn('IP is null');
     }
+
     ///??  Filippovsky --- syncObjects();
 
     if ( IP && IP != '0.0.0.0') {
+ 
+         getFirmwareVersion();
+
          pollStatus();
          setInterval(pollStatus, adapter.config.pollInterval * 1000);
+    } else {
+        adapter.log.warn('IP is null or 0.0.0.0');
     }
 
     adapter.subscribeStates('*');
