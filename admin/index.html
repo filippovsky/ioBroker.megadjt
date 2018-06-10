@@ -544,7 +544,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
       var obj = {  val: newkey, ack: true };
                   
       socket.emit('setState',  adapter + '.' + instance + '.sms.phones', obj );
-      //http://192.168.1.35:8087/set/megadjt.0.sms.apikey0?value=123&prettyPrint
     }
 
    //--------------------------------------------------------------------------------
@@ -556,7 +555,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
       var obj = {  val: newkey, ack: true };
                   
       socket.emit('setState',  adapter + '.' + instance + '.sms.enabled', obj );
-      //http://192.168.1.35:8087/set/megadjt.0.sms.apikey0?value=123&prettyPrint
     }
 /*
    //--------------------------------------------------------------------------------
@@ -2968,7 +2966,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
         //if (settings.longPress === undefined) settings.longPress = 400;
 
-  /*      $('.value').each(function () {
+         $('.value').each(function () {
             var key = $(this).attr('id');
             // example: select elements with id=key and class=value and insert value
             if ($(this).attr('type') == 'checkbox') {
@@ -2987,7 +2985,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
                     onChange();
                 });
             }
-        });*/
+        });
 
         //ports = settings.ports || [];
 
@@ -3077,9 +3075,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
                 ]
             });
         });
-
-
-
 
         /*
         $('#updateFirmwareLatest').button({
@@ -3336,6 +3331,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
         socket.emit('setState',  adapter + '.' + instance + '.firmware.version', obj1 );
   */
         //callback(obj);
+       /* if (callback) {
+            callback;
+        }*/
+
     }
 
     //--------------------------------------------------------------------------------------
@@ -3527,7 +3526,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         });
 
         // Get edited table
-        obj.ports = ports;
+        //     obj.ports = ports;
 
         socket.emit('getObject', id, function (err, oldObj) {
             if (!oldObj) oldObj = {};
