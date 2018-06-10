@@ -3656,6 +3656,8 @@ function readCfgFromMega ( obj ) {
         ip       = obj ? obj.message : '';
         password = adapter.config.password;
     } */
+    adapter.log.debug( 'readCfgFromMega start' );
+    adapter.log.debug( 'IP = ' || IP );
     if (IP && IP != '0.0.0.0') {
        readMegaConfig2File( filename, function( err ) {
           if ( err ) {
@@ -3677,6 +3679,7 @@ function readCfgFromMega ( obj ) {
           }          
       });
     } else {
+        adapter.log.debug( 'IP is null' );
         if (obj.callback) adapter.sendTo(obj.from, obj.command, {error: 'invalid address'}, obj.callback);
     }
 }
