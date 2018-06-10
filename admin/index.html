@@ -827,7 +827,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
       getState( adapter + '.' + instance + '.controller.ip', function (err, state) {
          if (state) {
             $('#ip').val( state.val );
-            onChange();
+            //onChange();
             getState( adapter + '.' + instance + '.controller.ipport', function (err, state) {
                if (state) {
                   if (state.val == '') {
@@ -838,7 +838,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
                   i = 80; 
                   $('#ipport').val( i );
                }
-               onChange();
+               //onChange();
             });
          }
       });
