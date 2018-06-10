@@ -3032,7 +3032,7 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
   });
 }
 //---------------------------------------------------------------------------------------------
-function configInit() {
+function configInit( callback ) {
    var i;
    createConfigItemIfNotExists ( 'sms.apiKey', 'state', 'API KEY для отправки SMS с megadjt.sms.ru', '' );
    createConfigItemIfNotExists ( 'sms.enabled', 'statebool', 'Включить отправку SMS', 'false' );
@@ -3073,6 +3073,25 @@ function configInit() {
        createConfigItemIfNotExists ( 'ports.'+ i + '.digitalSensorMode', 'state', 'Режим работы датчика', '' );
    }
 
+
+   /*
+    adapter.log.info(
+          'State ' + adapter.namespace + '.sms.apikey0 -' + 
+          '  Value: '        + state.val + 
+          ', ack: '          + state.ack + 
+          ', time stamp: '   + state.ts  + 
+          ', last changed: ' + state.lc
+    ); 
+}); 
+ */
+
+   if ( callback ) {
+      if (callback) callback( /*error, data*/ );
+   }
+
+}
+//--------------------------------------------------------------------------------------------
+function setGlobal ( callback ) {
    adapter.getState(adapter.namespace + '.controller.ip', function (err, state_ip) {
       if (state_ip) {
          IP = state_ip.val;
@@ -3095,31 +3114,20 @@ function configInit() {
                   if (state_srv) {
                      ServerPort = state_srv.val;
                   }
-
    adapter.log.debug('IP='||IP);
    adapter.log.debug('IPPort='||IPPort);
    adapter.log.debug('Password='||Password);
    adapter.log.debug('ControllerName='||ControllerName);
    adapter.log.debug('ServerPort='||ServerPort);
-
                });
             });
          });
       });
    });
 
-
-
-   /*
-    adapter.log.info(
-          'State ' + adapter.namespace + '.sms.apikey0 -' + 
-          '  Value: '        + state.val + 
-          ', ack: '          + state.ack + 
-          ', time stamp: '   + state.ts  + 
-          ', last changed: ' + state.lc
-    ); 
-}); 
- */
+   if ( callback ) {
+      if (callback) callback( /*error, data*/ );
+   }
 
 }
 //--------------------------------------------------------------------------------------------
@@ -3526,48 +3534,50 @@ var cNPortType_AnalogSensor  = '2';
 function main() {
     adapter.setState('info.connection', false, true);
 
-    configInit();
-    //debugAllStates();//
+    configInit( function () {
+        //debugAllStates();//
+        setGlobal( function () {
 
-    adapter.log.debug('IP='||IP);
+           adapter.log.debug('main IP='||IP);
    
-    if ( IP ) {
-        ServerPort = parseInt( ServerPort, 10) || 0;
-        if ( ServerPort ) {
-            server = require('http').createServer(restApi);
+           if ( IP ) {
+              ServerPort = parseInt( ServerPort, 10) || 0;
+              if ( ServerPort ) {
+                 server = require('http').createServer(restApi);
+                 adapter.getPort( ServerPort, function (port) {
+                    if (port != ServerPort && !adapter.config.findNextPort) {
+                       adapter.log.warn('port ' + ServerPort + ' already in use');
+                    } else {
+                       server.listen(port);
+                       adapter.log.info('http server listening on port ' + port);
+                    }
+                 });
+              } else {
+                 adapter.log.info('No port specified');
+              }
+              //getFirmwareVersion();
+              //getActual2561FirmwareVersion();
+           } else {
+               adapter.log.warn('IP is null');
+           }
 
-            adapter.getPort( ServerPort, function (port) {
-                if (port != ServerPort && !adapter.config.findNextPort) {
-                    adapter.log.warn('port ' + ServerPort + ' already in use');
-                } else {
-                    server.listen(port);
-                    adapter.log.info('http server listening on port ' + port);
-                }
-            });
-        } else {
-            adapter.log.info('No port specified');
-        }
-        //getFirmwareVersion();
-        //getActual2561FirmwareVersion();
-    } else {
-        adapter.log.warn('IP is null');
-    }
+           ///??  Filippovsky --- syncObjects();
 
-    ///??  Filippovsky --- syncObjects();
+           if ( IP && IP != '0.0.0.0') {
+              adapter.log.debug('getFirmwareVersion start');
+              getFirmwareVersion();
+              adapter.log.debug('getFirmwareVersion stop');
 
-    if ( IP && IP != '0.0.0.0') {
-         adapter.log.debug('getFirmwareVersion start');
-         getFirmwareVersion();
-         adapter.log.debug('getFirmwareVersion stop');
+              pollStatus();
+              setInterval(pollStatus, adapter.config.pollInterval * 1000);
+           } else {
+              adapter.log.warn('IP is null or 0.0.0.0');
+           }
 
-         pollStatus();
-         setInterval(pollStatus, adapter.config.pollInterval * 1000);
-    } else {
-        adapter.log.warn('IP is null or 0.0.0.0');
-    }
-
-    adapter.subscribeStates('*');
-    processMessages(true);
+           adapter.subscribeStates('*');
+           processMessages(true);
+        });
+    });
 }
 //-------------------------------------------------------------------------------------------------------
 /*
