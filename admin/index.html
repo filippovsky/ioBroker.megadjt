@@ -2995,7 +2995,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
             autoDetect($('#ip').val(), $('#password').val());
         });
 
-/*
+
         $('#write').button({
             icons: {primary: 'ui-icon-disk'}
         }).click(function() {
@@ -3008,7 +3008,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
             //writeConfig($('#ip').val(), $('#password').val(), port, ports);
         });
-*/
+
 
         // read if instance is active or enabled
         socket.emit('getState', 'system.adapter.' + adapter + '.' + instance + '.alive', function (err, state) {
