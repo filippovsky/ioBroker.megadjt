@@ -1721,10 +1721,18 @@ var cNDigitalSensorTypeWiegand26   = 6;
                  document.getElementById( spanId ).className = "circlebutton_green";
              }
           } else if (xp == "14-IOR") {  
-             if ( portstate == cPortType_NotConnected ) {
-                 document.getElementById( spanId ).className = "circlebutton_darkgreen";
+             if ( m == 14 ) {
+                if ( portstate == cPortType_NotConnected ) {
+                   document.getElementById( spanId ).className = "circlebutton_darkred";
+                } else {
+                   document.getElementById( spanId ).className = "circlebutton_red";
+                }
              } else {
-                 document.getElementById( spanId ).className = "circlebutton_green";
+                if ( portstate == cPortType_NotConnected ) {
+                    document.getElementById( spanId ).className = "circlebutton_darkgreen";
+                } else {
+                    document.getElementById( spanId ).className = "circlebutton_green";
+                }
              }
           } else if (xp == "14-Rv1.0") {
              if ( portstate == cPortType_NotConnected ) {
@@ -2346,11 +2354,15 @@ var cNDigitalSensorTypeWiegand26   = 6;
               text += '<option value="'+cPortType_AnalogSensor+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_AnalogSensor)   ? 'selected' : '') + '>АЦП-вход для аналоговых датчиков</option>';
            }
         } else if ( xp == '14-IOR' ) {
-           text += '<option value="'+cPortType_StandartIn+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_StandartIn)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
-           text += '<option value="'+cPortType_DigitalSensor+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_DigitalSensor)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
-           text += '<option value="'+cPortType_I2C+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_I2C)   ? 'selected' : '') + '>Вход I2C</option>';
-           if ( portNum <= 5 ) {
-              text += '<option value="'+cPortType_AnalogSensor+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_AnalogSensor)   ? 'selected' : '') + '>АЦП-вход для аналоговых датчиков</option>';
+           if ( portNum < 14 ) {
+              text += '<option value="'+cPortType_StandartIn+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_StandartIn)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
+              text += '<option value="'+cPortType_DigitalSensor+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_DigitalSensor)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
+              text += '<option value="'+cPortType_I2C+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_I2C)   ? 'selected' : '') + '>Вход I2C</option>';
+              if ( portNum <= 5 ) {
+                 text += '<option value="'+cPortType_AnalogSensor+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_AnalogSensor)   ? 'selected' : '') + '>АЦП-вход для аналоговых датчиков</option>';
+              }
+           } else {
+              text += '<option value="'+cPortType_ReleOut+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_ReleOut)   ? 'selected' : '') + '>Релейный выход</option>';
            }
         } else if ( xp == '14-Rv1.0' ) {
            if (portNum < 14) {
@@ -3702,7 +3714,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
        <option value="14-Rv2.0">Релейный модуль 14-R версия 2.0</option>
        <option value="2R">Релейный минимодуль 2-R</option>
     </select>
-    <textarea div id="MegaSetup"></textarea>
 
     <br>
 
