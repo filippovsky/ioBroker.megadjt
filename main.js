@@ -56,7 +56,7 @@ var ports  = {};
 ///var askInternalTemp = false;
 var ask1WireTemp = false;   //1Wire
 var connected = false;
-var fw_version_actual = "4.28b5";
+var fw_version_actual = "4.28b8";
 
 var adapter = utils.adapter(  'megadjt' );
 var sms_ru  = require('sms_ru');
@@ -117,6 +117,7 @@ var cXPModel7I7OSD = '7I7O-SD';
 var cXPModel8I7OS  = '8I7O-S';
 var cXPModel8I7OSD = '8I7O-SD';
 var cXPModel14In   = '14-IN';
+var cXPModel14IOR  = '14-IOR';
 var cXPModel14R1   = '14-Rv1.0';
 var cXPModel14R2   = '14-Rv2.0';
 var cXPModel2R     = '2R';

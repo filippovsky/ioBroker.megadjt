@@ -1548,6 +1548,15 @@ var cNDigitalSensorTypeWiegand26   = 6;
           width = "17px";
           labelX = "535px";
           labelY = "7px";
+       } else if (xp == "14-IOR") {
+          stepX = 46;
+          divClass = "sd7i7or";
+          startX = 169;
+          y1 = "235px";
+          y2 = "316px";
+          width = "17px";
+          labelX = "535px";
+          labelY = "7px";
        } else if (xp == "14-Rv1.0") {
           stepX = 37;
           divClass = "sd7i7or";
@@ -1702,6 +1711,12 @@ var cNDigitalSensorTypeWiegand26   = 6;
                 }
              }
           } else if (xp == "14-IN") {  
+             if ( portstate == cPortType_NotConnected ) {
+                 document.getElementById( spanId ).className = "circlebutton_darkgreen";
+             } else {
+                 document.getElementById( spanId ).className = "circlebutton_green";
+             }
+          } else if (xp == "14-IOR") {  
              if ( portstate == cPortType_NotConnected ) {
                  document.getElementById( spanId ).className = "circlebutton_darkgreen";
              } else {
@@ -2326,6 +2341,13 @@ var cNDigitalSensorTypeWiegand26   = 6;
            if ( portNum <= 5 ) {
               text += '<option value="'+cPortType_AnalogSensor+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_AnalogSensor)   ? 'selected' : '') + '>АЦП-вход для аналоговых датчиков</option>';
            }
+        } else if ( xp == '14-IOR' ) {
+           text += '<option value="'+cPortType_StandartIn+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_StandartIn)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
+           text += '<option value="'+cPortType_DigitalSensor+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_DigitalSensor)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
+           text += '<option value="'+cPortType_I2C+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_I2C)   ? 'selected' : '') + '>Вход I2C</option>';
+           if ( portNum <= 5 ) {
+              text += '<option value="'+cPortType_AnalogSensor+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_AnalogSensor)   ? 'selected' : '') + '>АЦП-вход для аналоговых датчиков</option>';
+           }
         } else if ( xp == '14-Rv1.0' ) {
            if (portNum < 14) {
               text += '<option value="'+cPortType_ReleOut+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_ReleOut)   ? 'selected' : '') + '>Релейный выход</option>';
@@ -2833,7 +2855,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
         imgName = "xp"+numXP+"_img";
 
-        if (xp == '7I7O-R' || xp == '14-IN' || xp == '7I7O-SD' || xp == '8I7O-S' || xp == '8I7O-SD' || xp =='14-Rv2.0') {
+        if (xp == '7I7O-R' || xp == '14-IN' || xp == '7I7O-SD' || xp == '8I7O-S' || xp == '8I7O-SD' || xp =='14-Rv2.0' ) {
            fon = fon + ".gif";
         } else {
            fon = fon + ".jpg";
@@ -3657,6 +3679,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
        <option value="8I7O-S">Симисторный модуль 8I7O-S</option>
        <option value="8I7O-SD">Симисторный модуль 8I7O-SD</option> 
        <option value="14-IN">Модуль входов 14-IN</option>
+       <option value="14-IOR">Универсальный модуль входов 14-IOR</option>
        <option value="14-Rv1.0">Релейный модуль 14-R версия 1.0</option>
        <option value="14-Rv2.0">Релейный модуль 14-R версия 2.0</option>
        <option value="2R">Релейный минимодуль 2-R</option>
@@ -3670,6 +3693,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
        <option value="8I7O-S">Симисторный модуль 8I7O-S</option>
        <option value="8I7O-SD">Симисторный модуль 8I7O-SD</option> 
        <option value="14-IN">Модуль входов 14-IN</option>
+       <option value="14-IOR">Универсальный модуль входов 14-IOR</option>
        <option value="14-Rv1.0">Релейный модуль 14-R версия 1.0</option>
        <option value="14-Rv2.0">Релейный модуль 14-R версия 2.0</option>
        <option value="2R">Релейный минимодуль 2-R</option>
@@ -3715,6 +3739,33 @@ var cNDigitalSensorTypeWiegand26   = 6;
              <td>Дата и время</td>
              <td>Описание</td>
              <td>Прошивка</td>
+           </tr>
+
+           <tr>
+             <td><b>4.28b8</b></td>
+             <td>17.07.2018</td>
+             <td><p align=justify>Исправлена ошибка, из-за которой паузы в сценариях не работали со считывателями Wiegand
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.28b8');">Прошить</button></td>
+           </tr>
+
+           <tr>
+             <td><b>4.28b7</b></td>
+             <td>30.06.2018</td>
+             <td><p align=justify>Исправлено отображение uptime свыше 46 дней
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.28b7');">Прошить</button></td>
+           </tr>
+
+           <tr>
+             <td><b>4.28b6</b></td>
+             <td>30.06.2018</td>
+             <td><p align=justify>Исправлена ошибка в работе функции Program с АЦП-портами
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.28b6');">Прошить</button></td>
            </tr>
 
            <tr>
