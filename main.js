@@ -3220,12 +3220,20 @@ function savePort(obj) {
             adapter.setState( 'ports.' + portNum + '.room', {val: room, ack: true});
             adapter.log.debug(' -- удаляем порт '+portNum+' из комнаты ' + oldvalue );
             if ( oldvalue ) {
-               adapter.deleteStateFromEnum( 'rooms.' + oldvalue, adapter.namespace + '.ports.' + portNum + '.currentState');
+               adapter.deleteStateFromEnum( 'rooms', adapter.namespace + '.ports.' + portNum + '.currentState');
             }
             adapter.log.debug(' -- добвляем порт '+portNum+' в комнату ' + room );
             if (room) {
-               adapter.addStateToEnum( 'rooms.' + room, adapter.namespace + '.ports.' + portNum + '.currentState');
+               adapter.addStateToEnum( 'rooms', room, '', '', adapter.namespace + '.ports.' + portNum + '.currentState');
             }
+
+/*
+adapter.deleteStateFromEnum('rooms', '', '', id, function () {
+                    if (adapter.config.devices[index].room) {
+                        adapter.addStateToEnum('rooms', adapter.config.devices[index].room, '', '', id);
+                    }
+                });
+  */
 
 //            adapter.setState( 'ports.' + portNum + '.room', {val: room, ack: true});
 // addStateToEnum, deleteStateFromEnum
