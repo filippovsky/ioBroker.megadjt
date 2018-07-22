@@ -122,11 +122,7 @@ var cXPModel14R1   = '14-Rv1.0';
 var cXPModel14R2   = '14-Rv2.0';
 var cXPModel2R     = '2R';
 
-
-
 //            var settings = adapter.config.ports[p];
-
-
 //-------------------------------------------------------------------------------------------------------------------
 adapter.on('stateChange', function (id, state) {
     var sms_id = adapter.namespace + '.sms.text';
@@ -3222,6 +3218,24 @@ function savePort(obj) {
          if ( state ) oldvalue = state.val;
          if ( oldvalue != room ) {
             adapter.setState( 'ports.' + portNum + '.room', {val: room, ack: true});
+            adapter.log.debug(' -- удаляем порт '+portNum+' из комнаты ' + oldvalue );
+            if ( oldvalue ) {
+               adapter.deleteStateFromEnum( 'rooms.' + oldvalue, adapter.namespace + '.ports.' + portNum + '.currentState');
+            }
+            adapter.log.debug(' -- добвляем порт '+portNum+' в комнату ' + room );
+            if (room) {
+               adapter.addStateToEnum( 'rooms.' + room, adapter.namespace + '.ports.' + portNum + '.currentState');
+            }
+
+//            adapter.setState( 'ports.' + portNum + '.room', {val: room, ack: true});
+// addStateToEnum, deleteStateFromEnum
+/*
+                    if (newObjects[i].native.room != _states[j].native.room) {
+                        adapter.log.info('Update state room ' + newObjects[i]._id + ': ' + _states[j].native.room + ' => ' + newObjects[i].native.room);
+                        if (_states[j].native.room) removeFromEnum(_states[j].native.room, _states[j]._id);
+                        if (newObjects[i].native.room) addToEnum(newObjects[i].native.room, newObjects[i]._id);
+                    } */
+
             adapter.log.info( 'ports.' + portNum + '.room : '+ oldvalue + ' -> ' + room );
          }
       }
