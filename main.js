@@ -3226,14 +3226,18 @@ function savePort(obj) {
                adapter.log.debug(' -- удаляем порт '+linkedstate+' из комнаты ' + oldvalue );
                //adapter.deleteStateFromEnum( 'rooms', '', '', linkedstate );
                //adapter.deleteStateFromEnum( 'rooms', '', group, id );
-               adapter.deleteStateFromEnum( 'rooms', adapter.namespace, channel, id );
+               removeFromEnum( oldvalue, linkedstate );
             } 
             if (room) {
                adapter.log.debug(' -- добавляем порт '+linkedstate+' в комнату ' + room );
                //adapter.addStateToEnum( 'rooms', room, '', '', linkedstate );
                //adapter.addStateToEnum( 'rooms', room, '', group, id );
-               adapter.addStateToEnum( 'rooms', room, adapter.namespace, channel, id );
+               //adapter.addStateToEnum( 'rooms', room, adapter.namespace, channel, id );
+               addToEnum( room, linkedstate );
             }
+
+//                        if (_states[j].native.room) removeFromEnum(_states[j].native.room, _states[j]._id);
+//                        if (newObjects[i].native.room) addToEnum(newObjects[i].native.room, newObjects[i]._id);
 
 
 /*
