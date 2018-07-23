@@ -3217,33 +3217,36 @@ function savePort(obj) {
          var oldvalue = "";
          var linkedstate = adapter.namespace + '.ports.' + portNum + '.currentState';
          var group = adapter.namespace + '.ports.' + portNum;
+         var channel = 'ports.' + portNum;
          var id    = 'currentState';
          if ( state ) oldvalue = state.val;
          if ( oldvalue != room ) {
             adapter.setState( 'ports.' + portNum + '.room', {val: room, ack: true});
-            /*if ( oldvalue ) {
+            if ( oldvalue ) {
                adapter.log.debug(' -- удаляем порт '+linkedstate+' из комнаты ' + oldvalue );
                //adapter.deleteStateFromEnum( 'rooms', '', '', linkedstate );
                //adapter.deleteStateFromEnum( 'rooms', '', group, id );
-               adapter.extendObject( linkedstate, {
-                                      native: {
-                                            room: ''
-                                      }
-                                  });
+               adapter.deleteStateFromEnum( 'rooms', adapter.namespace, channel, id );
             } 
             if (room) {
                adapter.log.debug(' -- добавляем порт '+linkedstate+' в комнату ' + room );
                //adapter.addStateToEnum( 'rooms', room, '', '', linkedstate );
                //adapter.addStateToEnum( 'rooms', room, '', group, id );
+               adapter.addStateToEnum( 'rooms', room, adapter.namespace, channel, id );
             }
+
+
+/*
+addStateToEnum = function addStateToEnum(enumName, addTo, parentDevice, parentChannel, stateName, callback)
+deleteStateFromEnum = function deleteStateFromEnum(enumName, parentDevice, parentChannel, stateName, callback)
 */
 
-               adapter.extendObject( linkedstate, {
+/*               adapter.extendObject( linkedstate, {
                                       native: {
                                             room: room
                                       }
                                   });
-
+  */
 
 /*
                                 if (_states[j].native.room !== adapter.config.devices[u].room) {
