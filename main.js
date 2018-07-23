@@ -3241,12 +3241,12 @@ addStateToEnum = function addStateToEnum(enumName, addTo, parentDevice, parentCh
 deleteStateFromEnum = function deleteStateFromEnum(enumName, parentDevice, parentChannel, stateName, callback)
 */
 
-/*               adapter.extendObject( linkedstate, {
+               adapter.extendObject( linkedstate, {
                                       native: {
                                             room: room
                                       }
                                   });
-  */
+  
 
 /*
                                 if (_states[j].native.room !== adapter.config.devices[u].room) {
