@@ -3215,18 +3215,43 @@ function savePort(obj) {
    adapter.getState( adapter.namespace + '.ports.' + portNum + '.room',
       function (err, state) {
          var oldvalue = "";
+         var linkedstate = adapter.namespace + '.ports.' + portNum + '.currentState';
          if ( state ) oldvalue = state.val;
          if ( oldvalue != room ) {
             adapter.setState( 'ports.' + portNum + '.room', {val: room, ack: true});
-            adapter.log.debug(' -- удаляем порт '+portNum+' из комнаты ' + oldvalue );
             if ( oldvalue ) {
-               adapter.deleteStateFromEnum( 'rooms', adapter.namespace + '.ports.' + portNum + '.currentState');
+               adapter.log.debug(' -- удаляем порт '+linkedstate+' из комнаты ' + oldvalue );
+               adapter.deleteStateFromEnum( 'rooms', '', '', linkedstate );
             }
-            adapter.log.debug(' -- добвляем порт '+portNum+' в комнату ' + room );
             if (room) {
-               adapter.addStateToEnum( 'rooms', room, '', '', adapter.namespace + '.ports.' + portNum + '.currentState');
+               adapter.log.debug(' -- добавляем порт '+linkedstate+' в комнату ' + room );
+               adapter.addStateToEnum( 'rooms', room, '', '', linkedstate );
             }
 
+/*
+                                if (_states[j].native.room !== adapter.config.devices[u].room) {
+                                    if (adapter.config.devices[u].room !== '') {
+                                        adapter.log.info('Add a variable ' + _states[j]._id + ' to the ' + adapter.config.devices[u].room);
+                                        adapter.deleteStateFromEnum('rooms', '', group, id);
+                                        adapter.addStateToEnum('rooms', adapter.config.devices[u].room, '', group, id);
+
+                                        adapter.extendObject(_states[j]._id, {
+                                            native: {
+                                                room: adapter.config.devices[u].room
+                                            }
+                                        });
+                                    } else {
+                                        adapter.log.info('Remove the variable ' + _states[j]._id + ' from the enum.rooms');
+                                        adapter.deleteStateFromEnum('rooms', '', group, id);
+                                        adapter.extendObject(_states[j]._id, {
+                                            native: {
+                                                room: ''
+                                            }
+                                        });
+                                    }
+                                }
+
+*/
 /*
 adapter.deleteStateFromEnum('rooms', '', '', id, function () {
                     if (adapter.config.devices[index].room) {
