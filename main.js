@@ -3216,16 +3216,20 @@ function savePort(obj) {
       function (err, state) {
          var oldvalue = "";
          var linkedstate = adapter.namespace + '.ports.' + portNum + '.currentState';
+         var group = adapter.namespace + '.ports.' + portNum;
+         var id    = 'currentState';
          if ( state ) oldvalue = state.val;
          if ( oldvalue != room ) {
             adapter.setState( 'ports.' + portNum + '.room', {val: room, ack: true});
             if ( oldvalue ) {
                adapter.log.debug(' -- удаляем порт '+linkedstate+' из комнаты ' + oldvalue );
-               adapter.deleteStateFromEnum( 'rooms', '', '', linkedstate );
+               //adapter.deleteStateFromEnum( 'rooms', '', '', linkedstate );
+               adapter.deleteStateFromEnum( 'rooms', '', group, id );
             }
             if (room) {
                adapter.log.debug(' -- добавляем порт '+linkedstate+' в комнату ' + room );
-               adapter.addStateToEnum( 'rooms', room, '', '', linkedstate );
+               //adapter.addStateToEnum( 'rooms', room, '', '', linkedstate );
+               adapter.addStateToEnum( 'rooms', room, '', group, id );
             }
 
 /*
