@@ -3301,9 +3301,19 @@ adapter.deleteStateFromEnum('rooms', '', '', id, function () {
    adapter.getState( adapter.namespace + '.ports.' + portNum + '.func',
       function (err, state ) {
          var oldvalue = "";
+         var linkedstate = adapter.namespace + '.ports.' + portNum + '.currentState';
          if ( state ) oldvalue = state.val;
          if ( oldvalue != fnc ) {
             adapter.setState( 'ports.' + portNum + '.func', {val: fnc, ack: true});
+            if ( oldvalue ) {
+               adapter.log.debug(' -- удаляем у порта '+linkedstate+' функцию ' + oldvalue );
+               removeFromEnum( oldvalue, linkedstate );
+            } 
+            if (fnc) {
+               adapter.log.debug(' -- добавляем порту '+linkedstate+' функцию ' + fnc );
+               addToEnum( fnc, linkedstate );
+            }
+
             adapter.log.info( 'ports.' + portNum + '.func : '+ oldvalue + ' -> ' + fnc );
          }
       }
