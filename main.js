@@ -3314,6 +3314,12 @@ adapter.deleteStateFromEnum('rooms', '', '', id, function () {
                addToEnum( fnc, linkedstate );
             }
 
+               adapter.extendObject( linkedstate, {
+                                      native: {
+                                            function: fnc
+                                      }
+                                  });
+
             adapter.log.info( 'ports.' + portNum + '.func : '+ oldvalue + ' -> ' + fnc );
          }
       }
