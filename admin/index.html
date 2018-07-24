@@ -2061,6 +2061,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
        socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.room', function (err, state) {
           if (state) {
              $("#roomXP"+numXP).val( state.val );
+             $('#roomXP'+numXP).val = state.val; //?
+
              $('#roomXP'+numXP+' option:selected').val(state.val);
              $('#roomXP'+numXP+' select').val(state.val);
              $('#roomXP'+numXP+' option').each(function() {
@@ -2075,6 +2077,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
        socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.func', function (err, state) {
           if (state) {
               $("#fncXP"+numXP).val( state.val );
+              $('#fncXP'+numXP).val = state.val; //?
+
               $('#fncXP'+numXP+' option:selected').val(state.val);
               $('#fncXP'+numXP+' select').val(state.val);
               $('#fncXP'+numXP+' option').each(function() {
