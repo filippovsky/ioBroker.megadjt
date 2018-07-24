@@ -1779,8 +1779,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
         }
         var room = $('#roomXP'+numXP+' option:selected').val();
         $('#roomXP'+numXP).val(room);
+        $('#roomXP'+numXP).val = room; //?
 
-        //ports[controlPort].room = room;
     }
     //--------------------------------------------------------------------------------
     function nameChanged ( controlPort ) {
@@ -1800,6 +1800,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         }
         var fnc = $('#fncXP'+numXP+' option:selected').val();
         $('#fncXP'+numXP).val(fnc);
+        $('#fncXP'+numXP).val = fnc; //?
     }
 
     //--------------------------------------------------------------------------------
