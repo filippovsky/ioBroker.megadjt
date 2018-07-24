@@ -2282,7 +2282,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
            text += '<br>Функция: <select id="fncXP'+numXP+'" onChange="fncChanged('+controlPort+');">';
            text += '<option value=""></option>';
            for (var rol in roles) {
-               text += '<option value="' + r + '" ' + (($('#fncXP'+numXP).val() == rol) ? 'selected' : '') + '>' + roles[rol].common.name + '</option>';
+               text += '<option value="' + rol + '" ' + (($('#fncXP'+numXP).val() == rol) ? 'selected' : '') + '>' + roles[rol].common.name + '</option>';
            }
            text += '</select><br>';
   
