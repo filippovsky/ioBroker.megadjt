@@ -3047,6 +3047,11 @@ var cNDigitalSensorTypeWiegand26   = 6;
         //if (!settings) return;
         readRooms();
 
+        for (var k = 0; k < 40; k++) {
+            setupRooms.push('');
+            setupFunc.push('');
+        }
+
         //if (settings.longPress === undefined) settings.longPress = 400;
 
          $('.value').each(function () {
