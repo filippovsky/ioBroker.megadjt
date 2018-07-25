@@ -458,7 +458,8 @@ span:hover::before {
    var rooms     = [];
    var ports     = [];
    var roles = [];
-   var setup = [];
+   var setupRooms = [];
+   var setupFunc  = [];
    var active    = false;
    //var megadjt_setup = [];   
    var portsColor = [];
@@ -1783,7 +1784,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         var room = $('#roomXP'+numXP+' option:selected').val();
         $('#roomXP'+numXP).val(room);
         //$('#roomXP'+numXP).val = room; //?
-        setup[numControlPort].room = room;
+        setupRooms[numControlPort] = room;
 
     }
     //--------------------------------------------------------------------------------
@@ -1807,7 +1808,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         var fnc = $('#fncXP'+numXP+' option:selected').val();
         $('#fncXP'+numXP).val(fnc);
         //$('#fncXP'+numXP).val = fnc; //?
-        setup[numControlPort].func = fnc;
+        setupFunc[numControlPort] = fnc;
     }
 
     //--------------------------------------------------------------------------------
@@ -2064,14 +2065,14 @@ var cNDigitalSensorTypeWiegand26   = 6;
        }
 
        var numControlPort = parseInt( controlPort, 10 );
-       setup[numControlPort].room = undefined;
-       setup[numControlPort].func = undefined;
+       setupRooms[numControlPort] = undefined;
+       setupFunc[numControlPort]  = undefined;
 
        readRooms();
 
        socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.room', function (err, state) {
           if (state) {
-             setup[numControlPort].room = state.val;
+             setupRooms[numControlPort] = state.val;
              $("#roomXP"+numXP).val( state.val );
              $('#roomXP'+numXP).val = state.val; //?
 
@@ -2088,7 +2089,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
        socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.func', function (err, state) {
           if (state) {
-              setup[numControlPort].func = state.val;
+              setupFunc[numControlPort] = state.val;
               $("#fncXP"+numXP).val( state.val );
               $('#fncXP'+numXP).val = state.val; //?
 
@@ -2295,14 +2296,14 @@ var cNDigitalSensorTypeWiegand26   = 6;
            text += '<option value=""></option>';
            for (var r in rooms) {
 //               text += '<option value="' + r + '" ' + ((ports[controlPort].room == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
-               text += '<option value="' + r + '" ' + ((setup[numControlPort].room == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
+               text += '<option value="' + r + '" ' + ((setupRooms[numControlPort] == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
            }
            text += '</select><br>';
 
            text += '<br>Функция: <select id="fncXP'+numXP+'" onChange="fncChanged('+controlPort+');">';
            text += '<option value=""></option>';
            for (var rol in roles) {
-               text += '<option value="' + rol + '" ' + ((setup[numControlPort].func == rol) ? 'selected' : '') + '>' + roles[rol].common.name + '</option>';
+               text += '<option value="' + rol + '" ' + ((setupFunc[numControlPort] == rol) ? 'selected' : '') + '>' + roles[rol].common.name + '</option>';
            }
            text += '</select><br>';
   
@@ -2974,8 +2975,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
        //var newroom = $('#roomXP'+numXP+' option:selected').val();
        //var newfnc = $('#fncXP'+numXP+' option:selected').val();
-       var newroom = setup[numControlPort].room;
-       var newfnc  = setup[numControlPort].func;
+       var newroom = setupRooms[numControlPort];
+       var newfnc  = setupFunc[numControlPort];
        var newPortType = $('#portTypeXP'+numXP+' option:selected').val();
        var newDefaultAction = $('#ecmdXP' + numXP ).val();
        var newDefaultRunAlways = $('#afXP' + numXP ).val();
