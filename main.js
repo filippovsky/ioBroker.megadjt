@@ -200,7 +200,7 @@ adapter.on('stateChange', function (id, state) {
 
         adapter.log.info('try to control port ' + id + ' with ' + state.val);
 
-        portnum = xmldata.replace(/^megadjt\.(.*?)\.ports\.(.*?)\.currentState$/, '$1');
+        portnum = id.replace(/^megadjt\.(.*?)\.ports\.(.*?)\.currentState$/, '$1');
 
         adapter.getState( adapter.namespace + '.ports.' + portnum + '.currentState', function (err, curState) {
            if (curState) {
