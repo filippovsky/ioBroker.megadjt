@@ -208,7 +208,8 @@ adapter.on('stateChange', function (id, state) {
            adapter.log.debug('control 1');
            if (curState) {
               adapter.log.debug('control 2');
-              if (curState.ack == false) {
+              adapter.log.debug('curstate.ack = ' + curState.ack);
+              if (curState.ack == 0 || curState.ack == false) {
                  adapter.log.debug('control 3');
                  // значение изменено из веб-интерфейса
                  adapter.log.debug('ack = false');
