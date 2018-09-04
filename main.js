@@ -2357,6 +2357,16 @@ function sendCommand(port, value) {
         });
         res.on('end', function () {
             adapter.log.debug('Response "' + xmldata + '"');
+
+
+        adapter.getState( adapter.namespace + '.ports.' + port + '.portType', function (err, portType) {
+           if (portType) {
+              if (portType.val == cPortType_ReleOut) {
+                 adapter.setState( adapter.namespace + '.ports.' + port + '.currentState', value ? true : false, true);
+              }
+           }
+        });
+/*
             if (adapter.config.ports[port]) {
                 // Set state only if positive response from megaD
                 ///if (!adapter.config.ports[port].m) {
@@ -2372,6 +2382,7 @@ function sendCommand(port, value) {
             } else {
                 adapter.log.warn('Unknown port ' + port);
             }
+*/
         });
     }).on('error', function (e) {
         adapter.log.warn('Got error by post request ' + e.toString());
