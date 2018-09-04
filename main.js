@@ -199,7 +199,7 @@ adapter.on('stateChange', function (id, state) {
 */
 
 
-        portnum = id.replace(/^megadjt\.(.*?)\.ports\.(.*?)\.currentState$/, '$1');
+        portnum = id.replace(/^megadjt\.(.*?)\.ports\.(.*?)\.currentState$/, '$2');
 
         adapter.log.info('try to control port ' + portnum + ' with ' + state.val);
 
