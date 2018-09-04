@@ -185,6 +185,8 @@ adapter.on('stateChange', function (id, state) {
            adapter.log.info('Изменился исполнительный модуль ' + id + ' на ' + state.val);
            return;
         } 
+
+        /*
         if (!ports[id]) {
             adapter.log.error('Unknown port ID ' + id);
             return;
@@ -193,9 +195,31 @@ adapter.on('stateChange', function (id, state) {
             adapter.log.error('Cannot write the read only port ' + id);
             return;
         }
+*/
 
-        adapter.log.info('try to control ' + id + ' with ' + state.val);
+        adapter.log.info('try to control port ' + id + ' with ' + state.val);
 
+        adapter.getState(adapter.namespace + '.ports.' + id + '.currentState', function (err, curState) {
+           if (curState) {
+              if (curState.ack == false) {
+                 // значение изменено из веб-интерфейса
+                 adapter.log.debug('ack = false');
+                 adapter.getState( adapter.namespace + '.ports.' + id + '.portType', function (err, portType) {
+                     if (portType) {
+                        if (portType.val == cPortType_ReleOut) {
+                           sendCommand( id, curState.val );
+                           setTimeout(function () {
+                              adapter.log.debug('Пауза истекла ... ');
+                              getPortState( id, processPortState);
+                           }, 1000);
+                        }
+                     }
+                 });
+              }
+           }
+        });
+
+/*
         if (parseFloat(state.val) == state.val) {
             // If number => set position
             state.val = parseFloat(state.val);
@@ -229,6 +253,8 @@ adapter.on('stateChange', function (id, state) {
                 sendCommand(ports[id].native.port, state.val);
             }
         }
+*/
+
     }
 });
 
