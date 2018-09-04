@@ -126,6 +126,7 @@ var cXPModel2R     = '2R';
 //-------------------------------------------------------------------------------------------------------------------
 adapter.on('stateChange', function (id, state) {
     var sms_id = adapter.namespace + '.sms.text';
+    var portnum = '';
 
     var matched = [];
     //adapter.log.debug('stateChange: id ='+id+'  state='+state.val+'  ack='+state.ack);
@@ -180,7 +181,7 @@ adapter.on('stateChange', function (id, state) {
 
         matched = id.match(/xp(.*?)/);
         if ( matched ) {
-           var xpid = adapter.namespace + '.controller.'+id+'model';
+           var xpid = adapter.namespace + '.controller.'+id+'.model';
            adapter.setState( xpid, {val: state.val, ack: true});           
            adapter.log.info('Изменился исполнительный модуль ' + id + ' на ' + state.val);
            return;
@@ -199,18 +200,20 @@ adapter.on('stateChange', function (id, state) {
 
         adapter.log.info('try to control port ' + id + ' with ' + state.val);
 
-        adapter.getState(adapter.namespace + '.ports.' + id + '.currentState', function (err, curState) {
+        portnum = xmldata.replace(/^megadjt\.(.*?)\.ports\.(.*?)\.currentState$/, '$1');
+
+        adapter.getState( adapter.namespace + '.ports.' + portnum + '.currentState', function (err, curState) {
            if (curState) {
               if (curState.ack == false) {
                  // значение изменено из веб-интерфейса
                  adapter.log.debug('ack = false');
-                 adapter.getState( adapter.namespace + '.ports.' + id + '.portType', function (err, portType) {
+                 adapter.getState( adapter.namespace + '.ports.' + portnum + '.portType', function (err, portType) {
                      if (portType) {
                         if (portType.val == cPortType_ReleOut) {
-                           sendCommand( id, curState.val );
+                           sendCommand( portnum, curState.val );
                            setTimeout(function () {
                               adapter.log.debug('Пауза истекла ... ');
-                              getPortState( id, processPortState);
+                              getPortState( portnum, processPortState);
                            }, 1000);
                         }
                      }
