@@ -216,6 +216,8 @@ adapter.on('stateChange', function (id, state) {
               adapter.log.debug('control 4');
               if (portType) {
                  adapter.log.debug('control 5');
+                 adapter.log.debug('porttype.val = ' + portType.val);
+
                  if (portType.val == cPortType_ReleOut) {
                     adapter.log.debug('control 6');
                     sendCommand( portnum, state.val );
