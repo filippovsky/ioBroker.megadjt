@@ -198,18 +198,26 @@ adapter.on('stateChange', function (id, state) {
         }
 */
 
-        adapter.log.info('try to control port ' + id + ' with ' + state.val);
 
         portnum = id.replace(/^megadjt\.(.*?)\.ports\.(.*?)\.currentState$/, '$1');
 
+        adapter.log.info('try to control port ' + portnum + ' with ' + state.val);
+
+
         adapter.getState( adapter.namespace + '.ports.' + portnum + '.currentState', function (err, curState) {
+           adapter.log.debug('control 1');
            if (curState) {
+              adapter.log.debug('control 2');
               if (curState.ack == false) {
+                 adapter.log.debug('control 3');
                  // значение изменено из веб-интерфейса
                  adapter.log.debug('ack = false');
                  adapter.getState( adapter.namespace + '.ports.' + portnum + '.portType', function (err, portType) {
+                     adapter.log.debug('control 4');
                      if (portType) {
+                        adapter.log.debug('control 5');
                         if (portType.val == cPortType_ReleOut) {
+                          adapter.log.debug('control 6');
                            sendCommand( portnum, curState.val );
                            setTimeout(function () {
                               adapter.log.debug('Пауза истекла ... ');
