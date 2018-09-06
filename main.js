@@ -3299,7 +3299,7 @@ function savePort(obj) {
          var linkedstate  = "";
          var linkedstate1 = "";
 
-         if ( fnc == 'enum.func.temperature' ) {
+         if ( fnc == 'enum.functions.temperature' ) {
             linkedstate  = adapter.namespace + '.ports.' + portNum + '.temperature';
             linkedstate1 = adapter.namespace + '.ports.' + portNum + '.currentState';
          } else {
@@ -3347,7 +3347,7 @@ function savePort(obj) {
          var linkedstate  = "";
          var linkedstate1 = "";
 
-         if ( fnc == 'enum.func.temperature' ) {
+         if ( fnc == 'enum.functions.temperature' ) {
             linkedstate  = adapter.namespace + '.ports.' + portNum + '.temperature';
             linkedstate1 = adapter.namespace + '.ports.' + portNum + '.currentState';
          } else {
