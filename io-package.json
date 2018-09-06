@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.21.9",
+        "version":                  "0.21.10",
         "news": {
             "0.16.29": {
                 "en":               "See changelog in Readme.md!",

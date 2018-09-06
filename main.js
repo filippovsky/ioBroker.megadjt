@@ -3296,7 +3296,16 @@ function savePort(obj) {
    adapter.getState( adapter.namespace + '.ports.' + portNum + '.room',
       function (err, state) {
          var oldvalue = "";
-         var linkedstate = adapter.namespace + '.ports.' + portNum + '.currentState';
+         var linkedstate  = "";
+         var linkedstate1 = "";
+
+         if ( fnc == 'enum.func.temperature' ) {
+            linkedstate  = adapter.namespace + '.ports.' + portNum + '.temperature';
+            linkedstate1 = adapter.namespace + '.ports.' + portNum + '.currentState';
+         } else {
+            linkedstate   = adapter.namespace + '.ports.' + portNum + '.currentState';
+            linkedstate1  = adapter.namespace + '.ports.' + portNum + '.temperature';
+         }
          var group = adapter.namespace + '.ports.' + portNum;
          var channel = 'ports.' + portNum;
          var id    = 'currentState';
@@ -3305,74 +3314,19 @@ function savePort(obj) {
             adapter.setState( 'ports.' + portNum + '.room', {val: room, ack: true});
             if ( oldvalue ) {
                adapter.log.debug(' -- удаляем порт '+linkedstate+' из комнаты ' + oldvalue );
-               //adapter.deleteStateFromEnum( 'rooms', '', '', linkedstate );
-               //adapter.deleteStateFromEnum( 'rooms', '', group, id );
-               removeFromEnum( oldvalue, linkedstate );
+               removeFromEnum( oldvalue, linkedstate  );
+               removeFromEnum( oldvalue, linkedstate1 );
             } 
             if (room) {
                adapter.log.debug(' -- добавляем порт '+linkedstate+' в комнату ' + room );
-               //adapter.addStateToEnum( 'rooms', room, '', '', linkedstate );
-               //adapter.addStateToEnum( 'rooms', room, '', group, id );
-               //adapter.addStateToEnum( 'rooms', room, adapter.namespace, channel, id );
                addToEnum( room, linkedstate );
             }
 
-//                        if (_states[j].native.room) removeFromEnum(_states[j].native.room, _states[j]._id);
-//                        if (newObjects[i].native.room) addToEnum(newObjects[i].native.room, newObjects[i]._id);
-
-
-/*
-addStateToEnum = function addStateToEnum(enumName, addTo, parentDevice, parentChannel, stateName, callback)
-deleteStateFromEnum = function deleteStateFromEnum(enumName, parentDevice, parentChannel, stateName, callback)
-*/
-
-               adapter.extendObject( linkedstate, {
+            adapter.extendObject( linkedstate, {
                                       native: {
                                             room: room
                                       }
                                   });
-  
-
-/*
-                                if (_states[j].native.room !== adapter.config.devices[u].room) {
-                                    if (adapter.config.devices[u].room !== '') {
-                                        adapter.log.info('Add a variable ' + _states[j]._id + ' to the ' + adapter.config.devices[u].room);
-                                        adapter.deleteStateFromEnum('rooms', '', group, id);
-                                        adapter.addStateToEnum('rooms', adapter.config.devices[u].room, '', group, id);
-
-                                        adapter.extendObject(_states[j]._id, {
-                                            native: {
-                                                room: adapter.config.devices[u].room
-                                            }
-                                        });
-                                    } else {
-                                        adapter.log.info('Remove the variable ' + _states[j]._id + ' from the enum.rooms');
-                                        adapter.deleteStateFromEnum('rooms', '', group, id);
-                                        adapter.extendObject(_states[j]._id, {
-                                            native: {
-                                                room: ''
-                                            }
-                                        });
-                                    }
-                                }
-
-*/
-/*
-adapter.deleteStateFromEnum('rooms', '', '', id, function () {
-                    if (adapter.config.devices[index].room) {
-                        adapter.addStateToEnum('rooms', adapter.config.devices[index].room, '', '', id);
-                    }
-                });
-  */
-
-//            adapter.setState( 'ports.' + portNum + '.room', {val: room, ack: true});
-// addStateToEnum, deleteStateFromEnum
-/*
-                    if (newObjects[i].native.room != _states[j].native.room) {
-                        adapter.log.info('Update state room ' + newObjects[i]._id + ': ' + _states[j].native.room + ' => ' + newObjects[i].native.room);
-                        if (_states[j].native.room) removeFromEnum(_states[j].native.room, _states[j]._id);
-                        if (newObjects[i].native.room) addToEnum(newObjects[i].native.room, newObjects[i]._id);
-                    } */
 
             adapter.log.info( 'ports.' + portNum + '.room : '+ oldvalue + ' -> ' + room );
          }
@@ -3382,13 +3336,24 @@ adapter.deleteStateFromEnum('rooms', '', '', id, function () {
    adapter.getState( adapter.namespace + '.ports.' + portNum + '.func',
       function (err, state ) {
          var oldvalue = "";
-         var linkedstate = adapter.namespace + '.ports.' + portNum + '.currentState';
+         var linkedstate  = "";
+         var linkedstate1 = "";
+
+         if ( fnc == 'enum.func.temperature' ) {
+            linkedstate  = adapter.namespace + '.ports.' + portNum + '.temperature';
+            linkedstate1 = adapter.namespace + '.ports.' + portNum + '.currentState';
+         } else {
+            linkedstate   = adapter.namespace + '.ports.' + portNum + '.currentState';
+            linkedstate1  = adapter.namespace + '.ports.' + portNum + '.temperature';
+         }
+
          if ( state ) oldvalue = state.val;
          if ( oldvalue != fnc ) {
             adapter.setState( 'ports.' + portNum + '.func', {val: fnc, ack: true});
             if ( oldvalue ) {
                adapter.log.debug(' -- удаляем у порта '+linkedstate+' функцию ' + oldvalue );
-               removeFromEnum( oldvalue, linkedstate );
+               removeFromEnum( oldvalue, linkedstate  );
+               removeFromEnum( oldvalue, linkedstate1 );
             } 
             if (fnc) {
                adapter.log.debug(' -- добавляем порту '+linkedstate+' функцию ' + fnc );
