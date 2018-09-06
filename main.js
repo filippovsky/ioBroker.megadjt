@@ -3316,6 +3316,8 @@ function savePort(obj) {
                adapter.log.debug(' -- удаляем порт '+linkedstate+' из комнаты ' + oldvalue );
                removeFromEnum( oldvalue, linkedstate  );
                removeFromEnum( oldvalue, linkedstate1 );
+               removeFromEnum( 'enum.rooms', linkedstate  );
+               removeFromEnum( 'enum.rooms', linkedstate1 );
             } 
             if (room) {
                adapter.log.debug(' -- добавляем порт '+linkedstate+' в комнату ' + room );
@@ -3327,6 +3329,12 @@ function savePort(obj) {
                                             room: room
                                       }
                                   });
+            adapter.extendObject( linkedstate1, {
+                                      native: {
+                                            room: ''
+                                      }
+                                  });
+
 
             adapter.log.info( 'ports.' + portNum + '.room : '+ oldvalue + ' -> ' + room );
          }
@@ -3354,6 +3362,8 @@ function savePort(obj) {
                adapter.log.debug(' -- удаляем у порта '+linkedstate+' функцию ' + oldvalue );
                removeFromEnum( oldvalue, linkedstate  );
                removeFromEnum( oldvalue, linkedstate1 );
+               removeFromEnum( 'enum.func', linkedstate  );
+               removeFromEnum( 'enum.func', linkedstate1 );
             } 
             if (fnc) {
                adapter.log.debug(' -- добавляем порту '+linkedstate+' функцию ' + fnc );
@@ -3363,6 +3373,11 @@ function savePort(obj) {
                adapter.extendObject( linkedstate, {
                                       native: {
                                             function: fnc
+                                      }
+                                  });
+               adapter.extendObject( linkedstate1, {
+                                      native: {
+                                            function: ''
                                       }
                                   });
 
