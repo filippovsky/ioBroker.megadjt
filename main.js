@@ -16,8 +16,8 @@
  *      The device can report the changes of ports to some web server in form
  *      http://ioBroker:8090/?pt=6  , where 6 is the port number
  *
- */
-/* 
+ *
+ 
 ветки входов для настроек портов:
 savePort - изменение в интерфейсе настроек драйвера
 parseMegaCfgLine - загрузка из файла настроек
@@ -2242,6 +2242,8 @@ function pollStatus(dev) {
 
 //---------------------------------------------------------------------------------------------------------------
 // Process http://ioBroker:80/instance/?pt=6
+// Функция обработки запросов от Меги к серверу
+// Filippovsky
 function restApi(req, res) {
     var values = {};
     var url    = req.url;
@@ -2299,33 +2301,69 @@ function restApi(req, res) {
     }
     
     if (values.pt !== undefined) {
-        var _port = parseInt(values.pt, 10);
+        //var _port = parseInt(values.pt, 10);
 
-        if (adapter.config.ports[_port]) {
-            // If digital port
-            ///if (!adapter.config.ports[_port].pty && adapter.config.ports[_port].m != 1) {
-	    if (adapter.config.ports[_port].pty == 0 && adapter.config.ports[_port].misc != 1) {
-                adapter.config.ports[_port].oldValue = adapter.config.ports[_port].value;
-                adapter.config.ports[_port].value = !adapter.config.ports[_port].m ? 1 : 0;
-                processClick(_port);
-            } else if (adapter.config.ports[_port].pty == 3 && adapter.config.ports[_port].d == 4) {
-                // process iButton
-                adapter.setState(adapter.config.ports[_port].id, values.ib, true);
-            } else {
-                adapter.log.debug('reported new value for port ' + _port + ', request actual value');
-                // Get value from analog port
-                getPortState(_port, processPortState);
+        adapter.getState( adapter.namespace + '.ports.' + values.pt + '.portType', function (err, portType) {
+            if ( portType.val == cPortType_NotConnected ) {
+               res.writeHead(500);
+               res.end('Error: port "' + values.pt + '". Not connected!', 'utf8');
+               return;
+
+            } else if ( portType.val == cPortType_ReleOut || portType.val == cPortType_SimistorOut ) {
+               if ( !values.m ) {
+                  adapter.setState( adapter.namespace + '.ports.' + values.pt + '.currentState', true, true);
+               } else if (values.m == '1') {
+                  adapter.setState( adapter.namespace + '.ports.' + values.pt + '.currentState', false, true);
+               }
+
+            } else if ( portType.val == cPortType_StandartIn ) {
+               adapter.getState( adapter.namespace + '.ports.' + values.pt + '.send2ServerAlwaysPressRelease', function (err, alwaysPR) {
+                  if ( !values.m && !values.click ) {
+                     // недолгое нажатие не в ClickMode
+                     adapter.setState( adapter.namespace + '.ports.' + values.pt + '.shortClick',   true, true);
+                     adapter.setState( adapter.namespace + '.ports.' + values.pt + '.currentState', true, true);
+                  } else if ( values.m == '1' ) {
+                     // отпускание клавиши
+                     adapter.setState( adapter.namespace + '.ports.' + values.pt + '.Release', true, true);
+                     adapter.setState( adapter.namespace + '.ports.' + values.pt + '.currentState', false, true);
+                  } else if ( values.m == '2' ) {
+                     // долгое нажатие
+                     adapter.setState( adapter.namespace + '.ports.' + values.pt + '.longClick',    true, true);
+                     adapter.setState( adapter.namespace + '.ports.' + values.pt + '.currentState', true, true);
+                  } else if ( values.click == '1' ) {
+                     // однократное нажатие
+                     adapter.setState( adapter.namespace + '.ports.' + values.pt + '.shortClick',   true, true);
+                     adapter.setState( adapter.namespace + '.ports.' + values.pt + '.currentState', true, true);
+                  } else if ( values.click == '2' ) {
+                     // двойное нажатие
+                     adapter.setState( adapter.namespace + '.ports.' + values.pt + '.doubleClick',   true, true);
+                     adapter.setState( adapter.namespace + '.ports.' + values.pt + '.currentState', true, true);
+                  }
+
+                  if ( values.cnt ) {
+                     adapter.setState( adapter.namespace + '.ports.' + values.pt + '.counter', values.cnt, true);
+                  }
+               });
+
+/*
+
+var cPortType_DimmedOut = 'DimmedOut'; //1
+var cPortType_DigitalSensor  = 'DigitalSensor'; //3 цифровой вход dsen
+var cPortType_I2C  = 'I2C'; // 4 
+var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для аналоговых датчиков
+
+*/
+
             }
-
             res.writeHead(200, {'Content-Type': 'text/html'});
             res.end('OK', 'utf8');
+            return;
+       });
 
-            return;
-        } else {
-            res.writeHead(500);
-            res.end('Error: port "' + _port + '". Not configured', 'utf8');
-            return;
-        }
+    } else {
+        res.writeHead(500);
+        res.end('Error: port "' + values.pt + '". Not configured!', 'utf8');
+        return;
     }
     res.writeHead(500);
     res.end('Error: invalid input "' + req.url + '". Expected /' + (adapter.config.name || adapter.instance) + '/?pt=X', 'utf8');
@@ -3152,6 +3190,10 @@ function configInit( callback ) {
        createConfigItemIfNotExists ( 'ports.'+ i + '.temperature', 'statetemperature', 'Температура', null );
        createConfigItemIfNotExists ( 'ports.'+ i + '.humidity', 'statehumidity', 'Влажность', null );
        createConfigItemIfNotExists ( 'ports.'+ i + '.digitalSensorMode', 'state', 'Режим работы датчика', '' );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.shortClick', 'statebool', 'Краткое однократное нажатие на кнопку', 'false' );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.Release',    'statebool', 'Отпускание кнопки', 'false' );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.longClick',  'statebool', 'Долгое нажатие на кнопку', 'false' );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.doubleClick',  'statebool', 'Двойное нажатие на кнопку', 'false' );
    }
 
 
