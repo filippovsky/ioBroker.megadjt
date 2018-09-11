@@ -2249,6 +2249,8 @@ function restApi(req, res) {
     var url    = req.url;
     var pos    = url.indexOf('?');
 
+    adapter.log.debug('got RestAPi request: '||req.url );
+
     if (pos != -1) {
         var arr = url.substring(pos + 1).split('&');
         url = url.substring(0, pos);
@@ -2268,7 +2270,14 @@ function restApi(req, res) {
     var parts  = url.split('/');
     var device = parts[1];
 
+    adapter.log.debug('device = '||device );
+    adapter.log.debug('adapter.instance = '||adapter.instance );
+    adapter.log.debug('ControllerName = '||ControllerName );
+    adapter.log.debug('values.pt = '||values.pt );
+
+
     if (!device || (device != adapter.instance && (!ControllerName || device != ControllerName))) {
+        adapter.log.debug('point RestApi 1' );
         if (device && values.pt !== undefined) {
             // Try to find name of the instance
             if (parseInt(device, 10) == device) {
@@ -2299,9 +2308,12 @@ function restApi(req, res) {
         }
         return;
     }
+
+    adapter.log.debug('point RestApi 2' );
     
     if (values.pt !== undefined) {
         //var _port = parseInt(values.pt, 10);
+        adapter.log.debug('point RestApi 3' );
 
         adapter.getState( adapter.namespace + '.ports.' + values.pt + '.portType', function (err, portType) {
             if ( portType.val == cPortType_NotConnected ) {
