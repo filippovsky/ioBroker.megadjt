@@ -2251,6 +2251,8 @@ function restApi(req, res) {
 
     adapter.log.debug('got RestAPi request : '||req );
 
+    adapter.log.debug('got RestAPi request value : '||req.value );
+
     adapter.log.debug('got RestAPi request url: '||req.url );
 
     if (pos != -1) {
