@@ -2249,7 +2249,9 @@ function restApi(req, res) {
     var url    = req.url;
     var pos    = url.indexOf('?');
 
-    adapter.log.debug('got RestAPi request: '||req.url );
+    adapter.log.debug('got RestAPi request : '||req );
+
+    adapter.log.debug('got RestAPi request url: '||req.url );
 
     if (pos != -1) {
         var arr = url.substring(pos + 1).split('&');
