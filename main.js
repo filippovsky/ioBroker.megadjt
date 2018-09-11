@@ -2249,11 +2249,11 @@ function restApi(req, res) {
     var url    = req.url;
     var pos    = url.indexOf('?');
 
-    adapter.log.debug('got RestAPi request : '||req );
+    adapter.log.debug('got RestAPi request : '+ req );
 
-    adapter.log.debug('got RestAPi request value : '||req.value );
+    adapter.log.debug('got RestAPi request value : '+ req.value );
 
-    adapter.log.debug('got RestAPi request url: '||req.url );
+    adapter.log.debug('got RestAPi request url: '+req.url );
 
     if (pos != -1) {
         var arr = url.substring(pos + 1).split('&');
@@ -2274,10 +2274,10 @@ function restApi(req, res) {
     var parts  = url.split('/');
     var device = parts[1];
 
-    adapter.log.debug('device = '||device );
-    adapter.log.debug('adapter.instance = '||adapter.instance );
-    adapter.log.debug('ControllerName = '||ControllerName );
-    adapter.log.debug('values.pt = '||values.pt );
+    adapter.log.debug('device = '+device );
+    adapter.log.debug('adapter.instance = '+adapter.instance );
+    adapter.log.debug('ControllerName = '+ControllerName );
+    adapter.log.debug('values.pt = '+values.pt );
 
 
     if (!device || (device != adapter.instance && (!ControllerName || device != ControllerName))) {
@@ -3778,10 +3778,11 @@ function main() {
                        if ( IP ) {
                           ServerPort = parseInt( ServerPort, 10) || 0;
                           if ( ServerPort ) {
-//                             server = require('http').createServer(restApi);
-                          server = require('http').createServer( function (req,res) {
+                          server = require('http').createServer(restApi);
+/*                          server = require('http').createServer( function (req,res) {
                                          restApi(req, res);
                                    });
+*/
                              adapter.getPort( ServerPort, function (port) {
                                 if (port != ServerPort && !adapter.config.findNextPort) {
                                    adapter.log.warn('port ' + ServerPort + ' already in use');
