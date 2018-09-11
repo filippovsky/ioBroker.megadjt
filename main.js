@@ -2249,9 +2249,11 @@ function restApi(req, res) {
     var url    = req.url;
     var pos    = url.indexOf('?');
 
-    adapter.log.debug('got RestAPi request : '+ req );
-
-    adapter.log.debug('got RestAPi request value : '+ req.value );
+    if ( url == '/favicon.ico') {
+       res.writeHead(200, {'Content-Type': 'text/html'});
+       res.end('OK', 'utf8');
+       return;
+    }
 
     adapter.log.debug('got RestAPi request url: '+req.url );
 
