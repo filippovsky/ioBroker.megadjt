@@ -3778,7 +3778,7 @@ function main() {
                        if ( IP ) {
                           ServerPort = parseInt( ServerPort, 10) || 0;
                           if ( ServerPort ) {
-                             server = require('http').createServer(restApi);
+                             server = require('http').createServer(,restApi);
                              adapter.getPort( ServerPort, function (port) {
                                 if (port != ServerPort && !adapter.config.findNextPort) {
                                    adapter.log.warn('port ' + ServerPort + ' already in use');
