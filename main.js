@@ -2361,6 +2361,11 @@ function restApi(req, res) {
                   if ( values.cnt ) {
                      adapter.setState( adapter.namespace + '.ports.' + values.pt + '.counter', values.cnt, true);
                   }
+
+                  res.writeHead(200, {'Content-Type': 'text/html'});
+                  res.end('OK', 'utf8');
+                  return;
+
                });
 
 /*
