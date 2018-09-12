@@ -2322,6 +2322,8 @@ function restApi(req, res) {
         adapter.log.debug('point RestApi 3' );
 
         adapter.getState( adapter.namespace + '.ports.' + values.pt + '.portType', function (err, portType) {
+            adapter.log.debug('portType.val='+portType.val );
+
             if ( portType.val == cPortType_NotConnected ) {
                res.writeHead(500);
                res.end('Error: port "' + values.pt + '". Not connected!', 'utf8');
@@ -2383,13 +2385,20 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
             return;
        });
 
+       res.writeHead(200, {'Content-Type': 'text/html'});
+       res.end('OK', 'utf8');
+       return;
+
+
     } else {
         res.writeHead(500);
         res.end('Error: port "' + values.pt + '". Not configured!', 'utf8');
         return;
     }
+/*
     res.writeHead(500);
     res.end('Error: invalid input "' + req.url + '". Expected /' + (adapter.config.name || adapter.instance) + '/?pt=X', 'utf8');
+*/
 }
 
 //-----------------------------------------------------------------------------------------------------------------------
