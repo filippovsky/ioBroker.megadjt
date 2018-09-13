@@ -2652,7 +2652,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
             setupFunc.push('');
         }
 
-
+/*
          $('.value').each(function () {
             var key = $(this).attr('id');
             // example: select elements with id=key and class=value and insert value
@@ -2673,6 +2673,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
                 });
             }
         });
+*/
 
         //ports = settings.ports || [];
 
@@ -2980,7 +2981,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         var ip;
         var state;
 
-        
+  /*      
         var obj = {};
         $('.value').each(function () {
             var $this = $(this);
@@ -2990,7 +2991,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
                 obj[$this.attr('id')] = $this.val();
             }
         });
-        
+*/        
 
         // Get edited table
         //obj.ports = ports;
@@ -3035,10 +3036,11 @@ var cNDigitalSensorTypeWiegand26   = 6;
         socket.emit('setState',  adapter + '.' + instance + '.firmware.version', obj1 );
   */
         //callback(obj);
+/*
         if (callback) {
             callback(obj);
         }
-
+  */
     }
 
     //--------------------------------------------------------------------------------------
@@ -3350,9 +3352,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
     <button class="translateB" id="autoDetect">Auto detect ports</button>
     <button class="translateB" id="write">Write config to device</button>
     <button class="translateB" id="ipchange">Change ip or password</button>
-    <br>-- %firmware_version%<br>
-    <br>-- %controller_name%<br>
-    <br>-- %native_controller_name%<br>
 
     <br>&nbsp;XP1:
     <select id="xp1model" class="value">
