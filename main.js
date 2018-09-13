@@ -3764,7 +3764,7 @@ function main() {
     adapter.setState('info.connection', false, true);
 
     configInit( function () {
-        //debugAllStates();//
+        debugAllStates();
         adapter.getState(adapter.namespace + '.controller.ip', function (err, state_ip) {
            if (state_ip) {
               IP = state_ip.val;
