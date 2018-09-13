@@ -2652,7 +2652,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
             setupFunc.push('');
         }
 
-/*
+
          $('.value').each(function () {
             var key = $(this).attr('id');
             // example: select elements with id=key and class=value and insert value
@@ -2673,7 +2673,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
                 });
             }
         });
-*/
+
 
         //ports = settings.ports || [];
 
@@ -2981,7 +2981,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         var ip;
         var state;
 
-  /*      
+       
         var obj = {};
         $('.value').each(function () {
             var $this = $(this);
@@ -2991,7 +2991,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
                 obj[$this.attr('id')] = $this.val();
             }
         });
-*/        
+        
 
         // Get edited table
         //obj.ports = ports;
@@ -3036,11 +3036,11 @@ var cNDigitalSensorTypeWiegand26   = 6;
         socket.emit('setState',  adapter + '.' + instance + '.firmware.version', obj1 );
   */
         //callback(obj);
-/*
+
         if (callback) {
             callback(obj);
         }
-  */
+  
     }
 
     //--------------------------------------------------------------------------------------
