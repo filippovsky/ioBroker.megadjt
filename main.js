@@ -2255,7 +2255,7 @@ function restApi(req, res) {
        return;
     }
 
-    adapter.log.debug('got RestAPi request url: '+req.url );
+    adapter.log.debug('got request url: '+req.url );
 
     if (pos != -1) {
         var arr = url.substring(pos + 1).split('&');
@@ -2276,14 +2276,16 @@ function restApi(req, res) {
     var parts  = url.split('/');
     var device = parts[1];
 
+/*
     adapter.log.debug('device = '+device );
     adapter.log.debug('adapter.instance = '+adapter.instance );
     adapter.log.debug('ControllerName = '+ControllerName );
     adapter.log.debug('values.pt = '+values.pt );
+*/
 
 
     if (!device || (device != adapter.instance && (!ControllerName || device != ControllerName))) {
-        adapter.log.debug('point RestApi 1' );
+        //adapter.log.debug('point RestApi 1' );
         if (device && values.pt !== undefined) {
             // Try to find name of the instance
             if (parseInt(device, 10) == device) {
@@ -2315,14 +2317,14 @@ function restApi(req, res) {
         return;
     }
 
-    adapter.log.debug('point RestApi 2' );
+    //adapter.log.debug('point RestApi 2' );
     
     if (values.pt !== undefined) {
         //var _port = parseInt(values.pt, 10);
-        adapter.log.debug('point RestApi 3' );
+        //adapter.log.debug('point RestApi 3' );
 
         adapter.getState( adapter.namespace + '.ports.' + values.pt + '.portType', function (err, portType) {
-            adapter.log.debug('portType.val='+portType.val );
+            //adapter.log.debug('portType.val='+portType.val );
 
             if ( portType.val == cPortType_NotConnected ) {
                res.writeHead(500);
@@ -2413,7 +2415,7 @@ function sendCommand(port, value) {
         port: IPPort,
         path: '/' + Password + '/?' + data
     };
-    adapter.log.debug('Send command "' + data + '" to ' + IP);
+    adapter.log.debug('Отправляем команду "' + data + '" на ' + IP);
 
     // Set up the request
     http.get(options, function (res) {
@@ -2426,12 +2428,13 @@ function sendCommand(port, value) {
             xmldata += chunk;
         });
         res.on('end', function () {
-            adapter.log.debug('Response "' + xmldata + '"');
+            adapter.log.debug('Ответ от Меги "' + xmldata + '"');
 
 
         adapter.getState( adapter.namespace + '.ports.' + port + '.portType', function (err, portType) {
            if (portType) {
               if (portType.val == cPortType_ReleOut) {
+                 // Set state only if positive response from megaD
                  adapter.setState( adapter.namespace + '.ports.' + port + '.currentState', value ? true : false, true);
               }
            }
@@ -2455,7 +2458,7 @@ function sendCommand(port, value) {
 */
         });
     }).on('error', function (e) {
-        adapter.log.warn('Got error by post request ' + e.toString());
+        adapter.log.warn('На команду Меге получили ошибку ' + e.toString());
     });
 }
 
