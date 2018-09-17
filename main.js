@@ -3295,8 +3295,10 @@ function debugAllStates () {
       var found;
 
       for (i = 0; i < _states.length; i++) {
-         adapter.log.debug('State '+i+' ... ' + _states[i]._id );
+         adapter.log.debug('State '+i+' ... ' + _states[i]._id +' ->  ' + _states[i].val );
       }
+      adapter.log.debug('_states = '+ JSON.stringify(_states) );
+
    });
 }
 
