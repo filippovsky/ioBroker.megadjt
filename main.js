@@ -3290,16 +3290,25 @@ function setGlobal ( callback ) {
 }
 //--------------------------------------------------------------------------------------------
 function debugAllStates () {
-   adapter.getStatesOf('', '', function (err, _states) {
+   adapter.getStates('*', function(err,state) {
+         adapter.log.debug('State ' + state._id +' ->  ' + state.val );
+   });
+       
+
+/*   adapter.getStatesOf('', '', function (err, _states) {
       var i;
       var found;
+      var xx;
 
       for (i = 0; i < _states.length; i++) {
-         adapter.log.debug('State '+i+' ... ' + _states[i]._id +' ->  ' + _states[i].val );
+         xx = _states[i]._id;
+//         adapter.log.debug('State '+i+' ... ' + _states[i]._id +' ->  ' + _states[i].val );
+         adapter.log.debug('State '+i+' ... ' + _states[i]._id +' ->  ' + getState() );
       }
       adapter.log.debug('_states = '+ JSON.stringify(_states) );
 
    });
+*/
 }
 
 //------------------------------------------------------------------------------------------------------------------
