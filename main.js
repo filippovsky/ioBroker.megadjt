@@ -3291,6 +3291,7 @@ function setGlobal ( callback ) {
 //--------------------------------------------------------------------------------------------
 function debugAllStates () {
    adapter.getStates('megadjt.0.ports.0.*', function(err,states) {
+      var i;
       for (i = 0; i < states.length; i++) {
          adapter.log.debug('State ' + states[i]._id +' ->  ' + states[i].val );
       }
