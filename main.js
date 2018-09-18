@@ -3293,7 +3293,7 @@ function debugAllStates () {
 //   adapter.getStates('megadjt.0.ports.0', function(err,states) {
    adapter.getStates('*', function(err,states) {
       adapter.log.debug('states = '+ JSON.stringify(states) );
-      var elist = JSON.parse(states); 
+      // var elist = JSON.parse(states); 
       //adapter.log.debug('>**elist[0].megadjt.0.ports.0.room.val = '+ elist.["megadjt.0.ports.0.room"].val );
       //adapter.log.debug('>elist["megadjt.0.ports.0.room"].val = '+ elist["megadjt.0.ports.0.room"].val );
       //adapter.log.debug('elist = '+ elist );
