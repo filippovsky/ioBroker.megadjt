@@ -3299,7 +3299,7 @@ function debugAllStates () {
       adapter.log.debug('states = '+ x );
       elist = JSON.parse( x ); 
       adapter.log.debug('-------------------------------' );
-//      adapter.log.debug('>> '+ elist."megadjt.0.ports.0.room".val );
+      adapter.log.debug('>> '+ x."megadjt.0.ports.0.room".val );
 
 //      adapter.log.debug('>> '+ states.["megadjt.0.ports.0.room"].val );
 
