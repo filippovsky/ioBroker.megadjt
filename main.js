@@ -3291,10 +3291,13 @@ function setGlobal ( callback ) {
 //--------------------------------------------------------------------------------------------
 function debugAllStates () {
 //   adapter.getStates('megadjt.0.ports.0', function(err,states) {
-   var elist = [];
+   var x;
+   var elist ;
    adapter.getStates('*', function(err,states) {
-      adapter.log.debug('states = '+ JSON.stringify(states) );
-      elist = JSON.parse(states); 
+      x = JSON.stringify(states); 
+
+      adapter.log.debug('states = '+ x );
+      elist = JSON.parse( x ); 
       adapter.log.debug('-------------------------------' );
 //      adapter.log.debug('>> '+ elist."megadjt.0.ports.0.room".val );
 
