@@ -3300,7 +3300,11 @@ function states2Admin ( obj ) {
    adapter.getStates('*', function(err,states) {
       x = JSON.stringify(states); 
       elist = JSON.parse( x ); 
-      obj.callback( elist );
+      //obj.callback( elist );
+        if (obj.callback) {
+           adapter.sendTo(obj.from, obj.command, {error: err, response: null}, obj.callback(elist) );
+        }
+
    });
 }
 
