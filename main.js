@@ -3304,7 +3304,7 @@ function states2Admin ( obj ) {
       //callback( elist );
       if (obj.callback) {
            adapter.log.debug('states2Admin point 2' );
-           adapter.sendTo(obj.from, obj.command, {response: elist}, obj.callback );
+           adapter.sendTo(obj.from, obj.command, elist, obj.callback );
       }
      
    });
