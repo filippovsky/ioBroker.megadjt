@@ -2655,17 +2655,17 @@ var cNDigitalSensorTypeWiegand26   = 6;
         var x;
 
 //        //function sendTo(_adapter_instance, command, message, callback)
-        sendTo(null, 'getStates', null, function (states) {
+//-        sendTo(null, 'getStates', null, function (states) {
 //        //getStates('*', function(err,states) {
 //           x = JSON.stringify(states); 
-           Setup = JSON.parse( states ); 
+//-           Setup = JSON.parse( states ); 
 //           //var z = Setup["megadjt.0.ports.0.room"];
 //           //var z0 = Setup["megadjt.0.ports.0.room"].val;
-           $('.valSetup').each(function () {
-              var key = $(this).attr('id');
-              $(this).val = Setup[key].val;
-           });
-        });
+//-           $('.valSetup').each(function () {
+//-              var key = $(this).attr('id');
+//-              $(this).val = Setup[key].val;
+//-           });
+//-        });
 
 
          $('.value').each(function () {
