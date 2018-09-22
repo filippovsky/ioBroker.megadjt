@@ -2656,6 +2656,9 @@ var cNDigitalSensorTypeWiegand26   = 6;
          $('.value').each(function () {
             var key = $(this).attr('id');
             // example: select elements with id=key and class=value and insert value
+            //if (key == 'controller.ip') {
+            //   var $value = $('#' + key + '.value');
+            //}
             if ($(this).attr('type') == 'checkbox') {
                 $(this).prop('checked', settings[key]).change(function() {
                     if ($('#auth').prop('checked')) {
