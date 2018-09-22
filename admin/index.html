@@ -466,7 +466,7 @@ span:hover::before {
    var SelectedPortXP1 = 0;
    var SelectedPortXP2 = 0;
    var MegaSetup;
-
+   var Setup;
 
 var cPortType_NotConnected = 'NotConnected'; //255
 var cPortType_StandartIn  = 'StandartIn';    //0
@@ -2652,6 +2652,18 @@ var cNDigitalSensorTypeWiegand26   = 6;
             setupFunc.push('');
         }
 
+        var x;
+        adapter.getStates('*', function(err,states) {
+           x = JSON.stringify(states); 
+           Setup = JSON.parse( x ); 
+           //var z = Setup["megadjt.0.ports.0.room"];
+           //var z0 = Setup["megadjt.0.ports.0.room"].val;
+           $('.valSetup').each(function () {
+              var key = $(this).attr('id');
+              $(this).val = Setup[key].val;
+           });
+        });
+
 
          $('.value').each(function () {
             var key = $(this).attr('id');
@@ -3351,9 +3363,9 @@ var cNDigitalSensorTypeWiegand26   = 6;
             <td colspan=2><input  class="value" id="doublePress" maxlength="4"/></td>
         </tr>
         <tr><td class="translate" style="text-align: right">controller.ip:</td>
-            <td><input  class="value" id="controller.ip" maxlength="30"/></td>
-            <td class="translate" style="text-align: right">controller_ip:</td>
-            <td colspan=2><input  class="value" id="controller_ip" maxlength="30"/></td>
+            <td><input  class="valSetup" id="controller.ip" maxlength="30"/></td>
+            <td class="translate" style="text-align: right">megadjt.0.controller.ip:</td>
+            <td colspan=2><input  class="valSetup" id="megadjt.0.controller.ip" maxlength="30"/></td>
         </tr>
     </table>
     <!-- <button class="translate" id="add">Add new port</button> -->
