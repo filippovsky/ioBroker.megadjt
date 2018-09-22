@@ -3299,6 +3299,8 @@ function debugAllStates () {
       adapter.log.debug('states = '+ x );
       elist = JSON.parse( x ); 
       adapter.log.debug('-------------------------------' );
+      adapter.log.debug('>> '+ elist.megadjt.0.ports.0.room.val );
+
 
 //      adapter.log.debug('>> '+ x.megadjt.0.ports.0.room.val );
 
@@ -3311,11 +3313,11 @@ function debugAllStates () {
       //adapter.log.debug('elist[0].megadjt.0.ports.0.room.val = '+ elist[0].megadjt.0.ports.0.room.val );
 
 //megadjt.0.ports.0.room
-      var i;
+/*      var i;
       for (i = 0; i < states.length; i++) {
          adapter.log.debug('State ' + states[i]._id +' ->  ' + states[i].val );
       }
-
+*/
    });
        
 
