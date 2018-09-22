@@ -320,7 +320,7 @@ adapter.on('message', function (obj) {
                 break;
 
             case 'getStates':
-                states2Admin(obj.message, obj.callback);
+                states2Admin(obj);
                 break;
 
             /*case 'detectPorts':
@@ -3296,12 +3296,14 @@ function setGlobal ( callback ) {
 function states2Admin ( obj ) {
    var x;
    var elist ;
-   adapter.log.debug('states2Admin' );
+   adapter.log.debug('states2Admin point 0' );
    adapter.getStates('*', function(err,states) {
+      adapter.log.debug('states2Admin point 1' );
       x = JSON.stringify(states); 
       elist = JSON.parse( x ); 
       //callback( elist );
       if (obj.callback) {
+           adapter.log.debug('states2Admin point 2' );
            adapter.sendTo(obj.from, obj.command, {response: elist}, obj.callback );
       }
      
