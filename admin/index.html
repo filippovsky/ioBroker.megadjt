@@ -2653,7 +2653,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
         }
 
         var x;
-        getStates('*', function(err,states) {
+
+        //function sendTo(_adapter_instance, command, message, callback)
+        sendTo(null, 'getStates', '*', function (states) {
+        //getStates('*', function(err,states) {
            x = JSON.stringify(states); 
            Setup = JSON.parse( x ); 
            //var z = Setup["megadjt.0.ports.0.room"];

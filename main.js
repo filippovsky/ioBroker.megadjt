@@ -319,6 +319,10 @@ adapter.on('message', function (obj) {
                 discoverMega(obj);
                 break;
 
+            case 'getStates':
+                states2Admin(obj.callback);
+                break;
+
             /*case 'detectPorts':
                 detectPorts(obj);
                 break;*/
@@ -3288,6 +3292,18 @@ function setGlobal ( callback ) {
    }
 
 }
+//--------------------------------------------------------------------------------------------
+function states2Admin ( callback ) {
+   var x;
+   var elist ;
+   adapter.log.debug('states2Admin' );
+   adapter.getStates('*', function(err,states) {
+      x = JSON.stringify(states); 
+      elist = JSON.parse( x ); 
+      callback( elist );
+   });
+}
+
 //--------------------------------------------------------------------------------------------
 function debugAllStates () {
 //   adapter.getStates('megadjt.0.ports.0', function(err,states) {
