@@ -2655,7 +2655,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         var x;
 
         //function sendTo(_adapter_instance, command, message, callback)
-        sendTo(null, 'getStates', '*', function (states) {
+        sendTo(null, 'getStates', null, function (states) {
         //getStates('*', function(err,states) {
            x = JSON.stringify(states); 
            Setup = JSON.parse( x ); 
