@@ -3303,7 +3303,7 @@ function debugAllStates () {
 //      var z = elist.megadjt."0".ports."0".room;
       adapter.log.debug('-1-----------------------------' );
       adapter.log.debug('tst: '+ z.val );
-      var z0 = elist["megadjt.0.ports.0.room"][val];
+      var z0 = elist["megadjt.0.ports.0.room"].val;
       adapter.log.debug('-2-----------------------------' );
       adapter.log.debug('val: '+ z0 );
 
