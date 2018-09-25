@@ -843,17 +843,19 @@ var cNDigitalSensorTypeWiegand26   = 6;
          console.log('point AAA1');
          $('.valSetup').each(function () {
             var key = $(this).attr('id');
+            var serverKey;
             console.log('point AAA2: key = '+ key);
-            if (key == 'controller.ip') {
+            if (key == 'controller_ip') {
+               serverKey = 'controller.ip';
                console.log('point AAA3');
-               getState( adapter + '.' + instance + '.' + key, function (err, state) {
+               getState( adapter + '.' + instance + '.' + serverKey, function (err, state) {
                   console.log('point AAA4');
                   if (state) {
                      var newval = state.val;
                      console.log('point AAA5 state.val = '+ state.val);
                      //$(this).val( state.val );
 //                     $('#controller.ip').val( newval );
-                     $('#controller.ip').val( '777' );
+                     $('controller_ip').val( '777' );
                      console.log('point AAA6');
                      //onChange(); //
 /*
@@ -3412,7 +3414,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
             <td colspan=2><input  class="value" id="doublePress" maxlength="4"/></td>
         </tr>
         <tr><td class="translate" style="text-align: right">controller.ip:</td>
-            <td><input  class="valSetup" id="controller.ip" maxlength="50"/></td>
+            <td><input  class="valSetup" id="controller_ip" maxlength="50"/></td>
             <td class="translate" style="text-align: right">megadjt.0.cip:</td>
             <td colspan=2><input  class="value" id="megadjt.0.cip" maxlength="30"/></td>
         </tr>
