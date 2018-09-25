@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.24.0",
+        "version":                  "0.24.1",
         "news": {
             "0.23.49": {
                 "en":               "Added firmware 4.29b5",

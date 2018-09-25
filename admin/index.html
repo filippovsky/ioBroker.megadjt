@@ -825,6 +825,53 @@ var cNDigitalSensorTypeWiegand26   = 6;
       var i;
       var ip = "";
 
+//        //function sendTo(_adapter_instance, command, message, callback)
+//-        sendTo(null, 'getStates', null, function (states) {
+//        //getStates('*', function(err,states) {
+//           x = JSON.stringify(states); 
+//-           Setup = JSON.parse( states ); 
+//           //var z = Setup["megadjt.0.ports.0.room"];
+//           //var z0 = Setup["megadjt.0.ports.0.room"].val;
+//-           $('.valSetup').each(function () {
+//-              var key = $(this).attr('id');
+//-              $(this).val = Setup[key].val;
+//-           });
+//-        });
+
+
+// # ?
+         console.log('point AAA1');
+         $('.valSetup').each(function () {
+            var key = $(this).attr('id');
+            console.log('point AAA2: key = '+ key);
+            if (key == 'controller.ip') {
+               console.log('point AAA3');
+               getState( adapter + '.' + instance + '.' + key, function (err, state) {
+                  console.log('point AAA4');
+                  if (state) {
+                     console.log('point AAA5');
+                     $(this).val( state.val );
+                     console.log('point AAA6');
+                     onChange(); //
+                     console.log('point AAA7');
+                  }
+               });
+            }
+            console.log('point AAA8');
+         });
+
+
+/*                $(this).val(settings[key]).change(function() {
+                    onChange();
+                }).keyup(function() {
+                    onChange();
+                });
+            }
+        });
+*/
+
+
+
       getState( adapter + '.' + instance + '.controller.ip', function (err, state) {
          if (state) {
             $('#ip').val( state.val );
