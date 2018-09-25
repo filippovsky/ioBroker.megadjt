@@ -839,24 +839,11 @@ var cNDigitalSensorTypeWiegand26   = 6;
 //-        });
 
 
-         console.log('point AAA1');
          $('.valSetup').each(function () {
             var key = $(this).attr('id');
-            //var serverKey;
-            console.log('point AAA2: key = '+ key);
-            if (key == 'controller.ip') {
-               //serverKey = 'controller.ip';
-               console.log('point AAA3');
-               //getState( adapter + '.' + instance + '.' + serverKey, function (err, state) {
-               getState( adapter + '.' + instance + '.' + key, function (err, state) {
-                  console.log('point AAA4');
+            getState( adapter + '.' + instance + '.' + key, function (err, state) {
                   if (state) {
-                     //var newval = state.val;
-                     console.log('point AAA5 state.val = '+ state.val);
-                     // //$(this).val( state.val );
-                     // //$('controller_ip').val( '777' );
                      document.getElementById( key ).value = state.val;
-                     console.log('point AAA6');
 
                      $(this).val( state.val ).change(function() {
                          onChange();
@@ -868,17 +855,14 @@ var cNDigitalSensorTypeWiegand26   = 6;
                      $(key).trigger( 'change' );
                      $(key).change();
 
-                     console.log('point AAA7');
                   }
                });
-            }
-            console.log('point AAA8');
          });
 
 
-      getState( adapter + '.' + instance + '.controller.ip', function (err, state) {
-         if (state) {
-            $('#ip').val( state.val );
+//      getState( adapter + '.' + instance + '.controller.ip', function (err, state) {
+//         if (state) {
+//            $('#ip').val( state.val );
             //onChange();
             getState( adapter + '.' + instance + '.controller.ipport', function (err, state) {
                if (state) {
@@ -892,8 +876,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
                }
                //onChange();
             });
-         }
-      });
+//         }
+//      });
 
       getState( adapter + '.' + instance + '.controller.name', function (err, state) {
          if (state) {
@@ -2749,7 +2733,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
         $('#autoDetect').button({
             icons: {primary: 'ui-icon-refresh'}
         }).click(function() {
-            autoDetect($('#ip').val(), $('#password').val());
+//            autoDetect($('#ip').val(), $('#password').val());
+            autoDetect($('controller.ip').val(), $('#password').val());
         });
 
 
@@ -2904,9 +2889,11 @@ var cNDigitalSensorTypeWiegand26   = 6;
         $('#ipchange').button({
             icons: {primary: 'ui-icon-note'}
         }).click(function () {
-            $('#change_old_ip').val($('#ip').val());
+            //$('#change_old_ip').val($('#ip').val());
+            $('#change_old_ip').val($('controller.ip').val());
             $('#change_old_password').val($('#password').val());
-            $('#change_new_ip').val($('#ip').val());
+            //$('#change_new_ip').val($('#ip').val());
+            $('#change_new_ip').val($('controller.ip').val());
             $('#change_new_password').val($('#password').val());
 
             $('#change-dialog').dialog( {
@@ -2944,7 +2931,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
                                             showMessage(_('OK'), _('Info'), 'info');
                                             if ($('#change_take').prop('checked')) {
                                                 if ($('#change_old_ip').val() != $('#change_new_ip').val()) {
-                                                    $('#ip').val($('#change_new_ip').val()).trigger('change');
+                                                    //$('#ip').val($('#change_new_ip').val()).trigger('change');
+                                                    $('controller.ip').val($('#change_new_ip').val()).trigger('change');
                                                 }
                                                 if ($('#change_old_password').val() != $('#change_new_password').val()) {
                                                     $('#password').val($('#change_new_password').val()).trigger('change');
@@ -2967,7 +2955,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
             });
         });
 
-        $('#ip').change(function () {
+        //$('#ip').change(function () {
+        $('controller.ip').change(function () {
             var val = $(this).val();
             if (!val || val == '0.0.0.0') {
                 $('#autoDetect').button('disable');
@@ -3062,6 +3051,20 @@ var cNDigitalSensorTypeWiegand26   = 6;
         });
         
 
+        $('.valSetup').each(function () {
+            var $this = $(this);
+            var newval;
+            var obj1;
+
+            if ($this.attr('type') == 'checkbox') {
+                newval =  $this.prop('checked');
+            } else {
+                newval = $this.val();
+            }
+            obj1 = { val: newval, ack: true };
+            socket.emit('setState',  adapter + '.' + instance + '.' + $this.attr('id'), obj1 );
+        });
+
         // Get edited table
         //obj.ports = ports;
 
@@ -3073,16 +3076,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
         obj1 = {  val: xpmodel, ack: true };
         socket.emit('setState',  adapter + '.' + instance + '.controller.xp2model', obj1 );
 
-        /*var newvalue;
-        for ( i = 0; i <= 37; i ++ ) {
-           newvalue = $('#ports.'+i+'.room option:selected').val();
-           obj1 = {  val: newvalue, ack: true };
-           socket.emit('setState',  adapter + '.' + instance + '.ports.' + i + '.room', obj1 );
-        } */
 
-        ip = $('#ip').val();
-        obj1 = { val: ip, ack: true };
-        socket.emit('setState',  adapter + '.' + instance + '.controller.ip', obj1 );
+        //ip = $('#ip').val();
+        //obj1 = { val: ip, ack: true };
+        //socket.emit('setState',  adapter + '.' + instance + '.controller.ip', obj1 );
 
         state = $('#ipport').val();
         obj1 = { val: state, ack: true };
