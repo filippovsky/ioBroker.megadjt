@@ -849,8 +849,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
                getState( adapter + '.' + instance + '.' + key, function (err, state) {
                   console.log('point AAA4');
                   if (state) {
+                     var newval = state.val;
                      console.log('point AAA5 state.val = '+ state.val);
-                     $(this).val( state.val );
+                     //$(this).val( state.val );
+                     $('#controller.ip').val( newval );
                      console.log('point AAA6');
                      //onChange(); //
                      $(this).val( state.val ).change(function() {
@@ -864,17 +866,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
             }
             console.log('point AAA8');
          });
-
-
-/*                $(this).val(settings[key]).change(function() {
-                    onChange();
-                }).keyup(function() {
-                    onChange();
-                });
-            }
-        });
-*/
-
 
 
       getState( adapter + '.' + instance + '.controller.ip', function (err, state) {
