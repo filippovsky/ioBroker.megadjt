@@ -845,7 +845,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
             var key = $(this).attr('id');
             var serverKey;
             console.log('point AAA2: key = '+ key);
-            if (key == 'controller_ip') {
+            if (key == 'controller.ip') {
                serverKey = 'controller.ip';
                console.log('point AAA3');
                getState( adapter + '.' + instance + '.' + serverKey, function (err, state) {
@@ -866,8 +866,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
                      });
 
                      onChange(); //
-                     $('controller_ip').trigger( 'change' );
-                     $('controller_ip').change();
+                     $('controller.ip').trigger( 'change' );
+                     $('controller.ip').change();
 
                      console.log('point AAA7');
                   }
@@ -3418,7 +3418,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
             <td colspan=2><input  class="value" id="doublePress" maxlength="4"/></td>
         </tr>
         <tr><td class="translate" style="text-align: right">controller.ip:</td>
-            <td><input  class="valSetup" id="controller_ip" maxlength="50"/></td>
+            <td><input  class="valSetup" id="controller.ip" maxlength="50"/></td>
             <td class="translate" style="text-align: right">megadjt.0.cip:</td>
             <td colspan=2><input  class="val22" id="megadjt.0.cip" maxlength="30"/></td>
         </tr>
