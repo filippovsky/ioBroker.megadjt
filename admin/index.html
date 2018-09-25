@@ -852,14 +852,17 @@ var cNDigitalSensorTypeWiegand26   = 6;
                      var newval = state.val;
                      console.log('point AAA5 state.val = '+ state.val);
                      //$(this).val( state.val );
-                     $('#controller.ip').val( newval );
+//                     $('#controller.ip').val( newval );
+                     $('#controller.ip').val( '777' );
                      console.log('point AAA6');
                      //onChange(); //
+/*
                      $(this).val( state.val ).change(function() {
                          onChange();
                      }).keyup(function() {
                          onChange();
                      });
+*/
                      console.log('point AAA7');
                   }
                });
@@ -3409,9 +3412,9 @@ var cNDigitalSensorTypeWiegand26   = 6;
             <td colspan=2><input  class="value" id="doublePress" maxlength="4"/></td>
         </tr>
         <tr><td class="translate" style="text-align: right">controller.ip:</td>
-            <td><input  class="valSetup" id="controller.ip" maxlength="30"/></td>
-            <td class="translate" style="text-align: right">megadjt.0.controller.ip:</td>
-            <td colspan=2><input  class="valSetup" id="megadjt.0.controller.ip" maxlength="30"/></td>
+            <td><input  class="valSetup" id="controller.ip" maxlength="50"/></td>
+            <td class="translate" style="text-align: right">megadjt.0.cip:</td>
+            <td colspan=2><input  class="value" id="megadjt.0.cip" maxlength="30"/></td>
         </tr>
     </table>
     <!-- <button class="translate" id="add">Add new port</button> -->
