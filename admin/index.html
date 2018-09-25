@@ -839,35 +839,34 @@ var cNDigitalSensorTypeWiegand26   = 6;
 //-        });
 
 
-// # ?
          console.log('point AAA1');
          $('.valSetup').each(function () {
             var key = $(this).attr('id');
-            var serverKey;
+            //var serverKey;
             console.log('point AAA2: key = '+ key);
             if (key == 'controller.ip') {
-               serverKey = 'controller.ip';
+               //serverKey = 'controller.ip';
                console.log('point AAA3');
-               getState( adapter + '.' + instance + '.' + serverKey, function (err, state) {
+               //getState( adapter + '.' + instance + '.' + serverKey, function (err, state) {
+               getState( adapter + '.' + instance + '.' + key, function (err, state) {
                   console.log('point AAA4');
                   if (state) {
-                     var newval = state.val;
+                     //var newval = state.val;
                      console.log('point AAA5 state.val = '+ state.val);
-                     //$(this).val( state.val );
-//                     $('#controller.ip').val( newval );
-                     //$('controller_ip').val( '777' );
-                     document.getElementById( key ).value = '7788';
+                     // //$(this).val( state.val );
+                     // //$('controller_ip').val( '777' );
+                     document.getElementById( key ).value = state.val;
                      console.log('point AAA6');
 
-                     $(this).val( newval ).change(function() {
+                     $(this).val( state.val ).change(function() {
                          onChange();
                      }).keyup(function() {
                          onChange();
                      });
 
                      onChange(); //
-                     $('controller.ip').trigger( 'change' );
-                     $('controller.ip').change();
+                     $(key).trigger( 'change' );
+                     $(key).change();
 
                      console.log('point AAA7');
                   }
