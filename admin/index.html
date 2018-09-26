@@ -845,11 +845,11 @@ var cNDigitalSensorTypeWiegand26   = 6;
                   if (state) {
                      document.getElementById( key ).value = state.val;
                      console.log( 'getAdapterStates: '+ key +' => '+ state.val );
-                     $(this).val( state.val ).change(function() {
-                         onChange();
-                     }).keyup(function() {
-                         onChange();
-                     });
+                   //  $(this).val( state.val ).change(function() {
+                   //      onChange();
+                   //  }).keyup(function() {
+                   //      onChange();
+                   //  });
 
                      //onChange(); //
                      $(key).trigger( 'change' );
