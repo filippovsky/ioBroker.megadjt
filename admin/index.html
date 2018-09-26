@@ -844,7 +844,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
             getState( adapter + '.' + instance + '.' + key, function (err, state) {
                   if (state) {
                      document.getElementById( key ).value = state.val;
-
+                     console.log( 'getAdapterStates: '+ key +' => '+ state.val );
                      $(this).val( state.val ).change(function() {
                          onChange();
                      }).keyup(function() {
