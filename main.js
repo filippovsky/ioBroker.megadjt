@@ -335,9 +335,9 @@ adapter.on('message', function (obj) {
                 savePort(obj);
                 break;
 
-            /*case 'saveAdmin':
+            case 'saveAdmin':
                 saveAdmin(obj);
-                break;*/
+                break;
 
             case 'writeConfig':
                 writeConfig(obj);
@@ -4197,13 +4197,23 @@ var cPortType_I2C  = 'I2C'; // 4
 var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для аналоговых датчиков
 
 */
-/*
+
 function saveAdmin(obj) {
+   var lc = new Date().getTime();
 
    adapter.log.info('Сохраняем настройки админки ');
-   adapter.log.debug( 'obj.message.controller.ip =  '+obj.message.controller.ip);
+   adapter.log.debug( 'obj.message.key =  '+obj.message.key );
+   adapter.log.debug( 'obj.message.val =  '+obj.message.val );
+   adapter.log.debug( 'lc =  '+lc );
 
-   var ip = obj.message.controller.ip;
+   var linked   = adapter.namespace + '.' + obj.message.key;
+   adapter.log.debug( 'linked =  '+linked );
+
+   adapter.extendObject( linked, {
+                                    val: obj.message.val,
+                                    ack: true,
+                                    lc:  lc,
+                                    ts:  ts
+                                  });
 }
 
-*/

@@ -3065,8 +3065,24 @@ var cNDigitalSensorTypeWiegand26   = 6;
                 newval = $this.val();
             }
             console.log('setState '+ key +' -> '+newval +'  lc:' + lc);
-            obj1 = { val: newval, ack: true, lc: lc, ts: lc };
-            socket.emit('setState',  adapter + '.' + instance + '.' + key, obj1 );
+            //obj1 = { val: newval, ack: true, lc: lc, ts: lc };
+//            socket.emit('setState',  adapter + '.' + instance + '.' + key, obj1 );
+
+
+
+            sendTo(null, 'saveAdmin', { key: "controller.ip", 
+                                        val: newval
+                                      }, 
+                   function (msg) {
+                       if (!msg || msg.error) {
+                          showMessage(msg.error, _('Error'), 'alert');
+                          return;
+                       }
+                  }
+            );
+
+
+
 
         });
 
