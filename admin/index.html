@@ -3038,7 +3038,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         // example: select elements with class=value and build settings object
         var ip;
         var state;
-
+        var lc = new Date().getTime();
        
         var obj = {};
         $('.value').each(function () {
@@ -3061,7 +3061,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
             } else {
                 newval = $this.val();
             }
-            obj1 = { val: newval, ack: true };
+            console.log('setState '+$this.attr('id')+' -> '+newval +'  lc:' + lc);
+            obj1 = { val: newval, ack: true, lc: lc, ts: lc };
             socket.emit('setState',  adapter + '.' + instance + '.' + $this.attr('id'), obj1 );
         });
 
