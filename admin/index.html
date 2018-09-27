@@ -3040,7 +3040,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         // example: select elements with class=value and build settings object
         var ip;
         var state;
-        var lc = new Date().getTime();
+        var _lc = new Date().getTime();
        
         var obj = {};
         $('.value').each(function () {
@@ -3064,13 +3064,13 @@ var cNDigitalSensorTypeWiegand26   = 6;
             } else {
                 newval = $this.val();
             }
-            console.log('setState '+ key +' -> '+newval +'  lc:' + lc);
-            //obj1 = { val: newval, ack: true, lc: lc, ts: lc };
-//            socket.emit('setState',  adapter + '.' + instance + '.' + key, obj1 );
+            console.log('setState '+ key +' -> '+newval +'  lc:' + _lc);
+            obj1 = { val: newval, ack: true, lc: _lc, ts: _lc };
+            socket.emit('setState',  adapter + '.' + instance + '.' + key, obj1 );
 
+/*
 
-
-            sendTo(null, 'saveAdmin', { key: "controller.ip", 
+            sendTo(null, 'saveAdmin', { key: key, 
                                         val: newval
                                       }, 
                    function (msg) {
@@ -3081,7 +3081,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
                   }
             );
 
-
+  */
 
 
         });
