@@ -335,6 +335,10 @@ adapter.on('message', function (obj) {
                 savePort(obj);
                 break;
 
+            /*case 'saveAdmin':
+                saveAdmin(obj);
+                break;*/
+
             case 'writeConfig':
                 writeConfig(obj);
                 break;
@@ -4191,5 +4195,15 @@ var cPortType_SimistorOut = 'SimistorOut'; //1
 var cPortType_DigitalSensor  = 'DigitalSensor'; //3 цифровой вход dsen
 var cPortType_I2C  = 'I2C'; // 4 
 var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для аналоговых датчиков
+
+*/
+/*
+function saveAdmin(obj) {
+
+   adapter.log.info('Сохраняем настройки админки ');
+   adapter.log.debug( 'obj.message.controller.ip =  '+obj.message.controller.ip);
+
+   var ip = obj.message.controller.ip;
+}
 
 */

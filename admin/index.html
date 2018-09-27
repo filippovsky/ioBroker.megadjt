@@ -841,7 +841,9 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
          $('.valSetup').each(function () {
             var key = $(this).attr('id');
-            getState( adapter + '.' + instance + '.' + key, function (err, state) {
+            socket.emit('getState',  adapter + '.' + instance + '.' + key, function (err, state) {
+
+//            getState( adapter + '.' + instance + '.' + key, function (err, state) {
                   if (state) {
                      document.getElementById( key ).value = state.val;
                      console.log( 'getAdapterStates: '+ key +' => '+ state.val );
@@ -3055,15 +3057,17 @@ var cNDigitalSensorTypeWiegand26   = 6;
             var $this = $(this);
             var newval;
             var obj1;
+            var key = $this.attr('id');
 
             if ($this.attr('type') == 'checkbox') {
                 newval =  $this.prop('checked');
             } else {
                 newval = $this.val();
             }
-            console.log('setState '+$this.attr('id')+' -> '+newval +'  lc:' + lc);
+            console.log('setState '+ key +' -> '+newval +'  lc:' + lc);
             obj1 = { val: newval, ack: true, lc: lc, ts: lc };
-            socket.emit('setState',  adapter + '.' + instance + '.' + $this.attr('id'), obj1 );
+            socket.emit('setState',  adapter + '.' + instance + '.' + key, obj1 );
+
         });
 
         // Get edited table
