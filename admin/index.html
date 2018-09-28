@@ -504,6 +504,7 @@ var cNDigitalSensorType1WBus   = 5;
 var cNDigitalSensorTypeWiegand26   = 6;
 
    //------------------------------------------------------------------------------------------------
+/*
    function getFirmwareVersion () {
       var currentVersion = "";
       var freshVersion   = "";
@@ -530,7 +531,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
          }
       });
    }
-
+  */
    //--------------------------------------------------------------------------------
     function smsApiKeyChanged ( ) {
       var newkey = $('#sms_apiKey').val();
@@ -559,262 +560,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
                   
       socket.emit('setState',  adapter + '.' + instance + '.sms.enabled', obj );
     }
-/*
-   //--------------------------------------------------------------------------------
-   function getAdapterStates () {
-      var sms_apiKey  = "";
-      var sms_enabled = false;
-      var sms_phones  = "";
-      var id;
-      var i;
-      var txt;
-
-/--
-      var id00 = adapter + '.' + instance + '.ports.0.portType';
-
-      getObject( id00, function ( err, obj ) {
-         MegaSetup = obj;
-         txt = JSON.stringify( MegaSetup );
-         $('#MegaSetup').val( txt );
-      });
---/
-
-//http://192.168.1.35:8087/getPlainValue/megadjt.0.ports.27.portType
-/--      socket.emit('getObject', id00, function (err, baseObj ) {
-          showMessage( baseObj.ports.0.portType.val  , 'baseObj.ports.0.portType.val', 'alert');
-      });
- --/
-/--
-          var id = 'system.adapter.' + adapter + '.' + instance;
-
-        var obj = {};
-        $('.value').each(function () {
-            var $this = $(this);
-            if ($this.attr('type') == 'checkbox') {
-                obj[$this.attr('id')] = $this.prop('checked');
-            } else {
-                obj[$this.attr('id')] = $this.val();
-            }
-        });
-
-        // Get edited table
-        obj.ports = ports;
-
-        socket.emit('getObject', id, function (err, oldObj) {
-            if (!oldObj) oldObj = {};
-
-            for (var a in obj) {
-                oldObj.native[a] = obj[a];
-            }
-
---/
-
-      /--for (var i = 0; i <= 37; i++ ) {
-          id = adapter + '.' + instance + '.ports.' + i + '.portType';
-          socket.emit('getState',  id, function (err, state) {
-              portsColor[i] = state.val;
-          });
-      } --/
-
-      /--for ( i = 0; i <= 37; i++ ) {
-      i = 0;
-          id = adapter + '.' + instance + '.ports.' + i + '.portType';
-          getState ( id, function (err, state) {
-             MegaSetup.ports[i].portType = state.val; 
-          });
-      }--/
-
-       //txt = JSON.stringify( MegaSetup );
-       //txt = MegaSetup.ports[i].portType;
-       //$('#MegaSetup').val( txt );
- 
-      socket.emit('getState',  adapter + '.' + instance + '.ports.0.portType', function (err, state) {
-         portsColor[0] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.1.portType', function (err, state) {
-         portsColor[1] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.2.portType', function (err, state) {
-         portsColor[2] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.3.portType', function (err, state) {
-         portsColor[3] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.4.portType', function (err, state) {
-         portsColor[4] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.5.portType', function (err, state) {
-         portsColor[5] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.6.portType', function (err, state) {
-         portsColor[6] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.7.portType', function (err, state) {
-         portsColor[7] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.8.portType', function (err, state) {
-         portsColor[8] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.9.portType', function (err, state) {
-         portsColor[9] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.10.portType', function (err, state) {
-         portsColor[10] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.11.portType', function (err, state) {
-         portsColor[11] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.12.portType', function (err, state) {
-         portsColor[12] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.13.portType', function (err, state) {
-         portsColor[13] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.14.portType', function (err, state) {
-         portsColor[14] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.15.portType', function (err, state) {
-         portsColor[15] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.16.portType', function (err, state) {
-         portsColor[16] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.17.portType', function (err, state) {
-         portsColor[17] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.18.portType', function (err, state) {
-         portsColor[18] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.19.portType', function (err, state) {
-         portsColor[19] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.20.portType', function (err, state) {
-         portsColor[20] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.21.portType', function (err, state) {
-         portsColor[21] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.22.portType', function (err, state) {
-         portsColor[22] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.23.portType', function (err, state) {
-         portsColor[23] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.24.portType', function (err, state) {
-         portsColor[24] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.25.portType', function (err, state) {
-         portsColor[25] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.26.portType', function (err, state) {
-         portsColor[26] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.27.portType', function (err, state) {
-         portsColor[27] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.28.portType', function (err, state) {
-         portsColor[28] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.29.portType', function (err, state) {
-         portsColor[29] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.30.portType', function (err, state) {
-         portsColor[30] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.31.portType', function (err, state) {
-         portsColor[31] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.32.portType', function (err, state) {
-         portsColor[32] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.33.portType', function (err, state) {
-         portsColor[33] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.34.portType', function (err, state) {
-         portsColor[34] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.35.portType', function (err, state) {
-         portsColor[35] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.36.portType', function (err, state) {
-         portsColor[36] = state.val;
-      });
-      socket.emit('getState',  adapter + '.' + instance + '.ports.37.portType', function (err, state) {
-         portsColor[37] = state.val;
-      });
-  
-
-      socket.emit('getState',  adapter + '.' + instance + '.sms.apiKey', function (err, state) {
-         sms_apiKey = state.val;
-         $('#sms_apiKey').val(sms_apiKey);
-         $('#sms_apiKey').change(smsApiKeyChanged);
-         //onchange();  
-      });
-
-      socket.emit('getState',  adapter + '.' + instance + '.sms.enabled', function (err, state) {
-         sms_enabled = state.val;
-         if (sms_enabled == true || sms_enabled == 'true' ) {
-            $('#sms_enabled').prop('checked', true);
-         } else {
-            $('#sms_enabled').removeAttr('checked');
-         }
-         $('#sms_enabled').change(smsEnabledChanged);
-         //onchange();  
-      });
-
-      socket.emit('getState',  adapter + '.' + instance + '.sms.phones', function (err, state) {
-         sms_phones = state.val;
-         $('#sms_phones').val(sms_phones);
-         $('#sms_phones').change(smsPhonesChanged);
-         //onchange();  
-      });
-
-      socket.emit('getState',  adapter + '.' + instance + '.controller.xp1model', function (err, state) {
-         //$('#xp1text').val(state.val);
-         $('#xp1model').val(state.val);
-         $('#xp1model option:selected').val(state.val);
-         $("#xp1model select").val(state.val);
-         $('#xp1model option').each(function() {
-             if($(this).val() == state.val) {
-                 $(this).prop("selected", true);
-             }
-         });
-        $('#xp1model').change(function () {
-            showXP( 1 );
-            imagePorts( 1 );
-            selectPort( 1, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
-            $('#xp1model').val($(this).val()).trigger('change');
-        });
-
-      });
-
-      socket.emit('getState',  adapter + '.' + instance + '.controller.xp2model', function (err, state) {
-         $('#xp2model option:selected').val(state.val);
-         $('#xp2model').val(state.val);
-         $("#xp2model select").val(state.val);
-         $('#xp2model option').each(function() {
-             if($(this).val() == state.val) {
-                 $(this).prop("selected", true);
-             }
-         });
-        $('#xp2model').change(function () {
-            showXP( 2 );
-            imagePorts( 2 );
-            selectPort( 2, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
-            $('#xp2model').val($(this).val()).trigger('change');
-        });
-
-        imagePorts( 1 );
-        imagePorts( 2 );
-        selectPort( 1, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
-        selectPort( 2, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
-
-         //onchange();
-      });
-
-   }
-
-*/
 
    //--------------------------------------------------------------------------------
    function getAdapterStates ( ) {
@@ -840,8 +585,17 @@ var cNDigitalSensorTypeWiegand26   = 6;
           $('.valSetup').each(function () {
               var key = $(this).attr('id');
               $(this).val( Setup[_adapter_instance+'.'+key].val );
-           });
+          });
+
        });
+
+       if ( Setup[_adapter_instance+'.firmware.is_actual'] == true ) {
+           document.getElementById( 'firmware.version' ).style.backgroundColor = "lightgreen";
+           document.getElementById( 'firmware.last_known_version' ).style.backgroundColor = "lightgreen";
+       } else {
+           document.getElementById( 'firmware.version' ).style.backgroundColor = "yellow";
+           document.getElementById( 'firmware.last_known_version' ).style.backgroundColor = "pink";
+       }
 
 
 ////            getState( adapter + '.' + instance + '.' + key, function (err, state) {
@@ -862,37 +616,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
 //               });
 //         });
 
-
-      getState( adapter + '.' + instance + '.controller.name', function (err, state) {
-         if (state) {
-            $('#name').val( state.val );
-         }
-      });
-
-      getState( adapter + '.' + instance + '.controller.password', function (err, state) {
-         if (state) {
-            $('#password').val( state.val );
-         }
-      });
-
-      getState( adapter + '.' + instance + '.controller.serverPort', function (err, state) {
-         if (state) {
-            $('#port').val( state.val );
-         }
-      });
-
-      /*getState( adapter + '.' + instance + '.firmware.version', function (err, state) {
-         if (state) {
-            $('#currentVersion').val( state.val );
-         }
-      });
-
-      getState( adapter + '.' + instance + '.firmware.last_known_version', function (err, state) {
-         if (state) {
-            $('#freshVersion').val( state.val );
-         }
-      });
-      */
 
 
       getState( adapter + '.' + instance + '.ports.0.portType', function (err, state) {
@@ -2720,15 +2443,14 @@ var cNDigitalSensorTypeWiegand26   = 6;
         $('#autoDetect').button({
             icons: {primary: 'ui-icon-refresh'}
         }).click(function() {
-//            autoDetect($('#ip').val(), $('#password').val());
-            autoDetect($('controller.ip').val(), $('#password').val());
+            autoDetect($('controller.ip').val(), $('controller.password').val());
         });
 
 
         $('#write').button({
             icons: {primary: 'ui-icon-disk'}
         }).click(function() {
-            var port = $('#port').val();
+            var port = $('controller.serverPort').val();
             port = parseInt(port, 10);
             if (!port || port == 80) {
                 port = '';
@@ -2747,7 +2469,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
         getAdapterStates();
 
-        getFirmwareVersion();
+        //getFirmwareVersion();
 
         $('#updateFirmware').button({
             icons: {primary: 'ui-icon-refresh'}
@@ -2878,10 +2600,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
         }).click(function () {
             //$('#change_old_ip').val($('#ip').val());
             $('#change_old_ip').val($('controller.ip').val());
-            $('#change_old_password').val($('#password').val());
+            $('#change_old_password').val($('controller.password').val());
             //$('#change_new_ip').val($('#ip').val());
             $('#change_new_ip').val($('controller.ip').val());
-            $('#change_new_password').val($('#password').val());
+            $('#change_new_password').val($('controller.password').val());
 
             $('#change-dialog').dialog( {
                 autoOpen: true,
@@ -2922,7 +2644,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
                                                     $('controller.ip').val($('#change_new_ip').val()).trigger('change');
                                                 }
                                                 if ($('#change_old_password').val() != $('#change_new_password').val()) {
-                                                    $('#password').val($('#change_new_password').val()).trigger('change');
+                                                    $('controller.password').val($('#change_new_password').val()).trigger('change');
                                                 }
                                             }
                                         }
@@ -3082,22 +2804,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
         obj1 = {  val: xpmodel, ack: true };
         socket.emit('setState',  adapter + '.' + instance + '.controller.xp2model', obj1 );
 
-        state = $('#name').val();
-        obj1 = { val: state, ack: true };
-        socket.emit('setState',  adapter + '.' + instance + '.controller.name', obj1 );
-
-        state = $('#password').val();
-        obj1 = { val: state, ack: true };
-        socket.emit('setState',  adapter + '.' + instance + '.controller.password', obj1 );
-
-        state = $('#port').val();
-        obj1 = { val: state, ack: true };
-        socket.emit('setState',  adapter + '.' + instance + '.controller.serverPort', obj1 );
-
-/*        state = $('#currentVersion').val();
-        obj1 = { val: state, ack: true };
-        socket.emit('setState',  adapter + '.' + instance + '.firmware.version', obj1 );
-  */
         //callback(obj);
 
         if (callback) {
@@ -3275,7 +2981,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
             sendTo(null, 'updateFirmware', target, function (msg) {
                sendTo(null, 'getFirmware', null, function (msg1) {
                     showMessage(_('Firmware updated'), 'Warning', 'info');
-                    getFirmwareVersion();
+                    //getFirmwareVersion();?
                 });
 
             });
@@ -3390,23 +3096,23 @@ var cNDigitalSensorTypeWiegand26   = 6;
             </td>
         </tr>
         <tr><td class="translate" style="text-align: right">MegaD Name:</td>
-            <td><input  class="value" id="name"/></td>
+            <td><input  class="valSetup" id="controller.name"/></td>
             <td class="translate" style="text-align: right">Poll interval (sec):</td>
             <td colspan=2><input  class="value" id="pollInterval"  maxlength="3"/></td>
         </tr>
         <tr><td class="translate" style="text-align: right">Current firmware version:</td>
-            <td><input readonly class="value" id="currentVersion"  maxlength="10"/></td>
+            <td><input readonly class="valSetup" id="firmware.version"  maxlength="10"/></td>
             <td class="translate" style="text-align: right">Last known firmware version:</td>
-            <td><input readonly class="value" id="freshVersion"  maxlength="10"/></td>
+            <td><input readonly class="valSetup" id="firmware.last_known_version"  maxlength="10"/></td>
             <td><button class="translateB" id="updateFirmware">Update Firmware</button></td>
         </tr>
         <tr><td class="translate" style="text-align: right">ioBroker Web Port:</td>
-            <td><input  class="value" id="port" maxlength="5"/></td>
+            <td><input  class="valSetup" id="controller.serverPort" maxlength="5"/></td>
             <td class="translate" style="text-align: right">Long press detect (ms):</td>
             <td colspan=2><input  class="value" id="longPress" maxlength="4"/></td>
         </tr>
         <tr><td class="translate" style="text-align: right">MegaD Password:</td>
-            <td><input  class="value" id="password" maxlength="3"/></td>
+            <td><input  class="valSetup" id="controller.password" maxlength="3"/></td>
             <td class="translate" style="text-align: right">Double press detect (ms):</td>
             <td colspan=2><input  class="value" id="doublePress" maxlength="4"/></td>
         </tr>
