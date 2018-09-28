@@ -582,6 +582,14 @@ var cNDigitalSensorTypeWiegand26   = 6;
           if ( Setup[_adapter_instance+'.controller.ipport'] == '' ) {
              Setup[_adapter_instance+'.controller.ipport'] = '80';
           }
+          if ( Setup[_adapter_instance+'.firmware.is_actual'].val == true ) {
+             document.getElementById( 'firmware.version' ).style.backgroundColor = "lightgreen";
+             document.getElementById( 'firmware.last_known_version' ).style.backgroundColor = "lightgreen";
+          } else {
+             document.getElementById( 'firmware.version' ).style.backgroundColor = "yellow";
+             document.getElementById( 'firmware.last_known_version' ).style.backgroundColor = "pink";
+          }
+
           $('.valSetup').each(function () {
               var key = $(this).attr('id');
               $(this).val( Setup[_adapter_instance+'.'+key].val );
@@ -589,13 +597,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
        });
 
-       if ( Setup[_adapter_instance+'.firmware.is_actual'].val == true ) {
-           document.getElementById( 'firmware.version' ).style.backgroundColor = "lightgreen";
-           document.getElementById( 'firmware.last_known_version' ).style.backgroundColor = "lightgreen";
-       } else {
-           document.getElementById( 'firmware.version' ).style.backgroundColor = "yellow";
-           document.getElementById( 'firmware.last_known_version' ).style.backgroundColor = "pink";
-       }
 
 
 ////            getState( adapter + '.' + instance + '.' + key, function (err, state) {
