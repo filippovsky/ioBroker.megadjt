@@ -827,31 +827,22 @@ var cNDigitalSensorTypeWiegand26   = 6;
       var _adapter_instance = adapter + '.' + instance;
 
       sendTo( _adapter_instance, 'states2Admin', {}, function (msg) {
-          //var x = JSON.stringify(msg.response); 
+          if (!msg || msg.error) {
+             showMessage( msg.error, _('Error'), 'alert');
+             return;
+          }
+
           var x = msg.response;
-          console.log(' x: ' + x );
           Setup = JSON.parse( x );
-          console.log(' Setup["'+ _adapter_instance + '.controller.ip"].val = ' + Setup[ _adapter_instance +".controller.ip"].val );
+          if ( Setup[_adapter_instance+'.controller.ipport'] == '' ) {
+             Setup[_adapter_instance+'.controller.ipport'] = '80';
+          }
           $('.valSetup').each(function () {
               var key = $(this).attr('id');
-              if (key == 'controller.ip') {
-                 $(this).val( Setup[_adapter_instance+'.'+key].val );
-              }
+              $(this).val( Setup[_adapter_instance+'.'+key].val );
            });
        });
 
-//          function (msg) {
-//             if (!msg || msg.error) {
-//                showMessage(msg.error, _('Error'), 'alert');
-//                return;
-//             }
-//             showMessage('Состояние порта сохранено', _('Info'), 'info');
-//          } );
-
-
-//         $('.valSetup').each(function () {
-//            var key = $(this).attr('id');
-//            socket.emit('getState',  adapter + '.' + instance + '.' + key, function (err, state) {
 
 ////            getState( adapter + '.' + instance + '.' + key, function (err, state) {
 //                  if (state) {
@@ -871,25 +862,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
 //               });
 //         });
 
-
-//      getState( adapter + '.' + instance + '.controller.ip', function (err, state) {
-//         if (state) {
-//            $('#ip').val( state.val );
-            //onChange();
-            getState( adapter + '.' + instance + '.controller.ipport', function (err, state) {
-               if (state) {
-                  if (state.val == '') {
-                     state.val = '80';
-                  }
-                  $('#ipport').val( state.val );
-               } else {
-                  i = 80; 
-                  $('#ipport').val( i );
-               }
-               //onChange();
-            });
-//         }
-//      });
 
       getState( adapter + '.' + instance + '.controller.name', function (err, state) {
          if (state) {
@@ -3077,7 +3049,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
             } else {
                 newval = $this.val();
             }
-            console.log('setState '+ key +' -> '+newval +'  lc:' + _lc);
+            //console.log('setState '+ key +' -> '+newval +'  lc:' + _lc);
             obj1 = { val: newval, ack: true, lc: _lc, ts: _lc };
             socket.emit('setState',  adapter + '.' + instance + '.' + key, obj1 );
 
@@ -3109,15 +3081,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
         xpmodel = $('#xp2model option:selected').val();
         obj1 = {  val: xpmodel, ack: true };
         socket.emit('setState',  adapter + '.' + instance + '.controller.xp2model', obj1 );
-
-
-        //ip = $('#ip').val();
-        //obj1 = { val: ip, ack: true };
-        //socket.emit('setState',  adapter + '.' + instance + '.controller.ip', obj1 );
-
-        state = $('#ipport').val();
-        obj1 = { val: state, ack: true };
-        socket.emit('setState',  adapter + '.' + instance + '.controller.ipport', obj1 );
 
         state = $('#name').val();
         obj1 = { val: state, ack: true };
@@ -3419,7 +3382,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
             </td>
         </tr>
         <tr><td class="translate" style="text-align: right">IP-Порт контроллера:</td>
-            <td><input  class="value" id="ipport"/></select></td>
+            <td><input  class="valSetup" id="controller.ipport"/></select></td>
             <td style="padding-left: 10px"> &nbsp;
             </td>
             <td colspan=2 style="padding-left: 10px">
