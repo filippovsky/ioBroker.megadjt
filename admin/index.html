@@ -589,7 +589,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
        });
 
-       if ( Setup[_adapter_instance+'.firmware.is_actual'] == true ) {
+       if ( Setup[_adapter_instance+'.firmware.is_actual'].val == true ) {
            document.getElementById( 'firmware.version' ).style.backgroundColor = "lightgreen";
            document.getElementById( 'firmware.last_known_version' ).style.backgroundColor = "lightgreen";
        } else {
