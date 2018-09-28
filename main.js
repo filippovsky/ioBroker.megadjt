@@ -319,7 +319,7 @@ adapter.on('message', function (obj) {
                 discoverMega(obj);
                 break;
 
-            case 'getStates':
+            case 'states2Admin':
                 states2Admin(obj);
                 break;
 
@@ -3304,13 +3304,13 @@ function states2Admin ( obj ) {
    adapter.getStates('*', function(err,states) {
       adapter.log.debug('states2Admin point 1' );
       x = JSON.stringify(states); 
-      elist = JSON.parse( x ); 
+//      elist = JSON.parse( x ); 
       //callback( elist );
       if (obj.callback) {
            adapter.log.debug('states2Admin point 2' );
-           adapter.sendTo(obj.from, obj.command, x, obj.callback );
+           adapter.sendTo(obj.from, obj.command, {error: '', response: x }, obj.callback );
+//                     adapter.sendTo(obj.from, obj.command, {error: '', response: data}, obj.callback);
       }
-     
    });
 }
 

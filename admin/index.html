@@ -824,29 +824,40 @@ var cNDigitalSensorTypeWiegand26   = 6;
       var id;
       var i;
       var ip = "";
+      var _adapter_instance = adapter + '.' + instance;
 
-//        //function sendTo(_adapter_instance, command, message, callback)
-//-        sendTo(null, 'getStates', null, function (states) {
-//        //getStates('*', function(err,states) {
-//           x = JSON.stringify(states); 
-//-           Setup = JSON.parse( states ); 
-//           //var z = Setup["megadjt.0.ports.0.room"];
-//           //var z0 = Setup["megadjt.0.ports.0.room"].val;
-//-           $('.valSetup').each(function () {
-//-              var key = $(this).attr('id');
-//-              $(this).val = Setup[key].val;
-//-           });
-//-        });
+      sendTo( _adapter_instance, 'states2Admin', {}, function (msg) {
+          //var x = JSON.stringify(msg.response); 
+          var x = msg.response;
+          console.log(' x: ' + x );
+          Setup = JSON.parse( x );
+          console.log(' Setup["megadjt.0.controller.ip"].val = ' + Setup["megadjt.0.controller.ip"].val );
+          console.log(' Setup["controller.ip"].val = ' + Setup["controller.ip"].val );
+           $('.valSetup').each(function () {
+              var key = $(this).attr('id');
+              if (key == 'controller.ip') {
+                 $(this).val = Setup[key].val;
+              }
+           });
+       });
+
+//          function (msg) {
+//             if (!msg || msg.error) {
+//                showMessage(msg.error, _('Error'), 'alert');
+//                return;
+//             }
+//             showMessage('Состояние порта сохранено', _('Info'), 'info');
+//          } );
 
 
-         $('.valSetup').each(function () {
-            var key = $(this).attr('id');
-            socket.emit('getState',  adapter + '.' + instance + '.' + key, function (err, state) {
+//         $('.valSetup').each(function () {
+//            var key = $(this).attr('id');
+//            socket.emit('getState',  adapter + '.' + instance + '.' + key, function (err, state) {
 
-//            getState( adapter + '.' + instance + '.' + key, function (err, state) {
-                  if (state) {
-                     document.getElementById( key ).value = state.val;
-                     console.log( 'getAdapterStates: '+ key +' => '+ state.val );
+////            getState( adapter + '.' + instance + '.' + key, function (err, state) {
+//                  if (state) {
+//                     document.getElementById( key ).value = state.val;
+//                     console.log( 'getAdapterStates: '+ key +' => '+ state.val );
                    //  $(this).val( state.val ).change(function() {
                    //      onChange();
                    //  }).keyup(function() {
@@ -854,12 +865,12 @@ var cNDigitalSensorTypeWiegand26   = 6;
                    //  });
 
                      //onChange(); //
-                     $(key).trigger( 'change' );
-                     $(key).change();
+//                     $(key).trigger( 'change' );
+//                     $(key).change();
 
-                  }
-               });
-         });
+//                  }
+//               });
+//         });
 
 
 //      getState( adapter + '.' + instance + '.controller.ip', function (err, state) {
@@ -2643,7 +2654,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
           mDS_server = 'Norm';
        }
 
-       sendTo(null, 'savePort', {  portNum: controlPort, 
+      var inst = adapter + '.' + instance ;
+
+//       sendTo(null, 'savePort', {  portNum: controlPort, 
+       sendTo( inst, 'savePort', {  portNum: controlPort, 
                                       room: newroom, 
                                        fnc: newfnc,
                                   portType: newPortType,
