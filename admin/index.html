@@ -832,8 +832,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
           console.log(' x: ' + x );
           Setup = JSON.parse( x );
           console.log(' Setup["'+ _adapter_instance + '.controller.ip"].val = ' + Setup[ _adapter_instance +".controller.ip"].val );
-          console.log(' Setup["controller.ip"].val = ' + Setup["controller.ip"].val );
-           $('.valSetup').each(function () {
+          $('.valSetup').each(function () {
               var key = $(this).attr('id');
               if (key == 'controller.ip') {
                  $(this).val( Setup[_adapter_instance+'.'+key].val );
