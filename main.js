@@ -3321,13 +3321,13 @@ function debugAllStates () {
       adapter.log.debug('states = '+ x );
       elist = JSON.parse( x ); 
       adapter.log.debug('-------------------------------' );
-      var z = elist["megadjt.0.ports.0.room"];
+//      var z = elist["megadjt.0.ports.0.room"];
 //      var z = elist.megadjt."0".ports."0".room;
       adapter.log.debug('-1-----------------------------' );
-      adapter.log.debug('tst: '+ z.val );
-      var z0 = elist["megadjt.0.ports.0.room"].val;
+//      adapter.log.debug('tst: '+ z.val );
+//      var z0 = elist["megadjt.0.ports.0.room"].val;
       adapter.log.debug('-2-----------------------------' );
-      adapter.log.debug('val: '+ z0 );
+//      adapter.log.debug('val: '+ z0 );
 
 
 //      adapter.log.debug('>> '+ x.megadjt.0.ports.0.room.val );
@@ -3829,7 +3829,7 @@ function main() {
     adapter.setState('info.connection', false, true);
 
     configInit( function () {
-        debugAllStates();
+        //debugAllStates();
         adapter.getState(adapter.namespace + '.controller.ip', function (err, state_ip) {
            if (state_ip) {
               IP = state_ip.val;
