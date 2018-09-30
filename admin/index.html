@@ -2470,59 +2470,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
             });
         });
 
-        /*
-        $('#updateFirmwareLatest').button({
-            icons: {primary: 'ui-icon-refresh'}
-        }).click(function() {
-            updateFirmware();
-        });
-*/
-
-
         onchange = onChange;
 
-//        onchange();
 
-//        readRooms();
 
-/*        
-        $('#add').button({
-            icons: {primary: 'ui-icon-plusthick'}
-        }).click(function () {
-            if (ports.length == 36 || ports.length == 37) {
-                ports.push({
-                    pty:    2,
-                    name:   'P' + (ports.length),
-                    ecmd:   '',
-                    eth:    '',
-                    m:      0,
-                    factor: 1,
-                    offset: 0,
-
-                    role:   'state',
-                    room:   '',
-                    func:   ''
-                });
-            } else {
-                ports.push({
-                    pty:    0,
-                    name:   ('P' + ports.length),
-                    ecmd:   '',
-                    eth:    '',
-                    m:      0,
-
-                    long:   false,
-                    double: false,
-                    role:   'state',
-                    room:   '',
-                    func:   ''
-                });
-            }
-            onchange();
-
-            //showPorts();
-        });
-*/
 
         $('#ipchange').button({
             icons: {primary: 'ui-icon-note'}
@@ -2610,6 +2561,19 @@ var cNDigitalSensorTypeWiegand26   = 6;
         }).keyup(function () {
             $(this).trigger('change');
         }).trigger('change');
+
+
+        $('controller.xp1model').change(function () {
+            showXP( 1 );
+            $('controller.xp1model').val($(this).val()).trigger('change');
+        });
+
+        $('controller.xp2model').change(function () {
+            showXP( 2 );
+            $('controller.xp2model').val($(this).val()).trigger('change');
+        });
+
+
 
         $('#discover').button({
             icons: {primary: 'ui-icon-refresh'}
