@@ -503,69 +503,8 @@ var cNDigitalSensorTypeMarine  = 4;
 var cNDigitalSensorType1WBus   = 5;
 var cNDigitalSensorTypeWiegand26   = 6;
 
-   //------------------------------------------------------------------------------------------------
-/*
-   function getFirmwareVersion () {
-      var currentVersion = "";
-      var freshVersion   = "";
-      var currentVersionId = adapter + '.' + instance + '.firmware.version';
-      var freshVersionId   = adapter + '.' + instance + '.firmware.last_known_version';
-
-      getState( currentVersionId, function ( err, state ) {
-         if ( state ) {
-            currentVersion = state.val;
-            $('#currentVersion').val( currentVersion );
-            getState( freshVersionId, function ( err, state ) {
-               freshVersion = state.val;
-               $('#freshVersion').val( freshVersion );
-               if ( currentVersion == freshVersion ) {
-                  document.getElementById( 'currentVersion' ).style.backgroundColor = "lightgreen";
-                  document.getElementById( 'freshVersion' ).style.backgroundColor = "lightgreen";
-               } else {
-                  document.getElementById( 'currentVersion' ).style.backgroundColor = "yellow";
-                  document.getElementById( 'freshVersion' ).style.backgroundColor = "pink";
-               }
-               //onchange();  // ?
-               //onChange();
-            });
-         }
-      });
-   }
-  */
-   //--------------------------------------------------------------------------------
-    function smsApiKeyChanged ( ) {
-      var newkey = $('#sms_apiKey').val();
-      var obj = {  val: newkey, ack: true };
-                  
-//      socket.emit('setState',  adapter + '.' + instance + '.sms.apiKey', newkey, true );
-      socket.emit('setState',  adapter + '.' + instance + '.sms.apiKey', obj );
-      //http://192.168.1.35:8087/set/megadjt.0.sms.apikey0?value=123&prettyPrint
-    }
-
-   //--------------------------------------------------------------------------------
-    function smsPhonesChanged ( ) {
-      var newkey = $('#sms_phones').val();
-      var obj = {  val: newkey, ack: true };
-                  
-      socket.emit('setState',  adapter + '.' + instance + '.sms.phones', obj );
-    }
-
-   //--------------------------------------------------------------------------------
-    function smsEnabledChanged ( ) {
-      var newkey = false;
-      if ( $('#sms_enabled').prop('checked') ) {
-         newkey = true;
-      } 
-      var obj = {  val: newkey, ack: true };
-                  
-      socket.emit('setState',  adapter + '.' + instance + '.sms.enabled', obj );
-    }
-
    //--------------------------------------------------------------------------------
    function getAdapterStates ( ) {
-      var sms_apiKey  = "";
-      var sms_enabled = false;
-      var sms_phones  = "";
       var id;
       var i;
       var ip = "";
@@ -592,7 +531,16 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
           $('.valSetup').each(function () {
               var key = $(this).attr('id');
-              $(this).val( Setup[_adapter_instance+'.'+key].val );
+              if ($(this).attr('type') == 'checkbox') {
+                 if ( Setup[_adapter_instance+'.'+key].val == true || Setup[_adapter_instance+'.'+key].val == 'true' ) {
+                    $(this).prop('checked', true);
+                 } else {
+                    $(this).removeAttr('checked');
+                 }
+              } else {
+                 $(this).val( Setup[_adapter_instance+'.'+key].val );
+              }
+
           });
 
        });
@@ -734,38 +682,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
          portsColor[37] = state.val;
       });
   
-
-      getState( adapter + '.' + instance + '.sms.apiKey', function (err, state) {
-         if (state) {
-            sms_apiKey = state.val;
-            $('#sms_apiKey').val(sms_apiKey);
-            $('#sms_apiKey').change(smsApiKeyChanged);
-            //onChange();
-         }
-      });
-
-      getState( adapter + '.' + instance + '.sms.enabled', function (err, state) {
-         if (state) {
-            sms_enabled = state.val;
-            if (sms_enabled == true || sms_enabled == 'true' ) {
-               $('#sms_enabled').prop('checked', true);
-            } else {
-               $('#sms_enabled').removeAttr('checked');
-            }
-            $('#sms_enabled').change(smsEnabledChanged);
-            //onChange();  
-         }
-      });
-
-      getState( adapter + '.' + instance + '.sms.phones', function (err, state) {
-         if (state) {
-            sms_phones = state.val;
-            $('#sms_phones').val(sms_phones);
-            $('#sms_phones').change(smsPhonesChanged);
-            //onChange();  
-         }
-      });
-
       getState( adapter + '.' + instance + '.controller.xp1model', function (err, state) {
          if (state) {
             $('#xp1model').val(state.val);
@@ -2788,7 +2704,12 @@ var cNDigitalSensorTypeWiegand26   = 6;
             var key = $this.attr('id');
 
             if ($this.attr('type') == 'checkbox') {
-                newval =  $this.prop('checked');
+               if ( $(this).prop('checked') ) {
+                  //newval =  $this.prop('checked');
+                  newval = true;
+               } else {
+                  newval = false;
+               }
             } else {
                 newval = $this.val();
             }
@@ -4565,13 +4486,13 @@ while(1)
                            </p>
         <table>
             <tr><td class="translate" style="text-align: right">Включить отправку SMS:</td>
-                <td><input type="checkbox" id="sms_enabled"/></td></tr>
+                <td><input type="checkbox" id="sms.enabled"/></td></tr>
 
             <tr><td class="translate" style="text-align: right">SMS API Key:</td>
-                <td><input class="value" id="sms_apiKey"  size="100" maxlength="200"/></td></tr>
+                <td><input class="valSetup" id="sms.apiKey"  size="100" maxlength="200"/></td></tr>
 
             <tr><td class="translate" style="text-align: right">Отправлять SMS на номера: </td>
-                <td><input class="value" id="sms_phones"  size="100" maxlength="200"/></td></tr>
+                <td><input class="value" id="sms.phones"  size="100" maxlength="200"/></td></tr>
 
         </table>
 
