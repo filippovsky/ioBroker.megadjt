@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.24.41",
+        "version":                  "0.24.42",
         "news": {
             "0.24.34": {
                 "en":               "Add new device: 8I7O-R",
@@ -179,19 +179,6 @@
                 "read":  true,
                 "write": true,
                 "def":   ""
-            },
-            "native": {}
-        },
-        {
-            "_id":  "xp1",
-            "type": "state",
-            "common": {
-                "role":  "text",
-                "name":  "Тип исполнительного модуля на XP1",
-                "type":  "text",
-                "read":  true,
-                "write": true,
-                "def":   "none"
             },
             "native": {}
         },
