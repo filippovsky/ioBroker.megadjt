@@ -886,6 +886,16 @@ var cNDigitalSensorTypeWiegand26   = 6;
           labelX = "164px";
           labelY = "15px";
           maxCycle = 15;
+       } else if (xp == "8I7O-R") {
+          stepX = 46;
+          divClass = "sd7i7or";
+          startX = 166;
+          y1 = "241px";
+          y2 = "321px";
+          width = "17px";
+          labelX = "164px";
+          labelY = "15px";
+          maxCycle = 15;
        } else if (xp == "14-IN") {
           stepX = 46;
           divClass = "sd7i7or";
@@ -1047,7 +1057,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
                    document.getElementById( spanId ).className = "circlebutton_red";
                 }
              }
-          } else if ((xp == "8I7O-S") || (xp == "8I7O-SD")) {
+          } else if ((xp == "8I7O-S") || (xp == "8I7O-SD") || (xp == "8I7O-R")) {
              if ( m < 7 || m == 14 ) {
                 if ( portstate == cPortType_NotConnected ) {
                    document.getElementById( spanId ).className = "circlebutton_darkgreen";
@@ -1721,6 +1731,14 @@ var cNDigitalSensorTypeWiegand26   = 6;
            } else {
               text += '<option value="'+cPortType_DigitalSensor+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_DigitalSensor)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
            }
+        } else if ( xp == '8I7O-R' ) {
+           if (portNum < 7) {
+              text += '<option value="'+cPortType_StandartIn+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_StandartIn)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
+           } else if (portNum < 14) {
+              text += '<option value="'+cPortType_ReleOut+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_ReleOut)   ? 'selected' : '') + '>Релейный выход</option>';
+           } else {
+              text += '<option value="'+cPortType_DigitalSensor+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_DigitalSensor)   ? 'selected' : '') + '>Цифровой вход (DSen)</option>';
+           }
         } else if ( xp == '8I7O-SD' ) {
            if (portNum < 7) {
               text += '<option value="'+cPortType_StandartIn+'" ' + (($('#portTypeXP'+numXP).val() == cPortType_StandartIn)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
@@ -2208,7 +2226,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
            text += 'XP'  + numXP;
            startPort = 0;
            //maxCycle  = 14;
-           if (xp == '8I7O-S' || xp == '8I7O-SD' || xp =='14-Rv2.0' || xp == '14-IOR' ) {
+           if (xp == '8I7O-S' || xp == '8I7O-SD' || xp =='14-Rv2.0' || xp == '14-IOR' || xp == '8I7O-R' ) {
               maxCycle = 15;
            } else if (xp == '2R') {
               maxCycle = 2;
@@ -2256,7 +2274,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
         imgName = "xp"+numXP+"_img";
 
-        if (xp == '7I7O-R' || xp == '14-IN' || xp == '7I7O-SD' || xp == '8I7O-S' || xp == '8I7O-SD' || xp =='14-Rv2.0' ) {
+        if (xp == '7I7O-R' || xp == '14-IN' || xp == '7I7O-SD' || xp == '8I7O-S' || xp == '8I7O-SD' || xp =='14-Rv2.0' || xp == '8I7O-R') {
            fon = fon + ".gif";
         } else {
            fon = fon + ".jpg";
@@ -3128,6 +3146,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
        <option value="none">Не подключено</option>
        <option value="7I7O-R">Релейный модуль 7I7O-R</option>
        <option value="7I7O-SD">Симисторный модуль 7I7O-SD</option>
+       <option value="8I7O-R">Релейный модуль 8I7O-R</option>
        <option value="8I7O-S">Симисторный модуль 8I7O-S</option>
        <option value="8I7O-SD">Симисторный модуль 8I7O-SD</option> 
        <option value="14-IN">Модуль входов 14-IN</option>
@@ -3142,6 +3161,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
        <option value="none">Не подключено</option>
        <option value="7I7O-R">Релейный модуль 7I7O-R</option>
        <option value="7I7O-SD">Симисторный модуль 7I7O-SD</option>
+       <option value="8I7O-R">Релейный модуль 8I7O-R</option>
        <option value="8I7O-S">Симисторный модуль 8I7O-S</option>
        <option value="8I7O-SD">Симисторный модуль 8I7O-SD</option> 
        <option value="14-IN">Модуль входов 14-IN</option>

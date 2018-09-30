@@ -113,6 +113,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 var cXPModelNone   = 'none';
 var cXPModel7I7OR  = '7I7O-R';
+var cXPModel8I7OR  = '8I7O-R';
 var cXPModel7I7OSD = '7I7O-SD';
 var cXPModel8I7OS  = '8I7O-S';
 var cXPModel8I7OSD = '8I7O-SD';
