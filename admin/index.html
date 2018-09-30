@@ -556,11 +556,11 @@ var cNDigitalSensorTypeWiegand26   = 6;
              });
 
              if ( key == 'controller.xp1model' ) {
-                $(this).change(function () {
+                $(key).change(function () {
                    showXP( 1 );
                    imagePorts( 1 );
                    selectPort( 1, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
-                   $(this).val($(this).val()).trigger('change');
+                   $(key).val($(key).val()).trigger('change');
                 });
 
                 showXP( 1 );
