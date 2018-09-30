@@ -566,6 +566,17 @@ var cNDigitalSensorTypeWiegand26   = 6;
                 showXP( 1 );
                 imagePorts( 1 );
                 selectPort( 1, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
+             } else if ( key == 'controller.xp2model' ) {
+                $(key).change(function () {
+                   showXP( 2 );
+                   imagePorts( 2 );
+                   selectPort( 2, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
+                   $(key).val($(key).val()).trigger('change');
+                });
+
+                showXP( 2 );
+                imagePorts( 2 );
+                selectPort( 2, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
              }
 
              $(key).trigger( 'change' );
@@ -711,26 +722,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
       });
   
 
-      getState(  adapter + '.' + instance + '.controller.xp2model', function (err, state) {
-         if (state) {
-            $('#xp2model option:selected').val(state.val);
-            $('#xp2model').val(state.val);
-            $("#xp2model select").val(state.val);
-            $('#xp2model option').each(function() {
-               if($(this).val() == state.val) {
-                   $(this).prop("selected", true);
-               }
-            });
-            $('#xp2model').change(function () {
-               showXP( 2 );
-               imagePorts( 2 );
-               selectPort( 2, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
-               $('#xp2model').val($(this).val()).trigger('change');
-            });
-            imagePorts( 2 );
-            selectPort( 2, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
-         }
-      });
 
    }
 
@@ -753,7 +744,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
     //--------------------------------------------------------------------------------
     function imagePorts( numXP ) {
        var spanId = "";
-       var xp_sel = "xp" + numXP + "model option:selected";
+       var xp_sel = "controller.xp" + numXP + "model option:selected";
        var xp = "";
        var divId = "";
        var divClass = "";
@@ -776,6 +767,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
        if ( numXP == 0 ) {
           xp = "control";
+       } else if (numXP == 1 ) {
+          xp = $(xp1_sel).val();
        } else {
           xp = $(xp_sel).val();
        }
@@ -1567,7 +1560,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         if ( numXP > 0 ) {
            readRooms();
 
-           xp = $("xp"+numXP+"model option:selected").val();
+           xp = $("controller.xp"+numXP+"model option:selected").val();
 
            text += '<br>Комната: <select id="roomXP'+numXP+'" onChange="roomChanged('+controlPort+');">';
            text += '<option value=""></option>';
@@ -2100,7 +2093,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
           SelectedPortXP1 = portNum;
        }
 
-       var xp = $("xp"+numXP+"model option:selected").val();
+       var xp = $("controller.xp"+numXP+"model option:selected").val();
        if ( xp == '2R' ) {
           portNumTxt = portNum + 1; // ??
           if ( numXP == 1 && portNumTxt == 1 ) {
@@ -2181,7 +2174,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         var tblName = "#xp"+numXP+"_tbl";
 
         if ( numXP != 0 ) {
-           xp = $("xp"+numXP+"model option:selected").val();
+           xp = $("controller.xp"+numXP+"model option:selected").val();
            if (!xp) {
               xp = "none";
            }
@@ -2270,7 +2263,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
        var newTremorDefenceDisabled = $('#RawXP' + numXP ).val();
        var newDisplayPort = $('#dispXP' + numXP ).val();
        var xp1model = $('controller.xp1model').val();
-       var xp2model = $('#xp2model').val();
+       var xp2model = $('controller.xp2model').val();
        var newDefaultState = $('#defaultStateXP' + numXP ).val();
        var newDigSensorType = $('#dXP'+numXP+' option:selected').val();
        var mDS = $('#mDSXP'+numXP+' option:selected').val();
@@ -2643,11 +2636,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
             });
         }).css({'font-size': '0.7em'});
 
-        $('#xp2model').change(function () {
-            showXP( 2 );
-            $('#xp2model').val($(this).val()).trigger('change');
-        });
-
         // инициализируем картинки при загрузке окна
         var j = showXP( 1 );
         var z = showXP( 2 );
@@ -2733,12 +2721,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
         // Get edited table
         //obj.ports = ports;
-
-        xpmodel = $('#xp2model option:selected').val();
-        obj1 = {  val: xpmodel, ack: true };
-        socket.emit('setState',  adapter + '.' + instance + '.controller.xp2model', obj1 );
-
-        //callback(obj);
 
         if (callback) {
             callback(obj);
@@ -3072,7 +3054,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
     </select>
 
     &nbsp;&nbsp;XP2:
-    <select id="xp2model" class="value">
+    <select id="controller.xp2model" class="selSetup">
        <option value="none">Не подключено</option>
        <option value="7I7O-R">Релейный модуль 7I7O-R</option>
        <option value="7I7O-SD">Симисторный модуль 7I7O-SD</option>
