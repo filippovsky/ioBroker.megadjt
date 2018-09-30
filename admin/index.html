@@ -3193,6 +3193,19 @@ var cNDigitalSensorTypeWiegand26   = 6;
            </tr>
 
            <tr>
+             <td><b>4.29b9</b></td>
+             <td>29.09.2018</td>
+             <td><p align=justify>В виде эксперимента добавлена частичная поддержка датчика HTU21D в Program</p>
+                  <img src="firmware/megad-2561-program-htu21d.png"><br>
+                 <p align=justify>P8 включится при значении влажности более 50%.<br>
+                      P8 выключится при значении влажности менее 40%.<br>
+                      P31 - это SDA-порт с выбранным Dev: HTU21D
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.29b9');">Прошить</button></td>
+           </tr>
+
+           <tr>
              <td><b>4.29b8</b></td>
              <td>29.09.2018</td>
              <td><p align=justify>Добавлена поддержка групп для PWM-портов.<br>
