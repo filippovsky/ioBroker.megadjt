@@ -1758,7 +1758,7 @@ function getPortStateW(ip, password, port, callback) {                  // 1Wire
 }    
 
 //---------------------------------------------------------------------------------------------------------
-// Получение данных о сотоянии ВСЕХ портов (?cmd=all)
+// Получение данных о состоянии ВСЕХ портов (?cmd=all)
 function getPortsState(ip, password, callback) {
     if (typeof ip == 'function') {
         callback = ip;
@@ -3214,6 +3214,7 @@ function configInit( callback ) {
    createConfigItemIfNotExists ( 'controller.password', 'state', 'Пароль контроллера', 'sec' );
    createConfigItemIfNotExists ( 'controller.name', 'state', 'Имя контроллера', '' );
    createConfigItemIfNotExists ( 'controller.serverPort', 'statenum', 'Порт сервера', 91 );
+   createConfigItemIfNotExists ( 'controller.pollInterval', 'statenum', 'Интервал опроса Меги (сек)', 60 );
 
    for ( i=0; i <= 37; i ++ ) {
        createConfigItemIfNotExists ( 'ports.'+ i + '.room', 'state', 'Комната, к которой привязан порт ' + i, '' );
@@ -3893,7 +3894,9 @@ function main() {
                           adapter.log.debug('getFirmwareVersion stop');
 
                           pollStatus();
-                          setInterval(pollStatus, adapter.config.pollInterval * 1000);
+                          adapter.getState( adapter.namespace + '.controller.pollInterval', function (err, state) {
+                             setInterval(pollStatus, state.val * 1000);
+                          });
                        } else {
                           adapter.log.warn('IP is null or 0.0.0.0');
                        }
