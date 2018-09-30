@@ -545,8 +545,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
           $('.selSetup').each(function () {
              var key = $(this).attr('id');
              $(this).val(  Setup[_adapter_instance+'.'+key].val );
-             //$('#xp1model option:selected').val(state.val);
-             //$("#xp1model select").val(state.val);
+             $( key + ' option:selected').val( Setup[_adapter_instance+'.'+key].val );
+             $( key + " select").val( Setup[_adapter_instance+'.'+key].val );
              $( key + ' option' ).each(function() {
                 if ($(this).val() == Setup[_adapter_instance+'.'+key].val ) {
                    $(this).prop("selected", true);
@@ -2169,6 +2169,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
     }
     //---------------------------------------------------------------------------------
     function showXP( numXP ) {
+        console.log(' showXP: ' + numXP );
+
         var xp = "";
         var fon = "";
         var imgName = ""; 
@@ -2564,11 +2566,13 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 
         $('controller.xp1model').change(function () {
+            console.log('change xp1model');
             showXP( 1 );
             $('controller.xp1model').val($(this).val()).trigger('change');
         });
 
         $('controller.xp2model').change(function () {
+            console.log('change xp2model');
             showXP( 2 );
             $('controller.xp2model').val($(this).val()).trigger('change');
         });
