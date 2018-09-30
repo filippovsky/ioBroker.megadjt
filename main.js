@@ -977,6 +977,7 @@ function processMessage(message) {
     port = message.pt;
 
     // Command from instance with web server
+    /*
     if (adapter.config.ports[port]) {
         // If digital port
         if (!adapter.config.ports[port].pty && adapter.config.ports[port].m != 1) {
@@ -991,6 +992,7 @@ function processMessage(message) {
             getPortState(port, processPortState);
         }
     }
+    */
 }
 
 
@@ -3865,10 +3867,6 @@ function main() {
                           ServerPort = parseInt( ServerPort, 10) || 0;
                           if ( ServerPort ) {
                           server = require('http').createServer(restApi);
-/*                          server = require('http').createServer( function (req,res) {
-                                         restApi(req, res);
-                                   });
-*/
                              adapter.getPort( ServerPort, function (port) {
                                 if (port != ServerPort && !adapter.config.findNextPort) {
                                    adapter.log.warn('port ' + ServerPort + ' already in use');
@@ -4197,17 +4195,17 @@ var cPortType_I2C  = 'I2C'; // 4
 var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для аналоговых датчиков
 
 */
-
+//----------------------------------------------------------------------------------------------
 function saveAdmin(obj) {
    var lc = new Date().getTime();
-
+   /*
    adapter.log.info('Сохраняем настройки админки ');
    adapter.log.debug( 'obj.message.key =  '+obj.message.key );
    adapter.log.debug( 'obj.message.val =  '+obj.message.val );
    adapter.log.debug( 'lc =  '+lc );
-
+   */
    var linked   = adapter.namespace + '.' + obj.message.key;
-   adapter.log.debug( 'linked =  '+linked );
+   //adapter.log.debug( 'linked =  '+linked );
 
    adapter.extendObject( linked, {
                                     val: obj.message.val,
