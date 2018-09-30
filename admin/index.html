@@ -544,7 +544,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
           $('.selSetup').each(function () {
              var key = $(this).attr('id');
-             //$(this).val(  Setup[_adapter_instance+'.'+key].val );
+             $(this).val(  Setup[_adapter_instance+'.'+key].val );
              //$('#xp1model option:selected').val(state.val);
              //$("#xp1model select").val(state.val);
              $( key + ' option' ).each(function() {
@@ -566,6 +566,9 @@ var cNDigitalSensorTypeWiegand26   = 6;
                 imagePorts( 1 );
                 selectPort( 1, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
              }
+
+             $(key).trigger( 'change' );
+
           });
       });
 
@@ -749,7 +752,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
     //--------------------------------------------------------------------------------
     function imagePorts( numXP ) {
        var spanId = "";
-       var xp_sel = "#xp" + numXP + "model option:selected";
+       var xp_sel = "xp" + numXP + "model option:selected";
        var xp = "";
        var divId = "";
        var divClass = "";
@@ -1563,8 +1566,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         if ( numXP > 0 ) {
            readRooms();
 
-           xp = $("#xp"+numXP+"model option:selected").val();
-
+           xp = $("xp"+numXP+"model option:selected").val();
 
            text += '<br>Комната: <select id="roomXP'+numXP+'" onChange="roomChanged('+controlPort+');">';
            text += '<option value=""></option>';
@@ -2097,7 +2099,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
           SelectedPortXP1 = portNum;
        }
 
-       var xp = $("#xp"+numXP+"model option:selected").val();
+       var xp = $("xp"+numXP+"model option:selected").val();
        if ( xp == '2R' ) {
           portNumTxt = portNum + 1; // ??
           if ( numXP == 1 && portNumTxt == 1 ) {
@@ -2177,10 +2179,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
         var imgName = ""; 
         var tblName = "#xp"+numXP+"_tbl";
 
-        //showXPLayer( numXP );
-
         if ( numXP != 0 ) {
-           xp = $("#xp"+numXP+"model option:selected").val();
+           xp = $("xp"+numXP+"model option:selected").val();
            if (!xp) {
               xp = "none";
            }
@@ -2289,7 +2289,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
       var inst = adapter + '.' + instance ;
 
-//       sendTo(null, 'savePort', {  portNum: controlPort, 
        sendTo( inst, 'savePort', {  portNum: controlPort, 
                                       room: newroom, 
                                        fnc: newfnc,
@@ -2338,26 +2337,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
         var x;
 
-//        //function sendTo(_adapter_instance, command, message, callback)
-//-        sendTo(null, 'getStates', null, function (states) {
-//        //getStates('*', function(err,states) {
-//           x = JSON.stringify(states); 
-//-           Setup = JSON.parse( states ); 
-//           //var z = Setup["megadjt.0.ports.0.room"];
-//           //var z0 = Setup["megadjt.0.ports.0.room"].val;
-//-           $('.valSetup').each(function () {
-//-              var key = $(this).attr('id');
-//-              $(this).val = Setup[key].val;
-//-           });
-//-        });
-
-
          $('.value').each(function () {
             var key = $(this).attr('id');
-            // example: select elements with id=key and class=value and insert value
-            //if (key == 'controller.ip') {
-            //   var $value = $('#' + key + '.value');
-            //}
             if ($(this).attr('type') == 'checkbox') {
                 $(this).prop('checked', settings[key]).change(function() {
                     if ($('#auth').prop('checked')) {
@@ -2660,11 +2641,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
                 }
             });
         }).css({'font-size': '0.7em'});
-
-        /*$('controller.xp1model').change(function () {
-            showXP( 1 );
-            $('#xp1model').val($(this).val()).trigger('change');
-        });*/
 
         $('#xp2model').change(function () {
             showXP( 2 );
