@@ -569,8 +569,12 @@ function updateFirmware( message ) {
       cmd = 'chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --fw '+fw_version_actual+'.hex -f -e';
    } else if (targetVersion === 'site') {
       cmd = 'chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php -p ' + Password +' --ip '+ IP +' -w';
+   } else if (targetVersion === 'site_ee') {
+      cmd = 'chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php -p ' + Password +' --ip '+ IP +' -w --ee';
    } else if (targetVersion === 'sitebeta') {
       cmd = 'chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php -p ' + Password +' --ip '+ IP +' -w -b';
+   } else if (targetVersion === 'sitebeta_ee') {
+      cmd = 'chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php -p ' + Password +' --ip '+ IP +' -w -b --ee';
    } else {
       cmd = 'chmod 777 megad-cfg-2561.php|php ./megad-cfg-2561.php --fw '+targetVersion+'.hex -p ' + Password +' --ee --ip '+ IP;
    }

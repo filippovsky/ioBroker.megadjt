@@ -2447,6 +2447,20 @@ var cNDigitalSensorTypeWiegand26   = 6;
                         }
                     },
                     {
+                        text: _('Взять релиз с сайта + сброс EEPROM'),
+                        click: function () {
+                            updateFirmware('site_ee');
+                            $(this).dialog("close");
+                        }
+                    },
+                    {
+                        text: _('Взять бета-версию с сайта + сброс EEPROM'),
+                        click: function () {
+                            updateFirmware('sitebeta_ee');
+                            $(this).dialog("close");
+                        }
+                    },
+                    {
                         text: _('Cancel'),
                         click: function () {
                             $(this).dialog("close");
