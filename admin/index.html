@@ -547,39 +547,33 @@ var cNDigitalSensorTypeWiegand26   = 6;
              console.log('selSetup key = '+key);
              console.log('selSetup Setup[_adapter_instance+.+key].val = '+Setup[_adapter_instance+'.'+key].val);
 
-             $(key).val( Setup[_adapter_instance+'.'+key].val ).change(function() {
-                   onChange();
-             }).keyup(function() {
-                    onChange();
-             });
-
-             $(this).val(  Setup[_adapter_instance+'.'+key].val );
-             console.log('selSetup $(this).val() = '+$(this).val());
-             var name = '#'+key;
-             console.log('name #key = '+ name);
-             console.log('selSetup $(#key).val() = '+$(name).val());
-             name = '#' + key + ' option:selected';
-             $( name ).val( Setup[_adapter_instance+'.'+key].val );
-             name = '#' + key + ' select';
-             $( name ).val( Setup[_adapter_instance+'.'+key].val );
-             name = '#' + key + ' option';
-             $( name ).each(function() {
-                console.log('selSetup key = '+key);
-                console.log('**selSetup $(this).val() = '+$(this).val());
-                if ($(this).val() == Setup[_adapter_instance+'.'+key].val ) {
-                   $(this).prop("selected", true);
-                   console.log('set selected on '+$(this).val());
-                } else {
-                   $(this).prop("selected", false);
-                }
-             });
 
              if ( key == 'controller.xp1model' ) {
-                $( '#'+key ).change(function () {
+                $('$controller.xp1model').val( Setup[_adapter_instance+'.'+key].val ).change(function() {
+                     onChange();
+                  }).keyup(function() {
+                    onChange();
+                  });
+
+                $(this).val(  Setup[_adapter_instance+'.'+key].val );
+
+                $( '#controller.xp1model option:selected' ).val( Setup[_adapter_instance+'.'+key].val );
+                $( '#controller.xp1model select' ).val( Setup[_adapter_instance+'.'+key].val );
+                $( '#controller.xp1model option' ).each(function() {
+                   console.log('selSetup key = '+key);
+                   console.log('**selSetup $(this).val() = '+$(this).val());
+                   if ($(this).val() == Setup[_adapter_instance+'.'+key].val ) {
+                      $(this).prop("selected", true);
+                      console.log('set selected on '+$(this).val());
+                   } else {
+                      $(this).prop("selected", false);
+                   }
+                });
+                $( '#controller.xp1model' ).change(function () {
                    showXP( 1 );
                    imagePorts( 1 );
                    selectPort( 1, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
-                   $('#'+key).val( $(this).val() ).trigger('change');
+                   $('#controller.xp1model').val( $(this).val() ).trigger('change');
                 }).keyup(function() {
                     onChange();
                 });
@@ -587,14 +581,35 @@ var cNDigitalSensorTypeWiegand26   = 6;
                 showXP( 1 );
                 imagePorts( 1 );
                 selectPort( 1, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
-                $('#'+key).val( $(this).val() ).trigger('change');
+                $('#controller.xp1model').val( $(this).val() ).trigger('change');
+                $('#controller.xp1model').trigger( 'change' );
 
              } else if ( key == 'controller.xp2model' ) {
-                $('#'+key).change(function () {
+                $('$controller.xp2model').val( Setup[_adapter_instance+'.'+key].val ).change(function() {
+                     onChange();
+                  }).keyup(function() {
+                    onChange();
+                  });
+
+                $(this).val(  Setup[_adapter_instance+'.'+key].val );
+
+                $( '#controller.xp2model option:selected' ).val( Setup[_adapter_instance+'.'+key].val );
+                $( '#controller.xp2model select' ).val( Setup[_adapter_instance+'.'+key].val );
+                $( '#controller.xp2model option' ).each(function() {
+                   console.log('selSetup key = '+key);
+                   console.log('**selSetup $(this).val() = '+$(this).val());
+                   if ($(this).val() == Setup[_adapter_instance+'.'+key].val ) {
+                      $(this).prop("selected", true);
+                      console.log('set selected on '+$(this).val());
+                   } else {
+                      $(this).prop("selected", false);
+                   }
+                });
+                $( '#controller.xp2model' ).change(function () {
                    showXP( 2 );
                    imagePorts( 2 );
                    selectPort( 2, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
-                   $('#'+key).val( $(this).val() ).trigger('change');
+                   $('#controller.xp2model').val( $(this).val() ).trigger('change');
                 }).keyup(function() {
                     onChange();
                 });
@@ -602,13 +617,11 @@ var cNDigitalSensorTypeWiegand26   = 6;
                 showXP( 2 );
                 imagePorts( 2 );
                 selectPort( 2, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
-                $('#'+key).val( $(this).val() ).trigger('change');
-
+                $('#controller.xp2model').val( $(this).val() ).trigger('change');
+                $('#controller.xp2model').trigger( 'change' );
              }
 
              //onChange(); //
-             $('#'+key).trigger( 'change' );
-
           });
       });
 
