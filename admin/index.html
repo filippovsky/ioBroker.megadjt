@@ -583,7 +583,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
              }
 
-             $(key).val( state.val ).change(function() {
+             $(key).val( Setup[_adapter_instance+'.'+key].val ).change(function() {
                    onChange();
              }).keyup(function() {
                     onChange();
