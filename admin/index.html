@@ -545,8 +545,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
           $('.selSetup').each(function () {
              var key = $(this).attr('id');
              console.log('selSetup key = '+key);
-             console.log('selSetup $(this).val() = '+$(this).val());
-             console.log('selSetup $(key).val() = '+$(key).val());
              console.log('selSetup Setup[_adapter_instance+.+key].val = '+Setup[_adapter_instance+'.'+key].val);
 
              $(key).val( Setup[_adapter_instance+'.'+key].val ).change(function() {
@@ -556,10 +554,16 @@ var cNDigitalSensorTypeWiegand26   = 6;
              });
 
              $(this).val(  Setup[_adapter_instance+'.'+key].val );
-             $( key + ' option:selected').val( Setup[_adapter_instance+'.'+key].val );
-             $( key + " select").val( Setup[_adapter_instance+'.'+key].val );
-             $( key + ' option' ).each(function() {
+             console.log('selSetup $(this).val() = '+$(this).val());
+             console.log('selSetup $(key).val() = '+$(key).val());
+             var name = key + ' option:selected';
+             $( name ).val( Setup[_adapter_instance+'.'+key].val );
+             name = key + ' select';
+             $( name ).val( Setup[_adapter_instance+'.'+key].val );
+             name = key + ' option';
+             $( name ).each(function() {
                 console.log('selSetup key = '+key);
+                console.log('**selSetup $(this).val() = '+$(this).val());
                 if ($(this).val() == Setup[_adapter_instance+'.'+key].val ) {
                    $(this).prop("selected", true);
                    console.log('set selected on '+$(this).val());
