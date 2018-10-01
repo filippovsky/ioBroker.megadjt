@@ -568,6 +568,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
                    imagePorts( 1 );
                    selectPort( 1, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
                    $(key).val( Setup[_adapter_instance+'.'+key].val ).trigger('change');
+                }).keyup(function() {
+                    onChange();
                 });
 
                 showXP( 1 );
@@ -581,6 +583,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
                    imagePorts( 2 );
                    selectPort( 2, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
                    $(key).val( Setup[_adapter_instance+'.'+key].val ).trigger('change');
+                }).keyup(function() {
+                    onChange();
                 });
 
                 showXP( 2 );
