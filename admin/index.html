@@ -555,12 +555,14 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
              $(this).val(  Setup[_adapter_instance+'.'+key].val );
              console.log('selSetup $(this).val() = '+$(this).val());
-             console.log('selSetup $(key).val() = '+$(key).val());
-             var name = key + ' option:selected';
+             var name = '#'+key;
+             console.log('name #key = '+ name);
+             console.log('selSetup $(#key).val() = '+$(name).val());
+             name = '#' + key + ' option:selected';
              $( name ).val( Setup[_adapter_instance+'.'+key].val );
-             name = key + ' select';
+             name = '#' + key + ' select';
              $( name ).val( Setup[_adapter_instance+'.'+key].val );
-             name = key + ' option';
+             name = '#' + key + ' option';
              $( name ).each(function() {
                 console.log('selSetup key = '+key);
                 console.log('**selSetup $(this).val() = '+$(this).val());
@@ -573,11 +575,11 @@ var cNDigitalSensorTypeWiegand26   = 6;
              });
 
              if ( key == 'controller.xp1model' ) {
-                $(key).change(function () {
+                $( '#'+key ).change(function () {
                    showXP( 1 );
                    imagePorts( 1 );
                    selectPort( 1, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
-                   $(key).val( $(this).val() ).trigger('change');
+                   $('#'+key).val( $(this).val() ).trigger('change');
                 }).keyup(function() {
                     onChange();
                 });
@@ -585,14 +587,14 @@ var cNDigitalSensorTypeWiegand26   = 6;
                 showXP( 1 );
                 imagePorts( 1 );
                 selectPort( 1, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
-                $(key).val( $(this).val() ).trigger('change');
+                $('#'+key).val( $(this).val() ).trigger('change');
 
              } else if ( key == 'controller.xp2model' ) {
-                $(key).change(function () {
+                $('#'+key).change(function () {
                    showXP( 2 );
                    imagePorts( 2 );
                    selectPort( 2, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
-                   $(key).val( $(this).val() ).trigger('change');
+                   $('#'+key).val( $(this).val() ).trigger('change');
                 }).keyup(function() {
                     onChange();
                 });
@@ -600,12 +602,12 @@ var cNDigitalSensorTypeWiegand26   = 6;
                 showXP( 2 );
                 imagePorts( 2 );
                 selectPort( 2, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
-                $(key).val( $(this).val() ).trigger('change');
+                $('#'+key).val( $(this).val() ).trigger('change');
 
              }
 
              //onChange(); //
-             $(key).trigger( 'change' );
+             $('#'+key).trigger( 'change' );
 
           });
       });
@@ -769,7 +771,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
     //--------------------------------------------------------------------------------
     function imagePorts( numXP ) {
        var spanId = "";
-       var xp_sel = "controller.xp" + numXP + "model option:selected";
+       var xp_sel = "#controller.xp" + numXP + "model option:selected";
        var xp = "";
        var divId = "";
        var divClass = "";
@@ -1583,7 +1585,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         if ( numXP > 0 ) {
            readRooms();
 
-           xp = $("controller.xp"+numXP+"model option:selected").val();
+           xp = $("#controller.xp"+numXP+"model option:selected").val();
 
            text += '<br>Комната: <select id="roomXP'+numXP+'" onChange="roomChanged('+controlPort+');">';
            text += '<option value=""></option>';
@@ -2116,7 +2118,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
           SelectedPortXP1 = portNum;
        }
 
-       var xp = $("controller.xp"+numXP+"model option:selected").val();
+       var xp = $("#controller.xp"+numXP+"model option:selected").val();
        if ( xp == '2R' ) {
           portNumTxt = portNum + 1; // ??
           if ( numXP == 1 && portNumTxt == 1 ) {
@@ -2199,7 +2201,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         var tblName = "#xp"+numXP+"_tbl";
 
         if ( numXP != 0 ) {
-           xp = $("controller.xp"+numXP+"model option:selected").val();
+           xp = $("#controller.xp"+numXP+"model option:selected").val();
            if (!xp) {
               xp = "none";
            }
@@ -2287,8 +2289,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
        var newSend2ServerAlwaysPressRelease = $('#miscXP' + numXP ).val();
        var newTremorDefenceDisabled = $('#RawXP' + numXP ).val();
        var newDisplayPort = $('#dispXP' + numXP ).val();
-       var xp1model = $('controller.xp1model').val();
-       var xp2model = $('controller.xp2model').val();
+       var xp1model = $('#controller.xp1model').val();
+       var xp2model = $('#controller.xp2model').val();
        var newDefaultState = $('#defaultStateXP' + numXP ).val();
        var newDigSensorType = $('#dXP'+numXP+' option:selected').val();
        var mDS = $('#mDSXP'+numXP+' option:selected').val();
@@ -2382,14 +2384,14 @@ var cNDigitalSensorTypeWiegand26   = 6;
         $('#autoDetect').button({
             icons: {primary: 'ui-icon-refresh'}
         }).click(function() {
-            autoDetect($('controller.ip').val(), $('controller.password').val());
+            autoDetect($('#controller.ip').val(), $('#controller.password').val());
         });
 
 
         $('#write').button({
             icons: {primary: 'ui-icon-disk'}
         }).click(function() {
-            var port = $('controller.serverPort').val();
+            var port = $('#controller.serverPort').val();
             port = parseInt(port, 10);
             if (!port || port == 80) {
                 port = '';
@@ -2503,11 +2505,11 @@ var cNDigitalSensorTypeWiegand26   = 6;
             icons: {primary: 'ui-icon-note'}
         }).click(function () {
             //$('#change_old_ip').val($('#ip').val());
-            $('#change_old_ip').val($('controller.ip').val());
-            $('#change_old_password').val($('controller.password').val());
+            $('#change_old_ip').val($('#controller.ip').val());
+            $('#change_old_password').val($('#controller.password').val());
             //$('#change_new_ip').val($('#ip').val());
-            $('#change_new_ip').val($('controller.ip').val());
-            $('#change_new_password').val($('controller.password').val());
+            $('#change_new_ip').val($('#controller.ip').val());
+            $('#change_new_password').val($('#controller.password').val());
 
             $('#change-dialog').dialog( {
                 autoOpen: true,
@@ -2545,10 +2547,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
                                             if ($('#change_take').prop('checked')) {
                                                 if ($('#change_old_ip').val() != $('#change_new_ip').val()) {
                                                     //$('#ip').val($('#change_new_ip').val()).trigger('change');
-                                                    $('controller.ip').val($('#change_new_ip').val()).trigger('change');
+                                                    $('#controller.ip').val($('#change_new_ip').val()).trigger('change');
                                                 }
                                                 if ($('#change_old_password').val() != $('#change_new_password').val()) {
-                                                    $('controller.password').val($('#change_new_password').val()).trigger('change');
+                                                    $('#controller.password').val($('#change_new_password').val()).trigger('change');
                                                 }
                                             }
                                         }
@@ -2569,7 +2571,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         });
 
         //$('#ip').change(function () {
-        $('controller.ip').change(function () {
+        $('#controller.ip').change(function () {
             var val = $(this).val();
             if (!val || val == '0.0.0.0') {
                 $('#autoDetect').button('disable');
@@ -2587,16 +2589,16 @@ var cNDigitalSensorTypeWiegand26   = 6;
         }).trigger('change');
 
 
-        $('controller.xp1model').change(function () {
+        $('#controller.xp1model').change(function () {
             console.log('change xp1model');
             showXP( 1 );
-            $('controller.xp1model').val($(this).val()).trigger('change');
+            $('#controller.xp1model').val($(this).val()).trigger('change');
         });
 
-        $('controller.xp2model').change(function () {
+        $('#controller.xp2model').change(function () {
             console.log('change xp2model');
             showXP( 2 );
-            $('controller.xp2model').val($(this).val()).trigger('change');
+            $('#controller.xp2model').val($(this).val()).trigger('change');
         });
 
 
