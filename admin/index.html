@@ -1119,6 +1119,13 @@ var cNDigitalSensorTypeWiegand26   = 6;
         //$('#fncXP'+numXP).val = fnc; //?
         setupFunc[numControlPort] = fnc;
     }
+    //----------------------------------------------------------------------------------
+    function xpmodelChanged( numXP ) {
+           //$('#xp1model').change(function () {
+           showXP( numXP );
+           // $('#xp1model').val($(this).val()).trigger('change');
+           //});
+    }
 
     //--------------------------------------------------------------------------------
     function ptyChanged ( controlPort ) {
@@ -3045,7 +3052,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
     <button class="translateB" id="ipchange">Change ip or password</button>
 
     <br>&nbsp;XP1:
-    <select id="controller.xp1model" class="selSetup">
+    <select id="controller.xp1model" class="selSetup" onChange="xpmodelChanged(1);">
        <option value="none">Не подключено</option>
        <option value="7I7O-R">Релейный модуль 7I7O-R</option>
        <option value="7I7O-SD">Симисторный модуль 7I7O-SD</option>
@@ -3060,7 +3067,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
     </select>
 
     &nbsp;&nbsp;XP2:
-    <select id="controller.xp2model" class="selSetup">
+    <select id="controller.xp2model" class="selSetup" onChange="xpmodelChanged(2);">
        <option value="none">Не подключено</option>
        <option value="7I7O-R">Релейный модуль 7I7O-R</option>
        <option value="7I7O-SD">Симисторный модуль 7I7O-SD</option>
