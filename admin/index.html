@@ -1121,16 +1121,22 @@ var cNDigitalSensorTypeWiegand26   = 6;
     }
     //----------------------------------------------------------------------------------
     function xpmodelChanged( numXP ) {
+       showXP( numXP );
+
        if ( numXP == 1 ) {
-          $('#xp1model').change(function () {
+          $('#controller.xp1model').change(function () {
              showXP( numXP );
-             $('#xp1model').val($(this).val()).trigger('change');
-          });
+             $('#controller.xp1model').val($(this).val()).trigger('change');
+          }).keyup(function() {
+                    onChange();
+                  });
        } else {
-          $('#xp2model').change(function () {
+          $('#controller.xp2model').change(function () {
              showXP( numXP );
-             $('#xp2model').val($(this).val()).trigger('change');
-          });
+             $('#controller.xp2model').val($(this).val()).trigger('change');
+          }).keyup(function() {
+                    onChange();
+                  });
        }
    }
 
@@ -2237,7 +2243,9 @@ var cNDigitalSensorTypeWiegand26   = 6;
            xp = "control";
            fon = "mega/megad-2561";
         }
-
+        console.log('xp= ' + xp );
+        console.log('fon= ' + fon );
+  
         showXPLayer( numXP, xp );
 
         imgName = "xp"+numXP+"_img";
