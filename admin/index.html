@@ -2234,7 +2234,11 @@ var cNDigitalSensorTypeWiegand26   = 6;
         var tblName = "#xp"+numXP+"_tbl";
 
         if ( numXP != 0 ) {
-           xp = $("#controller.xp"+numXP+"model option:selected").val();
+           xp = $("#controller.xp"+String(numXP)+"model option:selected").val();
+           console.log('numXP= ' + numXP );
+           console.log('String(numXP)= ' + String(numXP) );
+           console.log('xp= ' + xp );
+
            if (!xp) {
               xp = "none";
            }
