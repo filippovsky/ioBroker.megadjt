@@ -1126,7 +1126,13 @@ var cNDigitalSensorTypeWiegand26   = 6;
              showXP( numXP );
              $('#xp1model').val($(this).val()).trigger('change');
           });
-    }
+       } else {
+          $('#xp2model').change(function () {
+             showXP( numXP );
+             $('#xp2model').val($(this).val()).trigger('change');
+          });
+       }
+   }
 
     //--------------------------------------------------------------------------------
     function ptyChanged ( controlPort ) {
