@@ -2770,9 +2770,12 @@ var cNDigitalSensorTypeWiegand26   = 6;
         $('.selSetup').each(function () {
             var $this = $(this);
             var obj1;
-            var key = $this.attr('id');
 
-            newval = $( key + ' option:selected').val();
+            //var key = $this.attr('id');
+            //newval = $( key + ' option:selected').val();
+
+            var id  = document.getElementById("controller.xp1model");
+            newval = id.value;
 
             obj1 = { val: newval, ack: true, lc: _lc, ts: _lc };
             socket.emit('setState',  adapter + '.' + instance + '.' + key, obj1 );
