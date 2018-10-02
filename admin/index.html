@@ -547,6 +547,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
              console.log('selSetup key = '+key);
              console.log('selSetup Setup[_adapter_instance+.+key].val = '+Setup[_adapter_instance+'.'+key].val);
 
+/*
+           var id  = document.getElementById("controller.xp"+String(numXP)+"model");
+           xp = id.value;
+*/
 
              if ( key == 'controller.xp1model' ) {
                 $('#controller.xp1model').val( Setup[_adapter_instance+'.'+key].val ).change(function() {
@@ -784,7 +788,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
     //--------------------------------------------------------------------------------
     function imagePorts( numXP ) {
        var spanId = "";
-       var xp_sel = "#controller.xp" + numXP + "model option:selected";
+       //var xp_sel = "#controller.xp" + numXP + "model option:selected";
+       var id  = document.getElementById("controller.xp"+String(numXP)+"model");
+       xp_sel = id.value;
+
        var xp = "";
        var divId = "";
        var divClass = "";
@@ -1122,6 +1129,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
     //----------------------------------------------------------------------------------
     function xpmodelChanged( numXP ) {
        showXP( numXP );
+/*
+           var id  = document.getElementById("controller.xp"+String(numXP)+"model");
+           xp = id.value;
+*/
 
        if ( numXP == 1 ) {
           $('#controller.xp1model').change(function () {
@@ -1618,7 +1629,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
         if ( numXP > 0 ) {
            readRooms();
 
-           xp = $("#controller.xp"+numXP+"model option:selected").val();
+           //xp = $("#controller.xp"+numXP+"model option:selected").val();
+           var id  = document.getElementById("controller.xp"+String(numXP)+"model");
+           xp = id.value;
+
 
            text += '<br>Комната: <select id="roomXP'+numXP+'" onChange="roomChanged('+controlPort+');">';
            text += '<option value=""></option>';
@@ -2151,7 +2165,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
           SelectedPortXP1 = portNum;
        }
 
-       var xp = $("#controller.xp"+numXP+"model option:selected").val();
+       //var xp = $("#controller.xp"+numXP+"model option:selected").val();
+       var id  = document.getElementById("controller.xp"+String(numXP)+"model");
+       xp = id.value;
+
        if ( xp == '2R' ) {
           portNumTxt = portNum + 1; // ??
           if ( numXP == 1 && portNumTxt == 1 ) {
@@ -2331,8 +2348,16 @@ var cNDigitalSensorTypeWiegand26   = 6;
        var newSend2ServerAlwaysPressRelease = $('#miscXP' + numXP ).val();
        var newTremorDefenceDisabled = $('#RawXP' + numXP ).val();
        var newDisplayPort = $('#dispXP' + numXP ).val();
-       var xp1model = $('#controller.xp1model').val();
-       var xp2model = $('#controller.xp2model').val();
+
+       //var xp1model = $('#controller.xp1model').val();
+       //var xp2model = $('#controller.xp2model').val();
+
+       var id  = document.getElementById("controller.xp1model");
+       var xp1model = id.value;
+       id  = document.getElementById("controller.xp2model");
+       var xp2model = id.value;
+
+
        var newDefaultState = $('#defaultStateXP' + numXP ).val();
        var newDigSensorType = $('#dXP'+numXP+' option:selected').val();
        var mDS = $('#mDSXP'+numXP+' option:selected').val();
