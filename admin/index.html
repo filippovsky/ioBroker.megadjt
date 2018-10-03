@@ -789,8 +789,13 @@ var cNDigitalSensorTypeWiegand26   = 6;
     function imagePorts( numXP ) {
        var spanId = "";
        //var xp_sel = "#controller.xp" + numXP + "model option:selected";
-       var id  = document.getElementById("controller.xp"+String(numXP)+"model");
-       var xp_sel = id.value;
+       console.log('imagePorts(' + numXP + ')');
+       console.log('String(numXP)=' + String(numXP));
+       var element_id = "controller.xp"+String(numXP)+"model";
+       console.log('element_id=' + element_id);
+       var element  = document.getElementById( element_id );
+       var xp_sel = element.value;
+       console.log('xp_sel=' + xp_sel);
 
        var xp = "";
        var divId = "";
@@ -815,8 +820,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
        if ( numXP == 0 ) {
           xp = "control";
        } else {
-          xp = $(xp_sel).val();
+          //xp = $(xp_sel).val();
+          xp  = document.getElementById( xp_sel ).val();
        }
+       console.log('xp=' + xp);
 
        if (xp == "7I7O-R" ) {
           stepX = 45;
@@ -1630,9 +1637,9 @@ var cNDigitalSensorTypeWiegand26   = 6;
            readRooms();
 
            //xp = $("#controller.xp"+numXP+"model option:selected").val();
-           var id  = document.getElementById("controller.xp"+String(numXP)+"model");
-           xp = id.value;
-
+           var element_id  = "controller.xp"+String(numXP)+"model";
+           var element  = document.getElementById(element_id);
+           xp = element.value;
 
            text += '<br>Комната: <select id="roomXP'+numXP+'" onChange="roomChanged('+controlPort+');">';
            text += '<option value=""></option>';
@@ -2166,8 +2173,9 @@ var cNDigitalSensorTypeWiegand26   = 6;
        }
 
        //var xp = $("#controller.xp"+numXP+"model option:selected").val();
-       var id  = document.getElementById("controller.xp"+String(numXP)+"model");
-       var xp = id.value;
+       var element_id  = "controller.xp"+String(numXP)+"model";
+       var element  = document.getElementById(element_id);
+       var xp = element.value;
 
        if ( xp == '2R' ) {
           portNumTxt = portNum + 1; // ??
@@ -2251,12 +2259,13 @@ var cNDigitalSensorTypeWiegand26   = 6;
         var tblName = "#xp"+numXP+"_tbl";
 
         if ( numXP != 0 ) {
-           var id  = document.getElementById("controller.xp"+String(numXP)+"model");
-           xp = id.value;
+           var element_id  = "controller.xp"+String(numXP)+"model";
+           var element  = document.getElementById(element);
+           xp = element.value;
            //xp = $("#controller.xp"+String(numXP)+"model option:selected").val();
            console.log('numXP= ' + numXP );
            console.log('String(numXP)= ' + String(numXP) );
-           console.log('id.value= ' + id.value );
+           console.log('element.value= ' + element.value );
            console.log('xp= ' + xp );
 
            if (!xp) {
@@ -2352,10 +2361,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
        //var xp1model = $('#controller.xp1model').val();
        //var xp2model = $('#controller.xp2model').val();
 
-       var id  = document.getElementById("controller.xp1model");
-       var xp1model = id.value;
-       id  = document.getElementById("controller.xp2model");
-       var xp2model = id.value;
+       var element  = document.getElementById("controller.xp1model");
+       var xp1model = element.value;
+       element  = document.getElementById("controller.xp2model");
+       var xp2model = element.value;
 
 
        var newDefaultState = $('#defaultStateXP' + numXP ).val();
@@ -2771,11 +2780,11 @@ var cNDigitalSensorTypeWiegand26   = 6;
             var $this = $(this);
             var obj1;
 
-            //var key = $this.attr('id');
+            var key = $this.attr('id');
             //newval = $( key + ' option:selected').val();
 
-            var id  = document.getElementById("controller.xp1model");
-            newval = id.value;
+            var element  = document.getElementById( key );
+            newval = element.value;
 
             obj1 = { val: newval, ack: true, lc: _lc, ts: _lc };
             socket.emit('setState',  adapter + '.' + instance + '.' + key, obj1 );
