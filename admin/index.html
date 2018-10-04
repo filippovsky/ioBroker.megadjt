@@ -2179,11 +2179,12 @@ var cNDigitalSensorTypeWiegand26   = 6;
        }
 
        //var xp = $("#controller.xp"+numXP+"model option:selected").val();
-       var element_id  = "controller.xp"+String(numXP)+"model";
-       var element  = document.getElementById(element_id);
-       //var xp = element.value;
-       var xp = element.options[element.selectedIndex].value; 
-
+       if (numXP != 0) {
+          var element_id  = "controller.xp"+String(numXP)+"model";
+          var element  = document.getElementById(element_id);
+          //var xp = element.value;
+          var xp = element.options[element.selectedIndex].value; 
+       }
 
        if ( xp == '2R' ) {
           portNumTxt = portNum + 1; // ??
@@ -3082,7 +3083,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.24.78</p>
+    <p align="right">Admin Version: v0.24.79</p>
     <table><tr><td><img src="megad.png"></td><td><h3 class="translate">MegaD-2561 adapter settings</h3></td></tr></table>
 
     <table>
