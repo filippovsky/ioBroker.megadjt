@@ -795,9 +795,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
        console.log('element_id=' + element_id);
        var element  = document.getElementById( element_id );
        //var xp_sel = element.value;
-       var xp_sel = element.options[element.selectedIndex].value; 
 
-       console.log('xp_sel=' + xp_sel);
 
        var xp = "";
        var divId = "";
@@ -824,6 +822,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
        } else {
           //xp = $(xp_sel).val();
           //xp  = document.getElementById( xp_sel ).val();
+          var xp_sel = element.options[element.selectedIndex].value; 
+
+          console.log('xp_sel=' + xp_sel);
+
           xp = xp_sel;
        }
        console.log('xp=' + xp);
@@ -3080,7 +3082,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.24.77</p>
+    <p align="right">Admin Version: v0.24.78</p>
     <table><tr><td><img src="megad.png"></td><td><h3 class="translate">MegaD-2561 adapter settings</h3></td></tr></table>
 
     <table>
