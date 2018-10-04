@@ -2260,7 +2260,17 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
         if ( numXP != 0 ) {
            var element_id  = "controller.xp"+String(numXP)+"model";
+           console.log('element_id= ' + element_id );
            var element  = document.getElementById(element);
+           var e1 = element.options[element.selectedIndex].value; 
+           console.log('e1= ' + e1 );
+           console.log('element.value= ' + element.value );
+
+/*?
+ var select = document.getElementById("select_");
+        var value = select.options[sel.selectedIndex].value;
+*/
+
            xp = element.value;
            //xp = $("#controller.xp"+String(numXP)+"model option:selected").val();
            console.log('numXP= ' + numXP );
@@ -3061,7 +3071,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-
+    <p align="right">Admin Version: v0.24.74</p>
     <table><tr><td><img src="megad.png"></td><td><h3 class="translate">MegaD-2561 adapter settings</h3></td></tr></table>
 
     <table>
