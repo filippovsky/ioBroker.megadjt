@@ -823,7 +823,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
           xp = "control";
        } else {
           //xp = $(xp_sel).val();
-          xp  = document.getElementById( xp_sel ).val();
+          //xp  = document.getElementById( xp_sel ).val();
+          xp = xp_sel;
        }
        console.log('xp=' + xp);
 
@@ -3079,7 +3080,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.24.76</p>
+    <p align="right">Admin Version: v0.24.77</p>
     <table><tr><td><img src="megad.png"></td><td><h3 class="translate">MegaD-2561 adapter settings</h3></td></tr></table>
 
     <table>
