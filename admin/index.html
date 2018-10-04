@@ -794,7 +794,9 @@ var cNDigitalSensorTypeWiegand26   = 6;
        var element_id = "controller.xp"+String(numXP)+"model";
        console.log('element_id=' + element_id);
        var element  = document.getElementById( element_id );
-       var xp_sel = element.value;
+       //var xp_sel = element.value;
+       var xp_sel = element.options[element.selectedIndex].value; 
+
        console.log('xp_sel=' + xp_sel);
 
        var xp = "";
@@ -1639,7 +1641,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
            //xp = $("#controller.xp"+numXP+"model option:selected").val();
            var element_id  = "controller.xp"+String(numXP)+"model";
            var element  = document.getElementById(element_id);
-           xp = element.value;
+           //xp = element.value;
+           xp = element.options[element.selectedIndex].value; 
 
            text += '<br>Комната: <select id="roomXP'+numXP+'" onChange="roomChanged('+controlPort+');">';
            text += '<option value=""></option>';
@@ -2175,7 +2178,9 @@ var cNDigitalSensorTypeWiegand26   = 6;
        //var xp = $("#controller.xp"+numXP+"model option:selected").val();
        var element_id  = "controller.xp"+String(numXP)+"model";
        var element  = document.getElementById(element_id);
-       var xp = element.value;
+       //var xp = element.value;
+       var xp = element.options[element.selectedIndex].value; 
+
 
        if ( xp == '2R' ) {
           portNumTxt = portNum + 1; // ??
@@ -2264,18 +2269,19 @@ var cNDigitalSensorTypeWiegand26   = 6;
            var element  = document.getElementById(element);
            var e1 = element.options[element.selectedIndex].value; 
            console.log('e1= ' + e1 );
-           console.log('element.value= ' + element.value );
+           //console.log('element.value= ' + element.value );
 
 /*?
  var select = document.getElementById("select_");
         var value = select.options[sel.selectedIndex].value;
 */
 
-           xp = element.value;
+           //xp = element.value;
+           xp = e1;
            //xp = $("#controller.xp"+String(numXP)+"model option:selected").val();
            console.log('numXP= ' + numXP );
            console.log('String(numXP)= ' + String(numXP) );
-           console.log('element.value= ' + element.value );
+           //console.log('element.value= ' + element.value );
            console.log('xp= ' + xp );
 
            if (!xp) {
@@ -2372,9 +2378,11 @@ var cNDigitalSensorTypeWiegand26   = 6;
        //var xp2model = $('#controller.xp2model').val();
 
        var element  = document.getElementById("controller.xp1model");
-       var xp1model = element.value;
+       //var xp1model = element.value;
+       var xp1model = element.options[element.selectedIndex].value; 
        element  = document.getElementById("controller.xp2model");
-       var xp2model = element.value;
+       //var xp2model = element.value;
+       var xp2model = element.options[element.selectedIndex].value; 
 
 
        var newDefaultState = $('#defaultStateXP' + numXP ).val();
@@ -3071,7 +3079,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.24.74</p>
+    <p align="right">Admin Version: v0.24.75</p>
     <table><tr><td><img src="megad.png"></td><td><h3 class="translate">MegaD-2561 adapter settings</h3></td></tr></table>
 
     <table>
