@@ -462,7 +462,7 @@ span:hover::before {
    var setupFunc  = [];
    var active    = false;
    //var megadjt_setup = [];   
-   var portsColor = [];
+//   var portsColor = [];
    var SelectedPortXP1 = 0;
    var SelectedPortXP2 = 0;
    var MegaSetup;
@@ -544,13 +544,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
           $('.selSetup').each(function () {
              var key = $(this).attr('id');
-             console.log('selSetup key = '+key);
-             console.log('selSetup Setup[_adapter_instance+.+key].val = '+Setup[_adapter_instance+'.'+key].val);
-
-/*
-           var id  = document.getElementById("controller.xp"+String(numXP)+"model");
-           xp = id.value;
-*/
 
              if ( key == 'controller.xp1model' ) {
                 $('#controller.xp1model').val( Setup[_adapter_instance+'.'+key].val ).change(function() {
@@ -624,147 +617,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
                 $('#controller.xp2model').val( $(this).val() ).trigger('change');
                 $('#controller.xp2model').trigger( 'change' );
              }
-
+  
              //onChange(); //
           });
       });
-
-
-////            getState( adapter + '.' + instance + '.' + key, function (err, state) {
-//                  if (state) {
-//                     document.getElementById( key ).value = state.val;
-//                     console.log( 'getAdapterStates: '+ key +' => '+ state.val );
-                   //  $(this).val( state.val ).change(function() {
-                   //      onChange();
-                   //  }).keyup(function() {
-                   //      onChange();
-                   //  });
-
-                     //onChange(); //
-//                     $(key).trigger( 'change' );
-//                     $(key).change();
-
-//                  }
-//               });
-//         });
-
-
-
-      getState( adapter + '.' + instance + '.ports.0.portType', function (err, state) {
-         portsColor[0] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.1.portType', function (err, state) {
-         portsColor[1] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.2.portType', function (err, state) {
-         portsColor[2] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.3.portType', function (err, state) {
-         portsColor[3] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.4.portType', function (err, state) {
-         portsColor[4] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.5.portType', function (err, state) {
-         portsColor[5] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.6.portType', function (err, state) {
-         portsColor[6] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.7.portType', function (err, state) {
-         portsColor[7] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.8.portType', function (err, state) {
-         portsColor[8] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.9.portType', function (err, state) {
-         portsColor[9] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.10.portType', function (err, state) {
-         portsColor[10] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.11.portType', function (err, state) {
-         portsColor[11] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.12.portType', function (err, state) {
-         portsColor[12] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.13.portType', function (err, state) {
-         portsColor[13] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.14.portType', function (err, state) {
-         portsColor[14] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.15.portType', function (err, state) {
-         portsColor[15] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.16.portType', function (err, state) {
-         portsColor[16] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.17.portType', function (err, state) {
-         portsColor[17] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.18.portType', function (err, state) {
-         portsColor[18] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.19.portType', function (err, state) {
-         portsColor[19] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.20.portType', function (err, state) {
-         portsColor[20] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.21.portType', function (err, state) {
-         portsColor[21] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.22.portType', function (err, state) {
-         portsColor[22] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.23.portType', function (err, state) {
-         portsColor[23] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.24.portType', function (err, state) {
-         portsColor[24] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.25.portType', function (err, state) {
-         portsColor[25] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.26.portType', function (err, state) {
-         portsColor[26] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.27.portType', function (err, state) {
-         portsColor[27] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.28.portType', function (err, state) {
-         portsColor[28] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.29.portType', function (err, state) {
-         portsColor[29] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.30.portType', function (err, state) {
-         portsColor[30] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.31.portType', function (err, state) {
-         portsColor[31] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.32.portType', function (err, state) {
-         portsColor[32] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.33.portType', function (err, state) {
-         portsColor[33] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.34.portType', function (err, state) {
-         portsColor[34] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.35.portType', function (err, state) {
-         portsColor[35] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.36.portType', function (err, state) {
-         portsColor[36] = state.val;
-      });
-      getState( adapter + '.' + instance + '.ports.37.portType', function (err, state) {
-         portsColor[37] = state.val;
-      });
-  
 
 
    }
@@ -787,15 +643,11 @@ var cNDigitalSensorTypeWiegand26   = 6;
     }
     //--------------------------------------------------------------------------------
     function imagePorts( numXP ) {
-       var spanId = "";
-       //var xp_sel = "#controller.xp" + numXP + "model option:selected";
-       console.log('imagePorts(' + numXP + ')');
-       console.log('String(numXP)=' + String(numXP));
-       var element_id = "controller.xp"+String(numXP)+"model";
-       console.log('element_id=' + element_id);
-       var element  = document.getElementById( element_id );
-       //var xp_sel = element.value;
+       var _adapter_instance = adapter + '.' + instance;
 
+       var spanId = "";
+       var element_id = "controller.xp"+String(numXP)+"model";
+       var element  = document.getElementById( element_id );
 
        var xp = "";
        var divId = "";
@@ -820,12 +672,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
        if ( numXP == 0 ) {
           xp = "control";
        } else {
-          //xp = $(xp_sel).val();
-          //xp  = document.getElementById( xp_sel ).val();
           var xp_sel = element.options[element.selectedIndex].value; 
-
-          console.log('xp_sel=' + xp_sel);
-
           xp = xp_sel;
        }
        console.log('xp=' + xp);
@@ -1011,11 +858,14 @@ var cNDigitalSensorTypeWiegand26   = 6;
              }
           }
 
+          portstate = Setup[ _adapter_instance+'.ports.'+String(k)+'.portType'].val
+          /*
           if (portsColor[k] )  {
               portstate = portsColor[k];
           } else {
               portstate = cPortType_NotConnected; //?
           }
+          */
 
           if (xp == "7I7O-R" || xp == "7I7O-SD") {
              if ( m < 7 ) {
@@ -1094,7 +944,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
           } else if (xp == "control") {
              document.getElementById( spanId ).className = "xt2_port";
           };
-          //});
        }
     }
     //--------------------------------------------------------------------------------
@@ -1141,10 +990,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
     //----------------------------------------------------------------------------------
     function xpmodelChanged( numXP ) {
        showXP( numXP );
-/*
-           var id  = document.getElementById("controller.xp"+String(numXP)+"model");
-           xp = id.value;
-*/
 
        if ( numXP == 1 ) {
           $('#controller.xp1model').change(function () {
@@ -1165,6 +1010,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
     //--------------------------------------------------------------------------------
     function ptyChanged ( controlPort ) {
+        var _adapter_instance = adapter + '.' + instance;
+
         var numXP;
         var port;
         if ( controlPort < 15 ) {
@@ -1180,9 +1027,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
         var pty = $('#portTypeXP'+numXP+' option:selected').val();
         $('#portTypeXP'+numXP).val(pty);
-        //$('#portState' + controlPort ).val(pty);
-        //portState[ controlPort ] = pty;
-        portsColor[ controlPort ] = pty;
+
+        //portsColor[ controlPort ] = pty;
+        Setup[ _adapter_instance+'.ports.'+String(k)+'.portType'].val = pty;
+
 
         loadPresetSub( numXP, port ); // при изменении типа порта перерисовываем его описание
     }
@@ -1641,10 +1489,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
         if ( numXP > 0 ) {
            readRooms();
 
-           //xp = $("#controller.xp"+numXP+"model option:selected").val();
            var element_id  = "controller.xp"+String(numXP)+"model";
            var element  = document.getElementById(element_id);
-           //xp = element.value;
            xp = element.options[element.selectedIndex].value; 
 
            text += '<br>Комната: <select id="roomXP'+numXP+'" onChange="roomChanged('+controlPort+');">';
@@ -2178,11 +2024,9 @@ var cNDigitalSensorTypeWiegand26   = 6;
           SelectedPortXP1 = portNum;
        }
 
-       //var xp = $("#controller.xp"+numXP+"model option:selected").val();
        if (numXP != 0) {
           var element_id  = "controller.xp"+String(numXP)+"model";
           var element  = document.getElementById(element_id);
-          //var xp = element.value;
           var xp = element.options[element.selectedIndex].value; 
        }
 
@@ -2260,7 +2104,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
     }
     //---------------------------------------------------------------------------------
     function showXP( numXP ) {
-        console.log(' showXP: ' + numXP );
 
         var xp = "";
         var fon = "";
@@ -2269,24 +2112,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
         if ( numXP != 0 ) {
            var element_id  = "controller.xp"+String(numXP)+"model";
-           console.log('element_id= ' + element_id );
            var element  = document.getElementById(element_id);
-           var e1 = element.options[element.selectedIndex].value; 
-           console.log('e1= ' + e1 );
-           //console.log('element.value= ' + element.value );
-
-/*?
- var select = document.getElementById("select_");
-        var value = select.options[sel.selectedIndex].value;
-*/
-
-           //xp = element.value;
-           xp = e1;
-           //xp = $("#controller.xp"+String(numXP)+"model option:selected").val();
-           console.log('numXP= ' + numXP );
-           console.log('String(numXP)= ' + String(numXP) );
-           //console.log('element.value= ' + element.value );
-           console.log('xp= ' + xp );
+           xp = element.options[element.selectedIndex].value; 
 
            if (!xp) {
               xp = "none";
@@ -2296,8 +2123,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
            xp = "control";
            fon = "mega/megad-2561";
         }
-        console.log('xp= ' + xp );
-        console.log('fon= ' + fon );
   
         showXPLayer( numXP, xp );
 
@@ -2308,40 +2133,16 @@ var cNDigitalSensorTypeWiegand26   = 6;
         } else {
            fon = fon + ".jpg";
         }
-        
+
+/*        
         if (xp == "none") {
            $(tblName).hide();
         } else {
-          // инициализируем порты 0-37, если они еще не заданы
-          // инициализацию делаем сразу для всех портов
-        /*  if ( ports == undefined || ports.length == 0 ) {
-             for (var z = 0; z < 38; z++) {
-                ports.push({
-                    pty:    255, //not configured
-                    name:   ('P' + z ),
-                    ecmd:   '',
-                    eth:    '',
-                    m:      0,
-                    af:     0,
-                    naf:    0,
-                    misc:   0,
-                    d:      0,
-                    act:    '',
-                    disp:   '',
-                    long:   false,
-                    double: false,
-                    role:   'state',
-                    room:   ''
-                });
-              }
-
-          }*/
-
            $(tblName).show();
         }
+*/
 
         setImage( imgName, fon );
-
         imagePorts( numXP );
 
     }
@@ -2378,16 +2179,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
        var newTremorDefenceDisabled = $('#RawXP' + numXP ).val();
        var newDisplayPort = $('#dispXP' + numXP ).val();
 
-       //var xp1model = $('#controller.xp1model').val();
-       //var xp2model = $('#controller.xp2model').val();
-
        var element  = document.getElementById("controller.xp1model");
-       //var xp1model = element.value;
        var xp1model = element.options[element.selectedIndex].value; 
        element  = document.getElementById("controller.xp2model");
-       //var xp2model = element.value;
        var xp2model = element.options[element.selectedIndex].value; 
-
 
        var newDefaultState = $('#defaultStateXP' + numXP ).val();
        var newDigSensorType = $('#dXP'+numXP+' option:selected').val();
@@ -2688,13 +2483,11 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 
         $('#controller.xp1model').change(function () {
-            console.log('change xp1model');
             showXP( 1 );
             $('#controller.xp1model').val($(this).val()).trigger('change');
         });
 
         $('#controller.xp2model').change(function () {
-            console.log('change xp2model');
             showXP( 2 );
             $('#controller.xp2model').val($(this).val()).trigger('change');
         });
@@ -2850,13 +2643,14 @@ var cNDigitalSensorTypeWiegand26   = 6;
                     return;
                 }
 
-                
+                /*
                 for ( var i = 0; i <= 37; i++ ) {
                    var name = adapter + '.' + instance + '.ports.'+i+'.portType'
                    socket.emit('getState',  name, function (err, state) {
                       portsColor[i] = state.val;
                    });
                 } 
+               */
 
                 getAdapterStates(); // ?
 
@@ -3083,7 +2877,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.24.79</p>
+    <p align="right">Admin Version: v0.24.80</p>
     <table><tr><td><img src="megad.png"></td><td><h3 class="translate">MegaD-2561 adapter settings</h3></td></tr></table>
 
     <table>
