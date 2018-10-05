@@ -2233,6 +2233,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
                 showMessage(msg.error, _('Error'), 'alert');
                 return;
              }
+
+             Setup[ inst + '.ports.' + controlPort + '.portType'].val = newPortType;
+             imagePorts( numXP );
+
              showMessage('Состояние порта сохранено', _('Info'), 'info');
 
           }
@@ -2877,7 +2881,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.24.80</p>
+    <p align="right">Admin Version: v0.24.81</p>
     <table><tr><td><img src="megad.png"></td><td><h3 class="translate">MegaD-2561 adapter settings</h3></td></tr></table>
 
     <table>
