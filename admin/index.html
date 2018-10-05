@@ -859,13 +859,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
           }
 
           portstate = Setup[ _adapter_instance+'.ports.'+String(k)+'.portType'].val
-          /*
-          if (portsColor[k] )  {
-              portstate = portsColor[k];
-          } else {
-              portstate = cPortType_NotConnected; //?
-          }
-          */
 
           if (xp == "7I7O-R" || xp == "7I7O-SD") {
              if ( m < 7 ) {
@@ -1010,7 +1003,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
     //--------------------------------------------------------------------------------
     function ptyChanged ( controlPort ) {
-        var _adapter_instance = adapter + '.' + instance;
+        // var _adapter_instance = adapter + '.' + instance;
 
         var numXP;
         var port;
@@ -1028,9 +1021,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         var pty = $('#portTypeXP'+numXP+' option:selected').val();
         $('#portTypeXP'+numXP).val(pty);
 
-        //portsColor[ controlPort ] = pty;
-        Setup[ _adapter_instance+'.ports.'+String(k)+'.portType'].val = pty;
-
+        // Setup[ _adapter_instance+'.ports.'+String(k)+'.portType'].val = pty;
 
         loadPresetSub( numXP, port ); // при изменении типа порта перерисовываем его описание
     }
@@ -2236,6 +2227,11 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
              Setup[ inst + '.ports.' + controlPort + '.portType'].val = newPortType;
              imagePorts( numXP );
+             if ( numXP == 1 ) {
+                selectPort( numXP, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
+             } else if ( numXP == 2 ) {
+                selectPort( numXP, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
+             }
 
              showMessage('Состояние порта сохранено', _('Info'), 'info');
 
@@ -2881,7 +2877,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.24.81</p>
+    <p align="right">Admin Version: v0.24.82</p>
     <table><tr><td><img src="megad.png"></td><td><h3 class="translate">MegaD-2561 adapter settings</h3></td></tr></table>
 
     <table>
