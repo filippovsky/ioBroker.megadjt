@@ -12,8 +12,37 @@
 <!--<link rel="stylesheet" type="text/css" href="../lib/css/adapter.css"/>-->
 <script type="text/javascript" src="../../js/translate.js"></script>
 <script type="text/javascript" src="../../js/adapter-settings.js"></script>
+<script type="text/javascript" src="spin.js"></script>
 
 <style>
+@keyframes spinner-line-fade-more {
+  0%, 100% {
+    opacity: 0; /* minimum opacity */
+  }
+  1% {
+    opacity: 1;
+  }
+}
+
+@keyframes spinner-line-fade-quick {
+  0%, 39%, 100% {
+    opacity: 0.25; /* minimum opacity */
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+@keyframes spinner-line-fade-default {
+  0%, 100% {
+    opacity: 0.22; /* minimum opacity */
+  }
+  1% {
+    opacity: 1;
+  }
+}
+
+
 
 .tablemore td {
    font-size: 11px;
@@ -348,6 +377,26 @@ span:hover::before {
 </style>
 
 <script type="text/javascript">
+   var opts = {
+    lines: 13, // Число линий для рисования
+    length: 0, // Длина каждой линии
+    width: 10, // Толщина линии
+    radius: 30, // Радиус внутреннего круга
+    corners: 1, // Скругление углов (0..1)
+    rotate: 0, // Смещение вращения
+    direction: 1, // 1: по часовой стрелке, -1: против часовой стрелки
+    color: '#000', // #rgb или #rrggbb или массив цветов
+    speed: 2.2, // Кругов в секунду
+    trail: 17, // Послесвечение
+    shadow: false, // Тень(true - да; false - нет)
+    hwaccel: false, // Аппаратное ускорение
+    className: 'spinner', // CSS класс
+    zIndex: 2e9, // z-index (по-умолчанию 2000000000)
+    top: '50%', // Положение сверху относительно родителя
+    left: '50%' // Положение слева относительно родителя
+   };
+   var target = document.getElementById('loading');
+
     systemDictionary = {
         "MegaD Name:":          {"en": "MegaD Name:",           "de": "MegaD Name:",                "ru": "MegaD Имя:"},
         "ioBroker Web Port:":   {"en": "ioBroker Web Port:",    "de": "ioBroker Web Port:",         "ru": "ioBroker веб-порт:"},
@@ -2140,6 +2189,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
     // ------------------------------------------------------------------------------------
     function savePort ( controlPort ) {
+       var spinner = new Spinner(opts).spin(target);
+
        $('#write').button('disable');
        $('#autoDetect').button('disable');
        $('#ipchange').button('disable');
@@ -2232,6 +2283,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
              } else if ( numXP == 2 ) {
                 selectPort( numXP, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
              }
+             spinner.stop();
 
              showMessage('Состояние порта сохранено', _('Info'), 'info');
 
@@ -2880,7 +2932,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.24.84</p>
+    <p align="right">Admin Version: v0.24.85</p>
+
+<div id="loading"></div>
+
     <table><tr><td><img src="megad.png"></td><td><h3 class="translate">MegaD-2561 adapter settings</h3></td></tr></table>
 
     <table>
