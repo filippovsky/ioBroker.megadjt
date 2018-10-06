@@ -705,6 +705,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
     //--------------------------------------------------------------------------------
     function imagePorts( numXP ) {
        var _adapter_instance = adapter + '.' + instance;
+       var element_id;
+       var element;
 
        var spanId = "";
 
@@ -728,13 +730,15 @@ var cNDigitalSensorTypeWiegand26   = 6;
        var   x3 = 102;
        var portstate = "";
 
+       console.log('imagePorts: numXP=' + numXP );
        if ( numXP == 0 ) {
           xp = "control";
        } else {
-          var element_id = "controller.xp"+String(numXP)+"model";
+          var element_id = "controller.xp"+numXP+"model";
+          console.log('element_id=' + element_id );
           var element  = document.getElementById( element_id );
-          var xp_sel = element.options[element.selectedIndex].value; 
-          xp = xp_sel;
+          console.log('**' );
+          xp = element.options[element.selectedIndex].value; 
        }
        console.log('xp=' + xp);
 
@@ -919,7 +923,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
              }
           }
 
-          portstate = Setup[ _adapter_instance+'.ports.'+String(k)+'.portType'].val
+          console.log('k='+k);
+          portstate = Setup[ _adapter_instance+'.ports.'+k+'.portType'].val;
 
           if (xp == "7I7O-R" || xp == "7I7O-SD") {
              if ( m < 7 ) {
@@ -2943,7 +2948,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.24.89</p>
+    <p align="right">Admin Version: v0.24.90</p>
 
 <div id="loading"></div>
 
