@@ -12,7 +12,7 @@
 <!--<link rel="stylesheet" type="text/css" href="../lib/css/adapter.css"/>-->
 <script type="text/javascript" src="../../js/translate.js"></script>
 <script type="text/javascript" src="../../js/adapter-settings.js"></script>
-<script type="text/javascript" src="spin.js"></script>
+<!--<script type="text/javascript" src="spin.js"></script>-->
 
 <style>
 @keyframes spinner-line-fade-more {
@@ -376,8 +376,9 @@ span:hover::before {
      }
 </style>
 
+
 <script type="text/javascript">
-   //import {Spinner} from 'spin.js';
+/*   import {Spinner} from 'spin.js';
    var opts = {
     lines: 13, // Число линий для рисования
     length: 0, // Длина каждой линии
@@ -397,7 +398,7 @@ span:hover::before {
     left: '50%' // Положение слева относительно родителя
    };
    var target = document.getElementById('loading');
-
+*/
     systemDictionary = {
         "MegaD Name:":          {"en": "MegaD Name:",           "de": "MegaD Name:",                "ru": "MegaD Имя:"},
         "ioBroker Web Port:":   {"en": "ioBroker Web Port:",    "de": "ioBroker Web Port:",         "ru": "ioBroker веб-порт:"},
@@ -592,6 +593,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
               }
           });
 
+          //-----------------------------------------------------------------------------------------------
           $('.selSetup').each(function () {
              var key = $(this).attr('id');
 
@@ -604,18 +606,16 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
                 $(this).val(  Setup[_adapter_instance+'.'+key].val );
 
-                $( '#controller.xp1model option:selected' ).val( Setup[_adapter_instance+'.'+key].val );
-                $( '#controller.xp1model select' ).val( Setup[_adapter_instance+'.'+key].val );
+                //$( '#controller.xp1model option:selected' ).val( Setup[_adapter_instance+'.'+key].val );
+                //$( '#controller.xp1model select' ).val( Setup[_adapter_instance+'.'+key].val );
                 $( '#controller.xp1model option' ).each(function() {
-                   console.log('selSetup key = '+key);
-                   console.log('**selSetup $(this).val() = '+$(this).val());
                    if ($(this).val() == Setup[_adapter_instance+'.'+key].val ) {
                       $(this).prop("selected", true);
-                      console.log('set selected on '+$(this).val());
                    } else {
                       $(this).prop("selected", false);
                    }
                 });
+                /*
                 $( '#controller.xp1model' ).change(function () {
                    showXP( 1 );
                    imagePorts( 1 );
@@ -630,6 +630,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
                 selectPort( 1, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
                 $('#controller.xp1model').val( $(this).val() ).trigger('change');
                 $('#controller.xp1model').trigger( 'change' );
+                */
 
              } else if ( key == 'controller.xp2model' ) {
                 $('#controller.xp2model').val( Setup[_adapter_instance+'.'+key].val ).change(function() {
@@ -640,18 +641,16 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
                 $(this).val(  Setup[_adapter_instance+'.'+key].val );
 
-                $( '#controller.xp2model option:selected' ).val( Setup[_adapter_instance+'.'+key].val );
-                $( '#controller.xp2model select' ).val( Setup[_adapter_instance+'.'+key].val );
+                //$( '#controller.xp2model option:selected' ).val( Setup[_adapter_instance+'.'+key].val );
+                //$( '#controller.xp2model select' ).val( Setup[_adapter_instance+'.'+key].val );
                 $( '#controller.xp2model option' ).each(function() {
-                   console.log('selSetup key = '+key);
-                   console.log('**selSetup $(this).val() = '+$(this).val());
                    if ($(this).val() == Setup[_adapter_instance+'.'+key].val ) {
                       $(this).prop("selected", true);
-                      console.log('set selected on '+$(this).val());
                    } else {
                       $(this).prop("selected", false);
                    }
                 });
+                /*
                 $( '#controller.xp2model' ).change(function () {
                    showXP( 2 );
                    imagePorts( 2 );
@@ -666,10 +665,22 @@ var cNDigitalSensorTypeWiegand26   = 6;
                 selectPort( 2, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
                 $('#controller.xp2model').val( $(this).val() ).trigger('change');
                 $('#controller.xp2model').trigger( 'change' );
+                */
              }
   
-             //onChange(); //
           });
+
+
+          // инициализируем картинки при загрузке окна
+          showXP( 1 );
+          showXP( 2 );
+          showXP( 0 );
+
+          imagePorts(1);
+          imagePorts(2); 
+          selectPort( 1, SelectedPortXP1 );
+          selectPort( 2, SelectedPortXP2 );
+
       });
 
 
@@ -2189,7 +2200,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
     // ------------------------------------------------------------------------------------
     function savePort ( controlPort ) {
-       var spinner = new Spinner(opts).spin(target);
+       //var spinner = new Spinner(opts).spin(target);
 
        $('#write').button('disable');
        $('#autoDetect').button('disable');
@@ -2283,7 +2294,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
              } else if ( numXP == 2 ) {
                 selectPort( numXP, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
              }
-             spinner.stop();
+             //spinner.stop();
 
              showMessage('Состояние порта сохранено', _('Info'), 'info');
 
@@ -2294,6 +2305,9 @@ var cNDigitalSensorTypeWiegand26   = 6;
     //-------------------------------------------------------------------------------------
     // the function loadSettings has to exist ...
     function load(settings, onChange) {
+        SelectedPortXP1 = 0;
+        SelectedPortXP2 = 0;
+
         readRooms();
 
         for (var k = 0; k < 40; k++) {
@@ -2446,9 +2460,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
         onchange = onChange;
 
-
-
-
         $('#ipchange').button({
             icons: {primary: 'ui-icon-note'}
         }).click(function () {
@@ -2518,7 +2529,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
             });
         });
 
-        //$('#ip').change(function () {
         $('#controller.ip').change(function () {
             var val = $(this).val();
             if (!val || val == '0.0.0.0') {
@@ -2536,7 +2546,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
             $(this).trigger('change');
         }).trigger('change');
 
-
+/*
         $('#controller.xp1model').change(function () {
             showXP( 1 );
             $('#controller.xp1model').val($(this).val()).trigger('change');
@@ -2546,8 +2556,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
             showXP( 2 );
             $('#controller.xp2model').val($(this).val()).trigger('change');
         });
-
-
+*/
 
         $('#discover').button({
             icons: {primary: 'ui-icon-refresh'}
@@ -2575,6 +2584,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
             });
         }).css({'font-size': '0.7em'});
 
+/*
         // инициализируем картинки при загрузке окна
         var j = showXP( 1 );
         var z = showXP( 2 );
@@ -2588,6 +2598,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         selectPort( 2, SelectedPortXP2 );
 
         onChange(false);
+*/
     }
 
     //---------------------------------------------------------------------------------------
@@ -2932,7 +2943,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.24.88</p>
+    <p align="right">Admin Version: v0.24.89</p>
 
 <div id="loading"></div>
 
