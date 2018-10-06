@@ -681,7 +681,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
           selectPort( 1, SelectedPortXP1 );
           selectPort( 2, SelectedPortXP2 );
 
-          document.getElementById( "loading" ).hide();
+//          document.getElementById( "loading" ).hide();
 
       });
 
@@ -2208,7 +2208,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
     // ------------------------------------------------------------------------------------
     function savePort ( controlPort ) {
        //var spinner = new Spinner(opts).spin(target);
-       document.getElementById( "loading" ).show();
+//       document.getElementById( "loading" ).show();
 
        $('#write').button('disable');
        $('#autoDetect').button('disable');
@@ -2291,7 +2291,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
              //$('#savePortBtn').button('enable');
 
              if (!msg || msg.error) {
-                document.getElementById( "loading" ).hide();
+//                document.getElementById( "loading" ).hide();
                 showMessage(msg.error, _('Error'), 'alert');
                 return;
              }
@@ -2305,7 +2305,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
                 selectPort( numXP, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
              }
              //spinner.stop();
-             document.getElementById( "loading" ).hide();
+//             document.getElementById( "loading" ).hide();
 
              showMessage('Состояние порта сохранено', _('Info'), 'info');
 
@@ -2316,7 +2316,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
     //-------------------------------------------------------------------------------------
     // the function loadSettings has to exist ...
     function load(settings, onChange) {
-        document.getElementById( "loading" ).show();
+//        document.getElementById( "loading" ).show();
 
         SelectedPortXP1 = 0;
         SelectedPortXP2 = 0;
@@ -2956,9 +2956,9 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.24.91</p>
+    <p align="right">Admin Version: v0.24.92</p>
 
-    <div id="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div>
+<!--    <div id="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div> -->
 
     <table><tr><td><img src="megad.png"></td><td><h3 class="translate">MegaD-2561 adapter settings</h3></td></tr></table>
 
