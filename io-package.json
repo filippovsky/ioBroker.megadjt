@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.24.92",
+        "version":                  "0.24.93",
         "news": {
             "0.24.34": {
                 "en":               "Add new device: 8I7O-R",

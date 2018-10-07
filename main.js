@@ -3135,7 +3135,6 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
    found = false;
    adapter.getObject( name, function(err,obj) {
        if (obj) {
-//          adapter.log.debug('Объект ' + id +' уже есть .... ');
           found = true;
        }
 
@@ -3143,7 +3142,6 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
       return;
    }
 
-//   adapter.log.debug('Объекта ' + id +' нет .... ');
 
          adapter.log.info('Add state ' + id);
          if ( type == 'state' ) {
@@ -3246,18 +3244,6 @@ function configInit( callback ) {
        createConfigItemIfNotExists ( 'ports.'+ i + '.longClick',  'statebool', 'Долгое нажатие на кнопку', 'false' );
        createConfigItemIfNotExists ( 'ports.'+ i + '.doubleClick',  'statebool', 'Двойное нажатие на кнопку', 'false' );
    }
-
-
-   /*
-    adapter.log.info(
-          'State ' + adapter.namespace + '.sms.apikey0 -' + 
-          '  Value: '        + state.val + 
-          ', ack: '          + state.ack + 
-          ', time stamp: '   + state.ts  + 
-          ', last changed: ' + state.lc
-    ); 
-}); 
- */
 
    if ( callback ) {
       if (callback) callback( /*error, data*/ );

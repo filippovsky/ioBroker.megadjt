@@ -676,8 +676,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
           showXP( 2 );
           showXP( 0 );
 
-          imagePorts(1);
-          imagePorts(2); 
+          //imagePorts(1);
+          //imagePorts(2); 
           selectPort( 1, SelectedPortXP1 );
           selectPort( 2, SelectedPortXP2 );
 
@@ -927,6 +927,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
           console.log('k='+k);
           portstate = Setup[ _adapter_instance+'.ports.'+k+'.portType'].val;
+          console.log('portstate='+portstate);
 
           if (xp == "7I7O-R" || xp == "7I7O-SD") {
              if ( m < 7 ) {
@@ -2297,11 +2298,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
              }
 
              Setup[ inst + '.ports.' + controlPort + '.portType'].val = newPortType;
+             imagePorts( numXP );
              if ( numXP == 1 ) {
-                imagePorts( numXP );
                 selectPort( numXP, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
              } else if ( numXP == 2 ) {
-                imagePorts( numXP );
                 selectPort( numXP, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
              }
              //spinner.stop();
@@ -2956,7 +2956,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.24.92</p>
+    <p align="right">Admin Version: v0.24.93</p>
 
 <!--    <div id="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div> -->
 
