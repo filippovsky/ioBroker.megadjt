@@ -1,8 +1,12 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.24.97",
+        "version":                  "0.25.0",
         "news": {
+            "0.25.0": {
+                "en":               "Added firmware 4.30b1",
+                "ru":               "Добавлена прошивка версии 4.30b1"
+            },
             "0.24.97": {
                 "en":               "bugFix: color of ports",
                 "ru":               "Устранено кэширование в расцветке портов"
