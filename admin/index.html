@@ -515,7 +515,7 @@ span:hover::before {
    var SelectedPortXP1 = 0;
    var SelectedPortXP2 = 0;
    var Setup;
-   var AdapterInstance = adapter + '.' + instance;
+
 
 
 var cPortType_NotConnected = 'NotConnected'; //255
@@ -557,6 +557,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
    //--------------------------------------------------------------------------------
    function getAdapterStates ( ) {
+      var AdapterInstance = adapter + '.' + instance;
+
       //var _adapter_instance = adapter + '.' + instance;
 
       sendTo( AdapterInstance, 'states2Admin', {}, function (msg) {
@@ -2872,7 +2874,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.26.0</p>
+    <p align="right">Admin Version: v0.26.1</p>
 
 <!--    <div id="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div> -->
 
