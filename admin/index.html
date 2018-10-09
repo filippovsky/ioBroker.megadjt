@@ -2294,6 +2294,9 @@ var cNDigitalSensorTypeWiegand26   = 6;
              }
 
              Setup[ inst + '.ports.' + controlPort + '.portType'].val = newPortType;
+             Setup[ inst + '.ports.' + controlPort + '.room'].val = newroom;
+             Setup[ inst + '.ports.' + controlPort + '.func'].val = newfnc;
+
              imagePorts( numXP );
              if ( numXP == 1 ) {
                 selectPort( numXP, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
@@ -2915,7 +2918,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.26.2</p>
+    <p align="right">Admin Version: v0.26.3</p>
 
 <!--    <div id="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div> -->
 
