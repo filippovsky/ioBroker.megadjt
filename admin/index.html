@@ -512,8 +512,6 @@ span:hover::before {
    var setupRooms = [];
    var setupFunc  = [];
    var active    = false;
-   //var megadjt_setup = [];   
-//   var portsColor = [];
    var SelectedPortXP1 = 0;
    var SelectedPortXP2 = 0;
    var MegaSetup;
@@ -706,7 +704,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
     }
     //--------------------------------------------------------------------------------
     function imagePorts( numXP ) {
-       var _adapter_instance = adapter + '.' + instance;
+       //var _adapter_instance = adapter + '.' + instance;
        var element_id;
        var element;
 
@@ -926,7 +924,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
           }
 
           console.log('k='+k);
-          portstate = Setup[ _adapter_instance+'.ports.'+k+'.portType'].val;
+          portstate = Setup[ adapter + '.' + instance +'.ports.'+String(k)+'.portType'].val;
           console.log('portstate='+portstate);
 
           if (xp == "7I7O-R" || xp == "7I7O-SD") {
@@ -2956,7 +2954,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.24.93</p>
+    <p align="right">Admin Version: v0.24.94</p>
 
 <!--    <div id="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div> -->
 
