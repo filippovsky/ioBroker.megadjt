@@ -2086,19 +2086,19 @@ var cNDigitalSensorTypeWiegand26   = 6;
           var element_id  = "controller.xp"+String(numXP)+"model";
           var element  = document.getElementById(element_id);
           var xp = element.options[element.selectedIndex].value; 
-       }
-
-       if ( xp == '2R' ) {
-          portNumTxt = portNum + 1; // ??
-          if ( numXP == 1 && portNumTxt == 1 ) {
-             controlPort = 14;
-          } else if ( numXP == 1 && portNumTxt == 2 ) {
-             controlPort = 7;
-          } else if ( numXP == 2 && portNumTxt == 1 ) {
-             controlPort = 29;
-          } else if ( numXP == 2 && portNumTxt == 2 ) {
-             controlPort = 22;
-          }
+ 
+          if ( xp == '2R' ) {
+             portNumTxt = portNum + 1; // ??
+             if ( numXP == 1 && portNumTxt == 1 ) {
+                controlPort = 14;
+             } else if ( numXP == 1 && portNumTxt == 2 ) {
+                controlPort = 7;
+             } else if ( numXP == 2 && portNumTxt == 1 ) {
+                controlPort = 29;
+             } else if ( numXP == 2 && portNumTxt == 2 ) {
+                controlPort = 22;
+             }
+         }
        }
 
        imagePorts( numXP );
@@ -2954,7 +2954,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.24.94</p>
+    <p align="right">Admin Version: v0.24.95</p>
 
 <!--    <div id="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div> -->
 
