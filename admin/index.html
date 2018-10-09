@@ -965,7 +965,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
     }
     //--------------------------------------------------------------------------------
     function roomChanged ( controlPort ) {
-        //var room = $("#ports."+controlPort+".room option:selected").val();
         var numXP = 0;
         var numControlPort = parseInt( controlPort, 10 );
         if ( controlPort < 15 ) {
@@ -1272,13 +1271,56 @@ var cNDigitalSensorTypeWiegand26   = 6;
     // -------------------------------------------------------------------------------
     function loadPreset( numXP, portNum ) {
        // здесь считываются настройки конкретного порта из конфига сервера (не МЕГИ)
+       var adapterInstance = adapter + '.' + instance;
        var controlPort = portNum;
        var mDS;
+       //var newVal = '';
 
        if (numXP == 2) {
            controlPort = 15 + portNum;
        }
 
+
+      // $('.portSetup').each(function () {
+      //    var key = $(this).attr('id');
+      //    var newVal = Setup[ adapterInstance + '.ports.' + controlPort + '.room' ].val;
+
+          /*
+             $(this).val( Setup[ AdapterInstance + '.' + key ].val ).change(function() {
+                    onChange();
+                }).keyup(function() {
+                    onChange();
+             });
+          */
+      //    $(this).val( newVal );
+      // });
+
+       /*
+       newVal = Setup[ adapterInstance + '.ports.' + controlPort + '.room' ].val;
+       $("#roomXP" + numXP ).val( newVal );
+       //      $('#roomXP'+numXP+' option:selected').val(state.val);
+       $('#roomXP'+numXP+' option').each(function() {
+          if ($(this).val() == newVal ) {
+             $(this).prop("selected", true);
+          }
+       });
+
+       newVal = Setup[ adapterInstance + '.ports.' + controlPort + '.func' ].val;
+       $("#fncXP" + numXP ).val( newVal );
+       //      $('#fncXP'+numXP+' option:selected').val(state.val);
+       $('#fncXP'+numXP+' option').each(function() {
+          if ($(this).val() == newVal ) {
+             $(this).prop("selected", true);
+          }
+       });
+       */
+
+       onchange();
+
+/*
+
+
+       //---------------------------------------------------------
        var numControlPort = parseInt( controlPort, 10 );
        setupRooms[numControlPort] = undefined;
        setupFunc[numControlPort]  = undefined;
@@ -1289,10 +1331,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
           if (state) {
              setupRooms[numControlPort] = state.val;
              $("#roomXP"+numXP).val( state.val );
-             //$('#roomXP'+numXP).val = state.val; //?
 
              $('#roomXP'+numXP+' option:selected').val(state.val);
-             //$('#roomXP'+numXP+' select').val(state.val);
              $('#roomXP'+numXP+' option').each(function() {
                    if($(this).val() == state.val) {
                          $(this).prop("selected", true);
@@ -1318,7 +1358,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
              onchange();
           }
        });
-
+*/
 
        socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.portType', function (err, state) {
           if (state) {
@@ -1494,6 +1534,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
         var spanDisp = '';
         var spanSen = '';
         var spanSenMode = '';
+        var adapterInstance = adapter + '.' + instance;
+
 
         if (numXP == 2) {
            controlPort = 15 + portNum;
@@ -1508,26 +1550,25 @@ var cNDigitalSensorTypeWiegand26   = 6;
            var element  = document.getElementById(element_id);
            xp = element.options[element.selectedIndex].value; 
 
-           text += '<br>Комната: <select id="roomXP'+numXP+'" onChange="roomChanged('+controlPort+');">';
+           //text += '<br>Комната: <select id="roomXP'+numXP+'" onChange="roomChanged('+controlPort+');">';
+           text += '<br>Комната: <select id="roomXP'+numXP+'">';
            text += '<option value=""></option>';
+
+           var room = Setup[ adapterInstance + '.ports.' + controlPort + '.room' ].val;
            for (var r in rooms) {
-//               text += '<option value="' + r + '" ' + ((ports[controlPort].room == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
-               text += '<option value="' + r + '" ' + ((setupRooms[numControlPort] == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
+               text += '<option value="' + r + '" ' + ((room == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
            }
            text += '</select><br>';
 
-           text += '<br>Функция: <select id="fncXP'+numXP+'" onChange="fncChanged('+controlPort+');">';
+           var fnc = Setup[ adapterInstance + '.ports.' + controlPort + '.func' ].val;
+           //text += '<br>Функция: <select id="fncXP'+numXP+'" onChange="fncChanged('+controlPort+');">';
+           text += '<br>Функция: <select id="fncXP'+numXP+'">';
            text += '<option value=""></option>';
            for (var rol in roles) {
-               text += '<option value="' + rol + '" ' + ((setupFunc[numControlPort] == rol) ? 'selected' : '') + '>' + roles[rol].common.name + '</option>';
+               text += '<option value="' + rol + '" ' + ((fnc == rol) ? 'selected' : '') + '>' + roles[rol].common.name + '</option>';
            }
            text += '</select><br>';
   
-
-/*           text += '<br>Название: <input id="name'+controlPort+'" onChange="nameChanged('+controlPort+');" ';
-           text += ' value="' + ports[controlPort].name + '"></input><br>';
-  */
-
         } else {
            xp = 'control';
         }
@@ -2182,10 +2223,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
         }
        var numControlPort = parseInt( controlPort, 10 );
 
-       //var newroom = $('#roomXP'+numXP+' option:selected').val();
-       //var newfnc = $('#fncXP'+numXP+' option:selected').val();
-       var newroom = setupRooms[numControlPort];
-       var newfnc  = setupFunc[numControlPort];
+       var newroom = $('#roomXP'+numXP+' option:selected').val();
+       var newfnc = $('#fncXP'+numXP+' option:selected').val();
+       //var newroom = setupRooms[numControlPort];
+       //var newfnc  = setupFunc[numControlPort];
        var newPortType = $('#portTypeXP'+numXP+' option:selected').val();
        var newDefaultAction = $('#ecmdXP' + numXP ).val();
        var newDefaultRunAlways = $('#afXP' + numXP ).val();
@@ -2874,7 +2915,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.26.1</p>
+    <p align="right">Admin Version: v0.26.2</p>
 
 <!--    <div id="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div> -->
 
