@@ -1383,6 +1383,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
         var pty = "";
         var element_id;
         var element;
+        var room;
+        var fnc;
 
 
         if (numXP == 2) {
@@ -1401,13 +1403,25 @@ var cNDigitalSensorTypeWiegand26   = 6;
            text += '<br>Комната: <select id="roomXP'+numXP+'">';
            text += '<option value=""></option>';
 
-           var room = Setup[ adapterInstance + '.ports.' + controlPort + '.room' ].val;
+           if ( isFirst == 1 ) {
+              room = Setup[ adapterInstance + '.ports.' + controlPort + '.room' ].val;
+           } else {
+              element_id = 'roomXP'+numXP;
+              element  = document.getElementById( element_id );
+              room  = element.options[element.selectedIndex].value; 
+           }
            for (var r in rooms) {
                text += '<option value="' + r + '" ' + ((room == r) ? 'selected' : '') + '>' + rooms[r].common.name + '</option>';
            }
            text += '</select><br>';
 
-           var fnc = Setup[ adapterInstance + '.ports.' + controlPort + '.func' ].val;
+           if ( isFirst == 1 ) {
+              fnc = Setup[ adapterInstance + '.ports.' + controlPort + '.func' ].val;
+           } else {
+              element_id = 'fncXP'+numXP;
+              element  = document.getElementById( element_id );
+              fnc  = element.options[element.selectedIndex].value; 
+           }
            text += '<br>Функция: <select id="fncXP'+numXP+'">';
            text += '<option value=""></option>';
            for (var rol in roles) {
@@ -2092,7 +2106,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
        element  = document.getElementById( element_id );
        var newPortType  = element.options[element.selectedIndex].value; 
 
-       var newDefaultAction = $('#ecmdXP' + numXP ).val();
+       element_id = 'ecmdXP'+numXP;
+       element  = document.getElementById( element_id );
+       var newDefaultAction = element.value;
+
        var newDefaultRunAlways = $('#afXP' + numXP ).val();
        var newNetAction = $('#ethXP' + numXP ).val();
        var newNetRunOnlyWhenServerOut = $('#nafXP' + numXP ).val();
@@ -2783,7 +2800,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.26.8</p>
+    <p align="right">Admin Version: v0.26.9</p>
 
 <!--    <div id="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div> -->
 
