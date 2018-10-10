@@ -2077,6 +2077,11 @@ var cNDigitalSensorTypeWiegand26   = 6;
     function savePort ( controlPort ) {
        //var spinner = new Spinner(opts).spin(target);
 //       document.getElementById( "loading" ).show();
+       var element_id;
+       var element;
+       var newroom;
+       var newfnc;
+       var newDefaultAction;
 
        $('#write').button('disable');
        $('#autoDetect').button('disable');
@@ -2094,21 +2099,33 @@ var cNDigitalSensorTypeWiegand26   = 6;
         }
        var numControlPort = parseInt( controlPort, 10 );
 
-       var element_id = 'roomXP'+numXP;
-       var element  = document.getElementById( element_id );
-       var newroom  = element.options[element.selectedIndex].value; 
+       if ( numXP == 0 ) {
+          newroom = '';
+       } else {
+          element_id = 'roomXP'+numXP;
+          element  = document.getElementById( element_id );
+          newroom  = element.options[element.selectedIndex].value; 
+       }
 
-       element_id = 'fncXP'+numXP;
-       element  = document.getElementById( element_id );
-       var newfnc  = element.options[element.selectedIndex].value; 
+       if ( numXP == 0 ) {
+          newfnc = 0;
+       } else {
+          element_id = 'fncXP'+numXP;
+          element  = document.getElementById( element_id );
+          newfnc  = element.options[element.selectedIndex].value; 
+       }
 
        element_id = 'portTypeXP'+numXP;
        element  = document.getElementById( element_id );
        var newPortType  = element.options[element.selectedIndex].value; 
 
-       element_id = 'ecmdXP'+numXP;
-       element  = document.getElementById( element_id );
-       var newDefaultAction = element.value;
+       if ( newPortType == cPortType_NotConnected ) {
+          newDefaultAction = '';
+       } else {
+          element_id = 'ecmdXP'+numXP;
+          element  = document.getElementById( element_id );
+          newDefaultAction = element.value;
+       }
 
        var newDefaultRunAlways = $('#afXP' + numXP ).val();
        var newNetAction = $('#ethXP' + numXP ).val();
@@ -2800,7 +2817,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.26.9</p>
+    <p align="right">Admin Version: v0.26.10</p>
 
 <!--    <div id="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div> -->
 
