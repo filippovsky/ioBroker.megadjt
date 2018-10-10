@@ -686,17 +686,13 @@ var cNDigitalSensorTypeWiegand26   = 6;
        var   x3 = 102;
        var portstate = "";
 
-       //console.log('imagePorts: numXP=' + numXP );
        if ( numXP == 0 ) {
           xp = "control";
        } else {
           var element_id = "controller.xp"+numXP+"model";
-          //console.log('element_id=' + element_id );
           var element  = document.getElementById( element_id );
-          //console.log('**' );
           xp = element.options[element.selectedIndex].value; 
        }
-       //console.log('xp=' + xp);
 
        if (xp == "7I7O-R" ) {
           stepX = 45;
@@ -880,9 +876,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
              }
           }
 
-          //console.log('k='+k);
           portstate = Setup[ adapter + '.' + instance +'.ports.'+String(k)+'.portType'].val;
-          //console.log('portstate='+portstate);
 
           if (xp == "7I7O-R" || xp == "7I7O-SD") {
              if ( m < 7 ) {
@@ -1084,19 +1078,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
     }
 
     //--------------------------------------------------------------------------------
-    function ecmdChanged ( controlPort ) {
-        var numXP = 0;
-        if ( controlPort < 15 ) {
-           numXP = 1;
-        } else if ( controlPort < 30 ) {
-           numXP = 2;
-        } else {
-           numXP = 0;
-        }
-
-        var ecmd = $("#ecmdXP"+numXP).val();
-    }
-    //--------------------------------------------------------------------------------
     function dispChanged ( controlPort ) {
         var numXP = 0;
         if ( controlPort < 15 ) {
@@ -1244,30 +1225,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
        if (numXP == 2) {
            controlPort = 15 + portNum;
        }
-
-       //onchange();
-       /*
-       socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.portType', function (err, state) {
-          if (state) {
-              $("#portTypeXP"+numXP).val( state.val );
-              $('#portTypeXP'+numXP+' option:selected').val(state.val);
-              $('#portTypeXP'+numXP+' select').val(state.val);
-              $('#portTypeXP'+numXP+' option').each(function() {
-                   if($(this).val() == state.val) {
-                         $(this).prop("selected", true);
-                   }
-              });
-              ptyChanged( controlPort ); // ?
-          }
-       });
-       */
-
-       socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.defaultAction', function (err, state) {
-          if (state) {
-              $("#ecmdXP"+numXP).val( state.val );
-              onchange();
-          }
-       });
 
        socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.defaultRunAlways', function (err, state) {
           if (state) {
@@ -1756,8 +1713,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
            text += '<tr><td align="center" valign="middle">';
            text += spanAct0 + '</td><td align="left" valign="middle">';
            text += 'Сценарий по умолчанию (Act):&nbsp;';
-           text += '<input id="ecmdXP'+numXP+'" type="text" value="' + ($('#ecmdXP'+numXP).val() || '' ) + 
-                   '" onChange="ecmdChanged('+controlPort+');" maxsize="11"/>';
+           var ecmd = Setup[ adapterInstance + '.ports.' + controlPort + '.defaultAction' ].val;
+           text += '<input id="ecmdXP'+numXP+'" type="text" value="' + (ecmd || '' ) + '" maxsize="11"/>';
            text += '</td></tr>';
 
            text += '<tr><td align="center" valign="middle">';
@@ -2135,9 +2092,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
        element  = document.getElementById( element_id );
        var newPortType  = element.options[element.selectedIndex].value; 
 
-       //var newroom = $('#roomXP'+numXP+' option:selected').val();
-       //var newfnc = $('#fncXP'+numXP+' option:selected').val();
-       //var newPortType = $('#portTypeXP'+numXP+' option:selected').val();
        var newDefaultAction = $('#ecmdXP' + numXP ).val();
        var newDefaultRunAlways = $('#afXP' + numXP ).val();
        var newNetAction = $('#ethXP' + numXP ).val();
@@ -2203,6 +2157,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
                 return;
              }
 
+             Setup[ inst + '.ports.' + controlPort + '.defaultAction'].val = newDefaultAction;
              Setup[ inst + '.ports.' + controlPort + '.portType'].val = newPortType;
              Setup[ inst + '.ports.' + controlPort + '.room'].val = newroom;
              Setup[ inst + '.ports.' + controlPort + '.func'].val = newfnc;
@@ -2828,7 +2783,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.26.7</p>
+    <p align="right">Admin Version: v0.26.8</p>
 
 <!--    <div id="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div> -->
 
