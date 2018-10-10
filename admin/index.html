@@ -686,17 +686,17 @@ var cNDigitalSensorTypeWiegand26   = 6;
        var   x3 = 102;
        var portstate = "";
 
-       console.log('imagePorts: numXP=' + numXP );
+       //console.log('imagePorts: numXP=' + numXP );
        if ( numXP == 0 ) {
           xp = "control";
        } else {
           var element_id = "controller.xp"+numXP+"model";
-          console.log('element_id=' + element_id );
+          //console.log('element_id=' + element_id );
           var element  = document.getElementById( element_id );
-          console.log('**' );
+          //console.log('**' );
           xp = element.options[element.selectedIndex].value; 
        }
-       console.log('xp=' + xp);
+       //console.log('xp=' + xp);
 
        if (xp == "7I7O-R" ) {
           stepX = 45;
@@ -880,9 +880,9 @@ var cNDigitalSensorTypeWiegand26   = 6;
              }
           }
 
-          console.log('k='+k);
+          //console.log('k='+k);
           portstate = Setup[ adapter + '.' + instance +'.ports.'+String(k)+'.portType'].val;
-          console.log('portstate='+portstate);
+          //console.log('portstate='+portstate);
 
           if (xp == "7I7O-R" || xp == "7I7O-SD") {
              if ( m < 7 ) {
@@ -1493,15 +1493,18 @@ var cNDigitalSensorTypeWiegand26   = 6;
         text += '<table border="0" class="tablemore"><tr><td align="center" valign="middle">'; // описания портов
         text += spanPorts + '</td><td align="left" valign="middle">';
         text += 'Тип порта:&nbsp;';
-        //text += '</td><td align="left" valign="middle">';
 
         //--- выбор типа порта ---------------------------------------------------------------------
         text += '<select id="portTypeXP'+numXP+'" onChange="ptyChanged('+controlPort+');">';
+        console.log('isFirst='+isFirst);
         if ( isFirst == 1 ) {
+           console.log('a');
            pty = Setup[ adapterInstance + '.ports.' + controlPort + '.portType' ].val;
         } else {
+           console.log('b');
            pty = $('#portTypeXP'+numXP).val();
         }
+        console.log('pty='+pty);
         text += '<option value="'+cPortType_NotConnected+'" ' + ((pty == cPortType_NotConnected) ? 'selected' : '') + '>' + _('NC')  + '</option>';
         if ( xp == '7I7O-R' || xp == '7I7O-SD' ) {
            if (portNum < 7) {
@@ -2807,7 +2810,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.26.4</p>
+    <p align="right">Admin Version: v0.26.5</p>
 
 <!--    <div id="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div> -->
 
