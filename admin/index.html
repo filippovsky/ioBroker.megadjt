@@ -1246,7 +1246,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
        }
 
        //onchange();
-
+       /*
        socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.portType', function (err, state) {
           if (state) {
               $("#portTypeXP"+numXP).val( state.val );
@@ -1260,6 +1260,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
               ptyChanged( controlPort ); // ?
           }
        });
+       */
 
        socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.defaultAction', function (err, state) {
           if (state) {
@@ -2810,7 +2811,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.26.5</p>
+    <p align="right">Admin Version: v0.26.6</p>
 
 <!--    <div id="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div> -->
 
