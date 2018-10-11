@@ -205,6 +205,8 @@ span:hover::before {
         border: 1px solid #939393;
         border-radius: 30px;
         position: relative;
+        height: 873px;
+        width: 1020px;
        }
     .roundmore {
         padding: 30px;
@@ -225,13 +227,14 @@ span:hover::before {
 	border-radius: 15px 15px 15px 0px;
 	box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
 	color: black;
-	margin-left: -600px;
-	margin-top: -275px;
+	margin-left: 0px;
+	margin-top: 635px;
 	padding: 10px 10px 10px 40px;
 	position: absolute;
         display:block;
 	text-decoration: none;
-	width: 750px;
+	width: 950px;
+        height: 200px;
         font-size: 11px;
        }
 
@@ -2021,7 +2024,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         var startPort = 0;
         var maxCycle  = 14; //??
 
-        text += '<div id="xp' + numXP + '_tbl" class="round1" style="height: 643px; padding: 1em;">';
+        text += '<div id="xp' + numXP + '_tbl" class="round1" style="padding: 1em;">';
         text += '<div id="xp' + numXP + '_div_img" class="dxp">';
         text += '  <img name="xp' + numXP + '_img" id="xp' + numXP + '_img" src="mega/MegaD-7I7O-R.gif">';
         text += '<div id="xp' + numXP + 'model_label" class="circlexpnew">';
@@ -2050,9 +2053,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         }
         text += '</div>';
         text += '<div id="xp' + numXP + '_more" class="roundmore"></div>';
-        if (numXP == 1) {
-           text += '<div id="div_tooltip' + numXP +'" class="tooltip">ssss'+numXP+'</div>';
-        }
+           text += '<div id="div_tooltip' + numXP +'" class="tooltip">ssss1</div>';
         text += '</div>';
         document.getElementById( divId ).innerHTML = text;
         //document.getElementById( divMoreId ).hide();
@@ -2845,7 +2846,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.27.1</p>
+    <p align="right">Admin Version: v0.27.2</p>
 
 <!--    <div id="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div> -->
 
