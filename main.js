@@ -3778,7 +3778,7 @@ var cNPortType_AnalogSensor  = '2';
     var options = {
         host: IP,
         port: IPPort,
-        path: '/' + Password +'/?' + url + '&nr=1';
+        path: '/' + Password +'/?' + url + '&nr=1'
     };
 
     var options1 = {
@@ -3834,7 +3834,6 @@ var cNPortType_AnalogSensor  = '2';
                    });
                 });
             }
-
         });
       }).on('error', function (err) {
         adapter.log.error( err );
