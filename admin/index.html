@@ -208,7 +208,7 @@ span:hover::before {
         min-height: 873px;
         width: 1020px;
        }
-    .roundmore {
+.roundmore {
         padding: 30px;
         margin: 5px;
         border-spacing: 2px;
@@ -1167,14 +1167,14 @@ var cNDigitalSensorTypeWiegand26   = 6;
            numXP = 0;
         }
 
-        if ( $("#afXP"+numXP ).prop('checked') ) {
-           //ports[controlPort].af = 1;
-           $('#afXP'+numXP ).val( 1 );
-           text = 'Выполнять всегда, независимо от наличия сервера';
+        var element_id = "afXP" + numXP;
+        var element  = document.getElementById( element_id );
+        var afxp = element.checked; 
+
+        if ( afxp ) {
+           text = '&nbsp;Выполнять всегда, независимо от наличия сервера';
         } else {
-           //ports[controlPort].af = 0;
-           $('#afXP'+numXP ).val( 0 );
-           text = 'Выполнять только когда сервер не указан или не отвечает';
+           text = '&nbsp;Выполнять только когда сервер не указан или не отвечает';
         }
         document.getElementById( "lblafXP" + numXP ).innerHTML = text;
     }
@@ -1254,18 +1254,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
            controlPort = 15 + portNum;
        }
 
-       socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.defaultRunAlways', function (err, state) {
-          if (state) {
-              if ( state.val == true || state.val == 'true') {
-                 $('#afXP' + numXP ).prop('checked', true);
-                 $("#afXP" + numXP ).val( 1 );
-              } else {
-                 $('#afXP' + numXP ).removeAttr('checked');
-                 $("#afXP"+numXP).val( 0 );
-              }
-              //?afChanged( controlPort );
-          }
-       });
 
        socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.netAction', function (err, state) {
           if (state) {
@@ -1760,16 +1748,19 @@ var cNDigitalSensorTypeWiegand26   = 6;
            text += '<input id="ecmdXP'+numXP+'" type="text" value="' + (ecmd || '' ) + '" maxsize="11"/>';
            text += '</td></tr>';
 
+
            text += '<tr><td align="center" valign="middle">';
            text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanAf0+'\');" style="cursor: pointer;"></img>';
            text += '</td><td align="left" valign="middle">';
-           text += '<table border=0><tr><td align="left" valign="top" width="25px" height="25px">';
-           text += '<input type="checkbox" class="checkbox" id="afXP'+numXP+'" '+ ($('#afXP'+numXP).val() ? 'checked' : '') + 
+           var af = false;
+           if ( Setup[ adapterInstance + '.ports.' + controlPort + '.defaultRunAlways' ].val == true || Setup[ adapterInstance + '.ports.' + controlPort + '.defaultRunAlways' ].val == 'true' ) {
+              af = true;
+           }
+           text += '<input type="checkbox" class="checkbox" id="afXP'+numXP+'" '+ ( af ? 'checked' : '') + 
                    ' onChange="afChanged('+controlPort+');"/>&nbsp;';
-           text += '</td><td align="left" valign="top">';
-           text += '<label id="lblafXP'+numXP+'" for="afXP'+numXP+'">'+($('#afXP'+numXP).val() ? 'Выполнять всегда, независимо от наличия сервера' : 'Выполнять только когда сервер не указан или не отвечает.') + '</label>';
-           text += '</td></tr></table>';
+           text += '<label id="lblafXP'+numXP+'" for="afXP'+numXP+'">'+( af ? '&nbsp;Выполнять всегда, независимо от наличия сервера' : '&nbsp;Выполнять только когда сервер не указан или не отвечает.') + '</label>';
            text += '</td></tr>';
+
 
            text += '<tr><td align="center" valign="middle">';
            text += spanEth0 + '</td><td align="left" valign="middle">';
@@ -2119,6 +2110,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
        var newroom;
        var newfnc;
        var newDefaultAction;
+       var newDefaultRunAlways;
+
 
        $('#write').button('disable');
        $('#autoDetect').button('disable');
@@ -2156,15 +2149,26 @@ var cNDigitalSensorTypeWiegand26   = 6;
        element  = document.getElementById( element_id );
        var newPortType  = element.options[element.selectedIndex].value; 
 
-       if ( newPortType == cPortType_NotConnected ) {
-          newDefaultAction = '';
-       } else {
+       if ( newPortType == cPortType_StandartIn ) {
           element_id = 'ecmdXP'+numXP;
           element  = document.getElementById( element_id );
           newDefaultAction = element.value;
+       } else {
+          newDefaultAction = '';
        }
 
-       var newDefaultRunAlways = $('#afXP' + numXP ).val();
+       if ( newPortType == cPortType_StandartIn ) {
+          element_id = 'afXP'+numXP;
+          element  = document.getElementById( element_id );
+          if ( element.checked ) {
+             newDefaultRunAlways = 1; //?
+          } else {
+             newDefaultRunAlways = 0; //?
+          }
+       } else {
+          newDefaultRunAlways = 0; //?
+       }
+
        var newNetAction = $('#ethXP' + numXP ).val();
        var newNetRunOnlyWhenServerOut = $('#nafXP' + numXP ).val();
        var newPortMode = $('#mXP' + numXP ).val();
@@ -2228,6 +2232,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
                 return;
              }
 
+             Setup[ inst + '.ports.' + controlPort + '.defaultRunAlways'].val = newDefaultRunAlways;
              Setup[ inst + '.ports.' + controlPort + '.defaultAction'].val = newDefaultAction;
              Setup[ inst + '.ports.' + controlPort + '.portType'].val = newPortType;
              Setup[ inst + '.ports.' + controlPort + '.room'].val = newroom;
@@ -2854,7 +2859,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.27.17</p>
+    <p align="right">Admin Version: v0.27.18</p>
 
 <!--    <div id="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div> -->
 
