@@ -205,7 +205,7 @@ span:hover::before {
         border: 1px solid #939393;
         border-radius: 30px;
         position: relative;
-        height: 873px;
+        min-height: 873px;
         width: 1020px;
        }
     .roundmore {
@@ -1486,7 +1486,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
         spanPorts += 'любых цифровых датчиков и устройств, а также (в случае наличия данной функции у порта) ';
         spanPorts += 'позволяет подключать аналоговые датчики.</p>';
 
-        text +='<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanPorts+'\');"></img>';
 
         /*
         spanPorts  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img>';
@@ -1519,9 +1518,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
         */
 
 
-//        text += 'Тип порта: <select id="pty'+controlPort+'" class="tvalue" data-type="pty" data-port="' + controlPort + '" onChange="ptyChanged('+controlPort+');">';
         text += '<table border="0" class="tablemore"><tr><td align="center" valign="middle">'; // описания портов
-        text += spanPorts + '</td><td align="left" valign="middle">';
+        text +='<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanPorts+'\');"></img>';
+        //text += spanPorts + '</td><td align="left" valign="middle">';
+        text += '</td><td align="left" valign="middle">';
         text += 'Тип порта:&nbsp;';
 
         //--- выбор типа порта ---------------------------------------------------------------------
@@ -2875,7 +2875,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.27.5</p>
+    <p align="right">Admin Version: v0.27.6</p>
 
 <!--    <div id="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div> -->
 
