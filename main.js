@@ -3777,7 +3777,7 @@ var cNPortType_AnalogSensor  = '2';
     // делаем паузу
     //setTimeout(function () {
       adapter.log.debug('Отправляем новые настройки на Мегу');
-      adapter.log.debug('path->'+path);
+      //adapter.log.debug('path->'+path);
       adapter.log.debug('->'+url);
       http.get(options, function (res) {
         res.setEncoding('utf8');
