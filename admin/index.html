@@ -1487,7 +1487,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         spanPorts += 'позволяет подключать аналоговые датчики.</p>';
 
         text += '<table border="0" class="tablemore"><tr><td align="center" valign="middle">'; // описания портов
-        text +='<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanPorts+'\');" style = "cursor: pointer;"></img>';
+        text +='<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanPorts+'\');" style="cursor: pointer;"></img>';
         text += '</td><td align="left" valign="middle">';
         text += 'Тип порта:&nbsp;';
 
@@ -1653,14 +1653,12 @@ var cNDigitalSensorTypeWiegand26   = 6;
            spanAct0 += 'Таким образом, можно использовать сервер вместе, в частности, с командами управления диммируемыми выходами. Достаточно серверу при срабатывании нужных входов вернуть устройству &quot;d&quot;, и он обработает все операции с клавишами выключателя. ';
            spanAct0 += 'Но серверу интересно было бы знать значение ШИМ, которое получилось на выходе. Это просто. Устройство ведь может сообщать о факте отжатия клавиши (m=1). Серверу необходимо лишь опросить состояние нужного выхода при получении сигнала об отжатии клавиши. Все остальное контроллер сделает сам.</p>';
 
-           spanAf0   = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img><span>';
-           spanAf0  += '<p align=justify>Этот флажок определяет логику работы сценария. Если он <b>не установлен</b> (по умолчанию), то сценарий выполняется ТОЛЬКО когда сервер не указан, не отвечает или HTTP-статус ответа отличный от "200 OK". ';
+           spanAf0  = '<p align=justify>Этот флажок определяет логику работы сценария. Если он <b>не установлен</b> (по умолчанию), то сценарий выполняется ТОЛЬКО когда сервер не указан, не отвечает или HTTP-статус ответа отличный от &quot;200 OK&quot;. ';
            spanAf0  += 'Если флажок <b>установлен</b>, то сценарий выполняется всегда, независимо от наличия сервера. Контроллер в этом случае будет сообщать на сервер о событиях, но его ответные команды в рамках одной TCP-сессии будут проигнорированы.</p>';
-           spanAf0  += '<p align=justify><b>Дополнительная команда "d"</b> (default). Если сервер на факт срабатывания входа, возвращает "d", то это дает сигнал устройству выполнить сценарий по умолчанию (Act). ';
-           spanAf0  += 'Эта команда дублирует поведение контроллера в случае установленного флажка, но в этом случае сам сервер определяетб когда выполнять сценарий по умолчанию. ';
-           spanAf0  += 'Таким образом, можно использовать сервер вместе, в частности, с командами управления диммируемыми выходами. Достаточно серверу при срабатывании нужных входов вернуть устройству "d", и он обработает все операции с клавишами выключателя. ';
+           spanAf0  += '<p align=justify><b>Дополнительная команда &quot;d&quot;</b> (default). Если сервер на факт срабатывания входа, возвращает &quot;d&quot;, то это дает сигнал устройству выполнить сценарий по умолчанию (Act). ';
+           spanAf0  += 'Эта команда дублирует поведение контроллера в случае установленного флажка, но в этом случае сам сервер определяет, когда выполнять сценарий по умолчанию. ';
+           spanAf0  += 'Таким образом, можно использовать сервер вместе, в частности, с командами управления диммируемыми выходами. Достаточно серверу при срабатывании нужных входов вернуть устройству &quot;d&quot;, и он обработает все операции с клавишами выключателя. ';
            spanAf0  += 'Но серверу интересно было бы знать значение ШИМ, которое получилось на выходе. Это просто. Устройство ведь может сообщать о факте отжатия клавиши (m=1). Серверу необходимо лишь опросить состояние нужного выхода при получении сигнала об отжатии клавиши. Все остальное контроллер сделает сам.</p>';
-           spanAf0  += '</span></div>';
 
            spanEth0  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img><span>';
            spanEth0 += '<p align=justify><b>NetAction (Net)</b> - В этом поле записывается URL, который MegaD-2561 вызывает независимо от того, есть сервер или его нет. Этот URL вызывается после попытки связи с сервером и после того, как отработает сценарий, описанный в поле Action. ';
@@ -1741,7 +1739,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 
            text += '<tr><td align="center" valign="middle">';
-           text +='<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanAct0+'\');" style = "cursor: pointer;"></img>';
+           text +='<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanAct0+'\');" style="cursor: pointer;"></img>';
            text += '</td><td align="left" valign="middle">';
            text += 'Сценарий по умолчанию (Act):&nbsp;';
            var ecmd = Setup[ adapterInstance + '.ports.' + controlPort + '.defaultAction' ].val;
@@ -1749,7 +1747,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
            text += '</td></tr>';
 
            text += '<tr><td align="center" valign="middle">';
-           text += spanAf0 + '</td><td align="left" valign="middle">';
+           text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanAf0+'\');" style="cursor: pointer;"></img>';
+           text += '</td><td align="left" valign="middle">';
            text += '<input type="checkbox" class="checkbox" id="afXP'+numXP+'" '+ ($('#afXP'+numXP).val() ? 'checked' : '') + 
                    ' onChange="afChanged('+controlPort+');"/>&nbsp;';
            //text += '</td><td align="left" valign="middle">';
@@ -2836,7 +2835,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.27.8</p>
+    <p align="right">Admin Version: v0.27.9</p>
 
 <!--    <div id="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div> -->
 
@@ -2922,9 +2921,9 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 
 
-    <div id="divxp1"></div>
-    <div id="divxp2"></div>
-    <div id="divxp0"></div>
+    <div id="divxp1" class="round1"></div>
+    <div id="divxp2" class="round1"></div>
+    <div id="divxp0" class="round1"></div>
 
     <table>
         <thead>
