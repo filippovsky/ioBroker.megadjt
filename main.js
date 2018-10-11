@@ -3778,8 +3778,15 @@ var cNPortType_AnalogSensor  = '2';
     var options = {
         host: IP,
         port: IPPort,
+        path: '/' + Password +'/?' + url + '&nr=1';
+    };
+
+    var options1 = {
+        host: IP,
+        port: IPPort,
         path: '/' + Password +'/?' + url
     };
+
 
     // делаем паузу
     //setTimeout(function () {
@@ -3800,13 +3807,32 @@ var cNPortType_AnalogSensor  = '2';
                    adapter.sendTo(obj.from, obj.command, {error: res.statusCode, response: data}, obj.callback);
                 }
             } else {
-                adapter.log.debug('Пауза для перезапуска Меги ... ');
-                setTimeout(function () {
-                  adapter.log.debug('Пауза истекла ... ');
-                  if (obj.callback) {
-                     adapter.sendTo(obj.from, obj.command, {error: '', response: data}, obj.callback);
-                  }
-                }, 3000);
+                //----------------------------------------------
+                http.get(options1, function (res1) {
+                   res1.setEncoding('utf8');
+                   var data1 = '';
+                   res1.on('data', function (chunk1) {
+                       data1 += chunk1;
+                   });
+                   res1.on('end', function () {
+                      adapter.log.debug('Получили ответ1 Меги:' + data1);
+                      if (res1.statusCode != 200) {
+                         adapter.log.warn('Response code: ' + res1.statusCode + ' - ' + data1);
+                         if (obj.callback) {
+                            adapter.sendTo(obj.from, obj.command, {error: res1.statusCode, response: data1}, obj.callback);
+                         }
+                      } else {
+               //------------------------------------------------------------------
+                         adapter.log.debug('Пауза для перезапуска Меги ... ');
+                         setTimeout(function () {
+                            adapter.log.debug('Пауза истекла ... ');
+                            if (obj.callback) {
+                               adapter.sendTo(obj.from, obj.command, {error: '', response: data1}, obj.callback);
+                            }
+                         }, 3000);
+                      }
+                   });
+                });
             }
 
         });
