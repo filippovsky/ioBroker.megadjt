@@ -3677,8 +3677,11 @@ function savePort(obj) {
       url += '&pty='+cNPortType_NotConnected + '&ecmd=&eth=&disp=&af=&naf=&misc=&d=&m=&d=';
    } else if ( portType == cPortType_StandartIn ) {
       url += '&pty='+cNPortType_StandartIn;
-      url += '&ecmd='+encodeURIComponent((defaultAction || '').trim());
-      url += '&eth='+encodeURIComponent((netAction || '').trim());
+      //url += '&ecmd='+encodeURIComponent((defaultAction || '').trim());
+      //url += '&eth='+encodeURIComponent((netAction || '').trim());
+      url += '&ecmd='+(defaultAction || '').trim();
+      url += '&eth='+(netAction || '').trim();
+
       url += '&disp=' + displayPort;
       if (defaultRunAlways) {
          url += '&af=1';
@@ -3757,6 +3760,9 @@ function savePort(obj) {
 
 
 /*
+pn=3&pty=0&ecmd=10%3A2&eth=&naf=&misc=&d=&m=0
+pn=3&pty=0&ecmd=10%3A2&eth=&disp=&af=&naf=&misc=&d=&m=0
+http://192.168.0.15/sec/?pn=3&pty=0&ecmd=10%3A2&eth=&m=0
 var cNPortType_Out = '1';           
 var cNPortType_DigitalSensor  = '3';
 var cNPortType_I2C  = '4';
