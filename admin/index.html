@@ -234,7 +234,7 @@ span:hover::before {
         display:block;
 	text-decoration: none;
 	width: 950px;
-        height: 200px;
+        min-height: 200px;
         font-size: 11px;
        }
 
@@ -1486,7 +1486,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         spanPorts += 'любых цифровых датчиков и устройств, а также (в случае наличия данной функции у порта) ';
         spanPorts += 'позволяет подключать аналоговые датчики.</p>';
 
-        text +='<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+','''+spanPorts+''');"></img>';
+        text +='<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanPorts+'\');"></img>';
 
         /*
         spanPorts  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img>';
@@ -2875,7 +2875,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.27.4</p>
+    <p align="right">Admin Version: v0.27.5</p>
 
 <!--    <div id="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div> -->
 
