@@ -2042,8 +2042,11 @@ var cNDigitalSensorTypeWiegand26   = 6;
         }
         text += '</div>';
         text += '<div id="xp' + numXP + '_more" class="roundmore"></div>';
-           text += '<div id="div_tooltip' + numXP +'" class="tooltip">ssss1</div>';
+//           text += '<div id="div_tooltip' + numXP +'" class="tooltip">ssss1</div>';
         text += '</div>';
+        text += '<div style="clear:both;"></div>';
+        text += '<div id="div_tooltip' + numXP +'" class="tooltip"></div>';
+
         document.getElementById( divId ).innerHTML = text;
         //document.getElementById( divMoreId ).hide();
     }
@@ -2835,7 +2838,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.27.10</p>
+    <p align="right">Admin Version: v0.27.11</p>
 
 <!--    <div id="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div> -->
 
