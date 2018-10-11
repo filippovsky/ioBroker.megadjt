@@ -1487,7 +1487,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         spanPorts += 'позволяет подключать аналоговые датчики.</p>';
 
         text += '<table border="0" class="tablemore"><tr><td align="center" valign="middle">'; // описания портов
-        text +='<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanPorts+'\');"></img>';
+        text +='<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanPorts+'\');" style = "cursor: pointer;"></img>';
         text += '</td><td align="left" valign="middle">';
         text += 'Тип порта:&nbsp;';
 
@@ -1591,7 +1591,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         //-----------------------------------------------------------------------------
         // порт IN
         if ( pty == cPortType_StandartIn ) {
-           spanAct0 = '<p align=justify><b>Act</b> - Действие, которое необходимо произвести, в случае, когда сервер не указан, не отвечает или HTTP-статус ответа отличный от "200 OK".</p>';
+           spanAct0 = '<p align=justify><b>Act</b> - Действие, которое необходимо произвести, в случае, когда сервер не указан, не отвечает или HTTP-статус ответа отличный от &quot;200 OK&quot;.</p>';
            spanAct0 += '<p align=justify>Контроллер MegaD-2561, по своей сути, является исполнителем указаний центральной управляющей ';
            spanAct0 += 'системы (сервера). В таком режиме в сетевых настройках конфигурируется IP-адрес сервера. При каждом нажатии на ';
            spanAct0 += 'кнопку, устройство вызывает скрипт на сервере, в параметрах вызова которого указывается номер сработавшего входа. ';
@@ -1741,7 +1741,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 
            text += '<tr><td align="center" valign="middle">';
-           text +='<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanAct0+'\');"></img>';
+           text +='<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanAct0+'\');" style = "cursor: pointer;"></img>';
            text += '</td><td align="left" valign="middle">';
            text += 'Сценарий по умолчанию (Act):&nbsp;';
            var ecmd = Setup[ adapterInstance + '.ports.' + controlPort + '.defaultAction' ].val;
@@ -2836,7 +2836,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.27.7</p>
+    <p align="right">Admin Version: v0.27.8</p>
 
 <!--    <div id="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div> -->
 
