@@ -55,13 +55,11 @@
 	color: black;
 	margin-left: -600px;
 	margin-top: -275px;
-	/*opacity: 0;*/ /* Делаем его прозрачным */
-	opacity: 1;
+	opacity: 0; /* Делаем его прозрачным */
 	padding: 10px 10px 10px 40px;
 	position: absolute;
 	text-decoration: none;
-	/*visibility: hidden;*/ /* И прячем */
-	visibility: visible;
+	visibility: hidden; /* И прячем */
 	width: 750px;
 	z-index: 10;
         font-size: 11px;
@@ -221,6 +219,22 @@ span:hover::before {
         float: right;
         position: absolute;
        }
+
+    .tooltip {
+	background-color: rgba(245,237,1, 0.9);
+	border-radius: 15px 15px 15px 0px;
+	box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+	color: black;
+	margin-left: -600px;
+	margin-top: -275px;
+	padding: 10px 10px 10px 40px;
+	position: absolute;
+        display:block;
+	text-decoration: none;
+	width: 750px;
+        font-size: 11px;
+       }
+
      @-webkit-keyframes rainbow {
         0%   {background: gold}
         50%  {background: yellow}
@@ -2036,7 +2050,9 @@ var cNDigitalSensorTypeWiegand26   = 6;
         }
         text += '</div>';
         text += '<div id="xp' + numXP + '_more" class="roundmore"></div>';
-        text += '<div id="div_tooltip' + numXP +'" class="htooltip">ssss'+numXP+'</div>';
+        if (numXP == 1) {
+           text += '<div id="div_tooltip' + numXP +'" class="tooltip">ssss'+numXP+'</div>';
+        }
         text += '</div>';
         document.getElementById( divId ).innerHTML = text;
         //document.getElementById( divMoreId ).hide();
@@ -2829,7 +2845,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.27.0</p>
+    <p align="right">Admin Version: v0.27.1</p>
 
 <!--    <div id="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div> -->
 
