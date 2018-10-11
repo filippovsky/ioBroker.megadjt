@@ -671,7 +671,7 @@ function parseMegaCfgLine ( line ) {
       if ( state == 'naf'  )    naf  = value;
       if ( state == 'm'    )    m    = value || '0';
       if ( state == 'misc' )    misc = value;
-      if ( state == 'd'    )    d    = value;
+      if ( state == 'd'    )    d    = value || '';
       if ( state == 'disp' )    disp = value || '';
    }
 
@@ -3674,20 +3674,20 @@ function savePort(obj) {
    //---------- передаем данные в Мегу
    var url = 'pn=' + portNum;
    if ( portType == cPortType_NotConnected ) {
-      url += '&pty='+cNPortType_NotConnected + '&ecmd=&eth=&disp=&af=&naf=&misc=&d=&m=&d=';
+     //pn=4&pty=255&nr=1
+      url += '&pty='+cNPortType_NotConnected;
    } else if ( portType == cPortType_StandartIn ) {
-      url += '&pty='+cNPortType_StandartIn;
+      //pn=3&ecmd=10:2&af=&eth=192.168.1.64:90/megad.php?pt=&naf=&misc=&d=&pty=0&m=0&gsmf=1&nr=1
       //url += '&ecmd='+encodeURIComponent((defaultAction || '').trim());
       //url += '&eth='+encodeURIComponent((netAction || '').trim());
-      url += '&ecmd='+(defaultAction || '').trim();
-      url += '&eth='+(netAction || '').trim();
 
-      url += '&disp=' + displayPort;
+      url += '&ecmd='+(defaultAction || '').trim();
       if (defaultRunAlways) {
          url += '&af=1';
       } else {
          url += '&af='; // ?
       }
+      url += '&eth='+(netAction || '').trim();
       if (netRunOnlyWhenServerOut) {
          url += '&naf=1';
       } else {
@@ -3703,6 +3703,7 @@ function savePort(obj) {
       } else {
          url += '&d='; // ?
       }
+      url += '&pty='+cNPortType_StandartIn;
       if ( portMode == cPortMode_PressOnly ) {
          url += '&m=' + cNPortMode_PressOnly;
       } else if ( portMode == cPortMode_PressAndRelease ) {
@@ -3712,17 +3713,36 @@ function savePort(obj) {
       } else if ( portMode == cPortMode_ClickMode ) {
          url += '&m=' + cNPortMode_ClickMode;
       }
+      url += '&gsmf=0'; // !! временно
+      //url += '&nr=1'; // !! временно
+
+
    } else if ( portType == cPortType_ReleOut || portType == cPortType_SimistorOut ) {
+      //pn=7&grp=&pty=1&d=0&m=0&nr=1
+      url += '&grp='; //!временно
       url += '&pty='+cNPortType_Out;
-      url += '&ecmd=&eth=&disp=&af=&naf=&misc='; //?
-      url += '&m=' + cNPortMode_SW ; 
       if (defaultState) {
          url += '&d=1';
       } else {
          url += '&d='; // ?
       }
+      url += '&m=' + cNPortMode_SW ; 
+
    } else if ( portType == cPortType_DigitalSensor ) {
+      //pn=28&misc=0.00&hst=0.00&ecmd=&af=&eth=&naf=&pty=3&m=0&d=3&gsmf=0&nr=1
+      url += '&misc=0.00&hst=0.00&ecmd=&af=&eth=&naf='; //!временно
       url += '&pty='+cNPortType_DigitalSensor;
+      if ( digSensorMode == 'Norm' ) {
+         url += '&m=0';
+      } else if ( digSensorMode == '>' ) {
+         url += '&m=1';
+      } else if ( digSensorMode == '<' ) {
+         url += '&m=2';
+      } else if ( digSensorMode == '<>' ) {
+         url += '&m=3';
+      } else  {
+         url += '&m=0'; // ?
+      }
       if ( digSensorType == cDigitalSensorTypeDS18B20 ) {
          url += '&d=' + cNDigitalSensorTypeDS18B20;
       } else if ( digSensorType == cDigitalSensorTypeDHT11 ) {
@@ -3736,23 +3756,7 @@ function savePort(obj) {
       } else if ( digSensorType == cDigitalSensorTypeWiegand26 ) {
          url += '&d=' + cNDigitalSensorTypeWiegand26;
       }
-      if ( digSensorMode == 'Norm' ) {
-         url += '&m=0';
-      } else if ( digSensorMode == '>' ) {
-         url += '&m=1';
-      } else if ( digSensorMode == '<' ) {
-         url += '&m=2';
-      } else if ( digSensorMode == '<>' ) {
-         url += '&m=3';
-      } else  {
-         url += '&m=0'; // ?
-      }
-
-
-
-/*      url += '&ecmd=&eth=&disp=&af=&naf=&misc='; //?
-      url += '&m=' + cNPortMode_SW ; 
-      */
+      url += '&gsmf=0'; //!временно
 
    } else {
       url += '&pty='+cNPortType_NotConnected;
@@ -3760,9 +3764,6 @@ function savePort(obj) {
 
 
 /*
-pn=3&pty=0&ecmd=10%3A2&eth=&naf=&misc=&d=&m=0
-pn=3&pty=0&ecmd=10%3A2&eth=&disp=&af=&naf=&misc=&d=&m=0
-http://192.168.0.15/sec/?pn=3&pty=0&ecmd=10%3A2&eth=&m=0
 var cNPortType_Out = '1';           
 var cNPortType_DigitalSensor  = '3';
 var cNPortType_I2C  = '4';

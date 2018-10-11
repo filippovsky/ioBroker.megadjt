@@ -410,6 +410,17 @@ else if ( (array_key_exists('ip', $options) || array_key_exists('f', $options) )
 
 						exit;
 					}
+					else if ( strlen($firmware) < 1000  )
+					{
+						echo "FAULT! Firmware length is zero or file is corrupted!\n";
+
+						// Restarting
+						$broadcast_string = chr(0xAA).chr(0).chr(0x03);
+						socket_sendto($sock, $broadcast_string, strlen($broadcast_string), 0, $broadcast_ip, 52000);
+						$pkt = stream_socket_recvfrom($socket, 200, 0, $peer);
+
+						exit;
+					}
 					elseif ( (strlen($firmware) > 32768 && $chip_type == 2561 && $chip_type_t == 1 )  )
 					{
 						echo "FAULT! You have to upgrade bootloader!\n";
@@ -559,7 +570,7 @@ elseif ( $conf_flag == 1 || ( array_key_exists('ip', $options) && array_key_exis
 {}
 else
 {
-	echo "MegaD-2561 management script Ver 2.08\n";
+	echo "MegaD-2561 management script Ver 2.09\n";
 	echo "Available options:\n";
 	echo "--scan (Scanning network for MegaD-328/2561 devices)\n";
 	echo "--ip [current IP address] --new-ip [new IP address] -p [password] (Changing IP-address)\n";
