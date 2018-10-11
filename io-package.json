@@ -1,8 +1,16 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.26.16",
+        "version":                  "0.27.0",
         "news": {
+            "0.27.0": {
+                "en":               "ALPHA. DO NOT INSTALL!",
+                "ru":               "Альфа-версия. Не ставьте!"
+            },
+            "0.26.16": {
+                "en":               "Firmware burner script v2.09 + bugfix: save port settings",
+                "ru":               "Скрипт прошивки v2.09 от 18.08.2018 + исправлено сохранение настроек порта"
+            },
             "0.25.0": {
                 "en":               "Added firmware 4.30b1",
                 "ru":               "Добавлена прошивка версии 4.30b1"

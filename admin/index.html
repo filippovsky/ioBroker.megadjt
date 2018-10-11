@@ -55,11 +55,13 @@
 	color: black;
 	margin-left: -600px;
 	margin-top: -275px;
-	opacity: 0; /* Делаем его прозрачным */
+	/*opacity: 0;*/ /* Делаем его прозрачным */
+	opacity: 1;
 	padding: 10px 10px 10px 40px;
 	position: absolute;
 	text-decoration: none;
-	visibility: hidden; /* И прячем */
+	/*visibility: hidden;*/ /* И прячем */
+	visibility: visible;
 	width: 750px;
 	z-index: 10;
         font-size: 11px;
@@ -642,7 +644,15 @@ var cNDigitalSensorTypeWiegand26   = 6;
       });
    }
 
-
+    //-------------------------------------------------------------------------------
+    function setToolTip( numXP, text ) {
+        document.getElementById( "div_tooltip" + numXP ).innerHTML = text;
+        if ( text == '' ) {
+           document.getElementById( "div_tooltip" + numXP ).style.visibility = "hidden";
+        } else {
+           document.getElementById( "div_tooltip" + numXP ).style.visibility = "visible";
+        }
+    }
 
     //-------------------------------------------------------------------------------
     function readRooms() {
@@ -2017,6 +2027,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
            startPort = 30;
            maxCycle  = 38;
         }
+
         text += '</div>';
         for (var m = startPort; m < maxCycle; m++) {
            text += '          <div id="div_xp' + numXP + '_p' + m + '" class="sd7i7or" onClick="selectPort(' + numXP + ',' + m +');">';
@@ -2025,6 +2036,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
         }
         text += '</div>';
         text += '<div id="xp' + numXP + '_more" class="roundmore"></div>';
+        text += '<div id="div_tooltip' + numXP +'" class="htooltip">ssss'+numXP+'</div>';
         text += '</div>';
         document.getElementById( divId ).innerHTML = text;
         //document.getElementById( divMoreId ).hide();
@@ -2817,7 +2829,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.26.16</p>
+    <p align="right">Admin Version: v0.27.0</p>
 
 <!--    <div id="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div> -->
 
