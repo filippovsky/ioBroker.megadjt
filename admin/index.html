@@ -397,6 +397,13 @@ span:hover::before {
         float: left;
      }
 
+.loading {
+    z-index: 99999999;
+    opacity: 0.9;
+    margin-top: 50%;
+    margin-left: 50%;
+    position: absolute;
+}
 
 </style>
 
@@ -661,8 +668,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
           selectPort( 1, SelectedPortXP1 );
           selectPort( 2, SelectedPortXP2 );
 
-//          document.getElementById( "loading" ).hide();
-          $(".loading").hide();
+          $(".loading").hide('slow');
 
       });
    }
@@ -1056,8 +1062,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
            port = controlPort;
         }
 
-        var m = $("#mXP"+numXP+" option:selected").val();
-        //ports[controlPort].m = m;
+        var element_id = 'mXP'+numXP;
+        var element  = document.getElementById( element_id );
+        var m = element.options[element.selectedIndex].value; 
+
         if ( m == cPortMode_ClickMode ) {
            // для Mode = click mode отключаем флажок
            $("#miscXP"+numXP).val(0);
@@ -1245,22 +1253,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
            controlPort = 15 + portNum;
        }
 
-
-       if ( $('#portTypeXP'+numXP).val() == cPortType_StandartIn ) {
-          socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.portMode', function (err, state) {
-             if (state) {
-                $("#mXP"+numXP).val( state.val );
-                $('#mXP'+numXP+' option:selected').val(state.val);
-                $('#mXP'+numXP+' select').val(state.val);
-                $('#mXP'+numXP+' option').each(function() {
-                   if($(this).val() == state.val) {
-                         $(this).prop("selected", true);
-                   }
-                });
-                mChanged( controlPort ); // ?
-             }
-          });
-        }
 
        socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.send2ServerAlwaysPressRelease', function (err, state) {
           if (state) {
@@ -1642,12 +1634,21 @@ var cNDigitalSensorTypeWiegand26   = 6;
            spanEth0 += ' телевизор, который выводит информацию о звонке на экран. Конечно, эту команду сможет сформировать и сервер, получив информацию от MegaD-2561, но с применением NetAction это будет: а) быстрее, б) надежнее.</p>';
            spanEth0 += '<p align=justify>- Можно придумать и другие варианты использования NetAction, которые были бы полезны: дублирование сервера, журналирование действий и прочее. К примеру, можно в сети иметь мощный производительный сервер и маленький мини-сервер (на базе роутера), который бы дублировал основные функции большого брата в случае его недееспособности.';
 
-           spanNaf0 = 'Этот флажок указывает, что NetAction будет вызван ТОЛЬКО при недоступности сервера. По умолчанию вызывается всегда.';
+           var addEth0 = '<p align=justify><b>Управление сценариями (Act) на другом устройстве c помощью Net</b></p>';
+           addEth0 += '<p align=justify>Как описано выше (<i>команда &quot;d&quot;</i>), контроллер может выполнять сценарий по умолчанию (Act) по запросу извне, а не по событию на входе. ';
+           addEth0 += 'Например, можно запустить сценарий, записанный для порта P0, сделав следующий запрос: <i>192.168.0.14/sec/?pt=0&amp;cmd=d</i><br>';
+           addEth0 += 'Не секрет, что паузы поддерживаются только в сценариях, и таким нехитрым образом вызывающая сторона может добиться выполнения команд с паузами. Если, конечно, они какие-то фиксированные. ';
+           addEth0 += 'Но в качестве вызывающего устройства может выступать не только сервер, но и другой контроллер.<br>';
+           addEth0 += 'Так, Устройство №1 по событию на его входе без участия сервера может вызвать сценарий с паузами на Устройстве №2 в случае, когда в его поле Net указано, например: 192.168.0.14/sec/?pt=0&amp;cmd=d</p>';
 
-           spanM  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img><span>';
-           spanM += '<p align=justify><b>Mode</b> - параметр, позволяющий использовать устройство в широком спектре задач. Эта опция определяет режим входа.</p>';
+           spanNaf0 = '<p align=justify>Этот флажок указывает, что NetAction будет вызван ТОЛЬКО при недоступности сервера  (или когда HTTP-статус ответа отличен от 200). По умолчанию вызывается всегда.</p>';
+
+           spanEth0 += addEth0;
+           spanNaf0 += addEth0;
+
+           spanM =  '<p align=justify><b>Mode</b> - параметр, позволяющий использовать устройство в широком спектре задач. Эта опция определяет режим входа.</p>';
            spanM += '<p align=justify><b>P</b> - устройство реагирует (то есть отправляет сообщения на сервер, выполняет сценарии и т.д.) только при замыкании контакта/выключателя (Пример: <i>http://192.168.0.1/megad.php?pt=4</i>)</p>';
-           spanM += '<p align=justify><b>R</b> - устройство реагирует только при размыкании контакта/выключателя. На сервер отправляется дополнительный параметр "m=1". (Пример: <i>http://192.168.0.1/megad.php?pt=4&m=1</i>)</p>';
+           spanM += '<p align=justify><b>R</b> - устройство реагирует только при размыкании контакта/выключателя. На сервер отправляется дополнительный параметр &quot;m=1&quot;. (Пример: <i>http://192.168.0.1/megad.php?pt=4&m=1</i>)</p>';
            spanM += '<p align=justify><b>P&amp;R</b> - устройство реагирует как на замыкание, так и на размыкания контакта.</p>';
            spanM += '<p align=justify><b>С</b> - Click Mode</p><br>&nbsp;<br>';
            spanM += 'В режиме Click Mode:<br>';
@@ -1662,7 +1663,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
            spanM += 'Есть изменения и в работе сценария по умолчанию (Action).<br>';
            spanM += 'Теперь допустимо написать так: 7:2|8:2<br>';
            spanM += 'Это означает, что при одинарном клике выполнится 7:2, а при двойном 8:2<br>&nbsp;<br>';
-           spanM += '<p align="justify">Необходимо отметить, что в случае одинарного клика (в режиме "C") информация на сервер (или выполнение сценария) происходит <b>с задержкой в 500 мс</b>, которая требуется для фиксации двойного клика.</p>';
+           spanM += '<p align=justify>Необходимо отметить, что в случае одинарного клика (в режиме &quot;C&quot;) информация на сервер (или выполнение сценария) происходит <b>с задержкой в 500 мс</b>, которая требуется для фиксации двойного клика.</p>';
            spanM += '<p align=center><b>Обработка длительных нажатий</b></p>';
            spanM += '<p align=justify>Часто возникает задача по-разному реагировать на длительность нажатия. Например, короткое нажатие ';
            spanM += 'включает/выключает свет в одной комнате, а нажатие и удержание (длительное нажатие) включает свет во всех комнатах. ';
@@ -1672,11 +1673,10 @@ var cNDigitalSensorTypeWiegand26   = 6;
            spanM += '<i>http://192.168.0.1/megad.php?pt=4<br>';
            spanM += '// спустя 1,5 секунды удержания клавиши выключателя<br>';
            spanM += 'http://192.168.0.1/megad.php?pt=4&m=2<br></i></p>';
-           spanM += '<p align="justify">Это в значительной степени облегчает обработку таких событий на сервере.</p>';
-           spanM += '<p align="justify">Но если необходимости в этой функции нет (к примеру, используются обычные выключатели вместо кнопочных), ';
+           spanM += '<p align=justify>Это в значительной степени облегчает обработку таких событий на сервере.</p>';
+           spanM += '<p align=justify>Но если необходимости в этой функции нет (к примеру, используются обычные выключатели вместо кнопочных), ';
            spanM += 'и в серверном ПО функция не используется, то обязательно необходимо делать проверку на наличие параметра m=2, чтобы ';
            spanM += 'действия не выполнялись дважды, если пользователь случайно нажал и удерживал кнопку дольше обычного.</p>';
-           spanM += '</span></div>';
 
            spanMisc  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img><span>';
            spanMisc += '<p align=justify>Этот флажок указывает, что при наличии сервера - устройство отправляет на сервер сообщения всегда ';
@@ -1737,6 +1737,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
            text += '<input id="ethXP'+numXP+'" type="text" value="' + (eth || '' ) + '" maxsize="35" onfocus="setToolTip('+numXP+',\''+spanEth0+'\');"/>';
            text += '</td></tr>';
 
+
            text += '<tr><td align="center" valign="middle">';
            text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanNaf0+'\');" style="cursor: pointer;"></img>';
            text += '</td><td align="left" valign="middle">';
@@ -1750,16 +1751,26 @@ var cNDigitalSensorTypeWiegand26   = 6;
            text += '</td></tr>';
 
 
-
            text += '<tr><td align="center" valign="middle">';
-           text += spanM + '</td><td align="left" valign="middle">';
+           text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanM+'\');" style="cursor: pointer;"></img>';
+           text += '</td><td align="left" valign="middle">';
            text += 'Режим срабатывания (Mode):&nbsp;';
-           text += '<select id="mXP'+numXP+'" onChange="mChanged('+controlPort+');">';
-           text += '<option value="'+cPortMode_PressOnly+'" ' + (($('#mXP'+numXP).val() == cPortMode_PressOnly) ? 'selected' : '') + '>Только при замыкании контакта (P)</option>';
-           text += '<option value="'+cPortMode_PressAndRelease+'" ' + (($('#mXP'+numXP).val() == cPortMode_PressAndRelease) ? 'selected' : '') + '>При замыкании и размыкании (P&amp;R)</option>';
-           text += '<option value="'+cPortMode_ReleaseOnly+'" ' + (($('#mXP'+numXP).val() == cPortMode_ReleaseOnly) ? 'selected' : '') + '>Только при размыкании (R)</option>';
-           text += '<option value="'+cPortMode_ClickMode+'" ' + (($('#mXP'+numXP).val() == cPortMode_ClickMode) ? 'selected' : '') + '>С определением двойного нажатия (Click Mode)</option>';
+           text += '<select id="mXP'+numXP+'" onChange="mChanged('+controlPort+');"   onfocus="setToolTip('+numXP+',\''+spanM+'\');">';
+           var mxp = '';
+           if ( isFirst == 1 ) {
+              mxp = Setup[ adapterInstance + '.ports.' + controlPort + '.portMode' ].val;
+           } else {
+              element_id = 'mXP'+numXP;
+              element  = document.getElementById( element_id );
+              mxp  = element.options[element.selectedIndex].value; 
+           }
+           text += '<option value="'+cPortMode_PressOnly+'" ' + ((mxp == cPortMode_PressOnly) ? 'selected' : '') + '>Только при замыкании контакта (P)</option>';
+           text += '<option value="'+cPortMode_PressAndRelease+'" ' + ((mxp == cPortMode_PressAndRelease) ? 'selected' : '') + '>При замыкании и размыкании (P&amp;R)</option>';
+           text += '<option value="'+cPortMode_ReleaseOnly+'" ' + ((mxp == cPortMode_ReleaseOnly) ? 'selected' : '') + '>Только при размыкании (R)</option>';
+           text += '<option value="'+cPortMode_ClickMode+'" ' + ((mxp == cPortMode_ClickMode) ? 'selected' : '') + '>С определением двойного нажатия (Click Mode)</option>';
            text += '</select></td></tr>';
+
+
 
            if ($('#mXP'+numXP).val() == cPortMode_ClickMode) {
               // опция недоступна для Click Mode
@@ -2025,8 +2036,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
         text += '<div id="xp' + numXP + '_more" class="roundmore"></div>';
            text += '<div id="div_tooltip' + numXP +'" class="tooltip"></div>';
         text += '</div>';
-//        text += '<div style="clear:both;"></div>';
-//        text += '<div id="div_tooltip' + numXP +'" class="tooltip"></div>';
 
         document.getElementById( divId ).innerHTML = text;
         //document.getElementById( divMoreId ).hide();
@@ -2077,9 +2086,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
     // ------------------------------------------------------------------------------------
     function savePort ( controlPort ) {
-       //var spinner = new Spinner(opts).spin(target);
-//       document.getElementById( "loading" ).show();
-       $(".loading").show();
+       $(".loading").show('slow');
        var element_id;
        var element;
        var newroom;
@@ -2088,7 +2095,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
        var newDefaultRunAlways;
        var newNetAction;
        var newNetRunOnlyWhenServerOut;
-
+       var newPortMode;
 
        $('#write').button('disable');
        $('#autoDetect').button('disable');
@@ -2166,8 +2173,15 @@ var cNDigitalSensorTypeWiegand26   = 6;
           newNetRunOnlyWhenServerOut = 0; 
        }
 
+       if ( newPortType == cPortType_StandartIn ) {
+          element_id = 'mXP'+numXP;
+          element  = document.getElementById( element_id );
+          newPortMode  = element.options[element.selectedIndex].value; 
+       } else {
+          newPortMode = '';//?cPortMode_PressOnly
+       }
 
-       var newPortMode = $('#mXP' + numXP ).val();
+
        var newSend2ServerAlwaysPressRelease = $('#miscXP' + numXP ).val();
        var newTremorDefenceDisabled = $('#RawXP' + numXP ).val();
        var newDisplayPort = $('#dispXP' + numXP ).val();
@@ -2223,8 +2237,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
              //$('#savePortBtn').button('enable');
 
              if (!msg || msg.error) {
-//                document.getElementById( "loading" ).hide();
-                $(".loading").hide();
+                $(".loading").hide('slow');
                 showMessage(msg.error, _('Error'), 'alert');
                 return;
              }
@@ -2236,6 +2249,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
              Setup[ inst + '.ports.' + controlPort + '.defaultRunAlways'].val = newDefaultRunAlways;
              Setup[ inst + '.ports.' + controlPort + '.netAction'].val = newNetAction;
              Setup[ inst + '.ports.' + controlPort + '.netRunOnlyWhenServerOut'].val = newNetRunOnlyWhenServerOut;
+             Setup[ inst + '.ports.' + controlPort + '.portMode'].val = newPortMode;
 
              imagePorts( numXP );
              if ( numXP == 1 ) {
@@ -2243,9 +2257,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
              } else if ( numXP == 2 ) {
                 selectPort( numXP, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
              }
-             //spinner.stop();
-//             document.getElementById( "loading" ).hide();
-             $(".loading").hide();
+             $(".loading").hide('slow');
              showMessage('Состояние порта сохранено', _('Info'), 'info');
 
           }
@@ -2255,8 +2267,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
     //-------------------------------------------------------------------------------------
     // the function loadSettings has to exist ...
     function load(settings, onChange) {
-//        document.getElementById( "loading" ).show();
-        $(".loading").show();
+        $(".loading").show('slow');
 
         SelectedPortXP1 = 0;
         SelectedPortXP2 = 0;
@@ -2859,7 +2870,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.27.20</p>
+    <p align="right">Admin Version: v0.27.21</p>
 
     <div id="loading" class="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div> 
 
