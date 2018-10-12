@@ -611,14 +611,16 @@ function checkDisplay() {
 
    IsDisplayPresented = false; // пока ориентируемся на тип порта I2C, в будущем поправить на конкретный девайс
    for (var m = 0; m <= 37 ; m++) {
-      if (Setup[ inst + '.ports.'+ m + '.portType' ] == cPortType_I2C ) {
+      console.log('m='+m+' ptty='+Setup[ inst + '.ports.'+ String(m) + '.portType' ] );
+      if (Setup[ inst + '.ports.'+ String(m) + '.portType' ] == cPortType_I2C ) {
          IsDisplayPresented = true;
+         console.log('**');
       }
    }
    if (IsDisplayPresented) {
-      console.log(' checkDisplay = TRUE' );
+      console.log('* checkDisplay = TRUE' );
    } else {
-      console.log(' checkDisplay = FALSE' );
+      console.log('* checkDisplay = FALSE' );
    }
 }
 
@@ -2957,7 +2959,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.27.31</p>
+    <p align="right">Admin Version: v0.27.32</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
