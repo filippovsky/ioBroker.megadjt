@@ -3743,6 +3743,7 @@ function savePort(obj) {
       } else if ( portMode == cPortMode_ClickMode ) {
          url += '&m=' + cNPortMode_ClickMode;
       }
+      url += '&disp='+displayPort;
       url += '&gsmf=0'; // !! временно
       //url += '&nr=1'; // !! временно
 
