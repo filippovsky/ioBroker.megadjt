@@ -1216,16 +1216,16 @@ function checkDisplay() {
            numXP = 0;
         }
 
-        if ( $('#defaultStateXP'+numXP ).prop('checked') ) {
-           //ports[controlPort].d = 1;
-           $('#defaultStateXP' + numXP).val( 1 );
+        var element_id = "defaultStateXP" + numXP;
+        var element  = document.getElementById( element_id );
+        var defxp = element.checked; 
+
+        if ( defxp ) {
            text = 'Включено по умолчанию';
         } else {
-           //ports[controlPort].d = 0;
-           $('#defaultStateXP' + numXP).val( 0 );
            text = 'Выключено по умолчанию';
         }
-        document.getElementById( "lblDefaultStateXP" + numXP ).innerHTML = text; //?lbl
+        document.getElementById( "lblDefaultStateXP" + numXP ).innerHTML = text;
     }
     //--------------------------------------------------------------------------------
     function MiscChanged ( controlPort ) {
@@ -1284,18 +1284,6 @@ function checkDisplay() {
        if (numXP == 2) {
            controlPort = 15 + portNum;
        }
-
-       socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.defaultState', function (err, state) {
-          if (state) {
-              if ( state.val == true || state.val == 'true') {
-                 $('#defaultStateXP' + numXP ).prop('checked', true);
-                 $("#defaultStateXP" + numXP ).val( 1 );
-              } else {
-                 $('#defaultStateXP' + numXP ).removeAttr('checked');
-                 $("#defaultStateXP" + numXP).val( 0 );
-              }
-          }
-       });
 
        socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.digitalSensorType', function (err, state) {
           if (state) {
@@ -1823,17 +1811,19 @@ function checkDisplay() {
         // порт OUT релейный
         } else if (( pty == cPortType_ReleOut ) || ( pty == cPortType_DimmedOut ) || ( pty == cPortType_SimistorOut ) ) {
 
-           spanDef  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img><span>';
-           spanDef += '<p align=justify><b>Default state (Def)</b>: состояние порта после включения или перезагрузки устройства. ';
+           spanDef = '<p align=justify><b>Default state (Def)</b>: состояние порта после включения или перезагрузки устройства. ';
            spanDef += 'В ряде случаев требуется, чтобы отдельные приборы по умолчанию были включены.</p> ';
-           spanDef += '</span></div>';
-
 
            text += '<tr><td align="center" valign="middle">';
-           text += spanDef + '</td><td align="left" valign="middle">';
-           text += '<input type="checkbox" class="checkbox" id="defaultStateXP'+numXP+'" '+ ( $('#defaultStateXP' + numXP ).val() ? 'checked' : '') + 
-                   ' onChange="defaultStateChanged('+controlPort+');"/>&nbsp;';
-           text += '<label id="lblDefaultStateXP'+numXP+'" for="defaultStateXP'+numXP+'">'+( $('#defaultStateXP' + numXP ).val() ? 'Включено по умолчанию' : 'Выключено по умолчанию') + '</label>';
+           text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDef+'\');" style="cursor: pointer;"></img>';
+           text += '</td><td align="left" valign="middle">';
+           var def = false;
+           if ( Setup[ adapterInstance + '.ports.' + controlPort + '.defaultState' ].val == true || Setup[ adapterInstance + '.ports.' + controlPort + '.defaultState' ].val == 'true' ) {
+              def = true;
+           }
+           text += '<input type="checkbox" class="checkbox" id="defaultStateXP'+numXP+'" '+ ( def ? 'checked' : '') + 
+                   ' onChange="defaultStateChanged('+controlPort+');"  onfocus="setToolTip('+numXP+',\''+spanDef+'\');"/>&nbsp;';
+           text += '<label id="lblDefaultStateXP'+numXP+'" for="defaultStateXP'+numXP+'">'+( def ? 'Включено по умолчанию' : 'Выключено по умолчанию') + '</label>';
            text += '</td></tr>';
 
         //-----------------------------------------------------------------------------
@@ -1955,7 +1945,7 @@ function checkDisplay() {
   */
 
         text += '<tr><td align="center" valign="middle">&nbsp;<td align=center valign=middle>';
-        text += '    <button class="translateB" id="savePortBtn" onClick="savePort('+controlPort+');">Сохранить настройки порта</button>';
+        text += '    <br>&nbsp;<br><button class="translateB" id="savePortBtn" onClick="savePort('+controlPort+');">Сохранить настройки порта</button>';
         text += '</td></tr>';
 
         document.getElementById( "xp" + numXP + "_port_preset" ).innerHTML = text;
@@ -2118,7 +2108,7 @@ function checkDisplay() {
        var newSend2ServerAlwaysPressRelease;
        var newTremorDefenceDisabled;
        var newDisplayPort;
-
+       var newDefaultState;
 
        $('#write').button('disable');
        $('#autoDetect').button('disable');
@@ -2243,13 +2233,24 @@ function checkDisplay() {
           newDisplayPort = '';
        }
 
+       if ( newPortType == cPortType_ReleOut || newPortType == cPortType_DimmedOut || newPortType == cPortType_SimistorOut ) {
+          element_id = 'defaultStateXP'+numXP;
+          element  = document.getElementById( element_id );
+          if ( element.checked ) {
+             newDefaultState = 1; 
+          } else {
+             newDefaultState  = 0; 
+          }
+       } else {
+          newDefaultState = 0; 
+       }
+
 
        element  = document.getElementById("controller.xp1model");
        var xp1model = element.options[element.selectedIndex].value; 
        element  = document.getElementById("controller.xp2model");
        var xp2model = element.options[element.selectedIndex].value; 
 
-       var newDefaultState = $('#defaultStateXP' + numXP ).val();
        var newDigSensorType = $('#dXP'+numXP+' option:selected').val();
        var mDS = $('#mDSXP'+numXP+' option:selected').val();
        var mDS_server;
@@ -2312,6 +2313,7 @@ function checkDisplay() {
              Setup[ inst + '.ports.' + controlPort + '.send2ServerAlwaysPressRelease'].val = newSend2ServerAlwaysPressRelease;
              Setup[ inst + '.ports.' + controlPort + '.tremorDefenceDisabled'].val = newTremorDefenceDisabled;
              Setup[ inst + '.ports.' + controlPort + '.displayPort'].val = newDisplayPort;
+             Setup[ inst + '.ports.' + controlPort + '.defaultState'].val = newDefaultState;
 
              checkDisplay();
 
@@ -2937,7 +2939,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.27.28</p>
+    <p align="right">Admin Version: v0.27.29</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
