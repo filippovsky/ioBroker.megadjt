@@ -615,6 +615,11 @@ function checkDisplay() {
          IsDisplayPresented = true;
       }
    }
+   if (IsDisplayPresented) {
+      console.log(' checkDisplay = TRUE' );
+   } else {
+      console.log(' checkDisplay = FALSE' );
+   }
 }
 
 //--------------------------------------------------------------------------------
@@ -1392,13 +1397,13 @@ function checkDisplay() {
            text += '<option value=""></option>';
            for (var rol in roles) {
                var rolename;
-               if ( rol == 'light' ) {
+               if ( rol == 'enum.functions.light' ) {
                   rolename = 'Освещение (лампа)';
-               } else if ( rol == 'switch' ) {
+               } else if ( rol == 'enum.functions.switch' ) {
                   rolename = 'Кнопка';
-               } else if ( rol == 'temperature' ) {
+               } else if ( rol == 'enum.functions.temperature' ) {
                   rolename = 'Датчик температуры';
-               } else if ( rol == 'blinds' ) {
+               } else if ( rol == 'enum.functions.blinds' ) {
                   rolename = 'Шторы';
                } else {
                   rolename = roles[rol].common.name;
@@ -1808,7 +1813,7 @@ function checkDisplay() {
            text += '</td></tr>';
 
            checkDisplay();
-           if ( IsDisplayPresented /*|| pty == cPortType_I2C*/ ) {
+           if ( IsDisplayPresented || pty == cPortType_I2C ) {
               text += '<tr><td align="center" valign="middle">';
               text +='<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDisp+'\');" style="cursor: pointer;"></img>';
               text += '</td><td align="left" valign="middle">';
@@ -2952,7 +2957,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.27.30</p>
+    <p align="right">Admin Version: v0.27.31</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
