@@ -1828,7 +1828,7 @@ function checkDisplay() {
               text += '<select id="dispXP'+numXP+'" onfocus="setToolTip('+numXP+',\''+spanDisp+'\');">';
               text += '<option value="" ' + ((disp == '') ? 'selected' : '') + '></option>';
               for (var ii = 0; ii <= 37 ; ii++) {
-                 if (Setup[ inst + '.ports.'+ String(ii) + '.portType' ].val == cPortType_I2C ) {
+                 if (Setup[ adapterInstance + '.ports.'+ String(ii) + '.portType' ].val == cPortType_I2C ) {
                     text += '<option value="'+ii+'" ' + ((disp == ii) ? 'selected' : '') + '>'+ii+'</option>';
                  }
               }
@@ -2971,7 +2971,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.27.38</p>
+    <p align="right">Admin Version: v0.27.39</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
