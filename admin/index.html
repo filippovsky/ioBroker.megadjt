@@ -550,6 +550,7 @@ span:hover::before {
    var Setup;
 
 
+var IsDisplayPresented = false; // пока ориентируемся на тип порта I2C, в будущем поправить на конкретный девайс
 
 var cPortType_NotConnected = 'NotConnected'; //255
 var cPortType_StandartIn  = 'StandartIn';    //0
@@ -604,6 +605,17 @@ function wait( cmd ) {
        $(".loading").hide('slow');
    }
 }
+//----------------------------------------------------------------------------
+function checkDisplay() {
+   var inst = adapter + '.' + instance;
+
+   IsDisplayPresented = false; // пока ориентируемся на тип порта I2C, в будущем поправить на конкретный девайс
+   for (var m = 0; m <= 37 ; m++) {
+      if (Setup[ inst + '.ports.'+ m + '.portType' ] == cPortType_I2C ) {
+         IsDisplayPresented = true;
+      }
+   }
+}
 
 //--------------------------------------------------------------------------------
    function getAdapterStates ( ) {
@@ -619,6 +631,7 @@ function wait( cmd ) {
 
           var x = msg.response;
           Setup = JSON.parse( x );
+
           if ( Setup[ AdapterInstance + '.controller.ipport' ] == '' ) {
              Setup[ AdapterInstance + '.controller.ipport' ] = '80';
           }
@@ -629,6 +642,8 @@ function wait( cmd ) {
              document.getElementById( 'firmware.version' ).style.backgroundColor = "yellow";
              document.getElementById( 'firmware.last_known_version' ).style.backgroundColor = "pink";
           }
+
+          checkDisplay();
 
           $('.valSetup').each(function () {
               var key = $(this).attr('id');
@@ -1791,15 +1806,16 @@ function wait( cmd ) {
            text += '<label id="lblrawXP'+numXP+'" for="rawXP'+numXP+'">'+( raw ? 'Отключить защиту от дребезга' : 'Включить защиту от дребезга') + '</label>';
            text += '</td></tr>';
 
-
-           text += '<tr><td align="center" valign="middle">';
-           text +='<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDisp+'\');" style="cursor: pointer;"></img>';
-           text += '</td><td align="left" valign="middle">';
-           text += 'Порт дисплея (Disp):&nbsp;';
-           var disp = Setup[ adapterInstance + '.ports.' + controlPort + '.displayPort' ].val;
-           text += '<input id="dispXP'+numXP+'" type="text" value="' + ( disp || '' ) + '" maxsize="2" onfocus="setToolTip('+numXP+',\''+spanDisp+'\');"/>';
-           text += '</td></tr>';
-
+           checkDisplay();
+           if ( IsDisplayPresented /*|| pty == cPortType_I2C*/ ) {
+              text += '<tr><td align="center" valign="middle">';
+              text +='<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDisp+'\');" style="cursor: pointer;"></img>';
+              text += '</td><td align="left" valign="middle">';
+              text += 'Порт дисплея (Disp):&nbsp;';
+              var disp = Setup[ adapterInstance + '.ports.' + controlPort + '.displayPort' ].val;
+              text += '<input id="dispXP'+numXP+'" type="text" value="' + ( disp || '' ) + '" maxsize="2" onfocus="setToolTip('+numXP+',\''+spanDisp+'\');"/>';
+              text += '</td></tr>';
+           }
 
            text += '</table>';
 
@@ -2214,11 +2230,15 @@ function wait( cmd ) {
           newTremorDefenceDisabled = 0; 
        }
 
-
-       if ( newPortType == cPortType_StandartIn ) {
-          element_id = 'dispXP'+numXP;
-          element  = document.getElementById( element_id );
-          newDisplayPort = element.value;
+       checkDisplay();
+       if ( IsDisplayPresented || newPortType == cPortType_I2C ) {
+          if ( newPortType == cPortType_StandartIn ) {
+             element_id = 'dispXP'+numXP;
+             element  = document.getElementById( element_id );
+             newDisplayPort = element.value;
+          } else {
+             newDisplayPort = '';
+          }
        } else {
           newDisplayPort = '';
        }
@@ -2292,6 +2312,8 @@ function wait( cmd ) {
              Setup[ inst + '.ports.' + controlPort + '.send2ServerAlwaysPressRelease'].val = newSend2ServerAlwaysPressRelease;
              Setup[ inst + '.ports.' + controlPort + '.tremorDefenceDisabled'].val = newTremorDefenceDisabled;
              Setup[ inst + '.ports.' + controlPort + '.displayPort'].val = newDisplayPort;
+
+             checkDisplay();
 
              imagePorts( numXP );
              if ( numXP == 1 ) {
@@ -2915,7 +2937,7 @@ function wait( cmd ) {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.27.27</p>
+    <p align="right">Admin Version: v0.27.28</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 

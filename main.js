@@ -69,6 +69,9 @@ var Password;
 var ControllerName;
 var ServerPort;
 
+
+var IsDisplayPresented = false; // пока ориентируемся на тип порта I2C, в будущем поправить на конкретный девайс
+
 var cPortType_NotConnected = 'NotConnected'; //255
 var cPortType_StandartIn  = 'StandartIn';    //0
 var cPortType_ReleOut = 'ReleOut';           //1
@@ -1954,6 +1957,33 @@ function triggerShortPress(port) {
     }
 }
 
+
+
+//----------------------------------------------------------------------------
+/*function checkDisplay() {
+   /
+   adapter.getStates('*', function(err,states) {
+      x = JSON.stringify(states); 
+
+      adapter.log.debug('states = '+ x );
+      elist = JSON.parse( x ); 
+      var z = elist["megadjt.0.ports.0.room"];
+   /
+
+   for (var m = 0; m <= 37 ; m++) {
+      var inst = 'ports.' + m + '.portType';
+      adapter.getState( inst, function(err,state) {
+         var portType = state.val;
+
+
+   IsDisplayPresented = false; // пока ориентируемся на тип порта I2C, в будущем поправить на конкретный девайс
+   for (var m = 0; m <= 37 ; m++) {
+      if (Setup[ inst + '.ports.'+ m + '.portType' ] == cPortType_I2C ) {
+         IsDisplayPresented = true;
+      }
+   }
+}
+*/
 
 //------------------------------------------------------------------------------------------------------------------
 function processPortState(_port, value) {
