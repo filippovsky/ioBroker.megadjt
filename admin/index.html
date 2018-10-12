@@ -399,10 +399,14 @@ span:hover::before {
 
 .loading {
     z-index: 99999999;
-    opacity: 0.9;
+    opacity: 0.5;
+    background-color: black;
     margin-top: 50%;
     margin-left: 50%;
     position: absolute;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
 }
 
 </style>
@@ -1051,6 +1055,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
     function mChanged ( controlPort ) {
         var numXP;
         var port;
+        var text;
         if ( controlPort < 15 ) {
            numXP = 1;
            port  = controlPort;
@@ -1070,11 +1075,15 @@ var cNDigitalSensorTypeWiegand26   = 6;
            // для Mode = click mode отключаем флажок
            $("#miscXP"+numXP).val(0);
            $("#miscXP"+numXP).removeAttr("checked");
+           text = 'Отправлять на сервер в режиме, установленном в Mode';
+           document.getElementById( "lblmiscXP" + numXP ).innerHTML = text;
            document.getElementById( "miscXP" + numXP ).style.visibility = "hidden";
            document.getElementById( "lblmiscXP" + numXP ).style.visibility = "hidden";
+           document.getElementById( "miscImg" + numXP ).style.visibility = "hidden";
         } else {
            document.getElementById( "miscXP" + numXP ).style.visibility = "visible";
            document.getElementById( "lblmiscXP" + numXP ).style.visibility = "visible";
+           document.getElementById( "miscImg" + numXP ).style.visibility = "visible";
         }
     }
     //--------------------------------------------------------------------------------
@@ -1212,14 +1221,17 @@ var cNDigitalSensorTypeWiegand26   = 6;
            numXP = 0;
         }
 
-        if ( $('#miscXP'+numXP ).prop('checked') ) {
-           $('#miscXP'+numXP).val(1);
+        var element_id = "miscXP" + numXP;
+        var element  = document.getElementById( element_id );
+        var miscxp = element.checked; 
+
+        if ( miscxp ) {
            text = 'Отправлять на сервер всегда в режиме P&amp;R';
         } else {
-           $('#miscXP'+numXP).val(0);
            text = 'Отправлять на сервер в режиме, установленном в Mode';
         }
         document.getElementById( "lblmiscXP" + numXP ).innerHTML = text;
+        document.getElementById( "miscImg" + numXP ).style.visibility = "visible"; //?
     }
     //--------------------------------------------------------------------------------
     function RawChanged ( controlPort ) {
@@ -1252,20 +1264,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
        if (numXP == 2) {
            controlPort = 15 + portNum;
        }
-
-
-       socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.send2ServerAlwaysPressRelease', function (err, state) {
-          if (state) {
-              if ( state.val == true || state.val == 'true') {
-                 $('#miscXP' + numXP ).prop('checked', true);
-                 $("#miscXP" + numXP ).val( 1 );
-              } else {
-                 $('#miscXP' + numXP ).removeAttr('checked');
-                 $("#miscXP"+numXP).val( 0 );
-              }
-              //?MiscChanged( controlPort );
-          }
-       });
 
        socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.tremorDefenceDisabled', function (err, state) {
           if (state) {
@@ -1677,12 +1675,21 @@ var cNDigitalSensorTypeWiegand26   = 6;
            spanM += '<p align=justify>Но если необходимости в этой функции нет (к примеру, используются обычные выключатели вместо кнопочных), ';
            spanM += 'и в серверном ПО функция не используется, то обязательно необходимо делать проверку на наличие параметра m=2, чтобы ';
            spanM += 'действия не выполнялись дважды, если пользователь случайно нажал и удерживал кнопку дольше обычного.</p>';
+           spanM += '<p align=center><b>Сценарии и длительное нажатие выключателя.</b></p>';
+           spanM += '<p align=justify>Начиная с версии прошивки 4.29b4, контроллер позволяет указывать свой сценарий для длительного нажатия.</p>';
+           spanM += '<p align=justify>Для режима &quot;P&quot;:<br>';
+           spanM += '<b>7:2|8:2</b><br>';
+           spanM += 'При однократном нажатии кнопки переключится выход P7.<br>';
+           spanM += 'При нажатии и удержании кнопки переключится сразу P7, а спустя полсекунды P8.</p>';
+           spanM += '<p align=justify>Для режима &quot;C&quot; (Click Mode):<br>';
+           spanM += '<b>7:2|8:2|9:2</b><br>';
+           spanM += 'Одинарный клик - переключится P7.<br>';
+           spanM += 'Двойной клик - переключится P8.<br>';
+           spanM += 'Удержание - переключится P9.</p>';
 
-           spanMisc  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img><span>';
-           spanMisc += '<p align=justify>Этот флажок указывает, что при наличии сервера - устройство отправляет на сервер сообщения всегда ';
+           spanMisc = '<p align=justify>Этот флажок указывает, что при наличии сервера - устройство отправляет на сервер сообщения всегда ';
            spanMisc += 'в режиме P&amp;R, а при его отсутствии Action выполняется только в том режиме, который установлен в Mode. <br>';
            spanMisc += '<i>Данная опция не доступна для Click Mode.</i></p>';
-           spanMisc += '</span></div>';
 
            spanRaw  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img><span>';
            spanRaw += '<p align=justify><b>Raw</b> - параметр отключает встроенную защиту от дребезга. Когда человек нажимает на ';
@@ -1772,17 +1779,24 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 
 
-           if ($('#mXP'+numXP).val() == cPortMode_ClickMode) {
+           if (mxp == cPortMode_ClickMode) {
               // опция недоступна для Click Mode
               $('#miscXP'+numXP).val() = 0;
            } else {
               text += '<tr><td align="center" valign="middle">';
-              text += spanMisc + '</td><td align="left" valign="middle">';
-              text += '<input type="checkbox" class="checkbox" id="miscXP'+numXP+'" '+ ($('#miscXP'+numXP).val() ? 'checked' : '') + 
-                   ' onChange="MiscChanged('+controlPort+');"/>&nbsp;';
-              text += '<label id="lblmiscXP'+numXP+'" for="miscXP'+numXP+'">'+($('#miscXP'+numXP).val() ? 'Всегда отправлять в режиме P&amp;R' : 'Выполнять Act в режиме, установленном Mode') + '</label>';
+              text += '<img id="miscImg' + numXP + '" src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanMisc+'\');" style="cursor: pointer;"></img>';
+              text += '</td><td align="left" valign="middle">';
+              var misc = false;
+              if ( Setup[ adapterInstance + '.ports.' + controlPort + '.send2ServerAlwaysPressRelease' ].val == true || Setup[ adapterInstance + '.ports.' + controlPort + '.send2ServerAlwaysPressRelease' ].val == 'true' ) {
+                 misc = true;
+              }
+              text += '<input type="checkbox" class="checkbox" id="miscXP'+numXP+'" '+ ( misc ? 'checked' : '') + 
+                   ' onChange="MiscChanged('+controlPort+');"  onfocus="setToolTip('+numXP+',\''+spanMisc+'\');"/>&nbsp;';
+              text += '<label id="lblmiscXP'+numXP+'" for="miscXP'+numXP+'">'+( misc ? 'Всегда отправлять в режиме P&amp;R' : 'Выполнять Act в режиме, установленном Mode') + '</label>';
               text += '</td></tr>';
            }
+
+
 
            text += '<tr><td align="center" valign="middle">';
            text += spanRaw + '</td><td align="left" valign="middle">';
@@ -2096,6 +2110,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
        var newNetAction;
        var newNetRunOnlyWhenServerOut;
        var newPortMode;
+       var newSend2ServerAlwaysPressRelease;
+
 
        $('#write').button('disable');
        $('#autoDetect').button('disable');
@@ -2178,11 +2194,23 @@ var cNDigitalSensorTypeWiegand26   = 6;
           element  = document.getElementById( element_id );
           newPortMode  = element.options[element.selectedIndex].value; 
        } else {
-          newPortMode = '';//?cPortMode_PressOnly
+          newPortMode = cPortMode_PressOnly; // ?
        }
 
 
-       var newSend2ServerAlwaysPressRelease = $('#miscXP' + numXP ).val();
+       if ( newPortType == cPortType_StandartIn ) {
+          element_id = 'miscXP'+numXP;
+          element  = document.getElementById( element_id );
+          if ( element.checked ) {
+             newSend2ServerAlwaysPressRelease = 1; 
+          } else {
+            newSend2ServerAlwaysPressRelease  = 0; 
+          }
+       } else {
+          newSend2ServerAlwaysPressRelease = 0; 
+       }
+
+
        var newTremorDefenceDisabled = $('#RawXP' + numXP ).val();
        var newDisplayPort = $('#dispXP' + numXP ).val();
 
@@ -2250,6 +2278,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
              Setup[ inst + '.ports.' + controlPort + '.netAction'].val = newNetAction;
              Setup[ inst + '.ports.' + controlPort + '.netRunOnlyWhenServerOut'].val = newNetRunOnlyWhenServerOut;
              Setup[ inst + '.ports.' + controlPort + '.portMode'].val = newPortMode;
+             Setup[ inst + '.ports.' + controlPort + '.send2ServerAlwaysPressRelease'].val = newSend2ServerAlwaysPressRelease;
 
              imagePorts( numXP );
              if ( numXP == 1 ) {
@@ -2870,7 +2899,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.27.21</p>
+    <p align="right">Admin Version: v0.27.22</p>
 
     <div id="loading" class="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div> 
 
