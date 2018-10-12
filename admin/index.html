@@ -1090,7 +1090,7 @@ function checkDisplay() {
 
         // Setup[ _adapter_instance+'.ports.'+String(k)+'.portType'].val = pty;
 
-        loadPresetSub( numXP, port, 1 ); // при изменении типа порта перерисовываем его описание
+        loadPresetSub( numXP, port, 0 ); // при изменении типа порта перерисовываем его описание
     }
     //--------------------------------------------------------------------------------
     function mChanged ( controlPort ) {
@@ -1772,13 +1772,13 @@ function checkDisplay() {
            text += 'Режим срабатывания (Mode):&nbsp;';
            text += '<select id="mXP'+numXP+'" onChange="mChanged('+controlPort+');"   onfocus="setToolTip('+numXP+',\''+spanM+'\');">';
            var mxp = '';
-           if ( isFirst == 1 ) {
+           //if ( isFirst == 1 ) {
               mxp = Setup[ adapterInstance + '.ports.' + controlPort + '.portMode' ].val;
-           } else {
+           /*} else {
               element_id = 'mXP'+numXP;
               element  = document.getElementById( element_id );
               mxp  = element.options[element.selectedIndex].value; 
-           }
+           } */
            text += '<option value="'+cPortMode_PressOnly+'" ' + ((mxp == cPortMode_PressOnly) ? 'selected' : '') + '>Только при замыкании контакта (P)</option>';
            text += '<option value="'+cPortMode_PressAndRelease+'" ' + ((mxp == cPortMode_PressAndRelease) ? 'selected' : '') + '>При замыкании и размыкании (P&amp;R)</option>';
            text += '<option value="'+cPortMode_ReleaseOnly+'" ' + ((mxp == cPortMode_ReleaseOnly) ? 'selected' : '') + '>Только при размыкании (R)</option>';
@@ -2962,7 +2962,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.27.36</p>
+    <p align="right">Admin Version: v0.27.37</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
