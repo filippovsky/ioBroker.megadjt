@@ -1824,8 +1824,16 @@ function checkDisplay() {
               text += '</td><td align="left" valign="middle">';
               text += 'Порт дисплея (Disp):&nbsp;';
               var disp = Setup[ adapterInstance + '.ports.' + controlPort + '.displayPort' ].val;
-              text += '<input id="dispXP'+numXP+'" type="text" value="' + ( disp || '' ) + '" maxsize="2" onfocus="setToolTip('+numXP+',\''+spanDisp+'\');"/>';
-              text += '</td></tr>';
+              //text += '<input id="dispXP'+numXP+'" type="text" value="' + ( disp || '' ) + '" maxsize="2" onfocus="setToolTip('+numXP+',\''+spanDisp+'\');"/>';
+              text += '<select id="dispXP'+numXP+'" onfocus="setToolTip('+numXP+',\''+spanDisp+'\');">';
+              text += '<option value="" ' + ((disp == '') ? 'selected' : '') + '></option>';
+              for (var ii = 0; ii <= 37 ; ii++) {
+                 if (Setup[ inst + '.ports.'+ String(ii) + '.portType' ].val == cPortType_I2C ) {
+                    text += '<option value="'+ii+'" ' + ((disp == ii) ? 'selected' : '') + '>'+ii+'</option>';
+                 }
+              }
+              text += '</select></td></tr>';
+              //text += '</td></tr>';
            }
 
            text += '</table>';
@@ -2248,7 +2256,8 @@ function checkDisplay() {
           if ( newPortType == cPortType_StandartIn ) {
              element_id = 'dispXP'+numXP;
              element  = document.getElementById( element_id );
-             newDisplayPort = element.value;
+             newDisplayPort  = element.options[element.selectedIndex].value; 
+             //newDisplayPort = element.value;
           } else {
              newDisplayPort = '';
           }
@@ -2962,7 +2971,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.27.37</p>
+    <p align="right">Admin Version: v0.27.38</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
