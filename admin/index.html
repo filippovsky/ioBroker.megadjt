@@ -662,6 +662,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
           selectPort( 2, SelectedPortXP2 );
 
 //          document.getElementById( "loading" ).hide();
+          $(".loading").hide();
 
       });
    }
@@ -1134,14 +1135,14 @@ var cNDigitalSensorTypeWiegand26   = 6;
            numXP = 0;
         }
 
-        if ( $("#nafXP"+numXP ).prop('checked') ) {
-           //ports[controlPort].naf = 1;
-           $('#nafXP'+numXP ).val( 1 );
-           text = 'Вызывать ТОЛЬКО при недоступности сервера';
+        var element_id = "nafXP" + numXP;
+        var element  = document.getElementById( element_id );
+        var nafxp = element.checked; 
+
+        if ( nafxp ) {
+           text = '&nbsp;Вызывать ТОЛЬКО при недоступности сервера';
         } else {
-           //ports[controlPort].naf = 0;
-           text = 'Выполнять всегда';
-           $('#nafXP'+numXP ).val( 0 );
+           text = '&nbsp;Вызывать всегда';
         }
         document.getElementById( "lblnafXP" + numXP ).innerHTML = text;
     }
@@ -1244,18 +1245,6 @@ var cNDigitalSensorTypeWiegand26   = 6;
            controlPort = 15 + portNum;
        }
 
-       socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.netRunOnlyWhenServerOut', function (err, state) {
-          if (state) {
-              if ( state.val == true || state.val == 'true') {
-                 $('#nafXP' + numXP ).prop('checked', true);
-                 $("#nafXP" + numXP ).val( 1 );
-              } else {
-                 $('#nafXP' + numXP ).removeAttr('checked');
-                 $("#nafXP"+numXP).val( 0 );
-              }
-              //?afChanged( controlPort );
-          }
-       });
 
        if ( $('#portTypeXP'+numXP).val() == cPortType_StandartIn ) {
           socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.portMode', function (err, state) {
@@ -1653,9 +1642,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
            spanEth0 += ' телевизор, который выводит информацию о звонке на экран. Конечно, эту команду сможет сформировать и сервер, получив информацию от MegaD-2561, но с применением NetAction это будет: а) быстрее, б) надежнее.</p>';
            spanEth0 += '<p align=justify>- Можно придумать и другие варианты использования NetAction, которые были бы полезны: дублирование сервера, журналирование действий и прочее. К примеру, можно в сети иметь мощный производительный сервер и маленький мини-сервер (на базе роутера), который бы дублировал основные функции большого брата в случае его недееспособности.';
 
-           spanNaf0  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img><span>';
-           spanNaf0 += 'Этот флажок указывает, что NetAction будет вызван ТОЛЬКО при недоступности сервера. По умолчанию вызывается всегда.';
-           spanNaf0 += '</span></div>';
+           spanNaf0 = 'Этот флажок указывает, что NetAction будет вызван ТОЛЬКО при недоступности сервера. По умолчанию вызывается всегда.';
 
            spanM  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img><span>';
            spanM += '<p align=justify><b>Mode</b> - параметр, позволяющий использовать устройство в широком спектре задач. Эта опция определяет режим входа.</p>';
@@ -1750,13 +1737,19 @@ var cNDigitalSensorTypeWiegand26   = 6;
            text += '<input id="ethXP'+numXP+'" type="text" value="' + (eth || '' ) + '" maxsize="35" onfocus="setToolTip('+numXP+',\''+spanEth0+'\');"/>';
            text += '</td></tr>';
 
-
            text += '<tr><td align="center" valign="middle">';
-           text += spanNaf0 + '</td><td align="left" valign="middle">';
-           text += '<input type="checkbox" class="checkbox" id="nafXP'+numXP+'" '+ ($('#nafXP'+numXP).val() ? 'checked' : '') + 
-                   ' onChange="NafChanged('+controlPort+');"/>&nbsp;';
-           text += '<label id="lblnafXP'+numXP+'" for="nafXP'+numXP+'">'+($('#nafXP'+numXP).val() ? 'Вызывать ТОЛЬКО при недоступности сервера' : 'Вызывать всегда') + '</label>';
+           text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanNaf0+'\');" style="cursor: pointer;"></img>';
+           text += '</td><td align="left" valign="middle">';
+           var naf = false;
+           if ( Setup[ adapterInstance + '.ports.' + controlPort + '.netRunOnlyWhenServerOut' ].val == true || Setup[ adapterInstance + '.ports.' + controlPort + '.netRunOnlyWhenServerOut' ].val == 'true' ) {
+              naf = true;
+           }
+           text += '<input type="checkbox" class="checkbox" id="nafXP'+numXP+'" '+ ( naf ? 'checked' : '') + 
+                   ' onChange="nafChanged('+controlPort+');"  onfocus="setToolTip('+numXP+',\''+spanNaf0+'\');"/>&nbsp;';
+           text += '<label id="lblnafXP'+numXP+'" for="nafXP'+numXP+'">'+( naf ? '&nbsp;Вызывать ТОЛЬКО при недоступности сервера' : '&nbsp;Вызывать всегда') + '</label>';
            text += '</td></tr>';
+
+
 
            text += '<tr><td align="center" valign="middle">';
            text += spanM + '</td><td align="left" valign="middle">';
@@ -2086,6 +2079,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
     function savePort ( controlPort ) {
        //var spinner = new Spinner(opts).spin(target);
 //       document.getElementById( "loading" ).show();
+       $(".loading").show();
        var element_id;
        var element;
        var newroom;
@@ -2093,6 +2087,8 @@ var cNDigitalSensorTypeWiegand26   = 6;
        var newDefaultAction;
        var newDefaultRunAlways;
        var newNetAction;
+       var newNetRunOnlyWhenServerOut;
+
 
        $('#write').button('disable');
        $('#autoDetect').button('disable');
@@ -2147,7 +2143,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
              newDefaultRunAlways = 0; 
           }
        } else {
-          newDefaultRunAlways = 0; //?
+          newDefaultRunAlways = 0; 
        }
 
        if ( newPortType == cPortType_StandartIn ) {
@@ -2158,8 +2154,19 @@ var cNDigitalSensorTypeWiegand26   = 6;
           newNetAction = '';
        }
 
+       if ( newPortType == cPortType_StandartIn ) {
+          element_id = 'nafXP'+numXP;
+          element  = document.getElementById( element_id );
+          if ( element.checked ) {
+             newNetRunOnlyWhenServerOut = 1; 
+          } else {
+             newNetRunOnlyWhenServerOut = 0; 
+          }
+       } else {
+          newNetRunOnlyWhenServerOut = 0; 
+       }
 
-       var newNetRunOnlyWhenServerOut = $('#nafXP' + numXP ).val();
+
        var newPortMode = $('#mXP' + numXP ).val();
        var newSend2ServerAlwaysPressRelease = $('#miscXP' + numXP ).val();
        var newTremorDefenceDisabled = $('#RawXP' + numXP ).val();
@@ -2217,6 +2224,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
              if (!msg || msg.error) {
 //                document.getElementById( "loading" ).hide();
+                $(".loading").hide();
                 showMessage(msg.error, _('Error'), 'alert');
                 return;
              }
@@ -2227,6 +2235,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
              Setup[ inst + '.ports.' + controlPort + '.defaultAction'].val = newDefaultAction;
              Setup[ inst + '.ports.' + controlPort + '.defaultRunAlways'].val = newDefaultRunAlways;
              Setup[ inst + '.ports.' + controlPort + '.netAction'].val = newNetAction;
+             Setup[ inst + '.ports.' + controlPort + '.netRunOnlyWhenServerOut'].val = newNetRunOnlyWhenServerOut;
 
              imagePorts( numXP );
              if ( numXP == 1 ) {
@@ -2236,7 +2245,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
              }
              //spinner.stop();
 //             document.getElementById( "loading" ).hide();
-
+             $(".loading").hide();
              showMessage('Состояние порта сохранено', _('Info'), 'info');
 
           }
@@ -2247,6 +2256,7 @@ var cNDigitalSensorTypeWiegand26   = 6;
     // the function loadSettings has to exist ...
     function load(settings, onChange) {
 //        document.getElementById( "loading" ).show();
+        $(".loading").show();
 
         SelectedPortXP1 = 0;
         SelectedPortXP2 = 0;
@@ -2849,9 +2859,9 @@ var cNDigitalSensorTypeWiegand26   = 6;
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.27.19</p>
+    <p align="right">Admin Version: v0.27.20</p>
 
-<!--    <div id="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div> -->
+    <div id="loading" class="loading" style="height: 643px; padding: 1em;"><img src="img/loading.gif"></div> 
 
     <table><tr><td><img src="megad.png"></td><td><h3 class="translate">MegaD-2561 adapter settings</h3></td></tr></table>
 
