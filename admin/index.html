@@ -1250,7 +1250,7 @@ function wait( cmd ) {
         document.getElementById( "miscImg" + numXP ).style.visibility = "visible"; //?
     }
     //--------------------------------------------------------------------------------
-    function RawChanged ( controlPort ) {
+    function rawChanged ( controlPort ) {
         var text = "";
         var numXP = 0;
         if ( controlPort < 15 ) {
@@ -1261,14 +1261,16 @@ function wait( cmd ) {
            numXP = 0;
         }
 
-        if ( $('#RawXP'+numXP ).prop('checked') ) {
-           $('#RawXP'+numXP).val( 1 );
+        var element_id = "rawXP" + numXP;
+        var element  = document.getElementById( element_id );
+        var rawxp = element.checked; 
+
+        if ( rawxp ) {
            text = 'Защита от дребезга отключена';
         } else {
-           $('#RawXP'+numXP).val( 0 );
            text = 'Защита от дребезга включена';
         }
-        document.getElementById( "lblRawXP" + numXP ).innerHTML = text; //?lbl
+        document.getElementById( "lblrawXP" + numXP ).innerHTML = text;
     }
     // -------------------------------------------------------------------------------
     function loadPreset( numXP, portNum ) {
@@ -1281,18 +1283,6 @@ function wait( cmd ) {
            controlPort = 15 + portNum;
        }
 
-       socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.tremorDefenceDisabled', function (err, state) {
-          if (state) {
-              if ( state.val == true || state.val == 'true') {
-                 $('#RawXP' + numXP ).prop('checked', true);
-                 $("#RawXP" + numXP ).val( 1 );
-              } else {
-                 $('#RawXP' + numXP ).removeAttr('checked');
-                 $("#RawXP"+numXP).val( 0 );
-              }
-              //?RawChanged( controlPort );
-          }
-       });
 
        socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.displayPort', function (err, state) {
           if (state) {
@@ -1707,11 +1697,10 @@ function wait( cmd ) {
            spanMisc += 'в режиме P&amp;R, а при его отсутствии Action выполняется только в том режиме, который установлен в Mode. <br>';
            spanMisc += '<i>Данная опция не доступна для Click Mode.</i></p>';
 
-           spanRaw  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img><span>';
-           spanRaw += '<p align=justify><b>Raw</b> - параметр отключает встроенную защиту от дребезга. Когда человек нажимает на ';
+           spanRaw = '<p align=justify><b>Raw</b> - параметр отключает встроенную защиту от дребезга. Когда человек нажимает на ';
            spanRaw += 'обычный выключатель или кнопку, то коммутация контактов, когда две металлические пластины внутри выключателя ';
            spanRaw += 'только касаются друг друга, бывает ненадежной. И за этот крайне небольшой промежуток времени, измеряемый ';
-           spanRaw += 'миллисекундами, контроллер может зафиксировать десятки пограничных значений "включено-выключено". Этот эффект ';
+           spanRaw += 'миллисекундами, контроллер может зафиксировать десятки пограничных значений &quot;включено-выключено&quot;. Этот эффект ';
            spanRaw += 'называется &quot;дребезгом контактов&quot; и может генерировать большое количество ложных событий. С самого ';
            spanRaw += 'начала в контроллере заложена защита от дребезга, которая позволяет выполнять сценарий по умолчанию или ';
            spanRaw += 'отправлять сообщение на сервер только тогда, когда контакт надежен и состояние входа не меняется. Однако в ';
@@ -1720,7 +1709,6 @@ function wait( cmd ) {
            spanRaw += 'времени, чтобы встроенная защита от дребезга смогла распознать срабатывание входа. В этой ситуации можно отключить ';
            spanRaw += 'этот механизм и переложить его на сервер. Другой пример - подключение к контроллеру различных импульсных счетчиков, ';
            spanRaw += 'где длительность импульса не превышает 10-15 миллисекунд.</p>';
-           spanRaw += '</span></div>';
 
            spanDisp  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img><span>';
            spanDisp += '<p align=justify>После того, как хотя бы один дисплей подключен к контроллеру, можно использовать поле Disp. ';
@@ -1813,14 +1801,19 @@ function wait( cmd ) {
            }
 
 
-
            text += '<tr><td align="center" valign="middle">';
-           text += spanRaw + '</td><td align="left" valign="middle">';
-           text += '<input type="checkbox" class="checkbox" id="RawXP'+numXP+'" '+ ($('#RawXP'+numXP).val() ? 'checked' : '') + 
-                   ' onChange="RawChanged('+controlPort+');"/>&nbsp;';
-           //text += '</td><td align="left" valign="middle">';
-           text += '<label id="lblRawXP'+numXP+'" for="RawXP'+numXP+'">'+($('#RawXP'+numXP).val() ? 'Отключить защиту от дребезга' : 'Включить защиту от дребезга') + '</label>';
+           text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanRaw+'\');" style="cursor: pointer;"></img>';
+           text += '</td><td align="left" valign="middle">';
+           var raw = false;
+           if ( Setup[ adapterInstance + '.ports.' + controlPort + '.tremorDefenceDisabled' ].val == true || Setup[ adapterInstance + '.ports.' + controlPort + '.tremorDefenceDisabled' ].val == 'true' ) {
+              raw = true;
+           }
+           text += '<input type="checkbox" class="checkbox" id="rawXP'+numXP+'" '+ ( raw ? 'checked' : '') + 
+                   ' onChange="rawChanged('+controlPort+');"  onfocus="setToolTip('+numXP+',\''+spanRaw+'\');"/>&nbsp;';
+           text += '<label id="lblrawXP'+numXP+'" for="rawXP'+numXP+'">'+( raw ? 'Отключить защиту от дребезга' : 'Включить защиту от дребезга') + '</label>';
            text += '</td></tr>';
+
+
 
            text += '<tr><td align="center" valign="middle">';
            text += spanDisp + '</td><td align="left" valign="middle">';
@@ -2129,7 +2122,7 @@ function wait( cmd ) {
        var newNetRunOnlyWhenServerOut;
        var newPortMode;
        var newSend2ServerAlwaysPressRelease;
-
+       var newTremorDefenceDisabled;
 
        $('#write').button('disable');
        $('#autoDetect').button('disable');
@@ -2229,7 +2222,19 @@ function wait( cmd ) {
        }
 
 
-       var newTremorDefenceDisabled = $('#RawXP' + numXP ).val();
+       if ( newPortType == cPortType_StandartIn ) {
+          element_id = 'rawXP'+numXP;
+          element  = document.getElementById( element_id );
+          if ( element.checked ) {
+             newTremorDefenceDisabled = 1; 
+          } else {
+             newTremorDefenceDisabled  = 0; 
+          }
+       } else {
+          newTremorDefenceDisabled = 0; 
+       }
+
+
        var newDisplayPort = $('#dispXP' + numXP ).val();
 
        var element  = document.getElementById("controller.xp1model");
@@ -2298,6 +2303,7 @@ function wait( cmd ) {
              Setup[ inst + '.ports.' + controlPort + '.netRunOnlyWhenServerOut'].val = newNetRunOnlyWhenServerOut;
              Setup[ inst + '.ports.' + controlPort + '.portMode'].val = newPortMode;
              Setup[ inst + '.ports.' + controlPort + '.send2ServerAlwaysPressRelease'].val = newSend2ServerAlwaysPressRelease;
+             Setup[ inst + '.ports.' + controlPort + '.tremorDefenceDisabled'].val = newTremorDefenceDisabled;
 
              imagePorts( numXP );
              if ( numXP == 1 ) {
@@ -2921,7 +2927,7 @@ function wait( cmd ) {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.27.25</p>
+    <p align="right">Admin Version: v0.27.26</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
