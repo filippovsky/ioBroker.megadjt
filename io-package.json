@@ -1,9 +1,9 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.27.23",
+        "version":                  "0.27.24",
         "news": {
-            "0.27.23": {
+            "0.27.24": {
                 "en":               "ALPHA. DO NOT INSTALL!",
                 "ru":               "Альфа-версия. Не ставьте!"
             },
