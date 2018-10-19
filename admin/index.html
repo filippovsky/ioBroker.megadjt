@@ -1872,16 +1872,6 @@ function checkDisplay() {
            spanSenMode += 'со значением температуры так, словно этот порт локальный. Разумеется, доступны и другие стандартные команды: выключить - &quot;0&quot;, включить - &quot;1&quot;, переключить - &quot;2&quot;.</p>';
 
            text += '<tr><td align="center" valign="middle">';
-           text += spanSenMode + '</td><td align="left" valign="middle">';
-           text += 'Режим работы (Mode):&nbsp;';
-           text += '<select id="mDSXP'+numXP+'" onChange="mDSChanged('+controlPort+');">';
-           text += '<option value="0" ' + (($('#mDSXP'+numXP).val() == 0) ? 'selected' : '') + '>Нормальный</option>';
-           text += '<option value="1" ' + (($('#mDSXP'+numXP).val() == 1) ? 'selected' : '') + '>&gt;</option>';
-           text += '<option value="2" ' + (($('#mDSXP'+numXP).val() == 2) ? 'selected' : '') + '>&lt;</option>';
-           text += '<option value="3" ' + (($('#mDSXP'+numXP).val() == 3) ? 'selected' : '') + '>&lt;&gt;</option>';
-           text += '</select></td></tr>';
-
-           text += '<tr><td align="center" valign="middle">';
            text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanSenMode+'\');" style="cursor: pointer;"></img>';
            text += '</td><td align="left" valign="middle">';
            text += 'Режим работы (Mode):&nbsp;';
@@ -1922,6 +1912,7 @@ function checkDisplay() {
        var controlPort = portNum;
        var portNumTxt  = portNum;
 
+       setToolTip( numXP, '' );
 
        if (numXP == 2) {
           controlPort = 15 + portNum;
@@ -2919,7 +2910,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.27.41</p>
+    <p align="right">Admin Version: v0.27.42</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
