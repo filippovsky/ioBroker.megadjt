@@ -2910,7 +2910,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.27.42</p>
+    <p align="right">Admin Version: v0.27.43</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
@@ -3031,6 +3031,24 @@ function checkDisplay() {
              <td>Дата и время</td>
              <td>Описание</td>
              <td>Прошивка</td>
+           </tr>
+
+           <tr>
+             <td><b>4.30b3</b></td>
+             <td>19.10.2018</td>
+             <td><p align=justify>Исправлена ошибка, в результате которой датчик BH1750 мог возвращать некорректные значения при высоком уровне освещенности
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.30b3');">Прошить</button></td>
+           </tr>
+
+           <tr>
+             <td><b>4.30b2</b></td>
+             <td>13.10.2018</td>
+             <td><p align=justify>Улучшена работа с диммируемыми портами
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.30b2');">Прошить</button></td>
            </tr>
 
            <tr>
