@@ -2105,14 +2105,14 @@ function processPortState(_port, value) {
                if ( temperature != null ) {
                   adapter.getState( temperatureBranch, function(err,state) {
                      if ( state.val != temperature ) {
-                        adapter.setState( temperatureBranch, {val: state.val, ack: true, q: q});
+                        adapter.setState( temperatureBranch, {val: temperature, ack: true, q: q});
                      }
                   });
                }
                if ( humidity != null ) {
                   adapter.getState( humidityBranch, function(err,state) {
                      if ( state.val != humidity ) {
-                        adapter.setState( humidityBranch, {val: state.val, ack: true, q: q});
+                        adapter.setState( humidityBranch, {val: humidity, ack: true, q: q});
                      }
                   });
                }
