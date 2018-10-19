@@ -1995,9 +1995,9 @@ function processPortState(_port, value) {
     var temperatureBranch  = portBranch + 'temperature';
     var humidityBranch     = portBranch + 'humidity';
 
-    adapter.log.debug( 'portTypeBranch='+portTypeBranch );
-    adapter.log.debug( 'temperatureBranch='+temperatureBranch );
-    adapter.log.debug( 'value='+value );
+    //adapter.log.debug( 'portTypeBranch='+portTypeBranch );
+    //adapter.log.debug( 'temperatureBranch='+temperatureBranch );
+    //adapter.log.debug( 'value='+value );
 
     adapter.getState( portTypeBranch, function(err,state) {
        var portType = state.val;
@@ -2014,8 +2014,8 @@ function processPortState(_port, value) {
 
        adapter.getState( currentStateBranch, function(err,state) {
           var oldState = state.val;
-          adapter.log.debug( '+value='+value );
-          adapter.log.debug( 'oldState='+oldState );
+          //adapter.log.debug( '+value='+value );
+          //adapter.log.debug( 'oldState='+oldState );
 
           if ( value !== null ) {
              var secondary   = null;
@@ -2028,16 +2028,16 @@ function processPortState(_port, value) {
 
              if (typeof value == 'string') {
                 var match_slash = value.split('/');  //t
-                adapter.log.debug( 'match_slash='+match_slash );
+                //adapter.log.debug( 'match_slash='+match_slash );
                 var match_temp  = value.match(/temp:([0-9.-]+)/); //m
-                adapter.log.debug( 'match_temp='+match_temp );
+                //adapter.log.debug( 'match_temp='+match_temp );
                 if (match_temp) {
                    humidity = value.match(/hum:([0-9.]+)/);
                    if (humidity) humidity = parseFloat(humidity[1]);
-                   adapter.log.debug( 'match_temp[0]='+match_temp[0] );
-                   adapter.log.debug( 'match_temp[1]='+match_temp[1] );
+                   //adapter.log.debug( 'match_temp[0]='+match_temp[0] );
+                   //adapter.log.debug( 'match_temp[1]='+match_temp[1] );
                    temperature = match_temp[1];
-                   adapter.log.debug( 'temperature='+temperature );
+                   //adapter.log.debug( 'temperature='+temperature );
                 } else {
                    value = match_slash[0];
                 }
@@ -2102,13 +2102,13 @@ function processPortState(_port, value) {
             if ( oldState !=  newValue ) {
                adapter.log.debug('detected new value on port [' + _port  + ']: ' + newValue);
                adapter.setState( currentStateBranch, {val: newValue, ack: true, q: q});
-               adapter.log.debug('temperature : ' + temperature);
+               //adapter.log.debug('temperature : ' + temperature);
                if ( temperature != null ) {
                   adapter.getState( temperatureBranch, function(err,state) {
-                     adapter.log.debug('old temperature on port [' + _port  + ']: ' + state.val);
-                     adapter.log.debug('new temperature on port [' + _port  + ']: ' + temperature);
+                     //adapter.log.debug('old temperature on port [' + _port  + ']: ' + state.val);
+                     //adapter.log.debug('new temperature on port [' + _port  + ']: ' + temperature);
                      if ( state.val != temperature ) {
-                        adapter.log.debug(' state.val != temperature');
+                        //adapter.log.debug(' state.val != temperature');
                         adapter.setState( temperatureBranch, {val: temperature, ack: true, q: q});
                      }
                   });
