@@ -1128,47 +1128,6 @@ function checkDisplay() {
         }
     }
     //--------------------------------------------------------------------------------
-    function d1Changed ( controlPort ) {
-        var numXP;
-        var port;
-        if ( controlPort < 15 ) {
-           numXP = 1;
-           port  = controlPort;
-        } else if ( controlPort < 30 ) {
-           numXP = 2;
-           port = controlPort - 15;
-        } else {
-           numXP = 0;
-           port = controlPort;
-        }
-
-        //var d = $("#d"+controlPort+" option:selected").val();
-        //ports[controlPort].d = d;
-        var d = $("#dXP"+numXP+" option:selected").val();
-        $('#dXP'+numXP).val(d);
-
-    }
-    //--------------------------------------------------------------------------------
-    function mDSChanged ( controlPort ) {
-        var numXP;
-        var port;
-        if ( controlPort < 15 ) {
-           numXP = 1;
-           port  = controlPort;
-        } else if ( controlPort < 30 ) {
-           numXP = 2;
-           port = controlPort - 15;
-        } else {
-           numXP = 0;
-           port = controlPort;
-        }
-
-        var m = $("#mDSXP"+numXP+" option:selected").val();
-        $('#mDSXP'+numXP).val(m);
-
-    }
-
-    //--------------------------------------------------------------------------------
     function NafChanged ( controlPort ) {
         var text = "";
         var numXP = 0;
@@ -1295,45 +1254,6 @@ function checkDisplay() {
            controlPort = 15 + portNum;
        }
 
-       socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.digitalSensorType', function (err, state) {
-          if (state) {
-              $("#dXP"+numXP).val( state.val );
-              $('#dXP'+numXP+' option:selected').val(state.val);
-              $('#dXP'+numXP+' select').val(state.val);
-              $('#dXP'+numXP+' option').each(function() {
-                   if($(this).val() == state.val) {
-                         $(this).prop("selected", true);
-                   }
-              });
-              d1Changed( controlPort ); // ?
-          }
-       });
-
-       socket.emit('getState',  adapter + '.' + instance + '.ports.' + controlPort + '.digitalSensorMode', function (err, state) {
-          if (state) {
-              if ( state.val == 'Norm' ) {
-                 mDS = 0;
-              } else if ( state.val == '>') {
-                 mDS = 1;
-              } else if ( state.val == '<') {
-                 mDS = 2;
-              } else if ( state.val == '<>') {
-                 mDS = 3;
-              } else {
-                 mDS = 0;//?
-              }
-
-              $("#mDSXP"+numXP).val( mDS );
-              $('#mDSXP'+numXP+' option:selected').val( mDS );
-              $('#mDSXP'+numXP+' select').val( mDS );
-              $('#mDSXP'+numXP+' option').each(function() {
-                   if($(this).val() == mDS) {
-                         $(this).prop("selected", true);
-                   }
-              });
-              mDSChanged( controlPort ); // ?
-          }
-       });
 
 
       loadPresetSub( numXP, portNum, 1 );
@@ -1861,8 +1781,8 @@ function checkDisplay() {
         // порт DSen цифровой вход
         } else if ( pty == cPortType_DigitalSensor ) {
 
-           spanSen  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img><span>';
-           spanSen += '<font color=red><b>ВНИМАНИЕ! Положение джампера должно быть нижнее!</b></font><br>';
+           spanSen  = '<p align=justify>';
+           spanSen += '<font color=red><b>ВНИМАНИЕ! Положение джампера должно быть нижнее!</b></font></p>';
            spanSen += '<p align=justify><b>Тип устройства (Sen)</b>: Тип подключенного датчика</p>';
            spanSen += '<ul><li><p align=justify><b>DHT11</b> - Цифровой датчик температуры и влажности DHT11</li></p>';
            spanSen += '<li><p align=justify><b>DHT22</b> - Цифровой датчик температуры и влажности DHT22.</p> ';
@@ -1876,7 +1796,7 @@ function checkDisplay() {
            spanSen += '<p align=justify>Подключение <b>влагозащищенного DS18B20</b>: <b>Желтый</b> провод - данные, подключаем к правой клемме порта. ';
            spanSen += '<b>Черный</b> провод - землю и <b>Красный</b> провод - питание, подключаем к левой клемме порта.</p>';
            spanSen += '<p align=justify>Для тех, кто не знаком с технологией 1-wire, цифровые датчики DS18B20 могут работать без внешнего питания, ';
-           spanSen += 'используя так называемое "паразитное" от линии данных. В данном случае описано подключение датчика именно такое, ';
+           spanSen += 'используя так называемое &quot;паразитное&quot; от линии данных. В данном случае описано подключение датчика именно такое, ';
            spanSen += 'с использованием паразитного питания. Производитель рекомендует в этой ситуации соединить вывод питания с землей, ';
            spanSen += 'что мы и сделали (желательно это сделать как можно ближе к датчику). Не стоит беспокоиться по поводу подключения ';
            spanSen += 'датчиков температуры на паразитном питании. В этом режиме они работают ничуть не хуже, чем с питанием, а длина ';
@@ -1896,7 +1816,7 @@ function checkDisplay() {
            spanSen += '<p align=left>Через запрос вида http://192.168.0.14/sec/?pt=32&cmd=list можно получить в ответ примерно следующее:</p>';
            spanSen += '<p align=left>8aad6a070000:32.43;85a56a070000:32.43;</p>';
            spanSen += '<p align=left>адрес:температура;адрес:температура;</p>';
-           spanSen += '<p align=justify>Если шина занята конвертацией, то в ответ вернется просто "Busy"</p>';
+           spanSen += '<p align=justify>Если шина занята конвертацией, то в ответ вернется просто &quot;Busy&quot;</p>';
            spanSen += '<p align=justify>Контроллер автоматически каждые 30 секунд отправляет в шину команду на конвертацию температуры. ';
            spanSen += 'Но можно отправить такой запрос и вручную, вызвав URL вида <br>';
            spanSen += 'http://192.168.0.14/sec/?pt=32&cmd=conv </p></li>';
@@ -1905,30 +1825,31 @@ function checkDisplay() {
            spanSen += 'Вот так данные приходят на сервер.<br>';
            spanSen += '/md.php?pt=30&wg=ec532f</p>';
            spanSen += '<p align=justify>Внимание! Большинство считывателей (или даже все) для реализации интерфейса Wiegand используют 5В. ';
-           spanSen += 'Подключать линии D0/D1 напрямую к контроллеру без платы согласования уровней 5V-3.3V, а такие на "али" ';
+           spanSen += 'Подключать линии D0/D1 напрямую к контроллеру без платы согласования уровней 5V-3.3V, а такие на &quot;али&quot; ';
            spanSen += 'продаются по 40 руб за шт, нельзя!<br>В силу особенностей работы контроллера, протокол TM/TouchMemory (1-wire) ';
            spanSen += 'для работы со считывателями выглядит более предпочтительным, чем Wiegand. Вероятность считывания некорректных ';
            spanSen += 'данных, опять же, учитывая специфику работы контроллера, для протокола Wiegand несколько выше. Эту проблему ';
            spanSen += 'можно скорее всего решить, используя порты с функцией внешнего прерывания. Но это имеет смысл делать в том ';
            spanSen += 'случае, если на практике существующая реализация будет работать недостаточно хорошо.</p></li>';
-           spanSen += '</span></div>';
-
 
            text += '<tr><td align="center" valign="middle">';
-           text += spanSen + '</td><td align="left" valign="middle">';
+           text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanSen+'\');" style="cursor: pointer;"></img>';
+           text += '</td><td align="left" valign="middle">';
            text += '<font color=red><b>ВНИМАНИЕ! Положение джампера должно быть нижнее!</b></font><br>';
            text += 'Тип устройства (DSen):&nbsp;';
-           text += '<select id="dXP'+numXP+'" onChange="d1Changed('+controlPort+');">';
-           text += '<option value="'+cDigitalSensorTypeDHT11+'" ' + (($('#dXP'+numXP).val() == cDigitalSensorTypeDHT11) ? 'selected' : '') + '>DHT11 (Температура и влажность)</option>';
-           text += '<option value="'+cDigitalSensorTypeDHT22+'" ' + (($('#dXP'+numXP).val() == cDigitalSensorTypeDHT22) ? 'selected' : '') + '>DHT22 (Температура и влажность)</option>';
-           text += '<option value="'+cDigitalSensorTypeDS18B20+'" ' + (($('#dXP'+numXP).val() == cDigitalSensorTypeDS18B20) ? 'selected' : '') + '>DS18B20 или другой 1-Wire датчик</option>';
-           text += '<option value="'+cDigitalSensorTypeMarine+'" ' + (($('#dXP'+numXP).val() == cDigitalSensorTypeMarine) ? 'selected' : '') + '>iButton/Proximity EM Marine (считыватель ключей)</option>';
-           text += '<option value="'+cDigitalSensorType1WBus+'" ' + (($('#dXP'+numXP).val() == cDigitalSensorType1WBus) ? 'selected' : '') + '>Шина 1-Wire</option>';
-           text += '<option value="'+cDigitalSensorTypeWiegand26+'" ' + (($('#dXP'+numXP).val() == cDigitalSensorTypeWiegand26) ? 'selected' : '') + '>W26 (Считыватель Wiegand26)</option>';
+           text += '<select id="dXP'+numXP+'" onfocus="setToolTip('+numXP+',\''+spanSen+'\');">';
+           var dxp = '';
+           dxp = Setup[ adapterInstance + '.ports.' + controlPort + '.digitalSensorType' ].val;
+           text += '<option value="'+cDigitalSensorTypeDHT11+'" ' + ((dxp == cDigitalSensorTypeDHT11) ? 'selected' : '') + '>DHT11 (Температура и влажность)</option>';
+           text += '<option value="'+cDigitalSensorTypeDHT22+'" ' + ((dxp == cDigitalSensorTypeDHT22) ? 'selected' : '') + '>DHT22 (Температура и влажность)</option>';
+           text += '<option value="'+cDigitalSensorTypeDS18B20+'" ' + ((dxp == cDigitalSensorTypeDS18B20) ? 'selected' : '') + '>DS18B20 или другой 1-Wire датчик</option>';
+           text += '<option value="'+cDigitalSensorTypeMarine+'" ' + ((dxp == cDigitalSensorTypeMarine) ? 'selected' : '') + '>iButton/Proximity EM Marine (считыватель ключей)</option>';
+           text += '<option value="'+cDigitalSensorType1WBus+'" ' + ((dxp == cDigitalSensorType1WBus) ? 'selected' : '') + '>Шина 1-Wire</option>';
+           text += '<option value="'+cDigitalSensorTypeWiegand26+'" ' + ((dxp == cDigitalSensorTypeWiegand26) ? 'selected' : '') + '>W26 (Считыватель Wiegand26)</option>';
            text += '</select></td></tr>';
 
-           spanSenMode  = '<div class="htooltip"><img src="img/emblem-notice.png" width="20px" height="20px"></img><span>';
-           spanSenMode += '<p align=justify>Контроллер MegaD-2561 способен не только отображать значение АЦП в Web-интерфейсе ';
+
+           spanSenMode = '<p align=justify>Контроллер MegaD-2561 способен не только отображать значение АЦП в Web-интерфейсе ';
            spanSenMode += 'или передавать его по запросу сервера. Он может отслеживать значение и сообщать серверу о достижении ';
            spanSenMode += 'определенного порога самостоятельно. Такая возможность позволяет избежать постоянного опроса контроллера ';
            spanSenMode += 'сервером. Когда это будет необходимо, устройство само сообщит о критическом уровне. Более того, MegaD-2561 ';
@@ -1940,16 +1861,15 @@ function checkDisplay() {
            spanSenMode += '<p align=justify><b>&gt;</b> Порт считается активным, если значение больше заданного порога. Активностью считается момент перехода через пороговое значение.</p>';
            spanSenMode += '<p align=justify><b>&lt;</b> Порт считается активным, если значение меньше заданного порога. Активностью считается момент перехода через пороговое значение.</p>';
            spanSenMode += '<p align=justify><b>&lt;&gt;</b> Порт считается активным, если значение проходит порог как в меньшую, так и в большую сторону.</p>';
-           spanSenMode += '<p align=justify><b>Локальный и "удаленный" термостат с помощью DS18B20 и MegaD-2561</b></p>';
+           spanSenMode += '<p align=justify><b>Локальный и &quot;удаленный&quot; термостат с помощью DS18B20 и MegaD-2561</b></p>';
            spanSenMode += '<p align=justify>Порт, настроенный для работы с датчиком температуры DS18B20, может не только отображать температуру или передавать ее на сервер. </p>';
            spanSenMode += '<p align=justify>У него есть интересная особенность - режим термостата, когда можно управлять нагрузкой в зависимости от значения температуры.</p> ';
-           spanSenMode += '<p align=justify>Принцип настройки аналогичен АЦП-порту. А также доступны команды "3" и "4", синхронизирующие значение температуры и состояние выхода. </p>';
-           spanSenMode += '<p align=justify>Например, если мы установим режим (Mode) "&lt;&gt;", значение температуры (Val) 29, гистерезис (Hst) 0.50, а сценарий (Act) 7:3, то когда ';
+           spanSenMode += '<p align=justify>Принцип настройки аналогичен АЦП-порту. А также доступны команды &quot;3&quot; и &quot;4&quot;, синхронизирующие значение температуры и состояние выхода. </p>';
+           spanSenMode += '<p align=justify>Например, если мы установим режим (Mode) &quot;&lt;&gt;&quot;, значение температуры (Val) 29, гистерезис (Hst) 0.50, а сценарий (Act) 7:3, то когда ';
            spanSenMode += 'температура будет выше 29.5 градусов, выход P7 будет включен, а когда ниже 28.5, то выключен. Гистерезис работает в обе стороны от заданного порога.</p>';
            spanSenMode += '<p align=justify>А кроме того, устройство может управлять не только локальным выходом, но и выходом другого устройства. ';
-           spanSenMode += 'Для этого в поле Net мы прописываем, например "192.168.0.15/sec/?cmd=8:3". Тогда порт 8 совершенно другого устройства будет синхронизирован ';
-           spanSenMode += 'со значением температуры так, словно этот порт локальный. Разумеется, доступны и другие стандартные команды: выключить - "0", включить - "1", переключить - "2".</p>';
-           spanSenMode += '</span></div>';
+           spanSenMode += 'Для этого в поле Net мы прописываем, например &quot;192.168.0.15/sec/?cmd=8:3&quot;. Тогда порт 8 совершенно другого устройства будет синхронизирован ';
+           spanSenMode += 'со значением температуры так, словно этот порт локальный. Разумеется, доступны и другие стандартные команды: выключить - &quot;0&quot;, включить - &quot;1&quot;, переключить - &quot;2&quot;.</p>';
 
            text += '<tr><td align="center" valign="middle">';
            text += spanSenMode + '</td><td align="left" valign="middle">';
@@ -1961,19 +1881,32 @@ function checkDisplay() {
            text += '<option value="3" ' + (($('#mDSXP'+numXP).val() == 3) ? 'selected' : '') + '>&lt;&gt;</option>';
            text += '</select></td></tr>';
 
-        }
-/*
+           text += '<tr><td align="center" valign="middle">';
+           text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanSenMode+'\');" style="cursor: pointer;"></img>';
+           text += '</td><td align="left" valign="middle">';
+           text += 'Режим работы (Mode):&nbsp;';
+           text += '<select id="mDSXP'+numXP+'" onfocus="setToolTip('+numXP+',\''+spanSenMode+'\');">';
+           var mdsxp = '';
+           mdsxp = Setup[ adapterInstance + '.ports.' + controlPort + '.digitalSensorMode' ].val;
+           var mdsxpSite = 0;
+           if ( mdsxp == 'Norm' ) {
+              mdsxpSite = 0;
+           } else if ( mdsxp == '>') {
+              mdsxpSite = 1;
+           } else if ( mdsxp == '<') {
+              mdsxpSite = 2;
+           } else if ( mdsxp == '<>') {
+              mdsxpSite = 3;
+           } else {
+              mdsxpSite = 0;//?
+           }
+           text += '<option value="0" ' + ((mdsxpSite == 0) ? 'selected' : '') + '>Нормальный</option>';
+           text += '<option value="1" ' + ((mdsxpSite == 1) ? 'selected' : '') + '>&gt;</option>';
+           text += '<option value="2" ' + ((mdsxpSite == 2) ? 'selected' : '') + '>&lt;</option>';
+           text += '<option value="3" ' + ((mdsxpSite == 3) ? 'selected' : '') + '>&lt;&gt;</option>';
+           text += '</select></td></tr>';
 
-        if (portSettings.pty == 0 || portSettings.pty == 2 || (portSettings.pty == 3 && (portSettings.d == 3 || portSettings.d == 4))) {
-            // ecmd(Action)
-            text += _('Action:') + ' <input class="tvalue" data-type="ecmd" type="text" 
-               data-port="' + index + '" value="' + (portSettings.ecmd || '') + '"  style="width: 70px" maxsize="11"/>, ';
-            text += ' <input type="checkbox" class="tvalue" data-type="af" data-port="' + index + '" ' + (portSettings.af   ? 'checked' : '') + '/>';
-            // eth(net action)
-            text += _('Net:') + ' <input class="tvalue" data-type="eth" type="text" data-port="' + index + '" value="' + portSettings.eth  + '" style="width: 70px" maxsize="35"/>';
-            text += ' <input type="checkbox" class="tvalue" data-type="naf" data-port="' + index + '" ' + (portSettings.naf   ? 'checked' : '') + '/>';
         }
-  */
 
         text += '<tr><td align="center" valign="middle">&nbsp;<td align=center valign=middle>';
         text += '    <br>&nbsp;<br><button class="translateB" id="savePortBtn" onClick="savePort('+controlPort+');">Сохранить настройки порта</button>';
@@ -2140,6 +2073,9 @@ function checkDisplay() {
        var newTremorDefenceDisabled;
        var newDisplayPort;
        var newDefaultState;
+       var newDigSensorType;
+       var mDS;
+       var mDS_server;
 
        $('#write').button('disable');
        $('#autoDetect').button('disable');
@@ -2277,27 +2213,37 @@ function checkDisplay() {
           newDefaultState = 0; 
        }
 
+       if ( newPortType == cPortType_DigitalSensor ) {
+          element_id = 'dXP'+numXP;
+          element  = document.getElementById( element_id );
+          newDigSensorType  = element.options[element.selectedIndex].value; 
+       } else {
+          newDigSensorType = ''; // ?
+       }
+
+       if ( newPortType == cPortType_DigitalSensor ) {
+          element_id = 'mDSXP'+numXP;
+          element  = document.getElementById( element_id );
+          mDS  = element.options[element.selectedIndex].value; 
+          if ( mDS == 0 ) {
+             mDS_server = 'Norm';
+          } else if ( mDS == 1 ) {
+             mDS_server = '>';
+          } else if ( mDS == 2 ) {
+             mDS_server = '<';
+          } else if ( mDS == 3 ) {
+             mDS_server = '<>';
+          } else {
+             mDS_server = 'Norm';
+          }
+       } else {
+          mDS_Server = 'Norm'; // ?
+       }
 
        element  = document.getElementById("controller.xp1model");
        var xp1model = element.options[element.selectedIndex].value; 
        element  = document.getElementById("controller.xp2model");
        var xp2model = element.options[element.selectedIndex].value; 
-
-       var newDigSensorType = $('#dXP'+numXP+' option:selected').val();
-       var mDS = $('#mDSXP'+numXP+' option:selected').val();
-       var mDS_server;
-       
-       if ( mDS == 0 ) {
-          mDS_server = 'Norm';
-       } else if ( mDS == 1 ) {
-          mDS_server = '>';
-       } else if ( mDS == 2 ) {
-          mDS_server = '<';
-       } else if ( mDS == 3 ) {
-          mDS_server = '<>';
-       } else {
-          mDS_server = 'Norm';
-       }
 
       var inst = adapter + '.' + instance ;
 
@@ -2346,6 +2292,8 @@ function checkDisplay() {
              Setup[ inst + '.ports.' + controlPort + '.tremorDefenceDisabled'].val = newTremorDefenceDisabled;
              Setup[ inst + '.ports.' + controlPort + '.displayPort'].val = newDisplayPort;
              Setup[ inst + '.ports.' + controlPort + '.defaultState'].val = newDefaultState;
+             Setup[ inst + '.ports.' + controlPort + '.digitalSensorType'].val = newDigSensorType;
+             Setup[ inst + '.ports.' + controlPort + '.digitalSensorMode'].val = mDS_server;
 
              checkDisplay();
 
@@ -2971,7 +2919,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.27.40</p>
+    <p align="right">Admin Version: v0.27.41</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
