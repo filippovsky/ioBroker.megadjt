@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.28.0",
+        "version":                  "0.28.1",
         "news": {
             "0.28.0": {
                 "en":               "Tempeareture and humidity saving bugfix",

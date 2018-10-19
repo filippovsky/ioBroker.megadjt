@@ -2102,9 +2102,13 @@ function processPortState(_port, value) {
             if ( oldState !=  newValue ) {
                adapter.log.debug('detected new value on port [' + _port  + ']: ' + newValue);
                adapter.setState( currentStateBranch, {val: newValue, ack: true, q: q});
+               adapter.log.debug('temperature : ' + temperature);
                if ( temperature != null ) {
                   adapter.getState( temperatureBranch, function(err,state) {
+                     adapter.log.debug('old temperature on port [' + _port  + ']: ' + state.val);
+                     adapter.log.debug('new temperature on port [' + _port  + ']: ' + temperature);
                      if ( state.val != temperature ) {
+                        adapter.log.debug(' state.val != temperature');
                         adapter.setState( temperatureBranch, {val: temperature, ack: true, q: q});
                      }
                   });
