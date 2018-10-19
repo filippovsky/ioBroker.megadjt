@@ -2098,7 +2098,8 @@ function processPortState(_port, value) {
                adapter.setState( currentStateBranch, {val: newValue, ack: true, q: q});
             }
          } else if ( portType == cPortType_DigitalSensor ) {
-            if ( oldState !=  value ) {
+            newValue = value;
+            if ( oldState !=  newValue ) {
                adapter.log.debug('detected new value on port [' + _port  + ']: ' + newValue);
                adapter.setState( currentStateBranch, {val: newValue, ack: true, q: q});
                if ( temperature != null ) {
