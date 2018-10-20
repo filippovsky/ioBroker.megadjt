@@ -1067,6 +1067,42 @@ function checkDisplay() {
                   });
        }
    }
+//--------------------------------------------------
+    function writecf2mega(ip, pass) {
+      var AdapterInstance = adapter + '.' + instance;
+
+        /*if (!active) {
+            showMessage(_('Enable adapter first'), 'Warning', 'info');
+            return;
+        } */
+
+        if (window.confirm(_('Все настройки в Меге будут перезаписаны настройками, сохраненными на сервере. Вы сохранили все изменения на сервере?'))) {
+            wait('show');
+
+            sendTo(AdapterInstance, 'writecf2mega', {}, function (msg) {
+
+                if (!msg || msg.error) {
+                    showMessage(msg.error, _('Error'), 'alert');
+                    wait('hide');
+                    return;
+                }
+
+                getAdapterStates(); // ?
+
+                imagePorts( 1 ); //?
+                imagePorts( 2 ); //?
+                selectPort( 1, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
+                selectPort( 2, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
+
+                onchange();
+
+                wait('hide');
+                showMessage('Настройки переданы в Мегу', _('Info'), 'info');
+             
+            });
+        }
+    }
+
 
     //--------------------------------------------------------------------------------
     function ptyChanged ( controlPort ) {
@@ -2305,6 +2341,8 @@ function checkDisplay() {
     //-------------------------------------------------------------------------------------
     // the function loadSettings has to exist ...
     function load(settings, onChange) {
+      var AdapterInstance = adapter + '.' + instance;
+
         //$(".loading").show('slow');
         wait('show');
 
@@ -2347,7 +2385,14 @@ function checkDisplay() {
             autoDetect($('#controller.ip').val(), $('#controller.password').val());
         });
 
+        $('#write').button({
+            icons: {primary: 'ui-icon-disk'}
+        }).click(function() {
+            writecf2mega();
+        });
 
+
+        /*
         $('#write').button({
             icons: {primary: 'ui-icon-disk'}
         }).click(function() {
@@ -2361,6 +2406,7 @@ function checkDisplay() {
             //writeConfig($('#ip').val(), $('#password').val(), port, ports);
             //writeConfig();
         });
+        */
 
 
         // read if instance is active or enabled
@@ -2551,7 +2597,7 @@ function checkDisplay() {
                 return;
             }
             $(this).button('disable');
-            sendTo(null, 'discover', null, function (msg) {
+            sendTo(AdapterInstance, 'discover', null, function (msg) {
                 $('#discover').button('enable');
                 if (msg && msg.error) {
                     showMessage(msg.error, _('Error'), 'alert');
@@ -2634,6 +2680,8 @@ function checkDisplay() {
 
     //--------------------------------------------------------------------------------------
     function autoDetect(ip, pass) {
+      var AdapterInstance = adapter + '.' + instance;
+
         if (!active) {
             showMessage(_('Enable adapter first'), 'Warning', 'info');
             return;
@@ -2647,7 +2695,7 @@ function checkDisplay() {
             $('#ipchange').button('disable');
             $('#updateFirmware').button('disable');
 
-            sendTo(null, 'readCfgFromMega', {ip: ip, password: pass}, function (msg) {
+            sendTo(AdapterInstance, 'readCfgFromMega', {ip: ip, password: pass}, function (msg) {
 
                 $('#write').button('enable');
                 $('#autoDetect').button('enable');
@@ -2678,7 +2726,8 @@ function checkDisplay() {
 
     //-------------------------------------------------------------------------------------
     function updateFirmware( targetVersion ) {
-        var target = '';
+      var AdapterInstance = adapter + '.' + instance;
+      var target = '';
 
         if (!active) {
             showMessage(_('Enable adapter first'), 'Warning', 'info');
@@ -2692,8 +2741,8 @@ function checkDisplay() {
         }
 
         if (window.confirm(_('Firmware will be rewrited. All config will be lost. Are you sure?'))) {
-            sendTo(null, 'updateFirmware', target, function (msg) {
-               sendTo(null, 'getFirmware', null, function (msg1) {
+            sendTo(AdapterInstance, 'updateFirmware', target, function (msg) {
+               sendTo(AdapterInstance, 'getFirmware', null, function (msg1) {
                     showMessage(_('Firmware updated'), 'Warning', 'info');
                     //getFirmwareVersion();?
                 });
@@ -2743,6 +2792,8 @@ function checkDisplay() {
 
     //----------------------------------------------------------------------------
     function writeConfig(ip, pass, port, ports, newIp, newPass, callback) {
+      var AdapterInstance = adapter + '.' + instance;
+
         if (!active) {
             showMessage(_('Enable adapter first'), 'Warning', 'info');
             return;
@@ -2762,7 +2813,7 @@ function checkDisplay() {
         $('#ipchange').button('disable');
         $('#updateFirmware').button('disable');
 
-        sendTo(null, 'writeConfig', {ip: ip, password: pass, ports: ports, config: config}, function (msg) {
+        sendTo(AdapterInstance, 'writeConfig', {ip: ip, password: pass, ports: ports, config: config}, function (msg) {
 
             $('#write').button('enable');
             $('#autoDetect').button('enable');
@@ -2787,7 +2838,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.28.7</p>
+    <p align="right">Admin Version: v0.28.8</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
@@ -2901,6 +2952,12 @@ function checkDisplay() {
             </td>
         </tr>
 
+        <tr><td colspan="2" class="translate" style="text-align: right"><input type="checkbox" class="valSetup" id="controller.srvLoop">Передавать данные с Меги 1 раз в минуту</input></td>
+            <td class="translate" style="text-align: right">&nbsp;</td>
+            <td colspan=2>&nbsp;
+            </td>
+        </tr>
+
         <tr><td class="translate" style="text-align: right">Current firmware version:</td>
             <td><input readonly class="valSetup" id="firmware.version"  maxlength="10"/></td>
             <td class="translate" style="text-align: right">Last known firmware version:</td>
@@ -2909,9 +2966,9 @@ function checkDisplay() {
         </tr>
     </table>
     <!-- <button class="translate" id="add">Add new port</button> -->
-    <button class="translateB" id="autoDetect">Auto detect ports</button>
-    <button class="translateB" id="write">Write config to device</button>
-    <button class="translateB" id="ipchange">Change ip or password</button>
+    <button class="translateB" id="autoDetect">Считать ВСЕ настройки с Меги</button>
+    <button class="translateB" id="write">Сохранить настройки в Мегу</button>
+    <button class="translateB" id="ipchange">Изменение IP-адреса и пароля</button>
 
     <br>&nbsp;XP1:
     <select id="controller.xp1model" class="selSetup" onChange="xpmodelChanged(1);">

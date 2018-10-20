@@ -339,6 +339,10 @@ adapter.on('message', function (obj) {
                 readCfgFromMega(obj);
                 break;
 
+            case 'writecf2mega':
+                writecf2mega(obj);
+                break;
+
             case 'savePort':
                 savePort(obj);
                 break;
@@ -3366,13 +3370,13 @@ function debugAllStates () {
    adapter.getStates('*', function(err,states) {
       x = JSON.stringify(states); 
 
-      adapter.log.debug('states = '+ x );
+//      adapter.log.debug('states = '+ x );
       elist = JSON.parse( x ); 
       adapter.log.debug('-------------------------------' );
-//      var z = elist["megadjt.0.ports.0.room"];
+      var z = elist["megadjt.0.controller.serverIP"];
 //      var z = elist.megadjt."0".ports."0".room;
-      adapter.log.debug('-1-----------------------------' );
-//      adapter.log.debug('tst: '+ z.val );
+//      adapter.log.debug('-1-----------------------------' );
+      adapter.log.debug('tst: '+ z.val );
 //      var z0 = elist["megadjt.0.ports.0.room"].val;
       adapter.log.debug('-2-----------------------------' );
 //      adapter.log.debug('val: '+ z0 );
@@ -3912,7 +3916,7 @@ function main() {
     adapter.setState('info.connection', false, true);
 
     configInit( function () {
-        //debugAllStates();
+        debugAllStates();
         adapter.getState(adapter.namespace + '.controller.ip', function (err, state_ip) {
            if (state_ip) {
               IP = state_ip.val;
@@ -4280,3 +4284,80 @@ function saveAdmin(obj) {
 }
 
 */
+//-------------------------------------------------------------------------------
+function writecf2mega ( obj ) {
+    var url;
+    // ----- открываем соединение и передаем данные в Мегу ------------------------------------
+    //var parts = adapter.config.ip.split(':');
+
+    var options = {
+        host: IP,
+        port: IPPort,
+        path: '/' + Password +'/?' + url + '&nr=1'
+    };
+
+    var options1 = {
+        host: IP,
+        port: IPPort,
+        path: '/' + Password +'/?' + url
+    };
+
+/*
+    // делаем паузу
+    //setTimeout(function () {
+      adapter.log.debug('Отправляем новые настройки на Мегу');
+      //adapter.log.debug('path->'+path);
+      adapter.log.debug('->'+url);
+      http.get(options, function (res) {
+        res.setEncoding('utf8');
+        var data = '';
+        res.on('data', function (chunk) {
+            data += chunk;
+        });
+        res.on('end', function () {
+            adapter.log.debug('Получили ответ Меги:' + data);
+            if (res.statusCode != 200) {
+                adapter.log.warn('Response code: ' + res.statusCode + ' - ' + data);
+                if (obj.callback) {
+                   adapter.sendTo(obj.from, obj.command, {error: res.statusCode, response: data}, obj.callback);
+                }
+            } else {
+                //----------------------------------------------
+                http.get(options1, function (res1) {
+                   res1.setEncoding('utf8');
+                   var data1 = '';
+                   res1.on('data', function (chunk1) {
+                       data1 += chunk1;
+                   });
+                   res1.on('end', function () {
+                      adapter.log.debug('Получили ответ1 Меги:' + data1);
+                      if (res1.statusCode != 200) {
+                         adapter.log.warn('Response code: ' + res1.statusCode + ' - ' + data1);
+                         if (obj.callback) {
+                            adapter.sendTo(obj.from, obj.command, {error: res1.statusCode, response: data1}, obj.callback);
+                         }
+                      } else {
+               //------------------------------------------------------------------
+                         adapter.log.debug('Пауза для перезапуска Меги ... ');
+                         setTimeout(function () {
+                            adapter.log.debug('Пауза истекла ... ');
+                            if (obj.callback) {
+                               adapter.sendTo(obj.from, obj.command, {error: '', response: data1}, obj.callback);
+                            }
+                         }, 3000);
+                      }
+                   });
+                });
+            }
+        });
+      }).on('error', function (err) {
+        adapter.log.error( err );
+        if (obj.callback) {
+           adapter.sendTo(obj.from, obj.command, {error: err, response: null}, obj.callback);
+        }
+      });
+ */
+}
+
+
+}
