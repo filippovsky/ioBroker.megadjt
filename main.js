@@ -4337,7 +4337,7 @@ function writecf2mega ( obj ) {
       var options1 = {
           host: IP,
           port: IPPort,
-          path: '/' + Password +'/?' + url1 + '&nr=1';
+          path: '/' + Password +'/?' + url1 + '&nr=1'
       };
 
       var options2 = {
