@@ -1,8 +1,12 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.28.3",
+        "version":                  "0.28.4",
         "news": {
+            "0.28.4": {
+                "en":               "Added firmware 4.30b4",
+                "ru":               "Добавлена прошивка версии 4.30b4"
+            },
             "0.28.2": {
                 "en":               "Temperature and humidity saving bugfix",
                 "ru":               "Багфикс: сохранение данных температуры и влажности в соответствующие свойства порта (temperature/humidity)"
