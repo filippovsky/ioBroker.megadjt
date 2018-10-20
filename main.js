@@ -3370,21 +3370,16 @@ function debugAllStates () {
    adapter.getStates('*', function(err,states) {
       x = JSON.stringify(states); 
 
-      adapter.log.debug('>> '+ x.megadjt.0.ports.0.room.val );
-
-//      adapter.log.debug('states = '+ states );
-//      adapter.log.debug('x = '+ x );
-//      elist = JSON.parse( x ); 
-//      adapter.log.debug('-------------------------------' );
-//      adapter.log.debug('elist = '+ elist );
+//--not      adapter.log.debug('>> '+ x.megadjt.0.ports.0.room.val );
+      elist = JSON.parse( x ); 
 //-not--   adapter.log.debug('-->' + elist["megadjt.0.ports.0.room"].val );
 
 //      var z = elist[megadjt.0.controller.serverIP];
-//      var z = elist.megadjt."0".ports."0".room;
+      var z = elist.megadjt."0".ports."0".room;
 //      adapter.log.debug('-1-----------------------------' );
-//      adapter.log.debug('tst: '+ z.val );
+      adapter.log.debug('tst: '+ z.val );
 //      var z0 = elist["megadjt.0.ports.0.room"].val;
-//      adapter.log.debug('-2-----------------------------' );
+      adapter.log.debug('-2-----------------------------' );
 //      adapter.log.debug('val: '+ z0 );
 
 
