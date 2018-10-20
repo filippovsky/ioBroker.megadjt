@@ -4364,4 +4364,3 @@ function writecf2mega ( obj ) {
 }
 
 
-}
