@@ -3371,7 +3371,7 @@ function debugAllStates () {
       x = JSON.stringify(states); 
       var Setup = JSON.parse( x );
 //          if ( Setup[ AdapterInstance + '.controller.ipport' ] == '' ) {
-      adapter.log.debug('>> '+ Setup[megadjt.0.ports.0.room].val );
+      adapter.log.debug('>> '+ Setup['megadjt.0.ports.0.room'].val );
 
 
 
