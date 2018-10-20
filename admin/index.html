@@ -2359,6 +2359,7 @@ function checkDisplay() {
             showMessage('Функция еще не реализована. Каждый порт сохраняется самостоятельно.', _('Error'), 'alert');
 
             //writeConfig($('#ip').val(), $('#password').val(), port, ports);
+            //writeConfig();
         });
 
 
@@ -2587,8 +2588,7 @@ function checkDisplay() {
                 obj[$this.attr('id')] = $this.val();
             }
         });
-        
-
+       
         $('.valSetup').each(function () {
             var $this = $(this);
             var newval;
@@ -2607,21 +2607,6 @@ function checkDisplay() {
             }
             obj1 = { val: newval, ack: true, lc: _lc, ts: _lc };
             socket.emit('setState',  adapter + '.' + instance + '.' + key, obj1 );
-
-/*
-
-            sendTo(null, 'saveAdmin', { key: key, 
-                                        val: newval
-                                      }, 
-                   function (msg) {
-                       if (!msg || msg.error) {
-                          showMessage(msg.error, _('Error'), 'alert');
-                          return;
-                       }
-                  }
-            );
-
-  */
         });
 
         $('.selSetup').each(function () {
@@ -2637,7 +2622,6 @@ function checkDisplay() {
             obj1 = { val: newval, ack: true, lc: _lc, ts: _lc };
             socket.emit('setState',  adapter + '.' + instance + '.' + key, obj1 );
         });
-
 
         // Get edited table
         //obj.ports = ports;
@@ -2655,7 +2639,8 @@ function checkDisplay() {
             return;
         }
 
-        if (window.confirm(_('Существующие настройки на сервере будут сброшены считанными из Меги. Вы уверены?'))) {
+        if (window.confirm(_('ВСЕ существующие настройки на сервере будут сброшены считанными из Меги. Вы уверены?'))) {
+            wait('show');
 
             $('#write').button('disable');
             $('#autoDetect').button('disable');
@@ -2671,119 +2656,12 @@ function checkDisplay() {
 
                 if (!msg || msg.error) {
                     showMessage(msg.error, _('Error'), 'alert');
+                    wait('hide');
                     return;
                 }
 
-                /*
-                for ( var i = 0; i <= 37; i++ ) {
-                   var name = adapter + '.' + instance + '.ports.'+i+'.portType'
-                   socket.emit('getState',  name, function (err, state) {
-                      portsColor[i] = state.val;
-                   });
-                } 
-               */
-
                 getAdapterStates(); // ?
 
-                showMessage('Настройки портов считаны с Меги', _('Info'), 'info');
-
-             /*
-                //OFF;OFF/0;OFF/0;25;temp:45.6;temp:45.6/hum:27
-                var _ports = msg.response ? msg.response.split(';') : [];
-                var settingsPorts =  msg.ports || [];
-                var aPorts = [];
-                for (var p = 0; p < _ports.length; p++) {
-                    aPorts[p] = settingsPorts[p] || {};
-
-                    if (aPorts[p].pn !== undefined) delete aPorts[p].pn;
-                    if (aPorts[p].pwm !== undefined) delete aPorts[p].pwm;
-
-                    ports[p] = ports[p] || {};
-                    if (aPorts[p].pty == 0) {
-                        // input digital port
-                        aPorts[p].name    = ports[p].name  || ('P' + p);
-                        aPorts[p].ecmd    = aPorts[p].ecmd || '';
-                        aPorts[p].eth     = aPorts[p].eth  || '';
-                        aPorts[p].af      = aPorts[p].af   || 0; // мое 0.7.0
-                        aPorts[p].naf     = aPorts[p].naf  || 0;
-                        aPorts[p].m       = aPorts[p].m    || 0;
-                        aPorts[p].misc    = aPorts[p].misc || 0;
-                        aPorts[p].d       = aPorts[p].d    || 0;
-                        aPorts[p].disp    = aPorts[p].disp || 0; // мое 0.7.0
-                        aPorts[p].long    = !!ports[p].long;
-                        aPorts[p].double  = !!ports[p].double;
-                        aPorts[p].role    = ports[p].role || 'state';
-                    } else
-                    if (aPorts[p].pty == 1) {
-                        // output digital port
-                        aPorts[p].name    = ports[p].name || ('P' + p);
-                        aPorts[p].m       = aPorts[p].m   || 0;
-                        aPorts[p].d       = aPorts[p].d   || 0;
-                        if (aPorts[p].m == 1) {
-                            ///aPorts[p].pwm     = aPorts[p].pwm  || 0;
-                            aPorts[p].fr      = aPorts[p].fr   || 0;
-                            aPorts[p].m2      = aPorts[p].m2   || 1;
-                            aPorts[p].misc    = aPorts[p].misc || 0;
-                        }
-                        aPorts[p].role    = ports[p].role || 'button';
-                    } else
-                    if (aPorts[p].pty == 2) {
-                        // ADC port
-                        aPorts[p].name    = ports[p].name  || ('P' + p);
-                        aPorts[p].ecmd    = aPorts[p].ecmd || '';
-                        aPorts[p].eth     = aPorts[p].eth  || '';
-                        aPorts[p].m       = aPorts[p].m    || 0;
-                        aPorts[p].misc    = aPorts[p].misc || 0;
-                        aPorts[p].hst     = aPorts[p].hst  || 0;
-                        aPorts[p].naf     = aPorts[p].naf  || 0;
-
-                        aPorts[p].offset  = ports[p].offset || 0;
-                        aPorts[p].factor  = ports[p].factor || 1;
-                        aPorts[p].role    = ports[p].role   || 'value';
-                    } else
-                    if (aPorts[p].pty == 3) {
-                        // temperature - digital sensor
-                        aPorts[p].name    = ports[p].name || ('P' + p);
-                        aPorts[p].m       = aPorts[p].m   || (_ports[p].indexOf('hum') != -1 ? 1 : 0);
-                        aPorts[p].d       = aPorts[p].d   || 0;
-                        aPorts[p].hst     = aPorts[p].hst || 0;
-                        aPorts[p].naf     = aPorts[p].naf || 0;
-                        aPorts[p].role    = ports[p].role || 'value.temperature';
-                        if (aPorts[p].d == 4) {
-                            aPorts[p].role    = ports[p].role || 'state';
-                        }
-                    } else
-                    if (aPorts[p].pty == 4) {
-                        // I2C sensor
-                        aPorts[p].name    = ports[p].name || ('P' + p);
-                        aPorts[p].m       = aPorts[p].m   || 0;
-                        if (aPorts[p].m == 1) {
-                            if (aPorts[p].d == 0) {
-                                aPorts[p].role    = ports[p].role || 'state';
-                            }
-                            if (aPorts[p].d == 1) {
-                                aPorts[p].d       = aPorts[p].d    || (_ports[p].indexOf('hum') != -1 ? 1 : 0);
-                                aPorts[p].misc    = aPorts[p].misc || 0;
-                                //aPorts[p].d       = aPorts[p].d    || 0;
-                                aPorts[p].role    = ports[p].role || 'value.temperature';
-                            }
-                            if (aPorts[p].d == 2 || aPorts[p].d == 3) {
-                                aPorts[p].role    = ports[p].role || 'value';
-                            }
-                        }
-                        if (aPorts[p].m == 2) {
-                            aPorts[p].role    = ports[p].role || 'state';
-                        }
-                    } else {
-                        // unknown settings
-                        aPorts[p].pty     = 255;
-                        aPorts[p].name    = ports[p].name || ('P' + p + ' - unknown');
-                    }
-                    aPorts[p].room  = ports[p].room || '';
-
-                }
-                ports = aPorts;
-              */
                 imagePorts( 1 ); //?
                 imagePorts( 2 ); //?
                 selectPort( 1, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
@@ -2791,7 +2669,8 @@ function checkDisplay() {
 
                 onchange();
 
-                //showPorts();
+                wait('hide');
+                showMessage('Настройки портов считаны с Меги', _('Info'), 'info');
               
             });
         }
@@ -2908,7 +2787,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.28.6</p>
+    <p align="right">Admin Version: v0.28.7</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
@@ -2964,6 +2843,64 @@ function checkDisplay() {
                 </select>
             </td>
         </tr>
+
+
+        <tr><td class="translate" style="text-align: right">Порт WatchDog (его скрипт будет выполнен при недоступности сервера)</td>
+            <td><select class="selSetup" id="controller.watchDogPort">
+                  <option value="">Не выбран</option>
+                  <option value="0">0</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                  <option value="8">8</option>
+                  <option value="9">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                  <option value="13">13</option>
+                  <option value="14">14</option>
+                  <option value="15">15</option>
+                  <option value="16">16</option>
+                  <option value="17">17</option>
+                  <option value="18">18</option>
+                  <option value="19">19</option>
+                  <option value="20">20</option>
+                  <option value="21">21</option>
+                  <option value="22">22</option>
+                  <option value="23">23</option>
+                  <option value="24">24</option>
+                  <option value="25">25</option>
+                  <option value="26">26</option>
+                  <option value="27">27</option>
+                  <option value="28">28</option>
+                  <option value="29">29</option>
+                  <option value="30">30</option>
+                  <option value="31">31</option>
+                  <option value="32">32</option>
+                  <option value="33">33</option>
+                  <option value="34">34</option>
+                  <option value="35">35</option>
+                  <option value="36">36</option>
+                  <option value="37">37</option>
+                </select>
+            </td>
+            <td colspan=2>
+                <input type="checkbox" class="valSetup" id="gsm.enabled">Отправка SMS средствами Меги</input>
+            </td>
+         </tr>
+
+        <tr><td class="translate" style="text-align: right">Номер телефона для отправки SMS средствами Меги</td>
+            <td><input  class="valSetup" id="gsm.phone"/></td>
+            <td class="translate" style="text-align: right">Таймаут отправки SMS средствами Меги</td>
+            <td colspan=2>
+               <input  class="valSetup" id="gsm.timeout"/>
+            </td>
+        </tr>
+
         <tr><td class="translate" style="text-align: right">Current firmware version:</td>
             <td><input readonly class="valSetup" id="firmware.version"  maxlength="10"/></td>
             <td class="translate" style="text-align: right">Last known firmware version:</td>
