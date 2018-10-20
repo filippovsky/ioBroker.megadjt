@@ -3366,15 +3366,16 @@ function states2Admin ( obj ) {
 function debugAllStates () {
 //   adapter.getStates('megadjt.0.ports.0', function(err,states) {
    var x;
-   var elist ;
+   var elist;
    adapter.getStates('*', function(err,states) {
       x = JSON.stringify(states); 
 
 //      adapter.log.debug('states = '+ states );
-      adapter.log.debug('x = '+ x );
+//      adapter.log.debug('x = '+ x );
       elist = JSON.parse( x ); 
-      adapter.log.debug('-------------------------------' );
+//      adapter.log.debug('-------------------------------' );
 //      adapter.log.debug('elist = '+ elist );
+      adapter.log.debug('-->' + elist.megadjt.0.controller.serverIP.val );
 
 //      var z = elist[megadjt.0.controller.serverIP];
 //      var z = elist.megadjt."0".ports."0".room;
