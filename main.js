@@ -3373,7 +3373,7 @@ function debugAllStates () {
 //      adapter.log.debug('states = '+ x );
       elist = JSON.parse( x ); 
       adapter.log.debug('-------------------------------' );
-      var z = elist["megadjt.0.controller.serverIP"];
+      var z = elist[megadjt.0.controller.serverIP];
 //      var z = elist.megadjt."0".ports."0".room;
 //      adapter.log.debug('-1-----------------------------' );
       adapter.log.debug('tst: '+ z.val );
