@@ -582,6 +582,19 @@ function parseMegaCfgLine ( line ) {
    var nr;
    var grp;
    var gsmf;
+   var cf;
+   var eip;
+   var pwd;
+   var gw;
+   var sip;
+   var sct;
+   var pr;
+   var gsm;
+   var gsm_num;
+   var smst;
+   var srvt;
+   var mdid;
+   var sl;
 
    adapter.log.debug('Распознание строки настройки: '+line);
    parts = line.split('&');
@@ -602,9 +615,61 @@ function parseMegaCfgLine ( line ) {
       if ( state == 'nr'   )    nr   = value || '1'; // ?
       if ( state == 'grp'  )    grp  = value || '';
       if ( state == 'gsmf' )    gsmf = value || '0';
+      if ( state == 'cf'   )    cf   = value || '';
+      if ( state == 'eip'  )    eip  = value || '';
+      if ( state == 'pwd'  )    pwd  = value || '';
+      if ( state == 'gw'   )    gw   = value || '';
+      if ( state == 'sip'  )    sip  = value || '';
+      if ( state == 'sct'  )    sct  = value || '';
+      if ( state == 'pr'   )    pr   = value || '';
+      if ( state == 'gsm'  )    gsm  = value || '';
+      if ( state == 'gsm_num')  gsm_num  = value || '';
+      if ( state == 'smst' )    smst = value || '';
+      if ( state == 'srvt' )    srvt = value || '';
+      if ( state == 'mdid' )    mdid = value || '';
+      if ( state == 'sl'   )    sl   = value || '';
    }
 
-   if (!pn) return; 
+   if (!pn) {
+      nodeName = adapter.namespace;
+      if ( cf == '1' ) {
+         //cf=1&eip=192.168.0.15&pwd=sec&gw=192.168.0.1&sip=192.168.1.35:91&sct=/0&pr=&gsm=1&gsm_num=79165499627&smst=3&srvt=0
+         adapter.setState( nodeName + '.controller.ip', {val: eip, ack: true}); //??
+         adapter.setState( nodeName + '.controller.password', {val: pwd, ack: true}); //??
+         adapter.setState( nodeName + '.controller.gateway', {val: gw, ack: true}); 
+         param = sip.split(':');
+         state = param[0];
+         value = param[1];
+         adapter.setState( nodeName + '.controller.serverIP', {val: state, ack: true}); 
+         adapter.setState( nodeName + '.controller.script', {val: sct, ack: true}); 
+         adapter.setState( nodeName + '.controller.watchDogPort', {val: pr, ack: true}); 
+         if (gsm == '1') {
+            adapter.setState( nodeName + '.gsm.enabled', {val: true, ack: true}); 
+            adapter.setState( nodeName + '.gsm.phone', {val: gsm_num, ack: true}); 
+            adapter.setState( nodeName + '.gsm.timeout', {val: smst, ack: true}); 
+         } else {
+            adapter.setState( nodeName + '.gsm.enabled', {val: false, ack: true}); 
+            adapter.setState( nodeName + '.gsm.phone', {val: '', ack: true}); 
+            adapter.setState( nodeName + '.gsm.timeout', {val: smst, ack: true}); 
+         }
+         if (srvt == '1') {
+            adapter.setState( nodeName + '.controller.serverType', {val: 'MQTT', ack: true}); 
+         } else {
+            adapter.setState( nodeName + '.controller.serverType', {val: 'HTTP', ack: true}); 
+         }
+      }
+
+      if ( cf == '2' ) {
+         //cf=2&mdid=5Q7g7&sl=1&nr=1
+         adapter.setState( nodeName + '.controller.name', {val: mdid, ack: true}); 
+         if (sl == '1') {
+            adapter.setState( nodeName + '.controller.srvLoop', {val: true, ack: true}); 
+         } else {
+            adapter.setState( nodeName + '.controller.srvLoop', {val: false, ack: true}); 
+         }
+      }
+      return; 
+   }
    if ( pn < 15 ) {
       numXP = 1;
    } else if ( port_number < 30 ) {
