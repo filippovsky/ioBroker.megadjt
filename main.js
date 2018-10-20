@@ -343,9 +343,9 @@ adapter.on('message', function (obj) {
                 savePort(obj);
                 break;
 
-            case 'saveAdmin':
+/*            case 'saveAdmin':
                 saveAdmin(obj);
-                break;
+                break;*/
 
             case 'writeConfig':
                 writeConfig(obj);
@@ -3193,6 +3193,7 @@ function configInit( callback ) {
    createConfigItemIfNotExists ( 'controller.serverIP', 'state', 'IP-адрес сервера', '255.255.255.255' );
    createConfigItemIfNotExists ( 'controller.gateway',  'state', 'IP-адрес шлюза', '255.255.255.255' );
    createConfigItemIfNotExists ( 'controller.script',  'state', 'Скрипт сервера', '/' +  adapter.instance );
+   createConfigItemIfNotExists ( 'controller.serverType', 'state', 'Тип сервера', 'HTTP' );
    createConfigItemIfNotExists ( 'controller.watchDogPort',  'state', 'Номер порта, сценарий которого будет выполнен при недоступности сервера', '' );
    createConfigItemIfNotExists ( 'controller.srvLoop',  'statebool', 'Отправка данных с Меги 1 раз в минуту', 'false' );
 
@@ -4199,14 +4200,9 @@ var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для ана
 
 */
 //----------------------------------------------------------------------------------------------
+/*
 function saveAdmin(obj) {
    var lc = new Date().getTime();
-   /*
-   adapter.log.info('Сохраняем настройки админки ');
-   adapter.log.debug( 'obj.message.key =  '+obj.message.key );
-   adapter.log.debug( 'obj.message.val =  '+obj.message.val );
-   adapter.log.debug( 'lc =  '+lc );
-   */
    var linked   = adapter.namespace + '.' + obj.message.key;
    //adapter.log.debug( 'linked =  '+linked );
 
@@ -4218,3 +4214,4 @@ function saveAdmin(obj) {
                                   });
 }
 
+*/

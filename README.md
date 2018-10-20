@@ -3,8 +3,8 @@
 ioBroker MegaD-2561 adapter (Version by Filippovsky, based on adapter of ausHaus and BlueFox)
 =================
 
-### Current version: 0.28.4 ( 20.10.2018 11:28 MSK ) ALFA!!! PLEASE DO NOT INSTALL!!!!!
-### Текущая версия:  0.28.4 ( 20.10.2018 11:28 MSK ) АЛЬФА!!! НЕ СТАВЬТЕ!!!
+### Current version: 0.28.5 ( 20.10.2018 20:57 MSK ) ALFA!!! PLEASE DO NOT INSTALL!!!!!
+### Текущая версия:  0.28.5 ( 20.10.2018 20:57 MSK ) АЛЬФА!!! НЕ СТАВЬТЕ!!!
 
 ### ВАЖНО! Перед установкой внимательно прочтите changelog!
 ### После обновления версии - обязательно вручную перезапустите драйвер (в разделе "Настройки драйвера")
