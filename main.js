@@ -21,6 +21,7 @@
 ветки входов для настроек портов:
 savePort - изменение в интерфейсе настроек драйвера
 parseMegaCfgLine - загрузка из файла настроек
+
 - изменение типа исполнительного модуля в интерфейсе настроек
 - получение настроек портов из Меги - сводится к parseMegaCfgLine 
 - запись настроек из файла в мегу (?)
@@ -37,8 +38,6 @@ ToDO:
 - реализовать оставшиеся типы портов
 
 - реализовать st=1, опрос портов, обработку команд, обработку srvloop, отправку команд
-
-- реализовать корректную привязку func и room
 
 */
 
@@ -125,6 +124,11 @@ var cXPModel14IOR  = '14-IOR';
 var cXPModel14R1   = '14-Rv1.0';
 var cXPModel14R2   = '14-Rv2.0';
 var cXPModel2R     = '2R';
+
+var cGSMmodeNo     = 'No';
+var cGSMmodeAlways = 'Always';
+var cGSMmodeArmed  = 'Armed';
+
 
 //            var settings = adapter.config.ports[p];
 //-------------------------------------------------------------------------------------------------------------------
@@ -364,80 +368,6 @@ adapter.on('message', function (obj) {
 });
 
 
-/*
-// Функция получения актуальной версии прошивки Меги ---------------------------------------------------
-function getActual2561FirmwareVersion() {
-    var version = '';
-    //var parts = adapter.config.ip.split(':');
-    var actual_version = '';
-    var controller_model = '';
-    var current_version = '';
-
-    var options = {
-        host: 'ab-log.ru',
-        port: 80,
-        path: '/smart-house/ethernet/megad-2561-firmware'
-    };
-    if (!options.host) {
-       adapter.log.warn('getActual2561FirmwareVersion not executed, because host is null');
-    } else {
-       adapter.log.debug('getActual2561FirmwareVersion http://' + options.host + options.path);
-
-       http.get(options, function (res) {
-          var xmldata = '';
-          res.setEncoding('cp1251');//?
-          res.on('error', function (e) {
-              adapter.log.warn('getActual2561FirmwareVersion error: ' + e);
-          });
-          res.on('data', function (chunk) {
-              xmldata += chunk;
-              //adapter.log.debug('getFirmwareVersion get: ' + chunk);
-          });
-          res.on('end', function () {
-              //var myRe = /(.*?)div\sid\=\"cnt\"\>(.*?)\sver\s(.*?)\<(.*?)/
-              if (res.statusCode != 200) {
-                 adapter.log.warn('getActual2561FirmwareVersion Response code: ' + res.statusCode + ' - ' + xmldata);
-
-              } else {
-
-                 // Вырезаем из данных версию прошивки
-                 //adapter.log.debug('getFirmwareVersion response for ' + adapter.config.ip + "[" + options.port + ']: ' + xmldata);
-                 //version = xmldata.replace(/(.*?)\sver\s(.*?)\s\-(.*?)/, '$2');
-                 adapter.log.debug('xmldata:' + xmldata);
-                 //version=xmldata.replace(/(.*?)\sver\s(.*?)\<(.*?)/,'$2');
-                 version=xmldata.replace(/(.*?)div\sid\=\"cnt\"\>(.*?)\sver\s(.*?)\<(.*?)/,'$3');
-                 adapter.log.debug('Сырое значение актуальной версии:' + version);
-                 version = version.replace(/\s/,'');
-                 adapter.log.debug('Сырое значение актуальной версии1:' + version);
-                 version = version.replace(/eta/,'');
-                 adapter.log.debug('Очищенное значение актуальной версии:' + version);
-
-                 if (version) {
-                    adapter.setState( 'version.firmware_last_known', {val: version, ack: true});
-                    current_version = adapter.getState('version.firmware');
-
-                    if ( version === current_version ) {
-                          adapter.setState( 'version.is_firmware_actual', {val: true, ack: true});
-                          adapter.log.debug('getFirmwareVersion Текущая версия актуальна');
-                    } else {
-                          adapter.setState( 'version.is_firmware_actual', {val: false, ack: true});
-                          adapter.log.debug('getFirmwareVersion Текущая версия неактуальна');
-                    }
-
-                 } else {
-                    adapter.log.debug('getActual2561FirmwareVersion НЕ ПОПАЛИ: ' + version);
-                 }
-
-              } 
-
-          });
-       }).on('error', function (e) {
-          adapter.log.warn('Got error by getActual2561FirmwareVersion request ' + e.message);
-       });
-    }
-}
-*/
-
 
 // Функция получения версии прошивки Меги ---------------------------------------------------
 function getFirmwareVersion() {
@@ -624,16 +554,6 @@ function updateFirmware( message ) {
         }
    });
 }
-//--------------------------------------------------------------------------------------------------------
-// обработка одной строки файла конфигурации Меги
-/*
-function readLineFromMegaCfgLine( line ) {
-    var matched = line.match(/pn=3&(.*?)/);
-    if (matched) {
-       adapter.log.debug('строка порта 3:' + line );
-   }
-}
-*/
 //---------------------------------------------------------------------------------------------------------
 // разбираем файл настроек Меги и выставляем значения параметров
 function parseMegaCfgLine ( line ) {
@@ -659,6 +579,9 @@ function parseMegaCfgLine ( line ) {
    var defaultState;
    var dSRV;
    var mSRV;
+   var nr;
+   var grp;
+   var gsmf;
 
    adapter.log.debug('Распознание строки настройки: '+line);
    parts = line.split('&');
@@ -676,6 +599,9 @@ function parseMegaCfgLine ( line ) {
       if ( state == 'misc' )    misc = value;
       if ( state == 'd'    )    d    = value || '';
       if ( state == 'disp' )    disp = value || '';
+      if ( state == 'nr'   )    nr   = value || '1'; // ?
+      if ( state == 'grp'  )    grp  = value || '';
+      if ( state == 'gsmf' )    gsmf = value || '0';
    }
 
    if (!pn) return; 
@@ -719,6 +645,7 @@ function parseMegaCfgLine ( line ) {
 
    nodeName = adapter.namespace + '.ports.' + pn;
    if ( pty == cNPortType_StandartIn ) {
+      //pn=0&ecmd=7:2&af=&eth=&naf=&misc=&d=&pty=0&m=0&gsmf=0&nr=1
       adapter.log.debug('Настраиваем порт '+pn+' как стандартный вход');
       adapter.setState( nodeName + '.portType', {val: cPortType_StandartIn, ack: true});
       adapter.setState( nodeName + '.counter', {val: 0, ack: true}); //?
@@ -767,6 +694,7 @@ function parseMegaCfgLine ( line ) {
 
    } else if (( pty == cNPortType_Out ) && ( m == cNPortMode_SW )) {
 //    TO DO: Здесь надо как-то распознавать еще симисторные и димируемые выходы с тем же pty
+// pn=7&grp=&pty=1&d=0&m=0&nr=1
       adapter.log.debug('Настраиваем порт '+pn+' как релейный выход');
       adapter.setState( nodeName + '.portType', {val: cPortType_ReleOut, ack: true});
       adapter.setState( nodeName + '.counter', {val: 0, ack: true});
@@ -784,8 +712,10 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.temperature', {val: '', ack: true}); 
       adapter.setState( nodeName + '.humidity', {val: '', ack: true}); 
       adapter.setState( nodeName + '.digitalSensorMode', {val: '', ack: true}); 
+      //grp
 
    } else if ( pty == cNPortType_DigitalSensor ) {
+      // pn=27&misc=0.00&hst=0.00&ecmd=&af=&eth=&naf=&pty=3&m=0&d=3&gsmf=0&nr=1
       adapter.log.debug('Настраиваем порт '+pn+' как цифровой вход');
       adapter.setState( nodeName + '.portType', {val: cPortType_DigitalSensor, ack: true});
       adapter.setState( nodeName + '.counter', {val: 0, ack: true});
@@ -898,9 +828,6 @@ function ReadFileMegaConfig( filename, callback ) {
 
 // Функция считывания настроек Меги в файл ---------------------------------------------------------------
 function readMegaConfig2File( filename, callback ) {
-   //var parts = adapter.config.ip.split(':');
-   //var ip = parts[0];
-   //var pass = adapter.config.password;
    var cmd = '';
    var filename0 = filename || 'last.cfg';
    var filename1 = adapter.instance + '_' + filename0;
@@ -3263,6 +3190,18 @@ function configInit( callback ) {
    createConfigItemIfNotExists ( 'controller.name', 'state', 'Имя контроллера', '' );
    createConfigItemIfNotExists ( 'controller.serverPort', 'statenum', 'Порт сервера', 91 );
    createConfigItemIfNotExists ( 'controller.pollInterval', 'statenum', 'Интервал опроса Меги (сек)', 60 );
+   createConfigItemIfNotExists ( 'controller.serverIP', 'state', 'IP-адрес сервера', '255.255.255.255' );
+   createConfigItemIfNotExists ( 'controller.gateway',  'state', 'IP-адрес шлюза', '255.255.255.255' );
+   createConfigItemIfNotExists ( 'controller.script',  'state', 'Скрипт сервера', '/' +  adapter.instance );
+   createConfigItemIfNotExists ( 'controller.watchDogPort',  'state', 'Номер порта, сценарий которого будет выполнен при недоступности сервера', '' );
+   createConfigItemIfNotExists ( 'controller.srvLoop',  'statebool', 'Отправка данных с Меги 1 раз в минуту', 'false' );
+
+   createConfigItemIfNotExists ( 'controller.armed.Mega',  'statebool', 'Состояние охраны средствами Меги', 'false' );
+   createConfigItemIfNotExists ( 'controller.armed.Server',  'statebool', 'Состояние охраны средствами сервера', 'false' );
+
+   createConfigItemIfNotExists ( 'gsm.enabled', 'statebool', 'Включить отправку SMS средствами Меги', 'false' );
+   createConfigItemIfNotExists ( 'gsm.phone',   'state', 'Номер телефона для GSM-связи средствами Меги', '' );
+   createConfigItemIfNotExists ( 'gsm.timeout', 'statenum', 'Таймаут для отправки SMS средствами Меги', 3 );
 
    for ( i=0; i <= 37; i ++ ) {
        createConfigItemIfNotExists ( 'ports.'+ i + '.room', 'state', 'Комната, к которой привязан порт ' + i, '' );
@@ -3287,6 +3226,11 @@ function configInit( callback ) {
        createConfigItemIfNotExists ( 'ports.'+ i + '.Release',    'statebool', 'Отпускание кнопки', 'false' );
        createConfigItemIfNotExists ( 'ports.'+ i + '.longClick',  'statebool', 'Долгое нажатие на кнопку', 'false' );
        createConfigItemIfNotExists ( 'ports.'+ i + '.doubleClick',  'statebool', 'Двойное нажатие на кнопку', 'false' );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.group', 'state', 'Группа порта', '' );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.GSMmode', 'state', 'Режим отправки SMS средствами Меги', cGSMmodeNo );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.SMSmode', 'state', 'Режим отправки SMS средствами сервера', cGSMmodeNo );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.porogValue', 'statenum', 'Пороговое значение', 0.00 );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.hysteresis', 'statenum', 'Гистерезис', 0.00 );
    }
 
    if ( callback ) {
@@ -4014,17 +3958,7 @@ function readLink(link, callback) {
 */
 //------------------------------------------------------------------------------------------------
 function readCfgFromMega ( obj ) {
-    //var ip;
-    //var password;
     var filename = 'last.cfg';
-    /*
-    if (obj && obj.message && typeof obj.message == 'object') {
-        ip       = obj.message.ip;
-        password = obj.message.password;
-    } else {
-        ip       = obj ? obj.message : '';
-        password = adapter.config.password;
-    } */
     adapter.log.debug( 'readCfgFromMega start' );
     adapter.log.debug( 'IP = ' + IP );
     if (IP && IP != '0.0.0.0') {

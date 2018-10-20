@@ -2910,7 +2910,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.28.2</p>
+    <p align="right">Admin Version: v0.28.3</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
@@ -2935,6 +2935,17 @@ function checkDisplay() {
                  &nbsp;
             </td>
         </tr>
+        <tr><td class="translate" style="text-align: right">ioBroker Web Port:</td>
+            <td><input  class="valSetup" id="controller.serverPort" maxlength="5"/></td>
+            <td class="translate" style="text-align: right"> </td>
+            <td colspan=2> </td>
+        </tr>
+        <tr><td class="translate" style="text-align: right">MegaD Password:</td>
+            <td><input  class="valSetup" id="controller.password" maxlength="3"/></td>
+            <td class="translate" style="text-align: right"> </td>
+            <td colspan=2> </td>
+        </tr>
+
         <tr><td class="translate" style="text-align: right">MegaD Name:</td>
             <td><input  class="valSetup" id="controller.name"/></td>
             <td class="translate" style="text-align: right">Poll interval (sec):</td>
@@ -2945,16 +2956,6 @@ function checkDisplay() {
             <td class="translate" style="text-align: right">Last known firmware version:</td>
             <td><input readonly class="valSetup" id="firmware.last_known_version"  maxlength="10"/></td>
             <td><button class="translateB" id="updateFirmware">Update Firmware</button></td>
-        </tr>
-        <tr><td class="translate" style="text-align: right">ioBroker Web Port:</td>
-            <td><input  class="valSetup" id="controller.serverPort" maxlength="5"/></td>
-            <td class="translate" style="text-align: right"> </td>
-            <td colspan=2> </td>
-        </tr>
-        <tr><td class="translate" style="text-align: right">MegaD Password:</td>
-            <td><input  class="valSetup" id="controller.password" maxlength="3"/></td>
-            <td class="translate" style="text-align: right"> </td>
-            <td colspan=2> </td>
         </tr>
     </table>
     <!-- <button class="translate" id="add">Add new port</button> -->

@@ -1,10 +1,10 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.28.2",
+        "version":                  "0.28.3",
         "news": {
             "0.28.2": {
-                "en":               "Tempeareture and humidity saving bugfix",
+                "en":               "Temperature and humidity saving bugfix",
                 "ru":               "Багфикс: сохранение данных температуры и влажности в соответствующие свойства порта (temperature/humidity)"
             },
             "0.27.43": {
