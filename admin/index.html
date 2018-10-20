@@ -642,8 +642,8 @@ function checkDisplay() {
           var x = msg.response;
           Setup = JSON.parse( x );
 
-          if ( Setup[ AdapterInstance + '.controller.ipport' ] == '' ) {
-             Setup[ AdapterInstance + '.controller.ipport' ] = '80';
+          if ( Setup[ AdapterInstance + '.controller.ipport' ].val == '' ) {
+             Setup[ AdapterInstance + '.controller.ipport' ].val = '80';
           }
           if ( Setup[ AdapterInstance + '.firmware.is_actual' ].val == true ) {
              document.getElementById( 'firmware.version' ).style.backgroundColor = "lightgreen";
@@ -2838,7 +2838,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.28.17</p>
+    <p align="right">Admin Version: v0.28.18</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
