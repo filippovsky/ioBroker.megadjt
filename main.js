@@ -3920,7 +3920,7 @@ function main() {
     adapter.setState('info.connection', false, true);
 
     configInit( function () {
-        debugAllStates();
+        //debugAllStates();
         adapter.getState(adapter.namespace + '.controller.ip', function (err, state_ip) {
            if (state_ip) {
               IP = state_ip.val;
@@ -4290,77 +4290,112 @@ function saveAdmin(obj) {
 */
 //-------------------------------------------------------------------------------
 function writecf2mega ( obj ) {
-    var url;
-    // ----- открываем соединение и передаем данные в Мегу ------------------------------------
-    //var parts = adapter.config.ip.split(':');
+   adapter.getStates('*', function(err,states) {
+      var x = JSON.stringify(states); 
+      var setup = JSON.parse( x );
+      var inst = 'megadjt.' + adapter.instance + '.';
+      //adapter.log.debug('>> '+ Setup['megadjt.0.ports.0.room'].val );
+      // cf=1&eip=192.168.0.15&pwd=sec&gw=192.168.0.1&sip=192.168.1.35:91&sct=/0&pr=&gsm=1&gsm_num=79165499627&smst=3&srvt=0
+      // cf=2&mdid=5Q7g7&sl=1&nr=1
+      var url1 = 'cf=1&eip=' + setup[ inst + 'controller.ip'].val + '&pwd=' + setup[ inst + 'controller.password'].val;
+      var gw = setup[ inst + 'controller.gateway'].val;
+      if ( gw == '' ) {
+         url1 += '&gw=255.255.255.255';
+      } else {
+         url1 += '&gw=' + gw;
+      }
+      var sip = setup[ inst + 'controller.serverIP'].val;
+      if ( sip == '' ) {
+         url1 += '&sip=255.255.255.255:80';
+      } else {
+         url1 += '&sip=' + sip + ':' + setup[ inst + 'controller.serverPort'].val;
+      }
+      url1 += '&sct=' + setup[ inst + 'controller.script'].val;
+      url1 += '&pr=' + setup[ inst + 'controller.watchDogPort'].val;
+      if ( setup[ inst + 'gsm.enabled'].val == true ) {
+         url1 += '&gsm=1';
+         url1 += '&gsm_num=' +  setup[ inst + 'gsm.phone'].val;
+         url1 += '&smst='    +  setup[ inst + 'gsm.timeout'].val;
+      } else {
+         url1 += '&gsm=&gsm_num=&smst=';
+      }
+      if ( setup[ inst + 'controller.serverType'].val == 'MQTT' ) {
+         url1 += '&srvt=1';
+      } else {
+         url1 += '&srvt=0';//??
+      }
+      var url2 = 'cf=2';
+      url2 += '&mdid=' + setup[ inst + 'controller.name'].val;
+      if ( setup[ inst + 'controller.srvLoop'].val == true ) {
+         url2 += '&sl=1';
+      } else {
+         url2 += '&sl=';
+      }
 
-    var options = {
+      // ----- открываем соединение и передаем данные в Мегу ------------------------------------
+ 
+      var options1 = {
+          host: IP,
+          port: IPPort,
+          path: '/' + Password +'/?' + url1 + '&nr=1';
+      };
+
+      var options2 = {
         host: IP,
         port: IPPort,
-        path: '/' + Password +'/?' + url + '&nr=1'
-    };
+        path: '/' + Password +'/?' + url2
+     };
 
-    var options1 = {
-        host: IP,
-        port: IPPort,
-        path: '/' + Password +'/?' + url
-    };
-
-/*
-    // делаем паузу
-    //setTimeout(function () {
-      adapter.log.debug('Отправляем новые настройки на Мегу');
-      //adapter.log.debug('path->'+path);
-      adapter.log.debug('->'+url);
-      http.get(options, function (res) {
+     adapter.log.debug('Отправляем новые настройки на Мегу');
+     adapter.log.debug('->'+url1);
+     http.get(options1, function (res) {
         res.setEncoding('utf8');
         var data = '';
         res.on('data', function (chunk) {
             data += chunk;
         });
         res.on('end', function () {
-            adapter.log.debug('Получили ответ Меги:' + data);
-            if (res.statusCode != 200) {
-                adapter.log.warn('Response code: ' + res.statusCode + ' - ' + data);
-                if (obj.callback) {
-                   adapter.sendTo(obj.from, obj.command, {error: res.statusCode, response: data}, obj.callback);
-                }
-            } else {
-                //----------------------------------------------
-                http.get(options1, function (res1) {
-                   res1.setEncoding('utf8');
-                   var data1 = '';
-                   res1.on('data', function (chunk1) {
-                       data1 += chunk1;
-                   });
-                   res1.on('end', function () {
-                      adapter.log.debug('Получили ответ1 Меги:' + data1);
-                      if (res1.statusCode != 200) {
-                         adapter.log.warn('Response code: ' + res1.statusCode + ' - ' + data1);
-                         if (obj.callback) {
-                            adapter.sendTo(obj.from, obj.command, {error: res1.statusCode, response: data1}, obj.callback);
-                         }
-                      } else {
-               //------------------------------------------------------------------
-                         adapter.log.debug('Пауза для перезапуска Меги ... ');
-                         setTimeout(function () {
-                            adapter.log.debug('Пауза истекла ... ');
-                            if (obj.callback) {
-                               adapter.sendTo(obj.from, obj.command, {error: '', response: data1}, obj.callback);
-                            }
-                         }, 3000);
-                      }
-                   });
-                });
-            }
+           adapter.log.debug('Получили ответ Меги:' + data);
+           if (res.statusCode != 200) {
+              adapter.log.warn('Response code: ' + res.statusCode + ' - ' + data);
+              if (obj.callback) {
+                 adapter.sendTo(obj.from, obj.command, {error: res.statusCode, response: data}, obj.callback);
+              }
+           } else {
+              //----------------------------------------------
+              http.get(options2, function (res1) {
+                 res1.setEncoding('utf8');
+                 var data1 = '';
+                 res1.on('data', function (chunk1) {
+                     data1 += chunk1;
+                 });
+                 res1.on('end', function () {
+                    adapter.log.debug('Получили ответ1 Меги:' + data1);
+                    if (res1.statusCode != 200) {
+                       adapter.log.warn('Response code: ' + res1.statusCode + ' - ' + data1);
+                       if (obj.callback) {
+                          adapter.sendTo(obj.from, obj.command, {error: res1.statusCode, response: data1}, obj.callback);
+                       }
+                    } else {
+                       adapter.log.debug('Пауза для перезапуска Меги ... ');
+                       setTimeout(function () {
+                          adapter.log.debug('Пауза истекла ... ');
+                          if (obj.callback) {
+                             adapter.sendTo(obj.from, obj.command, {error: '', response: data1}, obj.callback);
+                          }
+                       }, 3000);
+                    }
+                 });
+              });
+           }
         });
-      }).on('error', function (err) {
+     }).on('error', function (err) {
         adapter.log.error( err );
         if (obj.callback) {
            adapter.sendTo(obj.from, obj.command, {error: err, response: null}, obj.callback);
         }
-      });
- */
+     });
+  });
 }
 
 
