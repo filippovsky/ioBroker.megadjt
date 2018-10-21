@@ -3253,7 +3253,7 @@ function configInit( callback ) {
    createConfigItemIfNotExists ( 'controller.model', 'state', 'Модель контроллера', '' );
    createConfigItemIfNotExists ( 'controller.xp1model', 'state', 'Модель исполнительного модуля на XP1', 'none' );
    createConfigItemIfNotExists ( 'controller.xp2model', 'state', 'Модель исполнительного модуля на XP2', 'none' );
-   createConfigItemIfNotExists ( 'controller.ip', 'state', 'IP-адрес контроллера', '192.168.0.14' );
+   createConfigItemIfNotExists ( 'controller.ip', 'state', 'IP-адрес контроллера', '' );
    createConfigItemIfNotExists ( 'controller.ipport', 'statenum', 'IP-порт контроллера', 80 );
    createConfigItemIfNotExists ( 'controller.password', 'state', 'Пароль контроллера', 'sec' );
    createConfigItemIfNotExists ( 'controller.name', 'state', 'Имя контроллера', '' );
