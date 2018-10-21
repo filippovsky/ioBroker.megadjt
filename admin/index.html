@@ -611,29 +611,20 @@ function checkDisplay() {
 
    IsDisplayPresented = false; // пока ориентируемся на тип порта I2C, в будущем поправить на конкретный девайс
    for (var m = 0; m <= 37 ; m++) {
-      //console.log('m='+m+' ptty='+Setup[ inst + '.ports.'+ String(m) + '.portType' ] );
       if (Setup[ inst + '.ports.'+ String(m) + '.portType' ].val == cPortType_I2C ) {
          IsDisplayPresented = true;
          //Return;
-         //console.log('**');
       }
    }
-   /*
-   if (IsDisplayPresented) {
-      console.log('* checkDisplay = TRUE' );
-   } else {
-      console.log('* checkDisplay = FALSE' );
-   }
-   */
 }
 
 //--------------------------------------------------------------------------------
    function getAdapterStates ( ) {
       var AdapterInstance = adapter + '.' + instance;
-
-      //var _adapter_instance = adapter + '.' + instance;
-
+      console.log('getAdapterStates: AdapterInstance=' + AdapterInstance );
       sendTo( AdapterInstance, 'states2Admin', {}, function (msg) {
+          var inst = adapter + '.' + instance;
+          console.log('getAdapterStates: inst=' + inst );
           if (!msg || msg.error) {
              showMessage( msg.error, _('Error'), 'alert');
              return;
@@ -642,10 +633,10 @@ function checkDisplay() {
           var x = msg.response;
           Setup = JSON.parse( x );
 
-          if ( Setup[ AdapterInstance + '.controller.ipport' ].val == '' ) {
-             Setup[ AdapterInstance + '.controller.ipport' ].val = '80';
+          if ( Setup[ inst + '.controller.ipport' ].val == '' ) {
+             Setup[ inst + '.controller.ipport' ].val = '80';
           }
-          if ( Setup[ AdapterInstance + '.firmware.is_actual' ].val == true ) {
+          if ( Setup[ inst + '.firmware.is_actual' ].val == true ) {
              document.getElementById( 'firmware.version' ).style.backgroundColor = "lightgreen";
              document.getElementById( 'firmware.last_known_version' ).style.backgroundColor = "lightgreen";
           } else {
@@ -658,13 +649,13 @@ function checkDisplay() {
           $('.valSetup').each(function () {
               var key = $(this).attr('id');
               if ($(this).attr('type') == 'checkbox') {
-                 if ( Setup[ AdapterInstance + '.' + key ].val == true || Setup[ AdapterInstance + '.' + key ].val == 'true' ) {
+                 if ( Setup[ inst + '.' + key ].val == true || Setup[ inst + '.' + key ].val == 'true' ) {
                     $(this).prop('checked', true);
                  } else {
                     $(this).removeAttr('checked');
                  }
               } else {
-                 $(this).val( Setup[ AdapterInstance + '.' + key ].val );
+                 $(this).val( Setup[ inst + '.' + key ].val );
               }
           });
 
@@ -672,18 +663,18 @@ function checkDisplay() {
           $('.selSetup').each(function () {
              var key = $(this).attr('id');
 
-             $(this).val( Setup[ AdapterInstance + '.' + key ].val ).change(function() {
+             $(this).val( Setup[ inst + '.' + key ].val ).change(function() {
                     onChange();
                 }).keyup(function() {
                     onChange();
              });
 
-             $(this).val( Setup[ AdapterInstance + '.' + key ].val );
+             $(this).val( Setup[ inst + '.' + key ].val );
 
              if ( key == 'controller.xp1model' ) {
 
                 $( '#controller.xp1model option' ).each(function() {
-                   if ($(this).val() == Setup[ AdapterInstance + '.' + key ].val ) {
+                   if ($(this).val() == Setup[ inst + '.' + key ].val ) {
                       $(this).prop("selected", true);
                    } else {
                       $(this).prop("selected", false);
@@ -693,7 +684,7 @@ function checkDisplay() {
              } else if ( key == 'controller.xp2model' ) {
 
                 $( '#controller.xp2model option' ).each(function() {
-                   if ($(this).val() == Setup[ AdapterInstance + '.' + key ].val ) {
+                   if ($(this).val() == Setup[ inst + '.' + key ].val ) {
                       $(this).prop("selected", true);
                    } else {
                       $(this).prop("selected", false);
@@ -744,7 +735,6 @@ function checkDisplay() {
     }
     //--------------------------------------------------------------------------------
     function imagePorts( numXP ) {
-       //var _adapter_instance = adapter + '.' + instance;
        var element_id;
        var element;
 
@@ -1069,17 +1059,12 @@ function checkDisplay() {
    }
 //--------------------------------------------------
     function writecf2mega(ip, pass) {
-      var AdapterInstance = adapter + '.' + instance;
-
-        /*if (!active) {
-            showMessage(_('Enable adapter first'), 'Warning', 'info');
-            return;
-        } */
+      var inst = adapter + '.' + instance;
 
         if (window.confirm(_('Все настройки в Меге будут перезаписаны настройками, сохраненными на сервере. Вы сохранили все изменения на сервере?'))) {
             wait('show');
 
-            sendTo(AdapterInstance, 'writecf2mega', {}, function (msg) {
+            sendTo( inst, 'writecf2mega', {}, function (msg) {
 
                 if (!msg || msg.error) {
                     showMessage(msg.error, _('Error'), 'alert');
@@ -1106,7 +1091,6 @@ function checkDisplay() {
 
     //--------------------------------------------------------------------------------
     function ptyChanged ( controlPort ) {
-        // var _adapter_instance = adapter + '.' + instance;
 
         var numXP;
         var port;
@@ -1282,17 +1266,13 @@ function checkDisplay() {
     // -------------------------------------------------------------------------------
     function loadPreset( numXP, portNum ) {
        // здесь считываются настройки конкретного порта из конфига сервера (не МЕГИ)
-       var adapterInstance = adapter + '.' + instance;
        var controlPort = portNum;
        var mDS;
 
        if (numXP == 2) {
            controlPort = 15 + portNum;
        }
-
-
-
-      loadPresetSub( numXP, portNum, 1 );
+       loadPresetSub( numXP, portNum, 1 );
 
     }
     //--------------------------------------------------------------------------------
@@ -2341,11 +2321,8 @@ function checkDisplay() {
     //-------------------------------------------------------------------------------------
     // the function loadSettings has to exist ...
     function load(settings, onChange) {
-      var AdapterInstance = adapter + '.' + instance;
-
-        //$(".loading").show('slow');
+        var AdapterInstance = adapter + '.' + instance;
         wait('show');
-
 
         SelectedPortXP1 = 0;
         SelectedPortXP2 = 0;
@@ -2478,8 +2455,6 @@ function checkDisplay() {
                 ]
             });
         });
-
-
 
         $('#buttonsms').button({
             icons: {primary: 'ui-icon-refresh'}
@@ -2838,7 +2813,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.28.22</p>
+    <p align="right">Admin Version: v0.28.23</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
