@@ -625,21 +625,30 @@ function checkDisplay() {
       sendTo( AdapterInstance, 'states2Admin', {}, function (msg) {
           var inst = adapter + '.' + instance;
           console.log('getAdapterStates: inst=' + inst );
+          console.log('msg.response=' + msg.response );
           if (!msg || msg.error) {
+             console.log('return' );
              wait('hide');
              showMessage( msg.error, _('Error'), 'alert');
              return;
           }
 
+          console.log('*1' );
           var x = msg.response;
+          console.log('*2' );
           Setup = JSON.parse( x );
+          console.log('*3' );
 
           if ( Setup[ inst + '.controller.ipport' ].val == '' ) {
              Setup[ inst + '.controller.ipport' ].val = '80';
           }
+          console.log('*4' );
           if ( Setup[ inst + '.controller.ip' ].val == '' ) {
+             console.log('*5' );
              wait('hide');
           }
+          console.log('*6' );
+
           if ( Setup[ inst + '.firmware.is_actual' ].val == true ) {
              document.getElementById( 'firmware.version' ).style.backgroundColor = "lightgreen";
              document.getElementById( 'firmware.last_known_version' ).style.backgroundColor = "lightgreen";
@@ -648,7 +657,11 @@ function checkDisplay() {
              document.getElementById( 'firmware.last_known_version' ).style.backgroundColor = "pink";
           }
 
+          console.log('*7' );
+
           checkDisplay();
+
+          console.log('*8' );
 
           $('.valSetup').each(function () {
               var key = $(this).attr('id');
@@ -662,6 +675,8 @@ function checkDisplay() {
                  $(this).val( Setup[ inst + '.' + key ].val );
               }
           });
+
+          console.log('*9' );
 
           //-----------------------------------------------------------------------------------------------
           $('.selSetup').each(function () {
@@ -696,6 +711,8 @@ function checkDisplay() {
                 });
              }
           });
+
+          console.log('*10' );
 
           //---------------------------------------------------------------------------------
 
@@ -2817,7 +2834,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.28.26</p>
+    <p align="right">Admin Version: v0.28.27</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 

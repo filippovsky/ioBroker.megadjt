@@ -3351,12 +3351,13 @@ function setGlobal ( callback ) {
 //--------------------------------------------------------------------------------------------
 function states2Admin ( obj ) {
    var x;
-   //adapter.log.debug('states2Admin point 0' );
+   adapter.log.debug('states2Admin point 0' );
    adapter.getStates('*', function(err,states) {
-      //adapter.log.debug('states2Admin point 1' );
+      adapter.log.debug('states2Admin point 1' );
       x = JSON.stringify(states); 
       if (obj.callback) {
-           //adapter.log.debug('states2Admin point 2' );
+           adapter.log.debug('states2Admin point 2' );
+           adapter.log.debug('obj.from=' + obj.from );
            adapter.sendTo(obj.from, obj.command, {error: '', response: x }, obj.callback );
       }
    });
