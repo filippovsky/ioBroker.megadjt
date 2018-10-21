@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.28.31",
+        "version":                  "0.28.32",
         "news": {
             "0.28.4": {
                 "en":               "Added firmware 4.30b4",
@@ -152,6 +152,8 @@
         }
     },
     "native": {
+        "ports":                    [],
+        "portsColor":               []
     },
     "instanceObjects": [
         {
