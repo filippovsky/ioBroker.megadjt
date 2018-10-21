@@ -626,6 +626,7 @@ function checkDisplay() {
           var inst = adapter + '.' + instance;
           console.log('getAdapterStates: inst=' + inst );
           if (!msg || msg.error) {
+             wait('hide');
              showMessage( msg.error, _('Error'), 'alert');
              return;
           }
@@ -635,6 +636,9 @@ function checkDisplay() {
 
           if ( Setup[ inst + '.controller.ipport' ].val == '' ) {
              Setup[ inst + '.controller.ipport' ].val = '80';
+          }
+          if ( Setup[ inst + '.controller.ip' ].val == '' ) {
+             wait('hide');
           }
           if ( Setup[ inst + '.firmware.is_actual' ].val == true ) {
              document.getElementById( 'firmware.version' ).style.backgroundColor = "lightgreen";
@@ -2813,7 +2817,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.28.24</p>
+    <p align="right">Admin Version: v0.28.26</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
