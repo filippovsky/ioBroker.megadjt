@@ -1343,7 +1343,7 @@ function checkDisplay() {
            text += '<option value=""></option>';
 
            if ( isFirst == 1 ) {
-              room = Setup[ adapterInstance + '.ports.' + controlPort + '.room' ].val;
+              room = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.room' ].val;
            } else {
               element_id = 'roomXP'+numXP;
               element  = document.getElementById( element_id );
@@ -1355,7 +1355,7 @@ function checkDisplay() {
            text += '</select><br>';
 
            if ( isFirst == 1 ) {
-              fnc = Setup[ adapterInstance + '.ports.' + controlPort + '.func' ].val;
+              fnc = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.func' ].val;
            } else {
               element_id = 'fncXP'+numXP;
               element  = document.getElementById( element_id );
@@ -1419,7 +1419,7 @@ function checkDisplay() {
         //--- выбор типа порта ---------------------------------------------------------------------
         text += '<select id="portTypeXP'+numXP+'" onChange="ptyChanged('+controlPort+');"  onfocus="setToolTip('+numXP+',\''+spanPorts+'\');">';
         if ( isFirst == 1 ) {
-           pty = Setup[ adapterInstance + '.ports.' + controlPort + '.portType' ].val;
+           pty = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.portType' ].val;
         } else {
            element_id = 'portTypeXP'+numXP;
            element  = document.getElementById( element_id );
@@ -1689,7 +1689,7 @@ function checkDisplay() {
            text +='<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanAct0+'\');" style="cursor: pointer;"></img>';
            text += '</td><td align="left" valign="middle">';
            text += 'Сценарий по умолчанию (Act):&nbsp;';
-           var ecmd = Setup[ adapterInstance + '.ports.' + controlPort + '.defaultAction' ].val;
+           var ecmd = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.defaultAction' ].val;
            text += '<input id="ecmdXP'+numXP+'" type="text" value="' + (ecmd || '' ) + '" maxsize="11" onfocus="setToolTip('+numXP+',\''+spanAct0+'\');"/>';
            text += '</td></tr>';
 
@@ -1698,7 +1698,7 @@ function checkDisplay() {
            text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanAf0+'\');" style="cursor: pointer;"></img>';
            text += '</td><td align="left" valign="middle">';
            var af = false;
-           if ( Setup[ adapterInstance + '.ports.' + controlPort + '.defaultRunAlways' ].val == true || Setup[ adapterInstance + '.ports.' + controlPort + '.defaultRunAlways' ].val == 'true' ) {
+           if ( Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.defaultRunAlways' ].val == true || Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.defaultRunAlways' ].val == 'true' ) {
               af = true;
            }
            text += '<input type="checkbox" class="checkbox" id="afXP'+numXP+'" '+ ( af ? 'checked' : '') + 
@@ -1711,7 +1711,7 @@ function checkDisplay() {
            text +='<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanEth0+'\');" style="cursor: pointer;"></img>';
            text += '</td><td align="left" valign="middle">';
            text += 'Сетевой сценарий (Net):&nbsp;';
-           var eth = Setup[ adapterInstance + '.ports.' + controlPort + '.netAction' ].val;
+           var eth = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.netAction' ].val;
            text += '<input id="ethXP'+numXP+'" type="text" value="' + (eth || '' ) + '" maxsize="35" onfocus="setToolTip('+numXP+',\''+spanEth0+'\');"/>';
            text += '</td></tr>';
 
@@ -1720,7 +1720,7 @@ function checkDisplay() {
            text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanNaf0+'\');" style="cursor: pointer;"></img>';
            text += '</td><td align="left" valign="middle">';
            var naf = false;
-           if ( Setup[ adapterInstance + '.ports.' + controlPort + '.netRunOnlyWhenServerOut' ].val == true || Setup[ adapterInstance + '.ports.' + controlPort + '.netRunOnlyWhenServerOut' ].val == 'true' ) {
+           if ( Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.netRunOnlyWhenServerOut' ].val == true || Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.netRunOnlyWhenServerOut' ].val == 'true' ) {
               naf = true;
            }
            text += '<input type="checkbox" class="checkbox" id="nafXP'+numXP+'" '+ ( naf ? 'checked' : '') + 
@@ -1736,7 +1736,7 @@ function checkDisplay() {
            text += '<select id="mXP'+numXP+'" onChange="mChanged('+controlPort+');"   onfocus="setToolTip('+numXP+',\''+spanM+'\');">';
            var mxp = '';
            //if ( isFirst == 1 ) {
-              mxp = Setup[ adapterInstance + '.ports.' + controlPort + '.portMode' ].val;
+              mxp = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.portMode' ].val;
            /*} else {
               element_id = 'mXP'+numXP;
               element  = document.getElementById( element_id );
@@ -1758,7 +1758,7 @@ function checkDisplay() {
               text += '<img id="miscImg' + numXP + '" src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanMisc+'\');" style="cursor: pointer;"></img>';
               text += '</td><td align="left" valign="middle">';
               var misc = false;
-              if ( Setup[ adapterInstance + '.ports.' + controlPort + '.send2ServerAlwaysPressRelease' ].val == true || Setup[ adapterInstance + '.ports.' + controlPort + '.send2ServerAlwaysPressRelease' ].val == 'true' ) {
+              if ( Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.send2ServerAlwaysPressRelease' ].val == true || Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.send2ServerAlwaysPressRelease' ].val == 'true' ) {
                  misc = true;
               }
               text += '<input type="checkbox" class="checkbox" id="miscXP'+numXP+'" '+ ( misc ? 'checked' : '') + 
@@ -1772,7 +1772,7 @@ function checkDisplay() {
            text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanRaw+'\');" style="cursor: pointer;"></img>';
            text += '</td><td align="left" valign="middle">';
            var raw = false;
-           if ( Setup[ adapterInstance + '.ports.' + controlPort + '.tremorDefenceDisabled' ].val == true || Setup[ adapterInstance + '.ports.' + controlPort + '.tremorDefenceDisabled' ].val == 'true' ) {
+           if ( Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.tremorDefenceDisabled' ].val == true || Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.tremorDefenceDisabled' ].val == 'true' ) {
               raw = true;
            }
            text += '<input type="checkbox" class="checkbox" id="rawXP'+numXP+'" '+ ( raw ? 'checked' : '') + 
@@ -1786,12 +1786,12 @@ function checkDisplay() {
               text +='<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDisp+'\');" style="cursor: pointer;"></img>';
               text += '</td><td align="left" valign="middle">';
               text += 'Порт дисплея (Disp):&nbsp;';
-              var disp = Setup[ adapterInstance + '.ports.' + controlPort + '.displayPort' ].val;
+              var disp = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.displayPort' ].val;
               //text += '<input id="dispXP'+numXP+'" type="text" value="' + ( disp || '' ) + '" maxsize="2" onfocus="setToolTip('+numXP+',\''+spanDisp+'\');"/>';
               text += '<select id="dispXP'+numXP+'" onfocus="setToolTip('+numXP+',\''+spanDisp+'\');">';
               text += '<option value="" ' + ((disp == '') ? 'selected' : '') + '></option>';
               for (var ii = 0; ii <= 37 ; ii++) {
-                 if (Setup[ adapterInstance + '.ports.'+ String(ii) + '.portType' ].val == cPortType_I2C ) {
+                 if (Setup[ adapter + '.' + instance + '.ports.'+ String(ii) + '.portType' ].val == cPortType_I2C ) {
                     text += '<option value="'+ii+'" ' + ((disp == ii) ? 'selected' : '') + '>'+ii+'</option>';
                  }
               }
@@ -1812,7 +1812,7 @@ function checkDisplay() {
            text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDef+'\');" style="cursor: pointer;"></img>';
            text += '</td><td align="left" valign="middle">';
            var def = false;
-           if ( Setup[ adapterInstance + '.ports.' + controlPort + '.defaultState' ].val == true || Setup[ adapterInstance + '.ports.' + controlPort + '.defaultState' ].val == 'true' ) {
+           if ( Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.defaultState' ].val == true || Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.defaultState' ].val == 'true' ) {
               def = true;
            }
            text += '<input type="checkbox" class="checkbox" id="defaultStateXP'+numXP+'" '+ ( def ? 'checked' : '') + 
@@ -1882,7 +1882,7 @@ function checkDisplay() {
            text += 'Тип устройства (DSen):&nbsp;';
            text += '<select id="dXP'+numXP+'" onfocus="setToolTip('+numXP+',\''+spanSen+'\');">';
            var dxp = '';
-           dxp = Setup[ adapterInstance + '.ports.' + controlPort + '.digitalSensorType' ].val;
+           dxp = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.digitalSensorType' ].val;
            text += '<option value="'+cDigitalSensorTypeDHT11+'" ' + ((dxp == cDigitalSensorTypeDHT11) ? 'selected' : '') + '>DHT11 (Температура и влажность)</option>';
            text += '<option value="'+cDigitalSensorTypeDHT22+'" ' + ((dxp == cDigitalSensorTypeDHT22) ? 'selected' : '') + '>DHT22 (Температура и влажность)</option>';
            text += '<option value="'+cDigitalSensorTypeDS18B20+'" ' + ((dxp == cDigitalSensorTypeDS18B20) ? 'selected' : '') + '>DS18B20 или другой 1-Wire датчик</option>';
@@ -1920,7 +1920,7 @@ function checkDisplay() {
            text += 'Режим работы (Mode):&nbsp;';
            text += '<select id="mDSXP'+numXP+'" onfocus="setToolTip('+numXP+',\''+spanSenMode+'\');">';
            var mdsxp = '';
-           mdsxp = Setup[ adapterInstance + '.ports.' + controlPort + '.digitalSensorMode' ].val;
+           mdsxp = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.digitalSensorMode' ].val;
            var mdsxpSite = 0;
            if ( mdsxp == 'Norm' ) {
               mdsxpSite = 0;
@@ -2840,7 +2840,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.28.29</p>
+    <p align="right">Admin Version: v0.28.30</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
