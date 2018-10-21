@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.28.32",
+        "version":                  "0.28.33",
         "news": {
             "0.28.4": {
                 "en":               "Added firmware 4.30b4",
@@ -152,6 +152,9 @@
         }
     },
     "native": {
+        "pollInterval":             600,
+        "longPress":                700,
+        "doublePress":              600,
         "ports":                    [],
         "portsColor":               []
     },
@@ -177,5 +180,31 @@
             },
             "native": {}
         },
+        {
+            "_id":  "is_firmware_actual",
+            "type": "state",
+            "common": {
+                "role":  "indicator",
+                "name":  "Версия прошивки в устройстве актуальна?",
+                "type":  "boolean",
+                "read":  true,
+                "write": true,
+                "def":   false
+            },
+            "native": {}
+        },
+        {
+            "_id":  "controller_model",
+            "type": "state",
+            "common": {
+                "role":  "text",
+                "name":  "Модель управляющего модуля Меги",
+                "type":  "text",
+                "read":  true,
+                "write": true,
+                "def":   ""
+            },
+            "native": {}
+        }
     ]
 }
