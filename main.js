@@ -3246,9 +3246,9 @@ function configInit( callback ) {
    createConfigItemIfNotExists ( 'sms.phones', 'state', 'Номера телефонов (через запятую) для отправки SMS', '' );
    createConfigItemIfNotExists ( 'sms.text', 'state', 'Текст для отправки SMS', '' );
 
-   createConfigItemIfNotExists ( 'firmware.version', 'state', 'Версия прошивки устройства', '' );
-   createConfigItemIfNotExists ( 'firmware.last_known_version', 'state', 'Текущий номер актуальной версии прошивки', '' );
-   createConfigItemIfNotExists ( 'firmware.is_actual', 'statebool', 'Мега прошита самой свежей версией?', '' );
+   createConfigItemIfNotExists ( 'firmware.version', 'state', 'Версия прошивки устройства', '-' );
+   createConfigItemIfNotExists ( 'firmware.last_known_version', 'state', 'Текущий номер актуальной версии прошивки', fw_version_actual );
+   createConfigItemIfNotExists ( 'firmware.is_actual', 'statebool', 'Мега прошита самой свежей версией?', 'false' );
 
    createConfigItemIfNotExists ( 'controller.model', 'state', 'Модель контроллера', '' );
    createConfigItemIfNotExists ( 'controller.xp1model', 'state', 'Модель исполнительного модуля на XP1', 'none' );
