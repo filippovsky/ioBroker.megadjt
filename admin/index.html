@@ -648,11 +648,13 @@ function checkDisplay() {
              wait('hide');
              return; //?
           }
+          /*
           if ( Setup[ inst + '.controller.ip' ].val == '' ) {
              console.log('*5' );
              wait('hide');
              return; //?
           }
+          */
           console.log('*6' );
 
           if ( Setup[ inst + '.firmware.is_actual' ].val == true ) {
@@ -723,14 +725,21 @@ function checkDisplay() {
           //---------------------------------------------------------------------------------
 
           // инициализируем картинки при загрузке окна
-          showXP( 1 );
-          showXP( 2 );
+          if ( Setup[ inst + '.controller.xp1model' ].val != 'none' ) {
+             showXP( 1 );
+          }
+          if ( Setup[ inst + '.controller.xp2model' ].val != 'none' ) {
+             showXP( 2 );
+          }
           showXP( 0 );
 
-          selectPort( 1, SelectedPortXP1 );
-          selectPort( 2, SelectedPortXP2 );
+          if ( Setup[ inst + '.controller.xp1model' ].val != 'none' ) {
+             selectPort( 1, SelectedPortXP1 );
+          }
+          if ( Setup[ inst + '.controller.xp2model' ].val != 'none' ) {
+             selectPort( 2, SelectedPortXP2 );
+          }
 
-          //$(".loading").hide('slow');
           wait('hide');
 
       });
@@ -1101,11 +1110,18 @@ function checkDisplay() {
 
                 getAdapterStates(); // ?
 
-                imagePorts( 1 ); //?
-                imagePorts( 2 ); //?
-                selectPort( 1, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
-                selectPort( 2, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
-
+                if ( Setup[ inst + '.controller.xp1model' ].val != 'none' ) {
+                   imagePorts( 1 ); //?
+                }
+                if ( Setup[ inst + '.controller.xp2model' ].val != 'none' ) {
+                   imagePorts( 2 ); //?
+                }
+                if ( Setup[ inst + '.controller.xp1model' ].val != 'none' ) {
+                   selectPort( 1, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
+                }
+                if ( Setup[ inst + '.controller.xp2model' ].val != 'none' ) {
+                   selectPort( 2, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
+                }
                 onchange();
 
                 wait('hide');
@@ -2337,7 +2353,6 @@ function checkDisplay() {
              } else if ( numXP == 2 ) {
                 selectPort( numXP, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
              }
-             //$(".loading").hide('slow');
              wait('hide');
              showMessage('Состояние порта сохранено', _('Info'), 'info');
 
@@ -2712,11 +2727,18 @@ function checkDisplay() {
 
                 getAdapterStates(); // ?
 
-                imagePorts( 1 ); //?
-                imagePorts( 2 ); //?
-                selectPort( 1, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
-                selectPort( 2, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
-
+                if ( Setup[ inst + '.controller.xp1model' ].val != 'none' ) {
+                   imagePorts( 1 ); //?
+                }
+                if ( Setup[ inst + '.controller.xp2model' ].val != 'none' ) {
+                   imagePorts( 2 ); //?
+                }
+                if ( Setup[ inst + '.controller.xp1model' ].val != 'none' ) {
+                   selectPort( 1, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
+                }
+                if ( Setup[ inst + '.controller.xp2model' ].val != 'none' ) {
+                   selectPort( 2, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
+                }
                 onchange();
 
                 wait('hide');
@@ -2840,7 +2862,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.28.33</p>
+    <p align="right">Admin Version: v0.28.34</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
