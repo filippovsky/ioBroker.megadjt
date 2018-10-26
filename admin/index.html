@@ -2862,7 +2862,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.28.34</p>
+    <p align="right">Admin Version: v0.28.35</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
@@ -3063,6 +3063,15 @@ function checkDisplay() {
              <td>Дата и время</td>
              <td>Описание</td>
              <td>Прошивка</td>
+           </tr>
+
+           <tr>
+             <td><b>4.30b5</b></td>
+             <td>23.10.2018</td>
+             <td><p align=justify>Исправлена ошибка, из-за которой в сценариях могла некорректно работать команда &quot;4&quot; совместно с паузой
+                 </p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.30b5');">Прошить</button></td>
            </tr>
 
            <tr>
