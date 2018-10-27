@@ -621,23 +621,23 @@ function checkDisplay() {
 //--------------------------------------------------------------------------------
    function getAdapterStates ( ) {
       var AdapterInstance = adapter + '.' + instance;
-      console.log('getAdapterStates: AdapterInstance=' + AdapterInstance );
+      //console.log('getAdapterStates: AdapterInstance=' + AdapterInstance );
       sendTo( AdapterInstance, 'states2Admin', {}, function (msg) {
           var inst = adapter + '.' + instance;
-          console.log('getAdapterStates: inst=' + inst );
-          console.log('msg.response=' + msg.response );
+          //console.log('getAdapterStates: inst=' + inst );
+          //console.log('msg.response=' + msg.response );
           if (!msg || msg.error) {
-             console.log('return' );
+             //console.log('return' );
              wait('hide');
              showMessage( msg.error, _('Error'), 'alert');
              return;
           }
 
-          console.log('*1' );
+          //console.log('*1' );
           var x = msg.response;
-          console.log('*2' );
+          //console.log('*2' );
           Setup = JSON.parse( x );
-          console.log('*3' );
+          //console.log('*3' );
 
           if ( Setup[ adapter + '.' + instance + '.controller.ipport' ].val == '' ) {
              Setup[ adapter + '.' + instance + '.controller.ipport' ].val = '80';
@@ -2863,7 +2863,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.28.37</p>
+    <p align="right">Admin Version: v0.28.38</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
