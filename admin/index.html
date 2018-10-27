@@ -636,8 +636,6 @@ function checkDisplay() {
           if ( Setup[ adapter + '.' + instance + '.controller.ipport' ].val == '' ) {
              Setup[ adapter + '.' + instance + '.controller.ipport' ].val = '80';
           }
-          console.log('*4' );
-          console.log('*6' );
 
           if ( Setup[ adapter + '.' + instance + '.firmware.is_actual' ].val == true ) {
              document.getElementById( 'firmware.version' ).style.backgroundColor = "lightgreen";
@@ -647,11 +645,9 @@ function checkDisplay() {
              document.getElementById( 'firmware.last_known_version' ).style.backgroundColor = "pink";
           }
 
-          console.log('*7' );
 
           checkDisplay();
 
-          console.log('*8' );
 
           $('.valSetup').each(function () {
               var key = $(this).attr('id');
@@ -678,35 +674,40 @@ function checkDisplay() {
           //-----------------------------------------------------------------------------------------------
           $('.selSetup').each(function () {
              var key = $(this).attr('id');
+              console.log('sel.. '+key);
+              if ( Setup[ adapter + '.' + instance + '.' + key ] ) {
+                 $(this).val( Setup[ adapter + '.' + instance + '.' + key ].val ).change(function() {
+                       onChange();
+                    }).keyup(function() {
+                       onChange();
+                 });
 
-             $(this).val( Setup[ adapter + '.' + instance + '.' + key ].val ).change(function() {
-                    onChange();
-                }).keyup(function() {
-                    onChange();
-             });
+                 $(this).val( Setup[ adapter + '.' + instance + '.' + key ].val );
 
-             $(this).val( Setup[ adapter + '.' + instance + '.' + key ].val );
+                 if ( key == 'controller.xp1model' ) {
+         
+                    $( '#controller.xp1model option' ).each(function() {
+                       if ($(this).val() == Setup[ adapter + '.' + instance + '.' + key ].val ) {
+                          $(this).prop("selected", true);
+                       } else {
+                          $(this).prop("selected", false);
+                       }
+                    });
 
-             if ( key == 'controller.xp1model' ) {
+                 } else if ( key == 'controller.xp2model' ) {
 
-                $( '#controller.xp1model option' ).each(function() {
-                   if ($(this).val() == Setup[ adapter + '.' + instance + '.' + key ].val ) {
-                      $(this).prop("selected", true);
-                   } else {
-                      $(this).prop("selected", false);
-                   }
-                });
+                    $( '#controller.xp2model option' ).each(function() {
+                       if ($(this).val() == Setup[ adapter + '.' + instance + '.' + key ].val ) {
+                          $(this).prop("selected", true);
+                       } else {
+                          $(this).prop("selected", false);
+                       }
+                    });
+                 }
+              } else {
+                 console.log('sel.. '+key + ' -- ignored');
+              }
 
-             } else if ( key == 'controller.xp2model' ) {
-
-                $( '#controller.xp2model option' ).each(function() {
-                   if ($(this).val() == Setup[ adapter + '.' + instance + '.' + key ].val ) {
-                      $(this).prop("selected", true);
-                   } else {
-                      $(this).prop("selected", false);
-                   }
-                });
-             }
           });
 
           console.log('*10' );
@@ -714,20 +715,19 @@ function checkDisplay() {
           //---------------------------------------------------------------------------------
 
           // инициализируем картинки при загрузке окна
-          if ( Setup[ adapter + '.' + instance + '.controller.xp1model' ].val != 'none' ) {
-             showXP( 1 );
+          if ( Setup[ adapter + '.' + instance + '.controller.xp1model' ] ) {
+             if ( Setup[ adapter + '.' + instance + '.controller.xp1model' ].val != 'none' ) {
+                showXP( 1 );
+                selectPort( 1, SelectedPortXP1 );
+             }
           }
-          if ( Setup[ adapter + '.' + instance + '.controller.xp2model' ].val != 'none' ) {
-             showXP( 2 );
+          if ( Setup[ adapter + '.' + instance + '.controller.xp1model' ] ) {
+             if ( Setup[ adapter + '.' + instance + '.controller.xp2model' ].val != 'none' ) {
+                showXP( 2 );
+                selectPort( 2, SelectedPortXP2 );
+             }
           }
           showXP( 0 );
-
-          if ( Setup[ adapter + '.' + instance + '.controller.xp1model' ].val != 'none' ) {
-             selectPort( 1, SelectedPortXP1 );
-          }
-          if ( Setup[ adapter + '.' + instance + '.controller.xp2model' ].val != 'none' ) {
-             selectPort( 2, SelectedPortXP2 );
-          }
 
           wait('hide');
 
@@ -2863,7 +2863,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.28.42</p>
+    <p align="right">Admin Version: v0.28.43</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
