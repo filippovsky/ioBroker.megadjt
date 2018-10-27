@@ -681,7 +681,9 @@ function checkDisplay() {
                     $(this).removeAttr('checked');
                  }
               } else {
-                 $(this).val( Setup[ adapter + '.' + instance + '.' + key ].val );
+                 if ( Setup[ adapter + '.' + instance + '.' + key ].val ) {
+                    $(this).val( Setup[ adapter + '.' + instance + '.' + key ].val );
+                 }
               }
           });
 
@@ -2863,7 +2865,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.28.38</p>
+    <p align="right">Admin Version: v0.28.39</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 

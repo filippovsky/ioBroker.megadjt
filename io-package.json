@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.28.38",
+        "version":                  "0.28.39",
         "news": {
             "0.28.35": {
                 "en":               "Added firmware 4.30b5",
@@ -144,7 +144,7 @@
         "keywords":                 ["MegaD-2561", "communication"],
         "extIcon":                  "https://github.com/filippovsky/ioBroker.megadjt/raw/master/admin/megad.png",
         "stopBeforeUpdate":         true,
-        "enabled":                  false,
+        "enabled":                  true,
         "type":                     "hardware",
         "meta": "https://raw.githubusercontent.com/filippovsky/ioBroker.megadjt/master/io-package.json",
         "localLink":                "http://%native_ip%/%password%",
@@ -156,11 +156,6 @@
         }
     },
     "native": {
-        "pollInterval":             600,
-        "longPress":                700,
-        "doublePress":              600,
-        "ports":                    [],
-        "portsColor":               []
     },
     "instanceObjects": [
         {
@@ -181,32 +176,6 @@
                 "read":  true,
                 "write": false,
                 "def":   false
-            },
-            "native": {}
-        },
-        {
-            "_id":  "is_firmware_actual",
-            "type": "state",
-            "common": {
-                "role":  "indicator",
-                "name":  "Версия прошивки в устройстве актуальна?",
-                "type":  "boolean",
-                "read":  true,
-                "write": true,
-                "def":   false
-            },
-            "native": {}
-        },
-        {
-            "_id":  "controller_model",
-            "type": "state",
-            "common": {
-                "role":  "text",
-                "name":  "Модель управляющего модуля Меги",
-                "type":  "text",
-                "read":  true,
-                "write": true,
-                "def":   ""
             },
             "native": {}
         }
