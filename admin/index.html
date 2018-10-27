@@ -630,11 +630,8 @@ function checkDisplay() {
              return;
           }
 
-          //console.log('*1' );
           var x = msg.response;
-          //console.log('*2' );
           Setup = JSON.parse( x );
-          //console.log('*3' );
 
           if ( Setup[ adapter + '.' + instance + '.controller.ipport' ].val == '' ) {
              Setup[ adapter + '.' + instance + '.controller.ipport' ].val = '80';
@@ -659,16 +656,20 @@ function checkDisplay() {
           $('.valSetup').each(function () {
               var key = $(this).attr('id');
               console.log('.. '+key);
-              if ($(this).attr('type') == 'checkbox') {
-                 if ( Setup[ adapter + '.' + instance + '.' + key ].val == true || Setup[ adapter + '.' + instance + '.' + key ].val == 'true' ) {
-                    $(this).prop('checked', true);
+              if ( Setup[ adapter + '.' + instance + '.' + key ] ) {
+                 if ($(this).attr('type') == 'checkbox') {
+                    if ( Setup[ adapter + '.' + instance + '.' + key ].val == true || Setup[ adapter + '.' + instance + '.' + key ].val == 'true' ) {
+                       $(this).prop('checked', true);
+                    } else {
+                       $(this).removeAttr('checked');
+                    }
                  } else {
-                    $(this).removeAttr('checked');
+                    if ( Setup[ adapter + '.' + instance + '.' + key ].val != '' ) {
+                       $(this).val( Setup[ adapter + '.' + instance + '.' + key ].val );
+                    }
                  }
               } else {
-                 if ( Setup[ adapter + '.' + instance + '.' + key ].val != '' ) {
-                    $(this).val( Setup[ adapter + '.' + instance + '.' + key ].val );
-                 }
+                 console.log('.. '+key + ' -- ignored');
               }
           });
 
@@ -2354,6 +2355,20 @@ function checkDisplay() {
         var AdapterInstance = adapter + '.' + instance;
         wait('show');
 
+
+        // read if instance is active or enabled
+        socket.emit('getState', 'system.adapter.' + adapter + '.' + instance + '.alive', function (err, state) {
+            active = common.enabled || (state && state.val);
+            if (!active) {
+                showMessage(_('Enable adapter first'), 'Warning', 'info');
+                wait('hide');
+                return;
+            } else {
+                getAdapterStates();
+            }
+        });
+
+
         SelectedPortXP1 = 0;
         SelectedPortXP2 = 0;
 
@@ -2416,13 +2431,10 @@ function checkDisplay() {
         */
 
 
-        // read if instance is active or enabled
-        socket.emit('getState', 'system.adapter.' + adapter + '.' + instance + '.alive', function (err, state) {
-            active = common.enabled || (state && state.val);
-        });
 
 
-        getAdapterStates();
+
+//       getAdapterStates();
 
         $('#updateFirmware').button({
             icons: {primary: 'ui-icon-refresh'}
@@ -2629,7 +2641,8 @@ function checkDisplay() {
         var ip;
         var state;
         var _lc = new Date().getTime();
-       
+
+     
         var obj = {};
         $('.value').each(function () {
             var $this = $(this);
@@ -2850,7 +2863,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.28.40</p>
+    <p align="right">Admin Version: v0.28.42</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
