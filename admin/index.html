@@ -624,10 +624,7 @@ function checkDisplay() {
       //console.log('getAdapterStates: AdapterInstance=' + AdapterInstance );
       sendTo( AdapterInstance, 'states2Admin', {}, function (msg) {
           var inst = adapter + '.' + instance;
-          //console.log('getAdapterStates: inst=' + inst );
-          //console.log('msg.response=' + msg.response );
           if (!msg || msg.error) {
-             //console.log('return' );
              wait('hide');
              showMessage( msg.error, _('Error'), 'alert');
              return;
@@ -643,18 +640,6 @@ function checkDisplay() {
              Setup[ adapter + '.' + instance + '.controller.ipport' ].val = '80';
           }
           console.log('*4' );
-          /*if ( !Setup[ inst + '.controller.ip' ] ) {
-             console.log('*4a' );
-             wait('hide');
-             return; //?
-          } */
-          /*
-          if ( Setup[ inst + '.controller.ip' ].val == '' ) {
-             console.log('*5' );
-             wait('hide');
-             return; //?
-          }
-          */
           console.log('*6' );
 
           if ( Setup[ adapter + '.' + instance + '.firmware.is_actual' ].val == true ) {
@@ -681,7 +666,7 @@ function checkDisplay() {
                     $(this).removeAttr('checked');
                  }
               } else {
-                 if ( Setup[ adapter + '.' + instance + '.' + key ].val ) {
+                 if ( Setup[ adapter + '.' + instance + '.' + key ].val != '' ) {
                     $(this).val( Setup[ adapter + '.' + instance + '.' + key ].val );
                  }
               }
@@ -2865,7 +2850,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.28.39</p>
+    <p align="right">Admin Version: v0.28.40</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 

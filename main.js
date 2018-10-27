@@ -3355,13 +3355,13 @@ function setGlobal ( callback ) {
 //--------------------------------------------------------------------------------------------
 function states2Admin ( obj ) {
    var x;
-   adapter.log.debug('states2Admin point 0' );
+   //adapter.log.debug('states2Admin point 0' );
    adapter.getStates('*', function(err,states) {
-      adapter.log.debug('states2Admin point 1' );
+      //adapter.log.debug('states2Admin point 1' );
       x = JSON.stringify(states); 
       if (obj.callback) {
-           adapter.log.debug('states2Admin point 2' );
-           adapter.log.debug('obj.from=' + obj.from );
+           //adapter.log.debug('states2Admin point 2' );
+           //adapter.log.debug('obj.from=' + obj.from );
            adapter.sendTo(obj.from, obj.command, {error: '', response: x }, obj.callback );
       }
    });
@@ -3369,39 +3369,12 @@ function states2Admin ( obj ) {
 
 //--------------------------------------------------------------------------------------------
 function debugAllStates () {
-//   adapter.getStates('megadjt.0.ports.0', function(err,states) {
    var x;
-   var elist;
    adapter.getStates('*', function(err,states) {
       x = JSON.stringify(states); 
       var Setup = JSON.parse( x );
-//          if ( Setup[ AdapterInstance + '.controller.ipport' ] == '' ) {
-      adapter.log.debug('>> '+ Setup['megadjt.0.ports.0.room'].val );
+// yes      adapter.log.debug('>> '+ Setup['megadjt.0.ports.0.room'].val );
 
-
-
-//--not      adapter.log.debug('>> '+ x.megadjt.0.ports.0.room.val );
-//      elist = JSON.parse( x ); 
-//-not--   adapter.log.debug('-->' + elist["megadjt.0.ports.0.room"].val );
-
-//      var z = elist[megadjt.0.controller.serverIP];
-//--not--      var z = elist.megadjt."0".ports."0".room;
-//      adapter.log.debug('-1-----------------------------' );
-//--not      adapter.log.debug('tst: '+ z.val );
-//      var z0 = elist["megadjt.0.ports.0.room"].val;
-      adapter.log.debug('-2-----------------------------' );
-//      adapter.log.debug('val: '+ z0 );
-
-
-
-//      adapter.log.debug('>> '+ states.["megadjt.0.ports.0.room"].val );
-
-      //adapter.log.debug('>**elist[0].megadjt.0.ports.0.room.val = '+ elist.["megadjt.0.ports.0.room"].val );
-      //adapter.log.debug('elist = '+ elist );
-      //adapter.log.debug('** elist[0].["megadjt.0.ports.0.room"].val = '+ elist[0].["megadjt.0.ports.0.room"].val );
-      //------not--------adapter.log.debug('elist[0].megadjt.0.ports.0.room.val = '+ elist[0].megadjt.0.ports.0.room.val );
-
-//megadjt.0.ports.0.room
   /*    var i;
       for (i = 0; i < states.length; i++) {
          adapter.log.debug('State ' + states[i]._id +' ->  ' + states[i].val );
@@ -3410,20 +3383,6 @@ function debugAllStates () {
    });
        
 
-/*   adapter.getStatesOf('', '', function (err, _states) {
-      var i;
-      var found;
-      var xx;
-
-      for (i = 0; i < _states.length; i++) {
-         xx = _states[i]._id;
-//         adapter.log.debug('State '+i+' ... ' + _states[i]._id +' ->  ' + _states[i].val );
-         adapter.log.debug('State '+i+' ... ' + _states[i]._id +' ->  ' + getState() );
-      }
-      adapter.log.debug('_states = '+ JSON.stringify(_states) );
-
-   });
-*/
 }
 
 //------------------------------------------------------------------------------------------------------------------
