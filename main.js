@@ -687,11 +687,11 @@ function parseMegaCfgLine ( line ) {
    if ((!naf) || (naf == 'ð=') || (naf == 0) || (naf == '0')) naf = false;
    if ((!misc) || (misc == 'ð=') || (misc == 0) || (misc == '0')) misc = false;
 
-   if ( gsmf == '0' || gsmf == 0 ) {
+   if ( gsmf == '0' ) {
       gsmf_text = cGSMmodeNo;
-   } else if ( gsmf == '1' || gsmf == 1 ) {
+   } else if ( gsmf == '1'  ) {
       gsmf_text = cGSMmodeAlways;
-   } else if ( gsmf == '2' || gsmf == 2 ) {
+   } else if ( gsmf == '2' ) {
       gsmf_text = cGSMmodeArmed;
    } else  {
       gsmf_text = cGSMmodeNo;
@@ -3775,9 +3775,9 @@ function savePort(obj) {
       url += '&disp='+displayPort;
       if ( GSMmode == cGSMmodeNo ) {
          url += '&gsmf=0'; 
-      } else if ( GSMmode = cGSMmodeAlways ) {
+      } else if ( GSMmode == cGSMmodeAlways ) {
          url += '&gsmf=1'; 
-      } else if ( GSMmode = cGSMmodeArmed ) {
+      } else if ( GSMmode == cGSMmodeArmed ) {
          url += '&gsmf=2'; 
       } else {
          url += '&gsmf=0'; // ?
