@@ -1329,7 +1329,7 @@ function checkDisplay() {
         var element;
         var room;
         var fnc;
-        var gsmf;
+        //var gsmf;
         var spanGSMf = "";
 
 
@@ -1524,7 +1524,7 @@ function checkDisplay() {
         spanGSMf += 'Настройка условия для отправки SMS средствами самой Меги: no / always / arm<br>';
         spanGSMf += 'no - не отправлять SMS<br>';
         spanGSMf += 'always - отправлять всегда<br>';
-        spanGSMf += 'arm - только в режиме "охрана" (ARM)</p>';
+        spanGSMf += 'arm - только в режиме &quot;охрана&quot; (ARM)</p>';
         spanGSMf += '<p align=justify>Я решил прикрутить такой модем к меге. И вот, что вышло.</p>';
         spanGSMf += '<p align=justify>Подключение производилось к портам P32 (RX), P33 (TX) (разъем XT2 контроллера), которые поддерживают аппаратный UART.<br>';
         spanGSMf += 'В настройках контроллера включаем галочку GSM (отправка SMS средствами Меги) и указываем номер телефона.</p>';
@@ -1826,7 +1826,7 @@ function checkDisplay() {
               //text += '</td></tr>';
            }
 
-           gsmf = Setup[ adapter + '.' + instance + '.controller.gsm.enabled' ].val;
+           var gsmf = Setup[ adapter + '.' + instance + '.controller.gsm.enabled' ].val;
            if ( gsmf == 'true' || gsmf == true ) {
               text += '<tr><td align="center" valign="middle">';
               text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanGSMf+'\');" style="cursor: pointer;"></img>';
@@ -2917,7 +2917,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.29.0</p>
+    <p align="right">Admin Version: v0.29.1</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
