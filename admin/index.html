@@ -587,6 +587,9 @@ var cNDigitalSensorTypeMarine  = 4;
 var cNDigitalSensorType1WBus   = 5;
 var cNDigitalSensorTypeWiegand26   = 6;
 
+var cGSMmodeNo     = 'No';
+var cGSMmodeAlways = 'Always';
+var cGSMmodeArmed  = 'Armed';
 
 
 //--------------------------------------------------------
@@ -1833,11 +1836,10 @@ function checkDisplay() {
               text += '</td><td align="left" valign="middle">';
               text += 'Режим отправки SMS средствами самой Меги:&nbsp;';
               text += '<select id="gsmfXP'+numXP+'" onfocus="setToolTip('+numXP+',\''+spanGSMf+'\');">';
-              var gsmfxp = '';
-              gsmfxp = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.GSMMode' ].val;
-              text += '<option value="No" ' + ((gsmfxp == 'No') ? 'selected' : '') + '>Не отправлять</option>';
-              text += '<option value="Always" ' + ((gsmfxp == 'Always') ? 'selected' : '') + '>При любом срабатывании порта</option>';
-              text += '<option value="Arm" ' + ((gsmfxp == 'Arm') ? 'selected' : '') + '>Только в режиме ОХРАНА</option>';
+              var gsmfxp = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.GSMmode' ].val;
+              text += '<option value="'+cGSMmodeNo + '" ' + ((gsmfxp == cGSMmodeNo ) ? 'selected' : '') + '>Не отправлять</option>';
+              text += '<option value="' + cGSMmodeAlways + '" ' + ((gsmfxp == cGSMmodeAlways ) ? 'selected' : '') + '>При любом срабатывании порта</option>';
+              text += '<option value="' + cGSMmodeArmed + '" ' + ((gsmfxp == cGSMmodeArmed ) ? 'selected' : '') + '>Только в режиме ОХРАНА</option>';
               text += '</select></td></tr>';
            }
 
@@ -2286,10 +2288,10 @@ function checkDisplay() {
              element  = document.getElementById( element_id );
              newGSMf  = element.options[element.selectedIndex].value; 
           } else {
-             newGSMf  = 'No'; 
+             newGSMf  = cGSMmodeNo; 
           }
        } else {
-          newGSMf = 'No';
+          newGSMf = cGSMmodeNo;
        }
 
        if ( newPortType == cPortType_ReleOut || newPortType == cPortType_DimmedOut || newPortType == cPortType_SimistorOut ) {
@@ -2356,7 +2358,7 @@ function checkDisplay() {
                                   defaultState: newDefaultState,
                                  digSensorType: newDigSensorType,
                                  digSensorMode: mDS_server,
-                                       GSMMode: newGSMf
+                                       GSMmode: newGSMf
                                 }, 
           function (msg) {
              $('#write').button('enable');
@@ -2386,7 +2388,7 @@ function checkDisplay() {
              Setup[ inst + '.ports.' + controlPort + '.defaultState'].val = newDefaultState;
              Setup[ inst + '.ports.' + controlPort + '.digitalSensorType'].val = newDigSensorType;
              Setup[ inst + '.ports.' + controlPort + '.digitalSensorMode'].val = mDS_server;
-             Setup[ inst + '.ports.' + controlPort + '.GSMMode'].val = newGSMf;
+             Setup[ inst + '.ports.' + controlPort + '.GSMmode'].val = newGSMf;
 
              checkDisplay();
 
@@ -2917,7 +2919,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.29.2</p>
+    <p align="right">Admin Version: v0.29.3</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 

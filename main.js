@@ -688,14 +688,15 @@ function parseMegaCfgLine ( line ) {
    if ((!misc) || (misc == 'ð=') || (misc == 0) || (misc == '0')) misc = false;
 
    if ( gsmf == '0' || gsmf == 0 ) {
-      gsmf_text = 'No';
+      gsmf_text = cGSMmodeNo;
    } else if ( gsmf == '1' || gsmf == 1 ) {
-      gsmf_text = 'Always';
+      gsmf_text = cGSMmodeAlways;
    } else if ( gsmf == '2' || gsmf == 2 ) {
-      gsmf_text = 'Arm';
+      gsmf_text = cGSMmodeArmed;
    } else  {
-      gsmf_text = 'No';
+      gsmf_text = cGSMmodeNo;
    }
+
 
 
 /* здесь хорошо бы проверить на соответствие исполнительного модуля
@@ -751,7 +752,7 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.temperature', {val: '', ack: true}); 
       adapter.setState( nodeName + '.humidity', {val: '', ack: true}); 
       adapter.setState( nodeName + '.digitalSensorMode', {val: '', ack: true}); 
-      adapter.setState( nodeName + '.GSMMode', {val: gsmf_text, ack: true}); 
+      adapter.setState( nodeName + '.GSMmode', {val: gsmf_text, ack: true}); 
    } else if ( pty == cNPortType_NotConnected ) {
 /* ToDO: если порт переводим  в NC - хорошо бы его принудительно выключить xx:0 */
       adapter.log.debug('Настраиваем порт '+pn+' как неподключенный');
@@ -773,7 +774,7 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.temperature', {val: '', ack: true}); 
       adapter.setState( nodeName + '.humidity', {val: '', ack: true}); 
       adapter.setState( nodeName + '.digitalSensorMode', {val: '', ack: true}); 
-      adapter.setState( nodeName + '.GSMMode', {val: 'No', ack: true}); 
+      adapter.setState( nodeName + '.GSMmode', {val: cGSMmodeNo, ack: true}); 
 
    } else if (( pty == cNPortType_Out ) && ( m == cNPortMode_SW )) {
 //    TO DO: Здесь надо как-то распознавать еще симисторные и димируемые выходы с тем же pty
@@ -862,8 +863,9 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.temperature', {val: '', ack: true}); 
       adapter.setState( nodeName + '.humidity', {val: '', ack: true}); 
       adapter.setState( nodeName + '.digitalSensorMode', {val: '', ack: true}); 
-      adapter.setState( nodeName + '.GSMMode', {val: 'No', ack: true}); 
+      adapter.setState( nodeName + '.GSMmode', {val: cGSMmodeNo, ack: true}); 
   }
+
 
 
 /*   
@@ -3422,7 +3424,7 @@ function savePort(obj) {
    adapter.log.debug( 'obj.message.defaultState = '+ obj.message.defaultState );
    adapter.log.debug( 'obj.message.digSensorType = '+ obj.message.digSensorType );
    adapter.log.debug( 'obj.message.digSensorMode = '+ obj.message.digSensorMode );
-   adapter.log.debug( 'obj.message.GSMMode = '+ obj.message.GSMMode );
+   adapter.log.debug( 'obj.message.GSMmode = '+ obj.message.GSMmode );
 
    var portNum = obj.message.portNum;
    var room    = obj.message.room;
@@ -3442,7 +3444,8 @@ function savePort(obj) {
    var defaultState = obj.message.defaultState || 0;
    var digSensorType = obj.message.digSensorType || ''; //?
    var digSensorMode = obj.message.digSensorMode || ''; //?
-   var GSMMode = obj.message.GSMMode || 'No'; 
+   var GSMmode = obj.message.GSMmode || cGSMmodeNo; 
+
 
    if (defaultRunAlways == 1) {
       defaultRunAlways = true;
@@ -3586,8 +3589,9 @@ function savePort(obj) {
       tremorDefenceDisabled = false;
       displayPort = '';
       defaultState = false;
-      GSMMode = 'No';
+      GSMmode = cGSMmodeNo;
    }
+
 
    adapter.getState( adapter.namespace + '.ports.' + portNum + '.defaultAction',
       function (err, state ) {
@@ -3714,13 +3718,13 @@ function savePort(obj) {
       }
    );
 
-   adapter.getState( adapter.namespace + '.ports.' + portNum + '.GSMMode',
+   adapter.getState( adapter.namespace + '.ports.' + portNum + '.GSMmode',
       function (err, state ) {
          var oldvalue = "";
          if ( state ) oldvalue = state.val;
-         if ( oldvalue != GSMMode ) {
-            adapter.setState( 'ports.' + portNum + '.GSMMode', {val: digSensorMode, ack: true});
-            adapter.log.info( 'ports.' + portNum + '.GSMMode : '+ oldvalue + ' -> ' + GSMMode );
+         if ( oldvalue != GSMmode ) {
+            adapter.setState( 'ports.' + portNum + '.GSMmode', {val: GSMmode, ack: true});
+            adapter.log.info( 'ports.' + portNum + '.GSMmode : '+ oldvalue + ' -> ' + GSMmode );
          }
       }
    );
@@ -3769,11 +3773,11 @@ function savePort(obj) {
          url += '&m=' + cNPortMode_ClickMode;
       }
       url += '&disp='+displayPort;
-      if ( GSMMode == 'No' ) {
+      if ( GSMmode == cGSMmodeNo ) {
          url += '&gsmf=0'; 
-      } else if ( GSMMode = 'Always' ) {
+      } else if ( GSMmode = cGSMmodeAlways ) {
          url += '&gsmf=1'; 
-      } else if ( GSMMode = 'Arm' ) {
+      } else if ( GSMmode = cGSMmodeArmed ) {
          url += '&gsmf=2'; 
       } else {
          url += '&gsmf=0'; // ?
