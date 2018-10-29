@@ -1,8 +1,12 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.28.43",
+        "version":                  "0.29.0",
         "news": {
+            "0.29.0": {
+                "en":               "Added GSMMode field at Standart IN port",
+                "ru":               "Добавлено поле GSMMode у порта Standart In"
+            },
             "0.28.35": {
                 "en":               "Added firmware 4.30b5",
                 "ru":               "Добавлена прошивка версии 4.30b5"

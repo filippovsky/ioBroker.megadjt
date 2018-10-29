@@ -586,6 +586,7 @@ function parseMegaCfgLine ( line ) {
    var nr;
    var grp;
    var gsmf;
+   var gsmf_text;
    var cf;
    var eip;
    var pwd;
@@ -686,6 +687,17 @@ function parseMegaCfgLine ( line ) {
    if ((!naf) || (naf == 'ð=') || (naf == 0) || (naf == '0')) naf = false;
    if ((!misc) || (misc == 'ð=') || (misc == 0) || (misc == '0')) misc = false;
 
+   if ( gsmf == '0' || gsmf == 0 ) {
+      gsmf_text = 'No';
+   } else if ( gsmf == '1' || gsmf == 1 ) {
+      gsmf_text = 'Always';
+   } else if ( gsmf == '2' || gsmf == 2 ) {
+      gsmf_text = 'Arm';
+   } else  {
+      gsmf_text = 'No';
+   }
+
+
 /* здесь хорошо бы проверить на соответствие исполнительного модуля
 
    adapter.log.debug('pn = ' + pn );
@@ -739,6 +751,7 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.temperature', {val: '', ack: true}); 
       adapter.setState( nodeName + '.humidity', {val: '', ack: true}); 
       adapter.setState( nodeName + '.digitalSensorMode', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.GSMMode', {val: gsmf_text, ack: true}); 
    } else if ( pty == cNPortType_NotConnected ) {
 /* ToDO: если порт переводим  в NC - хорошо бы его принудительно выключить xx:0 */
       adapter.log.debug('Настраиваем порт '+pn+' как неподключенный');
@@ -760,6 +773,7 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.temperature', {val: '', ack: true}); 
       adapter.setState( nodeName + '.humidity', {val: '', ack: true}); 
       adapter.setState( nodeName + '.digitalSensorMode', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.GSMMode', {val: 'No', ack: true}); 
 
    } else if (( pty == cNPortType_Out ) && ( m == cNPortMode_SW )) {
 //    TO DO: Здесь надо как-то распознавать еще симисторные и димируемые выходы с тем же pty
@@ -848,7 +862,7 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.temperature', {val: '', ack: true}); 
       adapter.setState( nodeName + '.humidity', {val: '', ack: true}); 
       adapter.setState( nodeName + '.digitalSensorMode', {val: '', ack: true}); 
-
+      adapter.setState( nodeName + '.GSMMode', {val: 'No', ack: true}); 
   }
 
 
@@ -3408,6 +3422,7 @@ function savePort(obj) {
    adapter.log.debug( 'obj.message.defaultState = '+ obj.message.defaultState );
    adapter.log.debug( 'obj.message.digSensorType = '+ obj.message.digSensorType );
    adapter.log.debug( 'obj.message.digSensorMode = '+ obj.message.digSensorMode );
+   adapter.log.debug( 'obj.message.GSMMode = '+ obj.message.GSMMode );
 
    var portNum = obj.message.portNum;
    var room    = obj.message.room;
@@ -3427,6 +3442,7 @@ function savePort(obj) {
    var defaultState = obj.message.defaultState || 0;
    var digSensorType = obj.message.digSensorType || ''; //?
    var digSensorMode = obj.message.digSensorMode || ''; //?
+   var GSMMode = obj.message.GSMMode || 'No'; 
 
    if (defaultRunAlways == 1) {
       defaultRunAlways = true;
@@ -3570,6 +3586,7 @@ function savePort(obj) {
       tremorDefenceDisabled = false;
       displayPort = '';
       defaultState = false;
+      GSMMode = 'No';
    }
 
    adapter.getState( adapter.namespace + '.ports.' + portNum + '.defaultAction',
@@ -3697,6 +3714,18 @@ function savePort(obj) {
       }
    );
 
+   adapter.getState( adapter.namespace + '.ports.' + portNum + '.GSMMode',
+      function (err, state ) {
+         var oldvalue = "";
+         if ( state ) oldvalue = state.val;
+         if ( oldvalue != GSMMode ) {
+            adapter.setState( 'ports.' + portNum + '.GSMMode', {val: digSensorMode, ack: true});
+            adapter.log.info( 'ports.' + portNum + '.GSMMode : '+ oldvalue + ' -> ' + GSMMode );
+         }
+      }
+   );
+
+
    //---------- передаем данные в Мегу
    var url = 'pn=' + portNum;
    if ( portType == cPortType_NotConnected ) {
@@ -3740,7 +3769,16 @@ function savePort(obj) {
          url += '&m=' + cNPortMode_ClickMode;
       }
       url += '&disp='+displayPort;
-      url += '&gsmf=0'; // !! временно
+      if ( GSMMode == 'No' ) {
+         url += '&gsmf=0'; 
+      } else if ( GSMMode = 'Always' ) {
+         url += '&gsmf=1'; 
+      } else if ( GSMMode = 'Arm' ) {
+         url += '&gsmf=2'; 
+      } else {
+         url += '&gsmf=0'; // ?
+      }
+
       //url += '&nr=1'; // !! временно
 
 

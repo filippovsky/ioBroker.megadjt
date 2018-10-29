@@ -1329,6 +1329,8 @@ function checkDisplay() {
         var element;
         var room;
         var fnc;
+        var gsmf;
+        var spanGSMf = "";
 
 
         if (numXP == 2) {
@@ -1518,6 +1520,22 @@ function checkDisplay() {
         text += '</select>';
         text += '</td></tr>';
 
+        spanGSMf = '<p align=justify>';
+        spanGSMf += 'Настройка условия для отправки SMS средствами самой Меги: no / always / arm<br>';
+        spanGSMf += 'no - не отправлять SMS<br>';
+        spanGSMf += 'always - отправлять всегда<br>';
+        spanGSMf += 'arm - только в режиме "охрана" (ARM)</p>';
+        spanGSMf += '<p align=justify>Я решил прикрутить такой модем к меге. И вот, что вышло.</p>';
+        spanGSMf += '<p align=justify>Подключение производилось к портам P32 (RX), P33 (TX) (разъем XT2 контроллера), которые поддерживают аппаратный UART.<br>';
+        spanGSMf += 'В настройках контроллера включаем галочку GSM (отправка SMS средствами Меги) и указываем номер телефона.</p>';
+        spanGSMf += '<p align=justify>Теперь в настройках конкретного порта (IN, ADC, 1W/DS18B20) можно выбрать режим отправки SMS средствами Меги.<br>';
+        spanGSMf += 'Если порт, для которого указан параметр отправки SMS, сработал, то информация об этом событии будет отправлена на указанный телефон посредством SMS-сообщения.</p>';
+        spanGSMf += '<p align=justify>Но и это еще не все. MegaD-2561 может выступать этаким шлюзом между сервером и GSM-модемом.<br>';
+        spanGSMf += 'Сервер может вызвать примерно такой URL (в PHP текст нужно прогнать через urlencode, браузер сделает это автоматически), чтобы отправить SMS на указанный в конфигурации номер.<br>';
+        spanGSMf += '<a href=http://192.168.0.14/sec/?sms=Alarm!%20Protechka!>http://192.168.0.14/sec/?sms=Alarm! Protechka!</a></p>';
+        spanGSMf += '<p align=justify>В данный момент поддержка GSM-модема тестовая. Пока нет никакой обратной связи. Если что-то с модемом не так, контроллер не сообщит об этом.<br>';
+        spanGSMf += 'Я протестировал работу с китайским дешевым модемом M590E. Судя по документации, набор AT-команду у SIM300, SIM800L такой же. Поэтому скорее всего будет работать и с ними.';
+
         //-----------------------------------------------------------------------------
         // порт IN
         if ( pty == cPortType_StandartIn ) {
@@ -1592,6 +1610,10 @@ function checkDisplay() {
            spanAct0 += '<p align=justify>Иногда требуется, чтобы сценарий, описанный в поле Act для какого-либо порта, выполнялся не по какому-то конкретному событию, а вызывался в произвольный момент времени запросом с сервера. В этом случае сервер должен в GET-запросе для нужного порта передать: <b>cmd=d</b><br>';
            spanAct0 += 'Пример: <i>192.168.0.14/sec/?pt=1&amp;cmd=d</i><br>';
            spanAct0 += 'В этом случае выполнится сценария для входа P1, не смотря на то, что физически вход не замыкался.</p>';
+           spanAct0 += '<p align=justify>В сценарии добавлена команда &quot;S&quot; для изменения режима работы устройства в качестве охранного<br>';
+           spanAct0 += 'S:0 - снять с охраны (disarm)<br>';
+           spanAct0 += 'S:1 - поставить на охрану (ARM)<br>';
+           spanAct0 += 'S:2 - переключить режим</p>';
 
            spanAf0  = '<p align=justify>Этот флажок определяет логику работы сценария. Если он <b>не установлен</b> (по умолчанию), то сценарий выполняется ТОЛЬКО когда сервер не указан, не отвечает или HTTP-статус ответа отличный от &quot;200 OK&quot;. ';
            spanAf0  += 'Если флажок <b>установлен</b>, то сценарий выполняется всегда, независимо от наличия сервера. Контроллер в этом случае будет сообщать на сервер о событиях, но его ответные команды в рамках одной TCP-сессии будут проигнорированы.</p>';
@@ -1802,6 +1824,21 @@ function checkDisplay() {
               }
               text += '</select></td></tr>';
               //text += '</td></tr>';
+           }
+
+           gsmf = Setup[ adapter + '.' + instance + '.controller.gsm.enabled' ].val;
+           if ( gsmf == 'true' || gsmf == true ) {
+              text += '<tr><td align="center" valign="middle">';
+              text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanGSMf+'\');" style="cursor: pointer;"></img>';
+              text += '</td><td align="left" valign="middle">';
+              text += 'Режим отправки SMS средствами самой Меги:&nbsp;';
+              text += '<select id="gsmfXP'+numXP+'" onfocus="setToolTip('+numXP+',\''+spanGSMf+'\');">';
+              var gsmfxp = '';
+              gsmfxp = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.GSMMode' ].val;
+              text += '<option value="No" ' + ((gsmfxp == 'No') ? 'selected' : '') + '>Не отправлять</option>';
+              text += '<option value="Always" ' + ((gsmfxp == 'Always') ? 'selected' : '') + '>При любом срабатывании порта</option>';
+              text += '<option value="Arm" ' + ((gsmfxp == 'Arm') ? 'selected' : '') + '>Только в режиме ОХРАНА</option>';
+              text += '</select></td></tr>';
            }
 
            text += '</table>';
@@ -2113,6 +2150,7 @@ function checkDisplay() {
        var newDisplayPort;
        var newDefaultState;
        var newDigSensorType;
+       var newGSMf;
        var mDS;
        var mDS_server;
 
@@ -2240,6 +2278,20 @@ function checkDisplay() {
           newDisplayPort = '';
        }
 
+       if ( newPortType == cPortType_StandartIn ) {
+          element_id = 'gsm.enabled';
+          element  = document.getElementById( element_id );
+          if ( element.checked ) {
+             element_id = 'gsmfXP'+numXP;
+             element  = document.getElementById( element_id );
+             newGSMf  = element.options[element.selectedIndex].value; 
+          } else {
+             newGSMf  = 'No'; 
+          }
+       } else {
+          newGSMf = 'No';
+       }
+
        if ( newPortType == cPortType_ReleOut || newPortType == cPortType_DimmedOut || newPortType == cPortType_SimistorOut ) {
           element_id = 'defaultStateXP'+numXP;
           element  = document.getElementById( element_id );
@@ -2303,7 +2355,8 @@ function checkDisplay() {
                                      xp2model: xp2model,
                                   defaultState: newDefaultState,
                                  digSensorType: newDigSensorType,
-                                 digSensorMode: mDS_server
+                                 digSensorMode: mDS_server,
+                                       GSMMode: newGSMf
                                 }, 
           function (msg) {
              $('#write').button('enable');
@@ -2333,6 +2386,7 @@ function checkDisplay() {
              Setup[ inst + '.ports.' + controlPort + '.defaultState'].val = newDefaultState;
              Setup[ inst + '.ports.' + controlPort + '.digitalSensorType'].val = newDigSensorType;
              Setup[ inst + '.ports.' + controlPort + '.digitalSensorMode'].val = mDS_server;
+             Setup[ inst + '.ports.' + controlPort + '.GSMMode'].val = newGSMf;
 
              checkDisplay();
 
@@ -2863,7 +2917,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.28.43</p>
+    <p align="right">Admin Version: v0.29.0</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
