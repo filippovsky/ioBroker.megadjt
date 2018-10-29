@@ -4323,7 +4323,8 @@ function writecf2mega ( obj ) {
          url1 += '&gsm_num=' +  setup[ inst + 'gsm.phone'].val;
          url1 += '&smst='    +  setup[ inst + 'gsm.timeout'].val;
       } else {
-         url1 += '&gsm=0&gsm_num=&smst=';//?
+         //url1 += '&gsm=0&gsm_num=&smst=';//?
+         url1 += '&gsm_num=&smst=';//?
       }
       if ( setup[ inst + 'controller.serverType'].val == 'MQTT' ) {
          url1 += '&srvt=1';
@@ -4335,7 +4336,8 @@ function writecf2mega ( obj ) {
       if ( setup[ inst + 'controller.srvLoop'].val == true ) {
          url2 += '&sl=1';
       } else {
-         url2 += '&sl=';
+         //url2 += '&sl=';
+         url2 += '';
       }
 
       // ----- открываем соединение и передаем данные в Мегу ------------------------------------
