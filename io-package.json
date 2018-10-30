@@ -1,8 +1,12 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.29.7",
+        "version":                  "0.30.0",
         "news": {
+            "0.30.0": {
+                "en":               "Added PORTOUTMODE field at Standart OUT port",
+                "ru":               "Добавлено поле Режим работы выхода у порта Standart OUT"
+            },
             "0.29.0": {
                 "en":               "Added GSMMode field at Standart IN port",
                 "ru":               "Добавлено поле GSMMode у порта Standart In"

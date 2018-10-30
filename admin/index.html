@@ -557,6 +557,7 @@ var cPortType_StandartIn  = 'StandartIn';    //0
 var cPortType_ReleOut = 'ReleOut';           //1
 var cPortType_DimmedOut = 'DimmedOut'; //1
 var cPortType_SimistorOut = 'SimistorOut'; //1
+var cPortType_DS2413 = 'DS2413';           //1
 var cPortType_DigitalSensor  = 'DigitalSensor'; //3 цифровой вход dsen
 var cPortType_I2C  = 'I2C'; // 4 
 var cPortType_AnalogSensor  = 'AnalogSensor'; // 2 АЦП-вход для аналоговых датчиков
@@ -590,6 +591,11 @@ var cNDigitalSensorTypeWiegand26   = 6;
 var cGSMmodeNo     = 'No';
 var cGSMmodeAlways = 'Always';
 var cGSMmodeArmed  = 'Armed';
+
+var cOutPortMode_SW  = 'Switch';
+var cOutPortMode_PWM = 'PWM';
+var cOutPortMode_SWLINK = 'SWLink';
+var cOutPortMode_DS2413 = 'DS2413';
 
 
 //--------------------------------------------------------
@@ -1326,6 +1332,7 @@ function checkDisplay() {
         var spanDisp = '';
         var spanSen = '';
         var spanSenMode = '';
+        var spanOutMode = '';
         var adapterInstance = adapter + '.' + instance;
         var pty = "";
         var element_id;
@@ -1483,6 +1490,7 @@ function checkDisplay() {
            if ( portNum <= 5 ) {
               text += '<option value="'+cPortType_AnalogSensor+'" ' + ((pty == cPortType_AnalogSensor)   ? 'selected' : '') + '>АЦП-вход для аналоговых датчиков</option>';
            }
+           text += '<option value="'+cPortType_DS2413+'" ' + ((pty == cPortType_DS2413)   ? 'selected' : '') + '>DS2413</option>';
         } else if ( xp == '14-IOR' ) {
            if ( portNum < 14 ) {
               text += '<option value="'+cPortType_StandartIn+'" ' + ((pty == cPortType_StandartIn)   ? 'selected' : '') + '>Стандартный вход (In)</option>';
@@ -1491,6 +1499,7 @@ function checkDisplay() {
               if ( portNum <= 5 ) {
                  text += '<option value="'+cPortType_AnalogSensor+'" ' + ((pty == cPortType_AnalogSensor)   ? 'selected' : '') + '>АЦП-вход для аналоговых датчиков</option>';
               }
+              text += '<option value="'+cPortType_DS2413+'" ' + ((pty == cPortType_DS2413)   ? 'selected' : '') + '>DS2413</option>';
            } else {
               text += '<option value="'+cPortType_ReleOut+'" ' + ((pty == cPortType_ReleOut)   ? 'selected' : '') + '>Релейный выход</option>';
            }
@@ -1519,6 +1528,7 @@ function checkDisplay() {
            } else {
               text += '<option value="'+cPortType_AnalogSensor+'" ' + ((pty == cPortType_AnalogSensor)   ? 'selected' : '') + '>АЦП-вход для аналоговых датчиков</option>';
            }
+           text += '<option value="'+cPortType_DS2413+'" ' + ((pty == cPortType_DS2413)   ? 'selected' : '') + '>DS2413</option>';
         }
         text += '</select>';
         text += '</td></tr>';
@@ -1537,7 +1547,18 @@ function checkDisplay() {
         spanGSMf += 'Сервер может вызвать примерно такой URL (в PHP текст нужно прогнать через urlencode, браузер сделает это автоматически), чтобы отправить SMS на указанный в конфигурации номер.<br>';
         spanGSMf += '<a href=http://192.168.0.14/sec/?sms=Alarm!%20Protechka!>http://192.168.0.14/sec/?sms=Alarm! Protechka!</a></p>';
         spanGSMf += '<p align=justify>В данный момент поддержка GSM-модема тестовая. Пока нет никакой обратной связи. Если что-то с модемом не так, контроллер не сообщит об этом.<br>';
-        spanGSMf += 'Я протестировал работу с китайским дешевым модемом M590E. Судя по документации, набор AT-команду у SIM300, SIM800L такой же. Поэтому скорее всего будет работать и с ними.';
+        spanGSMf += 'Я протестировал работу с китайским дешевым модемом M590E. Судя по документации, набор AT-команду у SIM300, SIM800L такой же. Поэтому скорее всего будет работать и с ними.</p>';
+
+        spanOutMode = '<p align=justify>';
+        spanOutMode += '<b>Mode:</b> режим работы выхода.<br>';
+        spanOutMode += '<b>SW</b> - обычный ключ, простое переключение (ВКЛ, ВЫКЛ),<br>';
+        spanOutMode += '<b>PWM</b> - ШИМ (широтно-импульсная модуляция),<br>';
+        spanOutMode += '<b>SW LINK</b> - связанный порт,<br>';
+        spanOutMode += '<b>DS2413</b> - двухканальный 1-wire модуль на базе микросхемы DS2413.</p>';
+        spanOutMode += '<p align=justify>Режим <b>SW</b> (простое переключение) устанавливается для &quot;релейных&quot; или &quot;симисторных&quot; выходов модулей MegaD-8I7O и MegaD-14-R.</p>';
+        spanOutMode += '<p align=justify>Режим <b>PWM</b> (ШИМ) предназначен для управления мощностью нагрузки, диммирования ламп, управления скоростью вращения вентилятора (для вентиляторов, способных управляться тиристорным регулятором) и других функций. Этот режим устанавливается для отдельных &quot;симисторных&quot; выходов модуля MegaD-8I7O-SD. PWM (ШИМ) доступен только на портах P10 (P25), P12 (P27) и P13 (P28).</p>';
+        spanOutMode += '<p align=justify>Режим <b>SW LINK</b> (связанный порт) используется в тех случаях, когда необходимо предотвратить на аппаратном уровне включение двух или более портов одновременно. Это актуально для управления различными приводами (рольставен, кранов, клапанов). Этот режим предполагает, что если один из связанных портов включен, то любой другой включить уже нельзя. Для того, чтобы связать два или более портов, необходимо для каждого из них выбрать режим SW LINK и указать одинаковую группу в поле Group (любое число от 0 до 99).</p>';
+        spanOutMode += '<p align=justify>Режим <b>DS2413</b> предназначен для управления внешним двухканальным модулем, работающим по протоколу 1-wire. Этот режим можно установить для портов разъема XT2 или для любого порта модуля MegaD-14-IN в режиме цифрового входа (нижнее положение конфигурационного джампера). Модули на базе DS2413 можно применять в нескольких случаях: когда функциональность исполнительного модуля MegaD-8I7O избыточна и требуется всего 1-2 порта для управления нагрузками; когда требуется вынести модуль управления нагрузками на определенное расстояние (в этом случае достаточно проложить до модуля DS2413 кабель UTP).</p>';
 
         //-----------------------------------------------------------------------------
         // порт IN
@@ -1847,7 +1868,7 @@ function checkDisplay() {
 
         //-----------------------------------------------------------------------------
         // порт OUT релейный
-        } else if (( pty == cPortType_ReleOut ) || ( pty == cPortType_DimmedOut ) || ( pty == cPortType_SimistorOut ) ) {
+        } else if (( pty == cPortType_ReleOut ) || ( pty == cPortType_DimmedOut ) || ( pty == cPortType_SimistorOut ) || ( pty == cPortType_DS2413 ) ) {
 
            spanDef = '<p align=justify><b>Default state (Def)</b>: состояние порта после включения или перезагрузки устройства. ';
            spanDef += 'В ряде случаев требуется, чтобы отдельные приборы по умолчанию были включены.</p> ';
@@ -1863,6 +1884,26 @@ function checkDisplay() {
                    ' onChange="defaultStateChanged('+controlPort+');"  onfocus="setToolTip('+numXP+',\''+spanDef+'\');"/>&nbsp;';
            text += '<label id="lblDefaultStateXP'+numXP+'" for="defaultStateXP'+numXP+'">'+( def ? 'Включено по умолчанию' : 'Выключено по умолчанию') + '</label>';
            text += '</td></tr>';
+
+
+           text += '<tr><td align="center" valign="middle">';
+           text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanOutMode+'\');" style="cursor: pointer;"></img>';
+           text += '</td><td align="left" valign="middle">';
+           if ( pty == cPortType_DS2413 ) {
+              text += '<font color=red><b>ВНИМАНИЕ! Положение джампера должно быть нижнее!</b></font><br>';
+           }
+           text += 'Режим работы выхода:&nbsp;';
+           text += '<select id="portOutModeXP'+numXP+'" onfocus="setToolTip('+numXP+',\''+spanOutMode+'\');">';
+           var portOutModeXP = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.portOutMode' ].val;
+           if ( pty != cPortType_DS2413 ) {
+              text += '<option value="'+cOutPortMode_SW + '" ' + (( portOutModeXP == cOutPortMode_SW ) ? 'selected' : '') + '>Простое переключение (Вкл/Выкл)</option>';
+              if ( pty == cPortType_DimmedOut ) {
+                 text += '<option value="'+cOutPortMode_PWM + '" ' + (( portOutModeXP == cOutPortMode_PWM ) ? 'selected' : '') + '>ШИМ</option>';
+              }
+              text += '<option value="'+cOutPortMode_SWLINK + '" ' + (( portOutModeXP == cOutPortMode_SWLINK ) ? 'selected' : '') + '>Связанный порт</option>';
+           } else {
+              text += '<option value="'+cOutPortMode_DS2413 + '" ' + (( portOutModeXP == cOutPortMode_DS2413 ) ? 'selected' : '') + '>DS2413</option>';
+           }
 
         //-----------------------------------------------------------------------------
         // порт DSen цифровой вход
@@ -2153,6 +2194,7 @@ function checkDisplay() {
        var newDefaultState;
        var newDigSensorType;
        var newGSMf;
+       var newPortOutMode;
        var mDS;
        var mDS_server;
 
@@ -2333,12 +2375,22 @@ function checkDisplay() {
           mDS_Server = 'Norm'; // ?
        }
 
+       if ( newPortType == cPortType_ReleOut || newPortType == cPortType_DimmedOut || newPortType == cPortType_DS2413 || newPortType == cPortType_SimistorOut ) {
+          element_id = 'portOutModeXP'+numXP;
+          element  = document.getElementById( element_id );
+          newPortOutMode  = element.options[element.selectedIndex].value; 
+       } else {
+          newPortOutMode = cOutPortMode_SW;
+       }
+
+
        element  = document.getElementById("controller.xp1model");
        var xp1model = element.options[element.selectedIndex].value; 
        element  = document.getElementById("controller.xp2model");
        var xp2model = element.options[element.selectedIndex].value; 
 
       var inst = adapter + '.' + instance ;
+
 
        sendTo( inst, 'savePort', {  portNum: controlPort, 
                                       room: newroom, 
@@ -2358,7 +2410,8 @@ function checkDisplay() {
                                   defaultState: newDefaultState,
                                  digSensorType: newDigSensorType,
                                  digSensorMode: mDS_server,
-                                       GSMmode: newGSMf
+                                       GSMmode: newGSMf,
+                                   portOutMode: newPortOutMode
                                 }, 
           function (msg) {
              $('#write').button('enable');
@@ -2389,6 +2442,7 @@ function checkDisplay() {
              Setup[ inst + '.ports.' + controlPort + '.digitalSensorType'].val = newDigSensorType;
              Setup[ inst + '.ports.' + controlPort + '.digitalSensorMode'].val = mDS_server;
              Setup[ inst + '.ports.' + controlPort + '.GSMmode'].val = newGSMf;
+             Setup[ inst + '.ports.' + controlPort + '.portOutMode'].val = newPortOutMode;
 
              checkDisplay();
 
@@ -2919,7 +2973,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.29.7</p>
+    <p align="right">Admin Version: v0.30.0</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
