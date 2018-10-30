@@ -1,8 +1,12 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.30.0",
+        "version":                  "0.31.0",
         "news": {
+            "0.31.0": {
+                "en":               "Added GROUP field at Standart OUT port",
+                "ru":               "Добавлено поле Группа у порта Standart OUT"
+            },
             "0.30.0": {
                 "en":               "Added PORTOUTMODE field at Standart OUT port",
                 "ru":               "Добавлено поле Режим работы выхода у порта Standart OUT"

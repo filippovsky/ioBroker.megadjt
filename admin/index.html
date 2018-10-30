@@ -1333,6 +1333,7 @@ function checkDisplay() {
         var spanSen = '';
         var spanSenMode = '';
         var spanOutMode = '';
+        var spanGroup   = '';
         var adapterInstance = adapter + '.' + instance;
         var pty = "";
         var element_id;
@@ -1873,6 +1874,11 @@ function checkDisplay() {
            spanDef = '<p align=justify><b>Default state (Def)</b>: состояние порта после включения или перезагрузки устройства. ';
            spanDef += 'В ряде случаев требуется, чтобы отдельные приборы по умолчанию были включены.</p> ';
 
+           spanGroup = '<p align=justify>';
+           spanGroup += '<b>Group:</b> поле для объединения портов в группы.<br>Можно указать любой номер группы (от 0 до 99). Используется в нескольких случаях.</p>';
+           spanGroup += '1. В режиме <b>&quot;связанного порта&quot; SW Link</b>. В этом случае порты, для которых указан одинаковый номер в поле Group можно включить только по одному. Одновременно включить несколько портов нельзя.</p>';
+           spanGroup += '2. В обычном режиме <b>SW</b> использование групп позволяет управлять всей группой одной командой типа g7:1, где 7 - номер группы. Это позволяет сократить количество команд в сценариях.</p>';
+
            text += '<tr><td align="center" valign="middle">';
            text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDef+'\');" style="cursor: pointer;"></img>';
            text += '</td><td align="left" valign="middle">';
@@ -1904,6 +1910,15 @@ function checkDisplay() {
            } else {
               text += '<option value="'+cOutPortMode_DS2413 + '" ' + (( portOutModeXP == cOutPortMode_DS2413 ) ? 'selected' : '') + '>DS2413</option>';
            }
+
+           text += '<tr><td align="center" valign="middle">';
+           text +='<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanGroup+'\');" style="cursor: pointer;"></img>';
+           text += '</td><td align="left" valign="middle">';
+           text += 'Группа порта (Group):&nbsp;';
+           var group = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.group' ].val;
+           text += '<input id="groupXP'+numXP+'" type="text" value="' + (group || '' ) + '" maxsize="2" size="2" onfocus="setToolTip('+numXP+',\''+spanGroup+'\');"/>';
+           text += '</td></tr>';
+
 
         //-----------------------------------------------------------------------------
         // порт DSen цифровой вход
@@ -2195,6 +2210,7 @@ function checkDisplay() {
        var newDigSensorType;
        var newGSMf;
        var newPortOutMode;
+       var newGroup;
        var mDS;
        var mDS_server;
 
@@ -2336,7 +2352,7 @@ function checkDisplay() {
           newGSMf = cGSMmodeNo;
        }
 
-       if ( newPortType == cPortType_ReleOut || newPortType == cPortType_DimmedOut || newPortType == cPortType_SimistorOut ) {
+       if ( newPortType == cPortType_ReleOut || newPortType == cPortType_DimmedOut || newPortType == cPortType_SimistorOut || newPortType == cPortType_DS2413 ) {
           element_id = 'defaultStateXP'+numXP;
           element  = document.getElementById( element_id );
           if ( element.checked ) {
@@ -2384,6 +2400,15 @@ function checkDisplay() {
        }
 
 
+       if ( newPortType == cPortType_ReleOut || newPortType == cPortType_DimmedOut || newPortType == cPortType_DS2413 || newPortType == cPortType_SimistorOut ) {
+          element_id = 'groupXP'+numXP;
+          element  = document.getElementById( element_id );
+          newGroup = element.value || '';
+       } else {
+          newGroup = '';
+       }
+
+
        element  = document.getElementById("controller.xp1model");
        var xp1model = element.options[element.selectedIndex].value; 
        element  = document.getElementById("controller.xp2model");
@@ -2411,7 +2436,8 @@ function checkDisplay() {
                                  digSensorType: newDigSensorType,
                                  digSensorMode: mDS_server,
                                        GSMmode: newGSMf,
-                                   portOutMode: newPortOutMode
+                                   portOutMode: newPortOutMode,
+                                         group: newGroup
                                 }, 
           function (msg) {
              $('#write').button('enable');
@@ -2443,6 +2469,7 @@ function checkDisplay() {
              Setup[ inst + '.ports.' + controlPort + '.digitalSensorMode'].val = mDS_server;
              Setup[ inst + '.ports.' + controlPort + '.GSMmode'].val = newGSMf;
              Setup[ inst + '.ports.' + controlPort + '.portOutMode'].val = newPortOutMode;
+             Setup[ inst + '.ports.' + controlPort + '.group'].val = newGroup;
 
              checkDisplay();
 
@@ -2973,7 +3000,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.30.0</p>
+    <p align="right">Admin Version: v0.31.0</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 

@@ -761,6 +761,7 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.digitalSensorMode', {val: '', ack: true}); 
       adapter.setState( nodeName + '.GSMmode', {val: gsmf_text, ack: true}); 
       adapter.setState( nodeName + '.portOutMode', {val: cOutPortMode_SW, ack: true}); 
+      adapter.setState( nodeName + '.group', {val: '', ack: true}); 
 
    } else if ( pty == cNPortType_NotConnected ) {
 /* ToDO: если порт переводим  в NC - хорошо бы его принудительно выключить xx:0 */
@@ -785,9 +786,9 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.digitalSensorMode', {val: '', ack: true}); 
       adapter.setState( nodeName + '.GSMmode', {val: cGSMmodeNo, ack: true}); 
       adapter.setState( nodeName + '.portOutMode', {val: cOutPortMode_SW, ack: true}); 
+      adapter.setState( nodeName + '.group', {val: '', ack: true}); 
 
    } else if ( pty == cNPortType_Out )  {
-//    TO DO: Здесь надо как-то распознавать еще симисторные и димируемые выходы с тем же pty
 // pn=7&grp=&pty=1&d=0&m=0&nr=1
       adapter.log.debug('Настраиваем порт '+pn+' как релейный выход');
       if ( ( m == 0 ) || ( m == 3 ) ) {
@@ -831,8 +832,7 @@ function parseMegaCfgLine ( line ) {
       } else if ( m == 3 ) {
          adapter.setState( nodeName + '.portOutMode', {val: cOutPortMode_SWLINK, ack: true}); 
       }
-
-      //grp
+      adapter.setState( nodeName + '.group', {val: grp, ack: true}); 
 
    } else if ( pty == cNPortType_DigitalSensor ) {
       // pn=27&misc=0.00&hst=0.00&ecmd=&af=&eth=&naf=&pty=3&m=0&d=3&gsmf=0&nr=1
@@ -876,6 +876,7 @@ function parseMegaCfgLine ( line ) {
       }
       adapter.setState( nodeName + '.digitalSensorMode', {val: mSRV, ack: true}); 
       adapter.setState( nodeName + '.portOutMode', {val: cOutPortMode_SW, ack: true}); 
+      adapter.setState( nodeName + '.group', {val: '', ack: true}); 
 
 
    } else /*if ( pty == cNPortType_NotConnected )*/ {
@@ -902,6 +903,7 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.digitalSensorMode', {val: '', ack: true}); 
       adapter.setState( nodeName + '.GSMmode', {val: cGSMmodeNo, ack: true}); 
       adapter.setState( nodeName + '.portOutMode', {val: cOutPortMode_SW, ack: true}); 
+      adapter.setState( nodeName + '.group', {val: '', ack: true}); 
 
   }
 
@@ -3466,6 +3468,7 @@ function savePort(obj) {
    adapter.log.debug( 'obj.message.digSensorMode = '+ obj.message.digSensorMode );
    adapter.log.debug( 'obj.message.GSMmode = '+ obj.message.GSMmode );
    adapter.log.debug( 'obj.message.portOutMode = '+ obj.message.portOutMode );
+   adapter.log.debug( 'obj.message.group = '+ obj.message.group );
 
    var portNum = obj.message.portNum;
    var room    = obj.message.room;
@@ -3487,7 +3490,7 @@ function savePort(obj) {
    var digSensorMode = obj.message.digSensorMode || ''; //?
    var GSMmode = obj.message.GSMmode || cGSMmodeNo; 
    var portOutMode = obj.message.portOutMode || cOutPortMode_SW; 
-
+   var group = obj.message.group || ''; 
 
    if (defaultRunAlways == 1) {
       defaultRunAlways = true;
@@ -3782,6 +3785,17 @@ function savePort(obj) {
       }
    );
 
+   adapter.getState( adapter.namespace + '.ports.' + portNum + '.group',
+      function (err, state ) {
+         var oldvalue = "";
+         if ( state ) oldvalue = state.val;
+         if ( oldvalue != group ) {
+            adapter.setState( 'ports.' + portNum + '.group', {val: group, ack: true});
+            adapter.log.info( 'ports.' + portNum + '.group : '+ oldvalue + ' -> ' + group );
+         }
+      }
+   );
+
    //---------- передаем данные в Мегу
    var url = 'pn=' + portNum;
    if ( portType == cPortType_NotConnected ) {
@@ -3840,7 +3854,7 @@ function savePort(obj) {
 
    } else if ( portType == cPortType_ReleOut || portType == cPortType_SimistorOut || portType == cPortType_DimmedOut || portType == cPortType_DS2413 ) {
       //pn=7&grp=&pty=1&d=0&m=0&nr=1
-      url += '&grp='; //!временно
+      url += '&grp=' + group; 
       url += '&pty='+cNPortType_Out;
       if (defaultState) {
          url += '&d=1';
