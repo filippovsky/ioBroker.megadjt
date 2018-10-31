@@ -3236,7 +3236,7 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
        }
 
        if (found) {
-          if ( !obj.val  && type != 'statebool' ) {
+          /*if ( !obj.val  && type != 'statebool' ) {
              if ( type == 'state' ) {
                 adapter.setState( name, {val: '', ack: true});
              //} else if ( type == 'statebool' ) {
@@ -3249,7 +3249,7 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
                 adapter.setState( name, {val: 0, ack: true});
              }
              adapter.log.info('* bugFix: Set first value ' + firstValue + ' for state ' + id );
-         }
+         }  */
          return;
       }
 
@@ -3303,10 +3303,10 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
 
          adapter.setObject( id, obj );
   
-         if ( firstValue || (subtype == 'number') ) {
+         //if ( firstValue || (subtype == 'number') ) {
             adapter.setState( name, {val: firstValue, ack: true});
             adapter.log.info('Set first value ' + firstValue + ' for state ' + id );
-         }
+         //}
   });
 }
 //---------------------------------------------------------------------------------------------
