@@ -3235,9 +3235,23 @@ function createConfigItemIfNotExists ( name, type, desc, firstValue ) {
           found = true;
        }
 
-   if (found) {
-      return;
-   }
+       if (found) {
+          if ( !obj.val  && type != 'statebool' ) {
+             if ( type == 'state' ) {
+                adapter.setState( name, {val: '', ack: true});
+             //} else if ( type == 'statebool' ) {
+             //   adapter.setState( name, {val: false, ack: true});
+             } else if ( type == 'statenum' ) {
+                adapter.setState( name, {val: 0, ack: true});
+             } else if ( type == 'statetemperature' ) {
+                adapter.setState( name, {val: 0, ack: true});
+             } else if ( type == 'statehumidity' ) {
+                adapter.setState( name, {val: 0, ack: true});
+             }
+             adapter.log.info('* bugFix: Set first value ' + firstValue + ' for state ' + id );
+         }
+         return;
+      }
 
 
          adapter.log.info('Add state ' + id);
