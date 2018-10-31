@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.31.0",
+        "version":                  "0.31.1",
         "news": {
             "0.31.0": {
                 "en":               "Added GROUP field at Standart OUT port",

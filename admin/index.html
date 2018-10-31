@@ -1915,7 +1915,7 @@ function checkDisplay() {
            text +='<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanGroup+'\');" style="cursor: pointer;"></img>';
            text += '</td><td align="left" valign="middle">';
            text += 'Группа порта (Group):&nbsp;';
-           var group = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.group' ].val;
+           var group = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.group' ].val || '';
            text += '<input id="groupXP'+numXP+'" type="text" value="' + (group || '' ) + '" maxsize="2" size="2" onfocus="setToolTip('+numXP+',\''+spanGroup+'\');"/>';
            text += '</td></tr>';
 
@@ -3000,7 +3000,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.31.0</p>
+    <p align="right">Admin Version: v0.31.1</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
