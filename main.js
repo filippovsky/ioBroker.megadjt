@@ -685,7 +685,9 @@ function parseMegaCfgLine ( line ) {
       }
       return; 
    }
-   if ( pn < 15 ) {
+   port_number = parseInt( pn, 10 );
+
+   if ( port_number < 15 ) {
       numXP = 1;
    } else if ( port_number < 30 ) {
       numXP = 2;
@@ -830,11 +832,11 @@ function parseMegaCfgLine ( line ) {
          adapter.setState( nodeName + '.portOutMode', {val: cOutPortMode_SW, ack: true}); 
       } else if ( m == 1 ) {
          adapter.setState( nodeName + '.portOutMode', {val: cOutPortMode_PWM, ack: true}); 
-         if ( portNum == '10' || portNum == '12' || portNum == '13' ) {
+         if ( pn == '10' || pn == '12' || pn == '13' ) {
             pwmTimer = '1';
-         } else if ( portNum == '25' || portNum == '27' || portNum == '28' ) {
+         } else if ( pn == '25' || pn == '27' || pn == '28' ) {
             pwmTimer = '3';
-         } else if ( portNum == '11' ) {
+         } else if ( pn == '11' ) {
             pwmTimer = '2';
          } else { 
             // TRAP!
@@ -3232,7 +3234,9 @@ function syncObjects() {
 
         if ( IP && IP != '0.0.0.0') {
             pollStatus();
-            setInterval(pollStatus, adapter.config.pollInterval * 1000);
+            if ( adapter.config.pollInterval && adapter.config.pollInterval > 0 ) {
+               setInterval(pollStatus, adapter.config.pollInterval * 1000);
+            }
         }
 
 /* ??? filippovsky
@@ -4140,7 +4144,9 @@ function main() {
 
                           pollStatus();
                           adapter.getState( adapter.namespace + '.controller.pollInterval', function (err, state) {
-                             setInterval(pollStatus, state.val * 1000);
+                             if ( state.val && state.val > 0 ) {
+                                setInterval(pollStatus, state.val * 1000);
+                             }
                           });
                        } else {
                           adapter.log.warn('IP is null or 0.0.0.0');
