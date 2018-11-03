@@ -23,11 +23,9 @@ savePort - изменение в интерфейсе настроек драй�
 parseMegaCfgLine - загрузка из файла настроек
 
 - изменение типа исполнительного модуля в интерфейсе настроек
-- получение настроек портов из Меги - сводится к parseMegaCfgLine 
-- запись настроек из файла в мегу (?)
+- загрузка настроек из файла на сервер и сохранение с сервера в файл (?)
 ----------------------------
 ToDO: 
-//    TO DO: parseMegaCfgLine =  надо как-то распознавать еще симисторные и димируемые выходы с тем же pty
 
 - при смене типа исполнительного модуля, при чтении конфигурации из Меги, и при чтении из файла :
     - проверять типы  портов на  соответствие исполнительному модулю. При несоответствии делаем NC.
@@ -135,7 +133,9 @@ var cOutPortMode_PWM = 'PWM';
 var cOutPortMode_SWLINK = 'SWLink';
 var cOutPortMode_DS2413 = 'DS2413';
 
-
+var cPWM_Freq_Normal = 'Normal';  //0
+var cPWM_Freq_Low    = 'Low';     //1
+var cPWM_Freq_High   = 'High';    //2
 
 //            var settings = adapter.config.ports[p];
 //-------------------------------------------------------------------------------------------------------------------
@@ -607,6 +607,8 @@ function parseMegaCfgLine ( line ) {
    var srvt;
    var mdid;
    var sl;
+   var fr;
+   var pwmTimer = '';
 
    adapter.log.debug('Распознание строки настройки: '+line);
    parts = line.split('&');
@@ -640,6 +642,7 @@ function parseMegaCfgLine ( line ) {
       if ( state == 'srvt' )    srvt = value || '';
       if ( state == 'mdid' )    mdid = value || '';
       if ( state == 'sl'   )    sl   = value || '';
+      if ( state == 'fr'   )    fr   = value || '0';
    }
 
    if (!pn) {
@@ -827,6 +830,28 @@ function parseMegaCfgLine ( line ) {
          adapter.setState( nodeName + '.portOutMode', {val: cOutPortMode_SW, ack: true}); 
       } else if ( m == 1 ) {
          adapter.setState( nodeName + '.portOutMode', {val: cOutPortMode_PWM, ack: true}); 
+         if ( portNum == '10' || portNum == '12' || portNum == '13' ) {
+            pwmTimer = '1';
+         } else if ( portNum == '25' || portNum == '27' || portNum == '28' ) {
+            pwmTimer = '3';
+         } else if ( portNum == '11' ) {
+            pwmTimer = '2';
+         } else { 
+            // TRAP!
+            pwmTimer = '1';
+         }
+
+         if ( fr == '0' ) {
+            adapter.setState( nodeName + '.PWM.timers.' + pwmTimer + '.freq' , {val: cPWM_Freq_Normal, ack: true}); 
+         } else if ( fr == '1' ) {
+            adapter.setState( nodeName + '.PWM.timers.' + pwmTimer + '.freq' , {val: cPWM_Freq_Low, ack: true}); 
+         } else if ( fr == '2' ) {
+            adapter.setState( nodeName + '.PWM.timers.' + pwmTimer + '.freq' , {val: cPWM_Freq_High, ack: true}); 
+         } else {
+            // TRAP !
+            adapter.setState( nodeName + '.PWM.timers.' + pwmTimer + '.freq' , {val: cPWM_Freq_Normal, ack: true}); 
+         }
+
       } else if ( m == 2 ) {
          adapter.setState( nodeName + '.portOutMode', {val: cOutPortMode_DS2413, ack: true}); 
       } else if ( m == 3 ) {
@@ -3379,6 +3404,10 @@ function configInit( callback ) {
        createConfigItemIfNotExists ( 'ports.'+ i + '.portOutMode', 'state', 'Режим работы выхода', cOutPortMode_SW );
    }
 
+   for ( i=1; i <= 3; i ++ ) {
+       createConfigItemIfNotExists ( 'PWM.timers.'+ i +'.freq', 'state', 'Частота ШИМ для данного таймера', cPWM_Freq_Normal );
+   }
+
    if ( callback ) {
       if (callback) callback( /*error, data*/ );
    }
@@ -3483,6 +3512,8 @@ function savePort(obj) {
    adapter.log.debug( 'obj.message.GSMmode = '+ obj.message.GSMmode );
    adapter.log.debug( 'obj.message.portOutMode = '+ obj.message.portOutMode );
    adapter.log.debug( 'obj.message.group = '+ obj.message.group );
+   adapter.log.debug( 'obj.message.group = '+ obj.message.group );
+   adapter.log.debug( 'obj.message.freq  = '+ obj.message.freq  );
 
    var portNum = obj.message.portNum;
    var room    = obj.message.room;
@@ -3505,6 +3536,8 @@ function savePort(obj) {
    var GSMmode = obj.message.GSMmode || cGSMmodeNo; 
    var portOutMode = obj.message.portOutMode || cOutPortMode_SW; 
    var group = obj.message.group || ''; 
+   var freq  = obj.message.freq || cPWM_Freq_Normal;  
+   var pwmTimer = '';
 
    if (defaultRunAlways == 1) {
       defaultRunAlways = true;
@@ -3809,6 +3842,30 @@ function savePort(obj) {
          }
       }
    );
+   
+   if ( portType == cPortType_DimmedOut ) {
+      if ( portNum == '10' || portNum == '12' || portNum == '13' ) {
+         pwmTimer = '1';
+      } else if ( portNum == '25' || portNum == '27' || portNum == '28' ) {
+         pwmTimer = '3';
+      } else if ( portNum == '11' ) {
+         pwmTimer = '2';
+      } else { 
+         // TRAP!
+         pwmTimer = '1';
+      }
+
+      adapter.getState( adapter.namespace + '.PWM.timers.' + pwmTimer + '.freq',
+         function (err, state ) {
+            var oldvalue = "";
+            if ( state ) oldvalue = state.val;
+            if ( oldvalue != freq ) {
+               adapter.setState( 'PWM.timers.' + pwmTimer + '.freq', {val: freq, ack: true});
+               adapter.log.info( 'PWM.timers.' + pwmTimer + '.freq : '+ oldvalue + ' -> ' + freq );
+            }
+         }
+      );
+   }
 
    //---------- передаем данные в Мегу
    var url = 'pn=' + portNum;
@@ -3879,6 +3936,13 @@ function savePort(obj) {
          url += '&m=0'; 
       } else if ( portOutMode == cOutPortMode_PWM ) {
          url += '&m=1'; 
+         if ( freq == cPWM_Freq_Normal ) {
+            url += '&fr=0'; 
+         } else if ( freq == cPWM_Freq_Low ) {
+            url += '&fr=1';
+         } else if ( freq == cPWM_Freq_High ) {
+            url += '&fr=2';
+         }
       } else if ( portOutMode == cOutPortMode_DS2413 ) {
          url += '&m=2'; 
       } else if ( portOutMode == cOutPortMode_SWLINK ) {

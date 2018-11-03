@@ -597,6 +597,9 @@ var cOutPortMode_PWM = 'PWM';
 var cOutPortMode_SWLINK = 'SWLink';
 var cOutPortMode_DS2413 = 'DS2413';
 
+var cPWM_Freq_Normal = 'Normal';  //0
+var cPWM_Freq_Low    = 'Low';     //1
+var cPWM_Freq_High   = 'High';    //2
 
 //--------------------------------------------------------
 function getRandomInt(min, max) {
@@ -1334,6 +1337,8 @@ function checkDisplay() {
         var spanSenMode = '';
         var spanOutMode = '';
         var spanGroup   = '';
+        var spanFreq    = '';
+        var pwmTimer    = '1';
         var adapterInstance = adapter + '.' + instance;
         var pty = "";
         var element_id;
@@ -1868,7 +1873,7 @@ function checkDisplay() {
            text += '</table>';
 
         //-----------------------------------------------------------------------------
-        // порт OUT релейный
+        // порт OUT
         } else if (( pty == cPortType_ReleOut ) || ( pty == cPortType_DimmedOut ) || ( pty == cPortType_SimistorOut ) || ( pty == cPortType_DS2413 ) ) {
 
            spanDef = '<p align=justify><b>Default state (Def)</b>: состояние порта после включения или перезагрузки устройства. ';
@@ -1878,6 +1883,17 @@ function checkDisplay() {
            spanGroup += '<b>Group:</b> поле для объединения портов в группы.<br>Можно указать любой номер группы (от 0 до 99). Используется в нескольких случаях.</p>';
            spanGroup += '1. В режиме <b>&quot;связанного порта&quot; SW Link</b>. В этом случае порты, для которых указан одинаковый номер в поле Group можно включить только по одному. Одновременно включить несколько портов нельзя.</p>';
            spanGroup += '2. В обычном режиме <b>SW</b> использование групп позволяет управлять всей группой одной командой типа g7:1, где 7 - номер группы. Это позволяет сократить количество команд в сценариях.</p>';
+
+           if ( pty == cPortType_DimmedOut ) {
+              spanFreq = '<p align=justify>';
+              spanFreq += 'В ряде случае при управлении с помощью ШИМ-сигнала сторонним оборудованием возникает необходимость использовать более низкую или более высокую частоту ШИМ.</p>';
+              spanFreq += '<p align=justify>Частоту для ШИМ-каналов можно настроить: (Нормальная - 3064 Гц, Низкая - 383 Гц, Высокая - 24510 Гц).</p>';
+              spanFreq += '<p align=justify><font color=red><b>Важно! Настройка частоты ШИМ, сделанная для одного порта, распространяется и на другие порты, связанные с этим же таймером.</b></font></p>';
+              spanFreq += '<p align=justify>Таймеры и связанные с ними порты:<br>';
+              spanFreq += 'Таймер 1: P10, P12, P13<br>';
+              spanFreq += 'Таймер 3: P25, P27, P28<br>';
+              spanFreq += 'Таймер 2: P11</p>';
+           }
 
            text += '<tr><td align="center" valign="middle">';
            text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDef+'\');" style="cursor: pointer;"></img>';
@@ -1910,6 +1926,7 @@ function checkDisplay() {
            } else {
               text += '<option value="'+cOutPortMode_DS2413 + '" ' + (( portOutModeXP == cOutPortMode_DS2413 ) ? 'selected' : '') + '>DS2413</option>';
            }
+           text += '</select></td></tr>';
 
            text += '<tr><td align="center" valign="middle">';
            text +='<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanGroup+'\');" style="cursor: pointer;"></img>';
@@ -1919,7 +1936,28 @@ function checkDisplay() {
            text += '<input id="groupXP'+numXP+'" type="text" value="' + (group || '' ) + '" maxsize="2" size="2" onfocus="setToolTip('+numXP+',\''+spanGroup+'\');"/>';
            text += '</td></tr>';
 
-
+           if ( pty == cPortType_DimmedOut ) {
+              if ( controlPort == 10 || controlPort == 12 || controlPort == 13 ) {
+                 pwmTimer = '1';
+              } else if ( controlPort == 25 || controlPort == 27 || controlPort == 28 ) {
+                 pwmTimer = '3';
+              } else if ( controlPort == 11 ) {
+                 pwmTimer = '2';
+              } else {
+                 // TRAP !
+                 pwmTimer = '1';
+              }
+              text += '<tr><td align="center" valign="middle">';
+              text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanFreq+'\');" style="cursor: pointer;"></img>';
+              text += '</td><td align="left" valign="middle">';
+              text += 'Частота ШИМ <font color=red><b>(Таймер ' + pwmTimer + ')</b></font>:&nbsp;';
+              text += '<select id="freqXP'+numXP+'" onfocus="setToolTip('+numXP+',\''+spanFreq+'\');">';
+              var freqXP = Setup[ adapter + '.' + instance + '.PWM.timers.' + pwmTimer + '.freq' ].val;
+              text += '<option value="'+ cPWM_Freq_Normal + '" ' + (( freqXP == cPWM_Freq_Normal ) ? 'selected' : '') + '>Нормальная (3064 Гц)</option>';
+              text += '<option value="'+ cPWM_Freq_Low    + '" ' + (( freqXP == cPWM_Freq_Low    ) ? 'selected' : '') + '>Низкая (383 Гц)</option>';
+              text += '<option value="'+ cPWM_Freq_High   + '" ' + (( freqXP == cPWM_Freq_High   ) ? 'selected' : '') + '>Высокая (24510 Гц)</option>';
+              text += '</select></td></tr>';
+           }
         //-----------------------------------------------------------------------------
         // порт DSen цифровой вход
         } else if ( pty == cPortType_DigitalSensor ) {
@@ -2213,6 +2251,8 @@ function checkDisplay() {
        var newGroup;
        var mDS;
        var mDS_server;
+       var newFreq;
+       var pwmTimer;
 
        $('#write').button('disable');
        $('#autoDetect').button('disable');
@@ -2408,6 +2448,13 @@ function checkDisplay() {
           newGroup = '';
        }
 
+       if ( newPortType == cPortType_DimmedOut ) {
+          element_id = 'freqXP'+numXP;
+          element  = document.getElementById( element_id );
+          newFreq = element.value || '';
+       } else {
+          newFreq = '';
+       }
 
        element  = document.getElementById("controller.xp1model");
        var xp1model = element.options[element.selectedIndex].value; 
@@ -2437,7 +2484,8 @@ function checkDisplay() {
                                  digSensorMode: mDS_server,
                                        GSMmode: newGSMf,
                                    portOutMode: newPortOutMode,
-                                         group: newGroup
+                                         group: newGroup,
+                                          freq: newFreq
                                 }, 
           function (msg) {
              $('#write').button('enable');
@@ -2470,6 +2518,20 @@ function checkDisplay() {
              Setup[ inst + '.ports.' + controlPort + '.GSMmode'].val = newGSMf;
              Setup[ inst + '.ports.' + controlPort + '.portOutMode'].val = newPortOutMode;
              Setup[ inst + '.ports.' + controlPort + '.group'].val = newGroup;
+
+             if ( newPortType == cPortType_DimmedOut ) {
+                if ( controlPort == 10 || controlPort == 12 || controlPort == 13 ) {
+                   pwmTimer = '1';
+                } else if ( controlPort == 25 || controlPort == 27 || controlPort == 28 ) {
+                   pwmTimer = '3';
+                } else if ( controlPort == 11 ) {
+                   pwmTimer = '2';
+                } else {
+                   // TRAP !
+                   pwmTimer = '1';
+                }
+                Setup[ inst + '.PWM.timers.' + pwmTimer + '.freq'].val = newFreq;
+             }
 
              checkDisplay();
 
@@ -3000,7 +3062,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.32.0</p>
+    <p align="right">Admin Version: v0.33.0</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 

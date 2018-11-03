@@ -1,8 +1,16 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.32.0",
+        "version":                  "0.33.0",
         "news": {
+            "0.33.0": {
+                "en":               "Added FREQ field at Dimmed OUT port",
+                "ru":               "Добавлено поле Частота у порта Димируемый выход"
+            },
+            "0.32.0": {
+                "en":               "IMPORTANT! YOU NEED DEL ALL INSTNACES BEFORE INSTALL!",
+                "ru":               "ВАЖНО! Удалите все инстанции перед установкой! Изменено сохранение первоначальных значений"
+            },
             "0.31.0": {
                 "en":               "Added GROUP field at Standart OUT port",
                 "ru":               "Добавлено поле Группа у порта Standart OUT"
