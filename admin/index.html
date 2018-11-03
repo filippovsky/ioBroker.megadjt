@@ -2912,7 +2912,8 @@ function checkDisplay() {
             $('#ipchange').button('disable');
             $('#updateFirmware').button('disable');
 
-            sendTo(AdapterInstance, 'readCfgFromMega', {ip: ip, password: pass}, function (msg) {
+//            sendTo(AdapterInstance, 'readCfgFromMega', {ip: ip, password: pass}, function (msg) {
+            sendTo( adapter + '.' + instance, 'readCfgFromMega', {ip: ip, password: pass}, function (msg) {
 
                 $('#write').button('enable');
                 $('#autoDetect').button('enable');
@@ -2927,16 +2928,16 @@ function checkDisplay() {
 
                 getAdapterStates(); // ?
 
-                if ( Setup[ inst + '.controller.xp1model' ].val != 'none' ) {
+                if ( Setup[ adapter + '.' + instance + '.controller.xp1model' ].val != 'none' ) {
                    imagePorts( 1 ); //?
                 }
-                if ( Setup[ inst + '.controller.xp2model' ].val != 'none' ) {
+                if ( Setup[ adapter + '.' + instance + '.controller.xp2model' ].val != 'none' ) {
                    imagePorts( 2 ); //?
                 }
-                if ( Setup[ inst + '.controller.xp1model' ].val != 'none' ) {
+                if ( Setup[ adapter + '.' + instance + '.controller.xp1model' ].val != 'none' ) {
                    selectPort( 1, SelectedPortXP1 ); // перерисовываем данные о уже выбраном порту
                 }
-                if ( Setup[ inst + '.controller.xp2model' ].val != 'none' ) {
+                if ( Setup[ adapter + '.' + instance + '.controller.xp2model' ].val != 'none' ) {
                    selectPort( 2, SelectedPortXP2 ); // перерисовываем данные о уже выбраном порту
                 }
                 onchange();
@@ -3062,7 +3063,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.33.1</p>
+    <p align="right">Admin Version: v0.33.2</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
