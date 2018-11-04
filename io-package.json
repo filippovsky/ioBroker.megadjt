@@ -1,8 +1,12 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.34.0",
+        "version":                  "0.34.1",
         "news": {
+            "0.34.0": {
+                "en":               "Added DEFAULT field at Dimmed OUT port",
+                "ru":               "Добавлено поле ЗНАЧЕНИЕ ПО УМОЛЧАНИЮ у порта Димируемый выход"
+            },
             "0.33.0": {
                 "en":               "Added FREQ field at Dimmed OUT port",
                 "ru":               "Добавлено поле Частота у порта Димируемый выход"

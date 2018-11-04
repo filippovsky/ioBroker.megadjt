@@ -1946,29 +1946,30 @@ function portOutModeChanged ( controlPort ) {
            }
            text += '</select></td></tr>';
 
-           text += '<tr><td align="center" valign="middle">';
-           text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDef+'\');" style="cursor: pointer;"></img>';
-           text += '</td><td align="left" valign="middle">';
-           var def = false;
-           if ( Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.defaultState' ].val == true || Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.defaultState' ].val == 'true' ) {
-              def = true;
-           }
-           text += '<input type="checkbox" class="checkbox" id="defaultStateXP'+numXP+'" '+ ( def ? 'checked' : '') + 
-                   ' onChange="defaultStateChanged('+controlPort+');"  onfocus="setToolTip('+numXP+',\''+spanDef+'\');"/>&nbsp;';
-           text += '<label id="lblDefaultStateXP'+numXP+'" for="defaultStateXP'+numXP+'">'+( def ? 'Включено по умолчанию' : 'Выключено по умолчанию') + '</label>';
-           text += '</td></tr>';
+           if ( portOutModeXP != cOutPortMode_PWM ) {
+              text += '<tr><td align="center" valign="middle">';
+              text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDef+'\');" style="cursor: pointer;"></img>';
+              text += '</td><td align="left" valign="middle">';
+              var def = false;
+              if ( Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.defaultState' ].val == true || Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.defaultState' ].val == 'true' ) {
+                 def = true;
+              }
+              text += '<input type="checkbox" class="checkbox" id="defaultStateXP'+numXP+'" '+ ( def ? 'checked' : '') + 
+                      ' onChange="defaultStateChanged('+controlPort+');"  onfocus="setToolTip('+numXP+',\''+spanDef+'\');"/>&nbsp;';
+              text += '<label id="lblDefaultStateXP'+numXP+'" for="defaultStateXP'+numXP+'">'+( def ? 'Включено по умолчанию' : 'Выключено по умолчанию') + '</label>';
+              text += '</td></tr>';
 
-
-           text += '<tr><td align="center" valign="middle">';
-           text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDef+'\');" style="cursor: pointer;"></img>';
-           text += '</td><td align="left" valign="middle">';
-           var defPWM = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.defaultPWM' ].val;
-           text += '<select id="defPWMXP'+numXP+'" onfocus="setToolTip('+numXP+',\''+spanDef+'\');">';
-           for (var m = 0; m <= 255 ; m++) {
-              text += '<option value="'+ m + '" ' + (( defPWM == m ) ? 'selected' : '') + '>' + m + '</option>';
-           }
-           text += '</select></td></tr>';
-
+          } else { 
+              text += '<tr><td align="center" valign="middle">';
+              text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDef+'\');" style="cursor: pointer;"></img>';
+              text += '</td><td align="left" valign="middle">';
+              var defPWM = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.defaultPWM' ].val;
+              text += '<select id="defPWMXP'+numXP+'" onfocus="setToolTip('+numXP+',\''+spanDef+'\');">';
+              for (var m = 0; m <= 255 ; m++) {
+                 text += '<option value="'+ m + '" ' + (( defPWM == m ) ? 'selected' : '') + '>' + m + '</option>';
+              }
+              text += '</select></td></tr>';
+          }
 /*
            if ( portOutModeXP != cOutPortMode_PWM ) { //?
               text += '<tr><td align="center" valign="middle">';
@@ -2151,6 +2152,7 @@ function portOutModeChanged ( controlPort ) {
         text += '</td></tr>';
 
         document.getElementById( "xp" + numXP + "_port_preset" ).innerHTML = text;
+        portOutModeChanged ( controlPort )
     }
     //-----------------------------------------------------------------------------------
     function selectPort ( numXP, portNum ) {
@@ -3167,7 +3169,7 @@ function portOutModeChanged ( controlPort ) {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.34.0</p>
+    <p align="right">Admin Version: v0.34.1</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
