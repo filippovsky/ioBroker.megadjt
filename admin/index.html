@@ -1228,6 +1228,9 @@ function checkDisplay() {
 
         var element_id = "smoothXP" + numXP;
         var element  = document.getElementById( element_id );
+        if ( element == undefined ) {
+           return;
+        }
         var smoothxp = element.checked; 
 
         if ( smoothxp == true || smoothxp == 'true' ) {
@@ -1531,6 +1534,7 @@ function portOutModeChanged ( controlPort ) {
        }
        loadPresetSub( numXP, portNum, 1 );
        portOutModeChanged ( controlPort ); //?
+       smoothChanged ( controlPort );
     }
     //--------------------------------------------------------------------------------
     function loadPresetSub( numXP, portNum, isFirst ) {
@@ -2347,6 +2351,7 @@ function portOutModeChanged ( controlPort ) {
 
         document.getElementById( "xp" + numXP + "_port_preset" ).innerHTML = text;
         portOutModeChanged ( controlPort );
+        smoothChanged ( controlPort );
     }
     //-----------------------------------------------------------------------------------
     function selectPort ( numXP, portNum ) {
@@ -3390,7 +3395,7 @@ function portOutModeChanged ( controlPort ) {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.35.4</p>
+    <p align="right">Admin Version: v0.35.5</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
