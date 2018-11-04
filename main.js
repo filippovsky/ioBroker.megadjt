@@ -609,6 +609,7 @@ function parseMegaCfgLine ( line ) {
    var sl;
    var fr;
    var pwmTimer = '';
+   var m2;
 
    adapter.log.debug('Распознание строки настройки: '+line);
    parts = line.split('&');
@@ -643,6 +644,7 @@ function parseMegaCfgLine ( line ) {
       if ( state == 'mdid' )    mdid = value || '';
       if ( state == 'sl'   )    sl   = value || '';
       if ( state == 'fr'   )    fr   = value || '0';
+      if ( state == 'm2'   )    m2   = value || '1';
    }
 
    if (!pn) {
@@ -769,6 +771,7 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.group', {val: '', ack: true}); 
       adapter.setState( nodeName + '.defaultPWM', {val: 0, ack: true}); 
       adapter.setState( nodeName + '.smooth', {val: false, ack: true}); 
+      adapter.setState( nodeName + '.smoothSpeed', {val: '1', ack: true}); 
 
    } else if ( pty == cNPortType_NotConnected ) {
 /* ToDO: если порт переводим  в NC - хорошо бы его принудительно выключить xx:0 */
@@ -796,6 +799,7 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.group', {val: '', ack: true}); 
       adapter.setState( nodeName + '.defaultPWM', {val: 0, ack: true}); 
       adapter.setState( nodeName + '.smooth', {val: false, ack: true}); 
+      adapter.setState( nodeName + '.smoothSpeed', {val: '1', ack: true}); 
 
    } else if ( pty == cNPortType_Out )  {
 // pn=7&grp=&pty=1&d=0&m=0&nr=1
@@ -836,9 +840,15 @@ function parseMegaCfgLine ( line ) {
          adapter.setState( nodeName + '.defaultState', {val: d, ack: true}); 
          adapter.setState( nodeName + '.defaultPWM', {val: 0, ack: true}); 
          adapter.setState( nodeName + '.smooth', {val: false, ack: true}); 
+         adapter.setState( nodeName + '.smoothSpeed', {val: '1', ack: true}); 
       } else if ( m == 1 ) {
          adapter.setState( nodeName + '.defaultState', {val: false, ack: true}); 
          adapter.setState( nodeName + '.smooth', {val: smooth, ack: true}); 
+         if ( smooth == 'true' || smooth == true ) {
+            adapter.setState( nodeName + '.smoothSpeed', {val: smoothSpeed, ack: true}); 
+         } else { 
+            adapter.setState( nodeName + '.smoothSpeed', {val: '1', ack: true}); 
+         }
          adapter.setState( nodeName + '.defaultPWM', {val: defPWM, ack: true}); 
          adapter.setState( nodeName + '.portOutMode', {val: cOutPortMode_PWM, ack: true}); 
          if ( pn == '10' || pn == '12' || pn == '13' ) {
@@ -868,11 +878,13 @@ function parseMegaCfgLine ( line ) {
          adapter.setState( nodeName + '.defaultPWM', {val: 0, ack: true}); 
          adapter.setState( nodeName + '.defaultState', {val: d, ack: true}); 
          adapter.setState( nodeName + '.smooth', {val: false, ack: true}); 
+         adapter.setState( nodeName + '.smoothSpeed', {val: '1', ack: true}); 
       } else if ( m == 3 ) {
          adapter.setState( nodeName + '.portOutMode', {val: cOutPortMode_SWLINK, ack: true}); 
          adapter.setState( nodeName + '.defaultPWM', {val: 0, ack: true}); 
          adapter.setState( nodeName + '.defaultState', {val: d, ack: true}); 
          adapter.setState( nodeName + '.smooth', {val: false, ack: true}); 
+         adapter.setState( nodeName + '.smoothSpeed', {val: '1', ack: true}); 
       }
       adapter.setState( nodeName + '.group', {val: grp, ack: true}); 
 
@@ -893,6 +905,7 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.defaultState', {val: false, ack: true}); 
       adapter.setState( nodeName + '.defaultPWM', {val: 0, ack: true}); 
       adapter.setState( nodeName + '.smooth', {val: false, ack: true}); 
+      adapter.setState( nodeName + '.smoothSpeed', {val: '1', ack: true}); 
       if ( d == cNDigitalSensorTypeDS18B20 ) {
          dSRV = cDigitalSensorTypeDS18B20;
       } else if ( d == cNDigitalSensorTypeDHT11 ) {
@@ -950,6 +963,7 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.group', {val: '', ack: true}); 
       adapter.setState( nodeName + '.defaultPWM', {val: 0, ack: true}); 
       adapter.setState( nodeName + '.smooth', {val: false, ack: true}); 
+      adapter.setState( nodeName + '.smoothSpeed', {val: '1', ack: true}); 
   }
 
 
@@ -3426,6 +3440,7 @@ function configInit( callback ) {
        createConfigItemIfNotExists ( 'ports.'+ i + '.portOutMode', 'state', 'Режим работы выхода', cOutPortMode_SW );
        createConfigItemIfNotExists ( 'ports.'+ i + '.defaultPWM', 'statenum', 'Значение ШИМ по умолчанию', 0 );
        createConfigItemIfNotExists ( 'ports.'+ i + '.smooth', 'statebool', 'Плавное изменение', 'false' );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.smoothSpeed', 'state', 'Скорость изменения', '1' );
    }
 
    for ( i=1; i <= 3; i ++ ) {
@@ -3539,6 +3554,7 @@ function savePort(obj) {
    adapter.log.debug( 'obj.message.freq  = '+ obj.message.freq  );
    adapter.log.debug( 'obj.message.defPWM  = '+ obj.message.defPWM  );
    adapter.log.debug( 'obj.message.smooth  = '+ obj.message.smooth  );
+   adapter.log.debug( 'obj.message.smoothSpeed  = '+ obj.message.smoothSpeed  );
 
    var portNum = obj.message.portNum;
    var room    = obj.message.room;
@@ -3565,6 +3581,7 @@ function savePort(obj) {
    var pwmTimer = '1';
    var defPWM = obj.message.defPWM || 0;
    var smooth = obj.message.smooth || false;
+   var smoothSpeed = obj.message.smoothSpeed || '1';
 
    if (defaultRunAlways == 1) {
       defaultRunAlways = true;
@@ -3872,7 +3889,6 @@ function savePort(obj) {
    );
    
    if ( portType == cPortType_DimmedOut ) {
-      adapter.log.debug('*** savePort control point 5 ***');
       if ( portNum == '10' || portNum == '12' || portNum == '13' ) {
          pwmTimer = '1';
       } else if ( portNum == '25' || portNum == '27' || portNum == '28' ) {
@@ -3918,14 +3934,29 @@ function savePort(obj) {
             }
          );
 
+         if ( smooth == 'true' || smooth == true ) {
+            adapter.getState( adapter.namespace + '.ports.' + portNum + '.smoothSpeed',
+               function (err, state ) {
+                  var oldvalue = '';
+                  if ( state ) oldvalue = state.val;
+                  if ( oldvalue != smoothSpeed ) {
+                     adapter.setState( 'ports.' + portNum + '.smoothSpeed', {val: smoothSpeed, ack: true});
+                     adapter.log.info( 'ports.' + portNum + '.smoothSpeed : '+ oldvalue + ' -> ' + smoothSpeed );
+                  }
+               }
+            );
+         }
+
       } else {
          adapter.setState( 'ports.' + portNum + '.defaultPWM', {val: 0, ack: true});
          adapter.setState( 'ports.' + portNum + '.smooth', {val: false, ack: true});
+         adapter.setState( 'ports.' + portNum + '.smoothSpeed', {val: '1', ack: true});
       }
 
    } else {
       adapter.setState( 'ports.' + portNum + '.defaultPWM', {val: 0, ack: true});
       adapter.setState( 'ports.' + portNum + '.smooth', {val: false, ack: true});
+      adapter.setState( 'ports.' + portNum + '.smoothSpeed', {val: '1', ack: true});
    }
 
 
@@ -4011,6 +4042,7 @@ function savePort(obj) {
          }
          if ( smooth ) {
             url += '&misc=1'; // ?
+            url += '&m2=' + smoothSpeed; 
          }
       } else if ( portOutMode == cOutPortMode_DS2413 ) {
          url += '&m=2'; 
