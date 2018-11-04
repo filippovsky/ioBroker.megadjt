@@ -1228,11 +1228,17 @@ function portOutModeChanged ( controlPort ) {
         var element1_id = 'defaultStateXP'+numXP;
         var element2_id = 'defPWMXP'+numXP;
         var element3_id = 'defPWMdivXP'+numXP;
+        var element4_id = 'defPWMimgXP'+numXP;
+        var element5_id = 'defNoPWMimgXP'+numXP;
+        var element6_id = 'lblDefaultStateXP'+numXP;
 
         var element   = document.getElementById( element_id  );
         var element1  = document.getElementById( element1_id );
         var element2  = document.getElementById( element2_id );
         var element3  = document.getElementById( element3_id );
+        var element4  = document.getElementById( element4_id );
+        var element5  = document.getElementById( element5_id );
+        var element6  = document.getElementById( element6_id );
 
         if ( element != undefined ) {
            var m = element.options[element.selectedIndex].value; 
@@ -1241,21 +1247,39 @@ function portOutModeChanged ( controlPort ) {
               if ( element1 != undefined ) {
                  document.getElementById( "defaultStateXP" + numXP ).style.visibility = "visible";
               }
+              if ( element5 != undefined ) {
+                 document.getElementById( "defNoPWMimgXP" + numXP ).style.visibility = "visible";
+              }
+              if ( element6 != undefined ) {
+                 document.getElementById( "lblDefaultStateXP" + numXP ).style.visibility = "visible";
+              }
               if ( element2 != undefined ) {
                  document.getElementById( "defPWMXP" + numXP ).style.visibility = "hidden";
               }
               if ( element3 != undefined ) {
                  document.getElementById( "defPWMdivXP" + numXP ).style.visibility = "hidden";
               }
+              if ( element4 != undefined ) {
+                 document.getElementById( "defPWMimgXP" + numXP ).style.visibility = "hidden";
+              }
            } else {
               if ( element1 != undefined ) {
                  document.getElementById( "defaultStateXP" + numXP ).style.visibility = "hidden";
+              }
+              if ( element5 != undefined ) {
+                 document.getElementById( "defNoPWMimgXP" + numXP ).style.visibility = "hidden";
+              }
+              if ( element6 != undefined ) {
+                 document.getElementById( "lblDefaultStateXP" + numXP ).style.visibility = "hidden";
               }
               if ( element2 != undefined ) {
                  document.getElementById( "defPWMXP" + numXP ).style.visibility = "visible";
               }
               if ( element3 != undefined ) {
                  document.getElementById( "defPWMdivXP" + numXP ).style.visibility = "visible";
+              }
+              if ( element4 != undefined ) {
+                 document.getElementById( "defPWMimgXP" + numXP ).style.visibility = "visible";
               }
            }
         }
@@ -1965,7 +1989,7 @@ function portOutModeChanged ( controlPort ) {
 
 //           if ( portOutModeXP != cOutPortMode_PWM ) {
               text += '<tr><td align="center" valign="middle">';
-              text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDef+'\');" style="cursor: pointer;"></img>';
+              text += '<img  id="defNoPWMimgXP' + numXP + '" src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDef+'\');" style="cursor: pointer;"></img>';
               text += '</td><td align="left" valign="middle">';
               var def = false;
               if ( Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.defaultState' ].val == true || Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.defaultState' ].val == 'true' ) {
@@ -1978,7 +2002,7 @@ function portOutModeChanged ( controlPort ) {
 
 //          } else { 
               text += '<tr><td align="center" valign="middle">';
-              text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDef+'\');" style="cursor: pointer;"></img>';
+              text += '<img id="defPWMimgXP' + numXP + '" src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDef+'\');" style="cursor: pointer;"></img>';
               text += '</td><td align="left" valign="middle">';
               var defPWM = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.defaultPWM' ].val;
               text += '<div id="defPWMdivXP' + numXP + '">Значение по умолчанию:&nbsp;</div>';
@@ -2145,7 +2169,7 @@ function portOutModeChanged ( controlPort ) {
         text += '</td></tr>';
 
         document.getElementById( "xp" + numXP + "_port_preset" ).innerHTML = text;
-        portOutModeChanged ( controlPort )
+        portOutModeChanged ( controlPort );
     }
     //-----------------------------------------------------------------------------------
     function selectPort ( numXP, portNum ) {
@@ -3158,7 +3182,7 @@ function portOutModeChanged ( controlPort ) {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.34.5</p>
+    <p align="right">Admin Version: v0.34.6</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
