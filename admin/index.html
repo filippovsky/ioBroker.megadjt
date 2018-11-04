@@ -1153,11 +1153,6 @@ function checkDisplay() {
            port = controlPort;
         }
 
-        //var pty = $('#portTypeXP'+numXP+' option:selected').val();
-        //$('#portTypeXP'+numXP).val(pty);
-
-        // Setup[ _adapter_instance+'.ports.'+String(k)+'.portType'].val = pty;
-
         loadPresetSub( numXP, port, 0 ); // при изменении типа порта перерисовываем его описание
     }
     //--------------------------------------------------------------------------------
@@ -1220,7 +1215,6 @@ function checkDisplay() {
     }
 //--------------------------------------
 function portOutModeChanged ( controlPort ) {
-        var text = "";
         var numXP = 0;
         if ( controlPort < 15 ) {
            numXP = 1;
@@ -1230,19 +1224,39 @@ function portOutModeChanged ( controlPort ) {
            numXP = 0;
         }
 
-        var element_id = 'portOutModeXP'+numXP;
-        var element  = document.getElementById( element_id );
+        var element_id  = 'portOutModeXP'+numXP;
+        var element1_id = 'defaultStateXP'+numXP;
+        var element2_id = 'defPWMXP'+numXP;
+        var element3_id = 'defPWMdivXP'+numXP;
+
+        var element   = document.getElementById( element_id  );
+        var element1  = document.getElementById( element1_id );
+        var element2  = document.getElementById( element2_id );
+        var element3  = document.getElementById( element3_id );
+
         if ( element != undefined ) {
            var m = element.options[element.selectedIndex].value; 
 
            if ( m != cOutPortMode_PWM ) {
-              document.getElementById( "defaultStateXP" + numXP ).style.visibility = "visible";
-              document.getElementById( "defPWMXP" + numXP ).style.visibility = "hidden";
-              document.getElementById( "defPWMdivXP" + numXP ).style.visibility = "hidden";
+              if ( element1 != undefined ) {
+                 document.getElementById( "defaultStateXP" + numXP ).style.visibility = "visible";
+              }
+              if ( element2 != undefined ) {
+                 document.getElementById( "defPWMXP" + numXP ).style.visibility = "hidden";
+              }
+              if ( element3 != undefined ) {
+                 document.getElementById( "defPWMdivXP" + numXP ).style.visibility = "hidden";
+              }
            } else {
-              document.getElementById( "defPWMXP" + numXP ).style.visibility = "visible";
-              document.getElementById( "defPWMdivXP" + numXP ).style.visibility = "visible";
-              document.getElementById( "defaultStateXP" + numXP ).style.visibility = "hidden";
+              if ( element1 != undefined ) {
+                 document.getElementById( "defaultStateXP" + numXP ).style.visibility = "hidden";
+              }
+              if ( element2 != undefined ) {
+                 document.getElementById( "defPWMXP" + numXP ).style.visibility = "visible";
+              }
+              if ( element3 != undefined ) {
+                 document.getElementById( "defPWMdivXP" + numXP ).style.visibility = "visible";
+              }
            }
         }
     }
@@ -1350,7 +1364,7 @@ function portOutModeChanged ( controlPort ) {
            controlPort = 15 + portNum;
        }
        loadPresetSub( numXP, portNum, 1 );
-
+       portOutModeChanged ( controlPort ); //?
     }
     //--------------------------------------------------------------------------------
     function loadPresetSub( numXP, portNum, isFirst ) {
@@ -1949,7 +1963,7 @@ function portOutModeChanged ( controlPort ) {
            }
            text += '</select></td></tr>';
 
-           if ( portOutModeXP != cOutPortMode_PWM ) {
+//           if ( portOutModeXP != cOutPortMode_PWM ) {
               text += '<tr><td align="center" valign="middle">';
               text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDef+'\');" style="cursor: pointer;"></img>';
               text += '</td><td align="left" valign="middle">';
@@ -1962,7 +1976,7 @@ function portOutModeChanged ( controlPort ) {
               text += '<label id="lblDefaultStateXP'+numXP+'" for="defaultStateXP'+numXP+'">'+( def ? 'Включено по умолчанию' : 'Выключено по умолчанию') + '</label>';
               text += '</td></tr>';
 
-          } else { 
+//          } else { 
               text += '<tr><td align="center" valign="middle">';
               text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDef+'\');" style="cursor: pointer;"></img>';
               text += '</td><td align="left" valign="middle">';
@@ -1973,32 +1987,7 @@ function portOutModeChanged ( controlPort ) {
                  text += '<option value="'+ m + '" ' + (( defPWM == m ) ? 'selected' : '') + '>' + m + '</option>';
               }
               text += '</select></td></tr>';
-          }
-/*
-           if ( portOutModeXP != cOutPortMode_PWM ) { //?
-              text += '<tr><td align="center" valign="middle">';
-              text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDef+'\');" style="cursor: pointer;"></img>';
-              text += '</td><td align="left" valign="middle">';
-              var def = false;
-              if ( Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.defaultState' ].val == true || Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.defaultState' ].val == 'true' ) {
-                 def = true;
-              }
-              text += '<input type="checkbox" class="checkbox" id="defaultStateXP'+numXP+'" '+ ( def ? 'checked' : '') + 
-                      ' onChange="defaultStateChanged('+controlPort+');"  onfocus="setToolTip('+numXP+',\''+spanDef+'\');"/>&nbsp;';
-              text += '<label id="lblDefaultStateXP'+numXP+'" for="defaultStateXP'+numXP+'">'+( def ? 'Включено по умолчанию' : 'Выключено по умолчанию') + '</label>';
-              text += '</td></tr>';
-          } else {
-              text += '<tr><td align="center" valign="middle">';
-              text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDef+'\');" style="cursor: pointer;"></img>';
-              text += '</td><td align="left" valign="middle">';
-              var defPWM = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.defaultPWM' ].val;
-              text += '<select id="defPWMXP'+numXP+'" onfocus="setToolTip('+numXP+',\''+spanDef+'\');">';
-              for (var m = 0; m <= 255 ; m++) {
-                 text += '<option value="'+ m + '" ' + (( defPWM == m ) ? 'selected' : '') + '>' + m + '</option>';
-              }
-              text += '</select></td></tr>';
-          }
-*/
+//          }
 
            text += '<tr><td align="center" valign="middle">';
            text +='<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanGroup+'\');" style="cursor: pointer;"></img>';
@@ -2739,10 +2728,6 @@ function portOutModeChanged ( controlPort ) {
         });
         */
 
-
-
-
-
 //       getAdapterStates();
 
         $('#updateFirmware').button({
@@ -3173,7 +3158,7 @@ function portOutModeChanged ( controlPort ) {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.34.4</p>
+    <p align="right">Admin Version: v0.34.5</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
