@@ -3527,7 +3527,6 @@ function savePort(obj) {
    adapter.log.debug( 'obj.message.GSMmode = '+ obj.message.GSMmode );
    adapter.log.debug( 'obj.message.portOutMode = '+ obj.message.portOutMode );
    adapter.log.debug( 'obj.message.group = '+ obj.message.group );
-   adapter.log.debug( 'obj.message.group = '+ obj.message.group );
    adapter.log.debug( 'obj.message.freq  = '+ obj.message.freq  );
    adapter.log.debug( 'obj.message.defPWM  = '+ obj.message.defPWM  );
 
@@ -3553,7 +3552,7 @@ function savePort(obj) {
    var portOutMode = obj.message.portOutMode || cOutPortMode_SW; 
    var group = obj.message.group || ''; 
    var freq  = obj.message.freq || cPWM_Freq_Normal;  
-   var pwmTimer = '';
+   var pwmTimer = '1';
    var defPWM = obj.message.defPWM || 0;
 
    if (defaultRunAlways == 1) {
@@ -3794,6 +3793,7 @@ function savePort(obj) {
       }
    );
 
+   adapter.log.debug('*** savePort control point 0 ***');
    adapter.getState( adapter.namespace + '.ports.' + portNum + '.defaultState',
       function (err, state ) {
          var oldvalue = "";
@@ -3804,6 +3804,7 @@ function savePort(obj) {
          }
       }
    );
+   adapter.log.debug('*** savePort control point 1 ***');
 
    adapter.getState( adapter.namespace + '.ports.' + portNum + '.digitalSensorType',
       function (err, state ) {
@@ -3838,6 +3839,7 @@ function savePort(obj) {
       }
    );
 
+   adapter.log.debug('*** savePort control point 2 ***');
    adapter.getState( adapter.namespace + '.ports.' + portNum + '.portOutMode',
       function (err, state ) {
          var oldvalue = "";
@@ -3848,6 +3850,7 @@ function savePort(obj) {
          }
       }
    );
+   adapter.log.debug('*** savePort control point 3 ***');
 
    adapter.getState( adapter.namespace + '.ports.' + portNum + '.group',
       function (err, state ) {
@@ -3860,7 +3863,9 @@ function savePort(obj) {
       }
    );
    
+   adapter.log.debug('*** savePort control point 4 ***');
    if ( portType == cPortType_DimmedOut ) {
+      adapter.log.debug('*** savePort control point 5 ***');
       if ( portNum == '10' || portNum == '12' || portNum == '13' ) {
          pwmTimer = '1';
       } else if ( portNum == '25' || portNum == '27' || portNum == '28' ) {
@@ -3872,9 +3877,12 @@ function savePort(obj) {
          pwmTimer = '1';
       }
 
+      adapter.log.debug('*** savePort control point 6 ***');
       if ( portOutMode == cOutPortMode_PWM  ) {
+         adapter.log.debug('*** savePort control point 7 ***');
          adapter.getState( adapter.namespace + '.PWM.timers.' + pwmTimer + '.freq',
             function (err, state ) {
+               adapter.log.debug('*** savePort control point 8 ***');
                var oldvalue = "";
                if ( state ) oldvalue = state.val;
                if ( oldvalue != freq ) {
@@ -3884,8 +3892,10 @@ function savePort(obj) {
             }
          );
 
+         adapter.log.debug('*** savePort control point 9 ***');
          adapter.getState( adapter.namespace + '.ports.' + portNum + '.defaultPWM',
             function (err, state ) {
+               adapter.log.debug('*** savePort control point 10 ***');
                var oldvalue = 0;
                if ( state ) oldvalue = state.val;
                if ( oldvalue != defPWM ) {
@@ -3895,15 +3905,18 @@ function savePort(obj) {
             }
          );
       } else {
+         adapter.log.debug('*** savePort control point 11 ***');
          adapter.setState( 'ports.' + portNum + '.defaultPWM', {val: 0, ack: true});
          adapter.log.info( 'ports.' + portNum + '.defaultPWM : '+ oldvalue + ' -> ' + 0 );
       }
 
    } else {
+      adapter.log.debug('*** savePort control point 12 ***');
       adapter.setState( 'ports.' + portNum + '.defaultPWM', {val: 0, ack: true});
       adapter.log.info( 'ports.' + portNum + '.defaultPWM : '+ oldvalue + ' -> ' + 0 );
    }
 
+    adapter.log.debug('*** savePort control point 13 ***');
 
    //---------- передаем данные в Мегу
    var url = 'pn=' + portNum;
