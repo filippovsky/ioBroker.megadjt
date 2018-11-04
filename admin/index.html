@@ -1238,8 +1238,10 @@ function portOutModeChanged ( controlPort ) {
            if ( m != cOutPortMode_PWM ) {
               document.getElementById( "defaultStateXP" + numXP ).style.visibility = "visible";
               document.getElementById( "defPWMXP" + numXP ).style.visibility = "hidden";
+              document.getElementById( "defPWMdivXP" + numXP ).style.visibility = "hidden";
            } else {
               document.getElementById( "defPWMXP" + numXP ).style.visibility = "visible";
+              document.getElementById( "defPWMdivXP" + numXP ).style.visibility = "visible";
               document.getElementById( "defaultStateXP" + numXP ).style.visibility = "hidden";
            }
         }
@@ -1965,9 +1967,10 @@ function portOutModeChanged ( controlPort ) {
               text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDef+'\');" style="cursor: pointer;"></img>';
               text += '</td><td align="left" valign="middle">';
               var defPWM = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.defaultPWM' ].val;
+              text += '<div id="defPWMdivXP' + numXP + '">Значение по умолчанию:&nbsp;</div>';
               text += '<select id="defPWMXP'+numXP+'" onfocus="setToolTip('+numXP+',\''+spanDef+'\');">';
               for (var m = 0; m <= 255 ; m++) {
-                 text += '<option value="'+ m + '" ' + (( defPWM == m ) ? 'selected' : '') + '>' + m + '</option>';
+                 text += '<option value="'+ m + '" ' + (( defPWM == m ) ? 'selected' : '') + '>Значение по умолчанию: ' + m + '</option>';
               }
               text += '</select></td></tr>';
           }
@@ -3170,7 +3173,7 @@ function portOutModeChanged ( controlPort ) {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.34.2</p>
+    <p align="right">Admin Version: v0.34.3</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
