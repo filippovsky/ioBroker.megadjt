@@ -2009,6 +2009,8 @@ function portOutModeChanged ( controlPort ) {
               text += '</td></tr>';
 
 //          } else { 
+           if ( pty == cPortType_DimmedOut ) {
+
               text += '<tr><td align="center" valign="middle">';
               text += '<img id="defPWMimgXP' + numXP + '" src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDef+'\');" style="cursor: pointer;"></img>';
               text += '</td><td align="left" valign="middle">';
@@ -2019,7 +2021,7 @@ function portOutModeChanged ( controlPort ) {
                  text += '<option value="'+ m + '" ' + (( defPWM == m ) ? 'selected' : '') + '>' + m + '</option>';
               }
               text += '</select></td></tr>';
-//          }
+          }
 
            text += '<tr><td align="center" valign="middle">';
            text +='<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanGroup+'\');" style="cursor: pointer;"></img>';
@@ -2029,7 +2031,7 @@ function portOutModeChanged ( controlPort ) {
            text += '<input id="groupXP'+numXP+'" type="text" value="' + (group || '' ) + '" maxsize="2" size="2" onfocus="setToolTip('+numXP+',\''+spanGroup+'\');"/>';
            text += '</td></tr>';
 
-//           if ( pty == cPortType_DimmedOut ) {
+           if ( pty == cPortType_DimmedOut ) {
               if ( controlPort == 10 || controlPort == 12 || controlPort == 13 ) {
                  pwmTimer = '1';
               } else if ( controlPort == 25 || controlPort == 27 || controlPort == 28 ) {
@@ -2053,7 +2055,7 @@ function portOutModeChanged ( controlPort ) {
               text += '</select></td></tr>';
               text += '</div>';
 
-//           }
+           }
         //-----------------------------------------------------------------------------
         // порт DSen цифровой вход
         } else if ( pty == cPortType_DigitalSensor ) {
@@ -3196,7 +3198,7 @@ function portOutModeChanged ( controlPort ) {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.34.7</p>
+    <p align="right">Admin Version: v0.34.8</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
