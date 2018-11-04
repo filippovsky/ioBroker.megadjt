@@ -1,9 +1,13 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.34.14",
+        "version":                  "0.35.0",
         "news": {
-            "0.34.0": {
+            "0.35.0": {
+                "en":               "Added SMOOTH field at Dimmed OUT port",
+                "ru":               "Добавлено поле ПЛАВНОЕ ИЗМЕНЕНИЕ у порта Димируемый выход"
+            },
+            "0.34.14": {
                 "en":               "Added DEFAULT field at Dimmed OUT port",
                 "ru":               "Добавлено поле ЗНАЧЕНИЕ ПО УМОЛЧАНИЮ у порта Димируемый выход"
             },
