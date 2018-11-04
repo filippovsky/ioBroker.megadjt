@@ -1236,15 +1236,17 @@ function checkDisplay() {
         }
         document.getElementById( "smoothXP" + numXP ).innerHTML = text;
 
+        var element0_id  = 'portOutModeXP'+numXP;
         var element13_id = 'smoothSpeedImgXP'+numXP;
         var element14_id = 'smoothSpeedDivXP'+numXP;
         var element15_id = 'smoothSpeedXP'+numXP;
+        var element0   = document.getElementById( element0_id );
         var element13  = document.getElementById( element13_id );
         var element14  = document.getElementById( element14_id );
         var element15  = document.getElementById( element15_id );
 
-        if ( element != undefined ) {
-           var m = element.options[element.selectedIndex].value; 
+        if ( element0 != undefined ) {
+           var m = element0.options[element0.selectedIndex].value; 
            if ( m != cOutPortMode_PWM ) {
               if ( smoothxp ) {
                  if ( element13 != undefined ) {
@@ -3379,7 +3381,7 @@ function portOutModeChanged ( controlPort ) {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.35.1</p>
+    <p align="right">Admin Version: v0.35.2</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
