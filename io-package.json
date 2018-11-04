@@ -1,7 +1,7 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.35.3",
+        "version":                  "0.35.4",
         "news": {
             "0.35.1": {
                 "en":               "Added SMOOTHSPEED field at Dimmed OUT port",

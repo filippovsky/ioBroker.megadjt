@@ -1230,7 +1230,7 @@ function checkDisplay() {
         var element  = document.getElementById( element_id );
         var smoothxp = element.checked; 
 
-        if ( smoothxp ) {
+        if ( smoothxp == true || smoothxp == 'true' ) {
            text = '&nbsp;Плавное изменение';
         } else {
            text = '&nbsp;Плавное изменение';
@@ -1252,9 +1252,9 @@ function checkDisplay() {
            console.log('smoothChanged point2');
            var m = element0.options[element0.selectedIndex].value; 
            console.log('m=' + m);
-           if ( m != cOutPortMode_PWM ) {
+           if ( m == cOutPortMode_PWM ) {
               console.log('smoothChanged point3');
-              if ( smoothxp ) {
+              if ( smoothxp == true || smoothxp == 'true' ) {
                  console.log('smoothChanged point4');
                  if ( element13 != undefined ) {
                     document.getElementById( "smoothSpeedImgXP" + numXP ).style.visibility = "visible";
@@ -3390,7 +3390,7 @@ function portOutModeChanged ( controlPort ) {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.35.3</p>
+    <p align="right">Admin Version: v0.35.4</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 

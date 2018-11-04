@@ -4040,7 +4040,7 @@ function savePort(obj) {
          } else if ( freq == cPWM_Freq_High ) {
             url += '&fr=2';
          }
-         if ( smooth ) {
+         if ( smooth == true || smooth == 'true' ) {
             url += '&misc=1'; // ?
             url += '&m2=' + smoothSpeed; 
          }
