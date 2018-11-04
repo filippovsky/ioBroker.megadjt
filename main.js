@@ -3872,16 +3872,18 @@ function savePort(obj) {
          pwmTimer = '1';
       }
 
-      adapter.getState( adapter.namespace + '.PWM.timers.' + pwmTimer + '.freq',
-         function (err, state ) {
-            var oldvalue = "";
-            if ( state ) oldvalue = state.val;
-            if ( oldvalue != freq ) {
-               adapter.setState( 'PWM.timers.' + pwmTimer + '.freq', {val: freq, ack: true});
-               adapter.log.info( 'PWM.timers.' + pwmTimer + '.freq : '+ oldvalue + ' -> ' + freq );
+      if ( portOutMode == cOutPortMode_PWM  ) {
+         adapter.getState( adapter.namespace + '.PWM.timers.' + pwmTimer + '.freq',
+            function (err, state ) {
+               var oldvalue = "";
+               if ( state ) oldvalue = state.val;
+               if ( oldvalue != freq ) {
+                  adapter.setState( 'PWM.timers.' + pwmTimer + '.freq', {val: freq, ack: true});
+                  adapter.log.info( 'PWM.timers.' + pwmTimer + '.freq : '+ oldvalue + ' -> ' + freq );
+               }
             }
-         }
-      );
+         );
+      }
    }
 
 
