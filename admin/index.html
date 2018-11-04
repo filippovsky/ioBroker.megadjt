@@ -1232,16 +1232,17 @@ function portOutModeChanged ( controlPort ) {
 
         var element_id = 'portOutModeXP'+numXP;
         var element  = document.getElementById( element_id );
-        var m = element.options[element.selectedIndex].value; 
+        if ( element != undefined ) {
+           var m = element.options[element.selectedIndex].value; 
 
-        if  ( m != cOutPortMode_PWM ) {
-           document.getElementById( "defaultStateXP" + numXP ).style.visibility = "visible";
-           document.getElementById( "defPWMXP" + numXP ).style.visibility = "hidden";
-        } else {
-           document.getElementById( "defPWMXP" + numXP ).style.visibility = "visible";
-           document.getElementById( "defaultStateXP" + numXP ).style.visibility = "hidden";
+           if ( m != cOutPortMode_PWM ) {
+              document.getElementById( "defaultStateXP" + numXP ).style.visibility = "visible";
+              document.getElementById( "defPWMXP" + numXP ).style.visibility = "hidden";
+           } else {
+              document.getElementById( "defPWMXP" + numXP ).style.visibility = "visible";
+              document.getElementById( "defaultStateXP" + numXP ).style.visibility = "hidden";
+           }
         }
-
     }
 
     //--------------------------------------------------------------------------------
@@ -3169,7 +3170,7 @@ function portOutModeChanged ( controlPort ) {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.34.1</p>
+    <p align="right">Admin Version: v0.34.2</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
