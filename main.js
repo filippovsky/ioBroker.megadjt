@@ -3883,21 +3883,22 @@ function savePort(obj) {
                }
             }
          );
-      }
-   }
 
-
-   if ( portOutMode == cOutPortMode_PWM  ) {
-      adapter.getState( adapter.namespace + '.ports.' + portNum + '.defaultPWM',
-         function (err, state ) {
-            var oldvalue = "";
-            if ( state ) oldvalue = state.val;
-            if ( oldvalue != defPWM ) {
-               adapter.setState( 'ports.' + portNum + '.defaultPWM', {val: defPWM, ack: true});
-               adapter.log.info( 'ports.' + portNum + '.defaultPWM : '+ oldvalue + ' -> ' + defPWM );
+         adapter.getState( adapter.namespace + '.ports.' + portNum + '.defaultPWM',
+            function (err, state ) {
+               var oldvalue = 0;
+               if ( state ) oldvalue = state.val;
+               if ( oldvalue != defPWM ) {
+                  adapter.setState( 'ports.' + portNum + '.defaultPWM', {val: defPWM, ack: true});
+                  adapter.log.info( 'ports.' + portNum + '.defaultPWM : '+ oldvalue + ' -> ' + defPWM );
+               }
             }
-         }
-      );
+         );
+      } else {
+         adapter.setState( 'ports.' + portNum + '.defaultPWM', {val: 0, ack: true});
+         adapter.log.info( 'ports.' + portNum + '.defaultPWM : '+ oldvalue + ' -> ' + 0 );
+      }
+
    } else {
       adapter.setState( 'ports.' + portNum + '.defaultPWM', {val: 0, ack: true});
       adapter.log.info( 'ports.' + portNum + '.defaultPWM : '+ oldvalue + ' -> ' + 0 );
