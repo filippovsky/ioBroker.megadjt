@@ -1215,6 +1215,7 @@ function checkDisplay() {
     }
 //--------------------------------------
     function smoothChanged ( controlPort ) {
+        console.log('smoothChanged');
         var text = "";
         var numXP = 0;
         if ( controlPort < 15 ) {
@@ -1235,6 +1236,7 @@ function checkDisplay() {
            text = '&nbsp;Плавное изменение';
         }
         document.getElementById( "smoothXP" + numXP ).innerHTML = text;
+        console.log('smoothxp = ' + smoothxp );
 
         var element0_id  = 'portOutModeXP'+numXP;
         var element13_id = 'smoothSpeedImgXP'+numXP;
@@ -1245,20 +1247,15 @@ function checkDisplay() {
         var element14  = document.getElementById( element14_id );
         var element15  = document.getElementById( element15_id );
 
+        console.log('smoothChanged point1');
         if ( element0 != undefined ) {
+           console.log('smoothChanged point2');
            var m = element0.options[element0.selectedIndex].value; 
+           console.log('m=' + m);
            if ( m != cOutPortMode_PWM ) {
+              console.log('smoothChanged point3');
               if ( smoothxp ) {
-                 if ( element13 != undefined ) {
-                    document.getElementById( "smoothSpeedImgXP" + numXP ).style.visibility = "hidden";
-                 }
-                 if ( element14 != undefined ) {
-                    document.getElementById( "smoothSpeedDivXP" + numXP ).style.visibility = "hidden";
-                 }
-                 if ( element15 != undefined ) {
-                    document.getElementById( "smoothSpeedXP" + numXP ).style.visibility = "hidden";
-                 }
-              } else {
+                 console.log('smoothChanged point4');
                  if ( element13 != undefined ) {
                     document.getElementById( "smoothSpeedImgXP" + numXP ).style.visibility = "visible";
                  }
@@ -1268,9 +1265,21 @@ function checkDisplay() {
                  if ( element15 != undefined ) {
                     document.getElementById( "smoothSpeedXP" + numXP ).style.visibility = "visible";
                  }
+              } else {
+                 console.log('smoothChanged point5');
+                 if ( element13 != undefined ) {
+                    document.getElementById( "smoothSpeedImgXP" + numXP ).style.visibility = "hidden";
+                 }
+                 if ( element14 != undefined ) {
+                    document.getElementById( "smoothSpeedDivXP" + numXP ).style.visibility = "hidden";
+                 }
+                 if ( element15 != undefined ) {
+                    document.getElementById( "smoothSpeedXP" + numXP ).style.visibility = "hidden";
+                 }
               }
            }
         }
+        console.log('smoothChanged point6');
 
     }
 
@@ -3381,7 +3390,7 @@ function portOutModeChanged ( controlPort ) {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.35.2</p>
+    <p align="right">Admin Version: v0.35.3</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
