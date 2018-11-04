@@ -2681,7 +2681,7 @@ function portOutModeChanged ( controlPort ) {
                    // TRAP !
                    pwmTimer = '1';
                 }
-                if ( newPortOutModeXP == cOutPortMode_PWM ) { 
+                if ( newPortOutMode == cOutPortMode_PWM ) { 
                    Setup[ inst + '.PWM.timers.' + pwmTimer + '.freq'].val = newFreq;
                 } 
              }
@@ -3212,7 +3212,7 @@ function portOutModeChanged ( controlPort ) {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.34.10</p>
+    <p align="right">Admin Version: v0.34.11</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
