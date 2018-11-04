@@ -1232,6 +1232,8 @@ function portOutModeChanged ( controlPort ) {
         var element5_id = 'defNoPWMimgXP'+numXP;
         var element6_id = 'lblDefaultStateXP'+numXP;
         var element7_id = 'freqXP'+numXP;
+        var element8_id = 'freqImgXP'+numXP;
+        var element9_id = 'freqDivXP'+numXP;
 
         var element   = document.getElementById( element_id  );
         var element1  = document.getElementById( element1_id );
@@ -1241,6 +1243,8 @@ function portOutModeChanged ( controlPort ) {
         var element5  = document.getElementById( element5_id );
         var element6  = document.getElementById( element6_id );
         var element7  = document.getElementById( element7_id );
+        var element8  = document.getElementById( element8_id );
+        var element9  = document.getElementById( element9_id );
 
         if ( element != undefined ) {
            var m = element.options[element.selectedIndex].value; 
@@ -1267,6 +1271,12 @@ function portOutModeChanged ( controlPort ) {
               if ( element7 != undefined ) {
                  document.getElementById( "freqXP" + numXP ).style.visibility = "hidden";
               }
+              if ( element8 != undefined ) {
+                 document.getElementById( "freqImgXP" + numXP ).style.visibility = "hidden";
+              }
+              if ( element9 != undefined ) {
+                 document.getElementById( "freqDivXP" + numXP ).style.visibility = "hidden";
+              }
            } else {
               if ( element1 != undefined ) {
                  document.getElementById( "defaultStateXP" + numXP ).style.visibility = "hidden";
@@ -1288,6 +1298,12 @@ function portOutModeChanged ( controlPort ) {
               }
               if ( element7 != undefined ) {
                  document.getElementById( "freqXP" + numXP ).style.visibility = "visible";
+              }
+              if ( element8 != undefined ) {
+                 document.getElementById( "freqImgXP" + numXP ).style.visibility = "visible";
+              }
+              if ( element9 != undefined ) {
+                 document.getElementById( "freqDivXP" + numXP ).style.visibility = "visible";
               }
            }
         }
@@ -2042,18 +2058,16 @@ function portOutModeChanged ( controlPort ) {
                  // TRAP !
                  pwmTimer = '1';
               }
-              text += '<div id="freqXP' + numXP + '">';
               text += '<tr><td align="center" valign="middle">';
-              text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanFreq+'\');" style="cursor: pointer;"></img>';
+              text += '<img id="freqImgXP' + numXP + '" src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanFreq+'\');" style="cursor: pointer;"></img>';
               text += '</td><td align="left" valign="middle">';
-              text += 'Частота ШИМ <font color=red><b>(Таймер ' + pwmTimer + ')</b></font>:&nbsp;';
+              text += '<div id="freqDivXP' + numXP + '">Частота ШИМ <font color=red><b>(Таймер ' + pwmTimer + ')</b></font>:&nbsp;</div>';
               text += '<select id="freqXP'+numXP+'" onfocus="setToolTip('+numXP+',\''+spanFreq+'\');">';
               var freqXP = Setup[ adapter + '.' + instance + '.PWM.timers.' + pwmTimer + '.freq' ].val;
               text += '<option value="'+ cPWM_Freq_Normal + '" ' + (( freqXP == cPWM_Freq_Normal ) ? 'selected' : '') + '>Нормальная (3064 Гц)</option>';
               text += '<option value="'+ cPWM_Freq_Low    + '" ' + (( freqXP == cPWM_Freq_Low    ) ? 'selected' : '') + '>Низкая (383 Гц)</option>';
               text += '<option value="'+ cPWM_Freq_High   + '" ' + (( freqXP == cPWM_Freq_High   ) ? 'selected' : '') + '>Высокая (24510 Гц)</option>';
               text += '</select></td></tr>';
-              text += '</div>';
 
            }
         //-----------------------------------------------------------------------------
@@ -3198,7 +3212,7 @@ function portOutModeChanged ( controlPort ) {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.34.8</p>
+    <p align="right">Admin Version: v0.34.9</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
