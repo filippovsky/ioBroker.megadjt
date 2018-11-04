@@ -1094,6 +1094,10 @@ function checkDisplay() {
                   });
        }
    }
+
+
+
+
 //--------------------------------------------------
     function writecf2mega(ip, pass) {
       var inst = adapter + '.' + instance;
@@ -1214,6 +1218,32 @@ function checkDisplay() {
         }
         document.getElementById( "lblnafXP" + numXP ).innerHTML = text;
     }
+//--------------------------------------
+function portOutModeChanged ( controlPort ) {
+        var text = "";
+        var numXP = 0;
+        if ( controlPort < 15 ) {
+           numXP = 1;
+        } else if ( controlPort < 30 ) {
+           numXP = 2;
+        } else {
+           numXP = 0;
+        }
+
+        var element_id = 'portOutModeXP'+numXP;
+        var element  = document.getElementById( element_id );
+        var m = element.options[element.selectedIndex].value; 
+
+        if  ( m != cOutPortMode_PWM ) {
+           document.getElementById( "defaultStateXP" + numXP ).style.visibility = "visible";
+           document.getElementById( "defPWMXP" + numXP ).style.visibility = "hidden";
+        } else {
+           document.getElementById( "defPWMXP" + numXP ).style.visibility = "visible";
+           document.getElementById( "defaultStateXP" + numXP ).style.visibility = "hidden";
+        }
+
+    }
+
     //--------------------------------------------------------------------------------
     function afChanged ( controlPort ) {
         var text = "";
@@ -1895,6 +1925,27 @@ function checkDisplay() {
               spanFreq += 'Таймер 2: P11</p>';
            }
 
+
+           text += '<tr><td align="center" valign="middle">';
+           text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanOutMode+'\');" style="cursor: pointer;"></img>';
+           text += '</td><td align="left" valign="middle">';
+           if ( pty == cPortType_DS2413 ) {
+              text += '<font color=red><b>ВНИМАНИЕ! Положение джампера должно быть нижнее!</b></font><br>';
+           }
+           text += 'Режим работы выхода:&nbsp;';
+           text += '<select id="portOutModeXP'+numXP+'" onfocus="setToolTip('+numXP+',\''+spanOutMode+'\');"  onChange="portOutModeChanged('+controlPort+');">';
+           var portOutModeXP = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.portOutMode' ].val;
+           if ( pty != cPortType_DS2413 ) {
+              text += '<option value="'+cOutPortMode_SW + '" ' + (( portOutModeXP == cOutPortMode_SW ) ? 'selected' : '') + '>Простое переключение (Вкл/Выкл)</option>';
+              if ( pty == cPortType_DimmedOut ) {
+                 text += '<option value="'+cOutPortMode_PWM + '" ' + (( portOutModeXP == cOutPortMode_PWM ) ? 'selected' : '') + '>ШИМ</option>';
+              }
+              text += '<option value="'+cOutPortMode_SWLINK + '" ' + (( portOutModeXP == cOutPortMode_SWLINK ) ? 'selected' : '') + '>Связанный порт</option>';
+           } else {
+              text += '<option value="'+cOutPortMode_DS2413 + '" ' + (( portOutModeXP == cOutPortMode_DS2413 ) ? 'selected' : '') + '>DS2413</option>';
+           }
+           text += '</select></td></tr>';
+
            text += '<tr><td align="center" valign="middle">';
            text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDef+'\');" style="cursor: pointer;"></img>';
            text += '</td><td align="left" valign="middle">';
@@ -1909,24 +1960,40 @@ function checkDisplay() {
 
 
            text += '<tr><td align="center" valign="middle">';
-           text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanOutMode+'\');" style="cursor: pointer;"></img>';
+           text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDef+'\');" style="cursor: pointer;"></img>';
            text += '</td><td align="left" valign="middle">';
-           if ( pty == cPortType_DS2413 ) {
-              text += '<font color=red><b>ВНИМАНИЕ! Положение джампера должно быть нижнее!</b></font><br>';
-           }
-           text += 'Режим работы выхода:&nbsp;';
-           text += '<select id="portOutModeXP'+numXP+'" onfocus="setToolTip('+numXP+',\''+spanOutMode+'\');">';
-           var portOutModeXP = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.portOutMode' ].val;
-           if ( pty != cPortType_DS2413 ) {
-              text += '<option value="'+cOutPortMode_SW + '" ' + (( portOutModeXP == cOutPortMode_SW ) ? 'selected' : '') + '>Простое переключение (Вкл/Выкл)</option>';
-              if ( pty == cPortType_DimmedOut ) {
-                 text += '<option value="'+cOutPortMode_PWM + '" ' + (( portOutModeXP == cOutPortMode_PWM ) ? 'selected' : '') + '>ШИМ</option>';
-              }
-              text += '<option value="'+cOutPortMode_SWLINK + '" ' + (( portOutModeXP == cOutPortMode_SWLINK ) ? 'selected' : '') + '>Связанный порт</option>';
-           } else {
-              text += '<option value="'+cOutPortMode_DS2413 + '" ' + (( portOutModeXP == cOutPortMode_DS2413 ) ? 'selected' : '') + '>DS2413</option>';
+           var defPWM = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.defaultPWM' ].val;
+           text += '<select id="defPWMXP'+numXP+'" onfocus="setToolTip('+numXP+',\''+spanDef+'\');">';
+           for (var m = 0; m <= 255 ; m++) {
+              text += '<option value="'+ m + '" ' + (( defPWM == m ) ? 'selected' : '') + '>' + m + '</option>';
            }
            text += '</select></td></tr>';
+
+/*
+           if ( portOutModeXP != cOutPortMode_PWM ) { //?
+              text += '<tr><td align="center" valign="middle">';
+              text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDef+'\');" style="cursor: pointer;"></img>';
+              text += '</td><td align="left" valign="middle">';
+              var def = false;
+              if ( Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.defaultState' ].val == true || Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.defaultState' ].val == 'true' ) {
+                 def = true;
+              }
+              text += '<input type="checkbox" class="checkbox" id="defaultStateXP'+numXP+'" '+ ( def ? 'checked' : '') + 
+                      ' onChange="defaultStateChanged('+controlPort+');"  onfocus="setToolTip('+numXP+',\''+spanDef+'\');"/>&nbsp;';
+              text += '<label id="lblDefaultStateXP'+numXP+'" for="defaultStateXP'+numXP+'">'+( def ? 'Включено по умолчанию' : 'Выключено по умолчанию') + '</label>';
+              text += '</td></tr>';
+          } else {
+              text += '<tr><td align="center" valign="middle">';
+              text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanDef+'\');" style="cursor: pointer;"></img>';
+              text += '</td><td align="left" valign="middle">';
+              var defPWM = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.defaultPWM' ].val;
+              text += '<select id="defPWMXP'+numXP+'" onfocus="setToolTip('+numXP+',\''+spanDef+'\');">';
+              for (var m = 0; m <= 255 ; m++) {
+                 text += '<option value="'+ m + '" ' + (( defPWM == m ) ? 'selected' : '') + '>' + m + '</option>';
+              }
+              text += '</select></td></tr>';
+          }
+*/
 
            text += '<tr><td align="center" valign="middle">';
            text +='<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanGroup+'\');" style="cursor: pointer;"></img>';
@@ -2245,6 +2312,7 @@ function checkDisplay() {
        var newTremorDefenceDisabled;
        var newDisplayPort;
        var newDefaultState;
+       var newDefPWM;
        var newDigSensorType;
        var newGSMf;
        var newPortOutMode;
@@ -2392,16 +2460,57 @@ function checkDisplay() {
           newGSMf = cGSMmodeNo;
        }
 
-       if ( newPortType == cPortType_ReleOut || newPortType == cPortType_DimmedOut || newPortType == cPortType_SimistorOut || newPortType == cPortType_DS2413 ) {
+
+       if ( newPortType == cPortType_ReleOut || newPortType == cPortType_DimmedOut || newPortType == cPortType_DS2413 || newPortType == cPortType_SimistorOut ) {
+          element_id = 'portOutModeXP'+numXP;
+          element  = document.getElementById( element_id );
+          newPortOutMode  = element.options[element.selectedIndex].value; 
+       } else {
+          newPortOutMode = cOutPortMode_SW;
+       }
+
+
+       if ( newPortType == cPortType_ReleOut || newPortType == cPortType_SimistorOut || newPortType == cPortType_DS2413 ) {
           element_id = 'defaultStateXP'+numXP;
           element  = document.getElementById( element_id );
           if ( element.checked ) {
-             newDefaultState = 1; 
+             newDefaultState = true; 
           } else {
-             newDefaultState  = 0; 
+             newDefaultState  = false; 
           }
        } else {
-          newDefaultState = 0; 
+          if ( newPortType == cPortType_DimmedOut ) {
+             if ( newPortOutModeXP != cOutPortMode_PWM ) { 
+                element_id = 'defaultStateXP'+numXP;
+                element  = document.getElementById( element_id );
+                if ( element.checked ) {
+                   newDefaultState = true; 
+                } else {
+                   newDefaultState  = false; 
+                }
+             } else {
+                newDefaultState = false; 
+             }
+          } else {
+             newDefaultState = false; 
+          }
+       }
+
+       if ( newPortType == cPortType_ReleOut || newPortType == cPortType_SimistorOut || newPortType == cPortType_DS2413 ) {
+          newDefPWM  = 0; 
+       } else {
+          if ( newPortType == cPortType_DimmedOut ) {
+             if ( newPortOutModeXP == cOutPortMode_PWM ) { 
+                element_id = 'defPWMXP'+numXP;
+                element  = document.getElementById( element_id );
+                //newDefPWM = element.value;
+                newDefPWM  = element.options[element.selectedIndex].value; 
+             } else {
+                newDefPWM = 0; 
+             }
+          } else {
+             newDefPWM = 0; 
+          }
        }
 
        if ( newPortType == cPortType_DigitalSensor ) {
@@ -2431,13 +2540,6 @@ function checkDisplay() {
           mDS_Server = 'Norm'; // ?
        }
 
-       if ( newPortType == cPortType_ReleOut || newPortType == cPortType_DimmedOut || newPortType == cPortType_DS2413 || newPortType == cPortType_SimistorOut ) {
-          element_id = 'portOutModeXP'+numXP;
-          element  = document.getElementById( element_id );
-          newPortOutMode  = element.options[element.selectedIndex].value; 
-       } else {
-          newPortOutMode = cOutPortMode_SW;
-       }
 
 
        if ( newPortType == cPortType_ReleOut || newPortType == cPortType_DimmedOut || newPortType == cPortType_DS2413 || newPortType == cPortType_SimistorOut ) {
@@ -2485,7 +2587,8 @@ function checkDisplay() {
                                        GSMmode: newGSMf,
                                    portOutMode: newPortOutMode,
                                          group: newGroup,
-                                          freq: newFreq
+                                          freq: newFreq,
+                                        defPWM: newDefPWM
                                 }, 
           function (msg) {
              $('#write').button('enable');
@@ -2518,6 +2621,7 @@ function checkDisplay() {
              Setup[ inst + '.ports.' + controlPort + '.GSMmode'].val = newGSMf;
              Setup[ inst + '.ports.' + controlPort + '.portOutMode'].val = newPortOutMode;
              Setup[ inst + '.ports.' + controlPort + '.group'].val = newGroup;
+             Setup[ inst + '.ports.' + controlPort + '.defaultPWM'].val = newDefPWM;
 
              if ( newPortType == cPortType_DimmedOut ) {
                 if ( controlPort == 10 || controlPort == 12 || controlPort == 13 ) {
@@ -3063,7 +3167,7 @@ function checkDisplay() {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.33.3</p>
+    <p align="right">Admin Version: v0.34.0</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 

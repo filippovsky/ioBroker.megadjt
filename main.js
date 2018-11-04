@@ -759,7 +759,7 @@ function parseMegaCfgLine ( line ) {
       if ((!d) || (d == 'ð') || (d == 0) || (d == '0')) d = false;
       adapter.setState( nodeName + '.tremorDefenceDisabled', {val: d, ack: true}); 
       adapter.setState( nodeName + '.displayPort', {val: disp, ack: true}); 
-      adapter.setState( nodeName + '.defaultState', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.defaultState', {val: false, ack: true}); 
       adapter.setState( nodeName + '.digitalSensorType', {val: '', ack: true}); 
       adapter.setState( nodeName + '.temperature', {val: '', ack: true}); 
       adapter.setState( nodeName + '.humidity', {val: '', ack: true}); 
@@ -767,6 +767,7 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.GSMmode', {val: gsmf_text, ack: true}); 
       adapter.setState( nodeName + '.portOutMode', {val: cOutPortMode_SW, ack: true}); 
       adapter.setState( nodeName + '.group', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.defaultPWM', {val: 0, ack: true}); 
 
    } else if ( pty == cNPortType_NotConnected ) {
 /* ToDO: если порт переводим  в NC - хорошо бы его принудительно выключить xx:0 */
@@ -784,7 +785,7 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.send2ServerAlwaysPressRelease', {val: false, ack: true}); 
       adapter.setState( nodeName + '.tremorDefenceDisabled', {val: false, ack: true}); 
       adapter.setState( nodeName + '.displayPort', {val: '', ack: true}); 
-      adapter.setState( nodeName + '.defaultState', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.defaultState', {val: false, ack: true}); 
       adapter.setState( nodeName + '.digitalSensorType', {val: '', ack: true}); 
       adapter.setState( nodeName + '.temperature', {val: '', ack: true}); 
       adapter.setState( nodeName + '.humidity', {val: '', ack: true}); 
@@ -792,6 +793,7 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.GSMmode', {val: cGSMmodeNo, ack: true}); 
       adapter.setState( nodeName + '.portOutMode', {val: cOutPortMode_SW, ack: true}); 
       adapter.setState( nodeName + '.group', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.defaultPWM', {val: 0, ack: true}); 
 
    } else if ( pty == cNPortType_Out )  {
 // pn=7&grp=&pty=1&d=0&m=0&nr=1
@@ -823,14 +825,17 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.send2ServerAlwaysPressRelease', {val: false, ack: true}); 
       adapter.setState( nodeName + '.tremorDefenceDisabled', {val: false, ack: true}); 
       adapter.setState( nodeName + '.displayPort', {val: '', ack: true}); 
-      adapter.setState( nodeName + '.defaultState', {val: d, ack: true}); 
       adapter.setState( nodeName + '.digitalSensorType', {val: '', ack: true}); 
       adapter.setState( nodeName + '.temperature', {val: '', ack: true}); 
       adapter.setState( nodeName + '.humidity', {val: '', ack: true}); 
       adapter.setState( nodeName + '.digitalSensorMode', {val: '', ack: true}); 
       if ( m == 0 ) {
          adapter.setState( nodeName + '.portOutMode', {val: cOutPortMode_SW, ack: true}); 
+         adapter.setState( nodeName + '.defaultState', {val: d, ack: true}); 
+         adapter.setState( nodeName + '.defaultPWM', {val: 0, ack: true}); 
       } else if ( m == 1 ) {
+         adapter.setState( nodeName + '.defaultState', {val: false, ack: true}); 
+         adapter.setState( nodeName + '.defaultPWM', {val: defPWM, ack: true}); 
          adapter.setState( nodeName + '.portOutMode', {val: cOutPortMode_PWM, ack: true}); 
          if ( pn == '10' || pn == '12' || pn == '13' ) {
             pwmTimer = '1';
@@ -856,8 +861,12 @@ function parseMegaCfgLine ( line ) {
 
       } else if ( m == 2 ) {
          adapter.setState( nodeName + '.portOutMode', {val: cOutPortMode_DS2413, ack: true}); 
+         adapter.setState( nodeName + '.defaultPWM', {val: 0, ack: true}); 
+         adapter.setState( nodeName + '.defaultState', {val: d, ack: true}); 
       } else if ( m == 3 ) {
          adapter.setState( nodeName + '.portOutMode', {val: cOutPortMode_SWLINK, ack: true}); 
+         adapter.setState( nodeName + '.defaultPWM', {val: 0, ack: true}); 
+         adapter.setState( nodeName + '.defaultState', {val: d, ack: true}); 
       }
       adapter.setState( nodeName + '.group', {val: grp, ack: true}); 
 
@@ -875,7 +884,8 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.send2ServerAlwaysPressRelease', {val: false, ack: true}); 
       adapter.setState( nodeName + '.tremorDefenceDisabled', {val: false, ack: true}); 
       adapter.setState( nodeName + '.displayPort', {val: '', ack: true}); 
-      adapter.setState( nodeName + '.defaultState', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.defaultState', {val: false, ack: true}); 
+      adapter.setState( nodeName + '.defaultPWM', {val: 0, ack: true}); 
       if ( d == cNDigitalSensorTypeDS18B20 ) {
          dSRV = cDigitalSensorTypeDS18B20;
       } else if ( d == cNDigitalSensorTypeDHT11 ) {
@@ -923,7 +933,7 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.send2ServerAlwaysPressRelease', {val: false, ack: true}); 
       adapter.setState( nodeName + '.tremorDefenceDisabled', {val: false, ack: true}); 
       adapter.setState( nodeName + '.displayPort', {val: '', ack: true}); 
-      adapter.setState( nodeName + '.defaultState', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.defaultState', {val: false, ack: true}); 
       adapter.setState( nodeName + '.digitalSensorType', {val: '', ack: true}); 
       adapter.setState( nodeName + '.temperature', {val: '', ack: true}); 
       adapter.setState( nodeName + '.humidity', {val: '', ack: true}); 
@@ -931,7 +941,7 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.GSMmode', {val: cGSMmodeNo, ack: true}); 
       adapter.setState( nodeName + '.portOutMode', {val: cOutPortMode_SW, ack: true}); 
       adapter.setState( nodeName + '.group', {val: '', ack: true}); 
-
+      adapter.setState( nodeName + '.defaultPWM', {val: 0, ack: true}); 
   }
 
 
@@ -3406,6 +3416,7 @@ function configInit( callback ) {
        createConfigItemIfNotExists ( 'ports.'+ i + '.porogValue', 'statenum', 'Пороговое значение', 0.00 );
        createConfigItemIfNotExists ( 'ports.'+ i + '.hysteresis', 'statenum', 'Гистерезис', 0.00 );
        createConfigItemIfNotExists ( 'ports.'+ i + '.portOutMode', 'state', 'Режим работы выхода', cOutPortMode_SW );
+       createConfigItemIfNotExists ( 'ports.'+ i + '.defaultPWM', 'statenum', 'Значение ШИМ по умолчанию', 0 );
    }
 
    for ( i=1; i <= 3; i ++ ) {
@@ -3518,6 +3529,7 @@ function savePort(obj) {
    adapter.log.debug( 'obj.message.group = '+ obj.message.group );
    adapter.log.debug( 'obj.message.group = '+ obj.message.group );
    adapter.log.debug( 'obj.message.freq  = '+ obj.message.freq  );
+   adapter.log.debug( 'obj.message.defPWM  = '+ obj.message.defPWM  );
 
    var portNum = obj.message.portNum;
    var room    = obj.message.room;
@@ -3534,7 +3546,7 @@ function savePort(obj) {
    var numXP = obj.message.numXP;
    var xp1model = obj.message.xp1model;
    var xp2model = obj.message.xp2model;
-   var defaultState = obj.message.defaultState || 0;
+   var defaultState = obj.message.defaultState || false;
    var digSensorType = obj.message.digSensorType || ''; //?
    var digSensorMode = obj.message.digSensorMode || ''; //?
    var GSMmode = obj.message.GSMmode || cGSMmodeNo; 
@@ -3542,6 +3554,7 @@ function savePort(obj) {
    var group = obj.message.group || ''; 
    var freq  = obj.message.freq || cPWM_Freq_Normal;  
    var pwmTimer = '';
+   var defPWM = obj.message.defPWM || 0;
 
    if (defaultRunAlways == 1) {
       defaultRunAlways = true;
@@ -3563,12 +3576,12 @@ function savePort(obj) {
    } else {
       tremorDefenceDisabled = false;
    }
-   if (defaultState == 1) {
+/*   if (defaultState == 1) {
       defaultState = true;
    } else {
       defaultState = false;
    }
-
+*/
 
    adapter.getState( adapter.namespace + '.ports.' + portNum + '.room',
       function (err, state) {
@@ -3871,6 +3884,24 @@ function savePort(obj) {
       );
    }
 
+
+   if ( portOutMode == cOutPortMode_PWM  ) {
+      adapter.getState( adapter.namespace + '.ports.' + portNum + '.defaultPWM',
+         function (err, state ) {
+            var oldvalue = "";
+            if ( state ) oldvalue = state.val;
+            if ( oldvalue != defPWM ) {
+               adapter.setState( 'ports.' + portNum + '.defaultPWM', {val: defPWM, ack: true});
+               adapter.log.info( 'ports.' + portNum + '.defaultPWM : '+ oldvalue + ' -> ' + defPWM );
+            }
+         }
+      );
+   } else {
+      adapter.setState( 'ports.' + portNum + '.defaultPWM', {val: 0, ack: true});
+      adapter.log.info( 'ports.' + portNum + '.defaultPWM : '+ oldvalue + ' -> ' + 0 );
+   }
+
+
    //---------- передаем данные в Мегу
    var url = 'pn=' + portNum;
    if ( portType == cPortType_NotConnected ) {
@@ -3931,10 +3962,14 @@ function savePort(obj) {
       //pn=7&grp=&pty=1&d=0&m=0&nr=1
       url += '&grp=' + group; 
       url += '&pty='+cNPortType_Out;
-      if (defaultState) {
-         url += '&d=1';
+      if ( portOutMode != cOutPortMode_PWM ) {
+         if (defaultState) {
+            url += '&d=1';
+         } else {
+            url += '&d='; // ?
+         }
       } else {
-         url += '&d='; // ?
+         url += '&d=' + defPWM;
       }
       if ( portOutMode == cOutPortMode_SW ) {
          url += '&m=0'; 
