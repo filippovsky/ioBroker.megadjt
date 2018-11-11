@@ -2099,7 +2099,7 @@ function portOutModeChanged ( controlPort ) {
               naf = true;
            }
            text += '<input type="checkbox" class="checkbox" id="nafXP'+numXP+'" '+ ( naf ? 'checked' : '') + 
-                   ' onChange="nafChanged('+controlPort+');"  onfocus="setToolTip('+numXP+',\''+spanNaf0+'\');"/>&nbsp;';
+                   ' onChange="NafChanged('+controlPort+');"  onfocus="setToolTip('+numXP+',\''+spanNaf0+'\');"/>&nbsp;';
            text += '<label id="lblnafXP'+numXP+'" for="nafXP'+numXP+'">'+( naf ? '&nbsp;Вызывать ТОЛЬКО при недоступности сервера' : '&nbsp;Вызывать всегда') + '</label>';
            text += '</td></tr>';
 
@@ -2509,7 +2509,7 @@ function portOutModeChanged ( controlPort ) {
               naf = true;
            }
            text += '<input type="checkbox" class="checkbox" id="nafXP'+numXP+'" '+ ( naf ? 'checked' : '') + 
-                   ' onChange="nafChanged('+controlPort+');"  onfocus="setToolTip('+numXP+',\''+spanNaf0+'\');"/>&nbsp;';
+                   ' onChange="NafChanged('+controlPort+');"  onfocus="setToolTip('+numXP+',\''+spanNaf0+'\');"/>&nbsp;';
            text += '<label id="lblnafXP'+numXP+'" for="nafXP'+numXP+'">'+( naf ? '&nbsp;Вызывать ТОЛЬКО при недоступности сервера' : '&nbsp;Вызывать всегда') + '</label>';
            text += '</td></tr>';
 
@@ -2734,7 +2734,7 @@ function portOutModeChanged ( controlPort ) {
        element  = document.getElementById( element_id );
        var newPortType  = element.options[element.selectedIndex].value; 
 
-       if ( newPortType == cPortType_StandartIn || ( newPortType == cPortType_DigitalSensor && newDi  )   ) {
+       if ( newPortType == cPortType_StandartIn ) {
           element_id = 'ecmdXP'+numXP;
           element  = document.getElementById( element_id );
           newDefaultAction = element.value;
@@ -3606,7 +3606,7 @@ function portOutModeChanged ( controlPort ) {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.38.0</p>
+    <p align="right">Admin Version: v0.38.1</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
