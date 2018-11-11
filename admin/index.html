@@ -1319,12 +1319,22 @@ function DXPChanged ( controlPort ) {
                  document.getElementById( "mDSXP"    + numXP ).style.visibility = "visible";
                  document.getElementById( "mDSImgXP" + numXP ).style.visibility = "visible";
                  document.getElementById( "mDSDivXP" + numXP ).style.visibility = "visible";
+
+                 document.getElementById( "porogValueXP"    + numXP ).style.visibility = "visible";
+                 document.getElementById( "porogValueImgXP" + numXP ).style.visibility = "visible";
+                 document.getElementById( "porogValueDivXP" + numXP ).style.visibility = "visible";
+
               }
            } else {
               if ( mds != undefined ) {
                  document.getElementById( "mDSXP"    + numXP ).style.visibility = "hidden";
                  document.getElementById( "mDSImgXP" + numXP ).style.visibility = "hidden";
                  document.getElementById( "mDSDivXP" + numXP ).style.visibility = "hidden";
+
+                 document.getElementById( "porogValueXP"    + numXP ).style.visibility = "hidden";
+                 document.getElementById( "porogValueImgXP" + numXP ).style.visibility = "hidden";
+                 document.getElementById( "porogValueDivXP" + numXP ).style.visibility = "hidden";
+
               }
            }
 
@@ -2329,7 +2339,12 @@ function portOutModeChanged ( controlPort ) {
            spanSen += 'случае, если на практике существующая реализация будет работать недостаточно хорошо.</p></li>';
 
            spanPorog  =  '<p align=justify>';
-           spanPorog  += '';
+           spanPorog += '<b>Пороговое значение</b></p>';
+           spanPorog += '<p align=justify><b>Локальный и &quot;удаленный&quot; термостат с помощью DS18B20 и MegaD-2561</b></p>';
+           spanPorog += '<p align=justify>Порт, настроенный для работы с датчиком температуры DS18B20, может не только отображать температуру или передавать ее на сервер. У него есть интересная особенность - режим термостата, когда можно управлять нагрузкой в зависимости от значения температуры. Доступны команды &quot;3&quot; и &quot;4&quot;, синхронизирующие значение температуры и состояние выхода. Например, если мы установим режим (Mode) &quot;&lt;&gt;&quot;, пороговое значение температуры (Val) 29, гистерезис (Hst) 0.50, а сценарий (Act) 7:3, то когда температура будет выше 29.5 градусов, выход P7 будет включен, а когда ниже 28.5, то выключен. Гистерезис работает в обе стороны от заданного порога. </p>';
+           spanPorog += '<p align=justify>А кроме того, устройство может управлять не только локальным выходом, но и выходом другого устройства. Для этого в поле Net мы прописываем, например, &quot;192.168.0.15/sec/?cmd=8:3&quot;. Тогда порт 8 совершенно другого устройства будет синхронизирован со значением температуры так, словно этот порт локальный. Разумеется, доступны и другие стандартные команды: выключить - &quot;0&quot;, включить - &quot;1&quot;, переключить - &quot;2&quot;.</p>';
+           spanPorog += '<p align=justify>Иногда требуется изменить значение термостата внешним HTTP-запросом без перезагрузки контроллера и записи этого значения в энергонезависимую память. ';
+           spanPorog += 'Делается это командой вида: http://192.168.0.14/sec/?pt=32&amp;misc=24 где pt=32 - номер порта, misc=24 - пороговое значение термостата.</p>';
 
            text += '<tr><td align="center" valign="middle">';
            text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanSen+'\');" style="cursor: pointer;"></img>';
@@ -2394,6 +2409,15 @@ function portOutModeChanged ( controlPort ) {
            text += '<option value="2" ' + ((mdsxpSite == 2) ? 'selected' : '') + '>&lt;</option>';
            text += '<option value="3" ' + ((mdsxpSite == 3) ? 'selected' : '') + '>&lt;&gt;</option>';
            text += '</select></td></tr>';
+
+
+           text += '<tr><td align="center" valign="middle">';
+           text +='<img id="porogValueImgXP' + numXP + '" src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanPorog+'\');" style="cursor: pointer;"></img>';
+           text += '</td><td align="left" valign="middle">';
+           text += '<div id="porogValueDivXP' + numXP + '">Пороговое значение:&nbsp;</div>';
+           var porogValue = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.porogValue' ].val;
+           text += '<input id="porogValueXP'+numXP+'" type="number" value="' + (porogValue || '0.00' ) + '" maxsize="7" size="7" onfocus="setToolTip('+numXP+',\''+spanPorog+'\');"/>';
+           text += '</td></tr>';
 
         }
 
@@ -2576,6 +2600,7 @@ function portOutModeChanged ( controlPort ) {
        var newFreq;
        var newSmooth;
        var newSmoothSpeed;
+       var newPorogValue;
        var pwmTimer;
 
        $('#write').button('disable');
@@ -2802,31 +2827,35 @@ function portOutModeChanged ( controlPort ) {
           element_id = 'dXP'+numXP;
           element  = document.getElementById( element_id );
           newDigSensorType  = element.options[element.selectedIndex].value; 
-       } else {
-          newDigSensorType = ''; // ?
-       }
+          if ( newDigSensorType == cDigitalSensorTypeDS18B20 ) {
+             element_id = 'mDSXP'+numXP;
+             element  = document.getElementById( element_id );
+             mDS  = element.options[element.selectedIndex].value; 
+             if ( mDS == 0 ) {
+                mDS_server = 'Norm';
+             } else if ( mDS == 1 ) {
+                mDS_server = '>';
+             } else if ( mDS == 2 ) {
+                mDS_server = '<';
+             } else if ( mDS == 3 ) {
+                mDS_server = '<>';
+             } else {
+                mDS_server = 'Norm';
+             }
 
+             element_id = 'porogValueXP'+numXP;
+             element  = document.getElementById( element_id );
+             newPorogValue = element.value;
 
-       if ( newPortType == cPortType_DigitalSensor ) {
-          element_id = 'mDSXP'+numXP;
-          element  = document.getElementById( element_id );
-          mDS  = element.options[element.selectedIndex].value; 
-          if ( mDS == 0 ) {
-             mDS_server = 'Norm';
-          } else if ( mDS == 1 ) {
-             mDS_server = '>';
-          } else if ( mDS == 2 ) {
-             mDS_server = '<';
-          } else if ( mDS == 3 ) {
-             mDS_server = '<>';
           } else {
              mDS_server = 'Norm';
+             newPorogValue = 0;
           }
        } else {
-          mDS_Server = 'Norm'; // ?
+          newDigSensorType = ''; // ?
+          mDS_server = 'Norm';
+          newPorogValue = 0;
        }
-
-
 
        if ( newPortType == cPortType_ReleOut || newPortType == cPortType_DimmedOut || newPortType == cPortType_DS2413 || newPortType == cPortType_SimistorOut ) {
           element_id = 'groupXP'+numXP;
@@ -2869,7 +2898,8 @@ function portOutModeChanged ( controlPort ) {
                                           freq: newFreq,
                                         defPWM: newDefPWM,
                                         smooth: newSmooth,
-                                   smoothSpeed: newSmoothSpeed
+                                   smoothSpeed: newSmoothSpeed,
+                                    porogValue: newPorogValue
                                 }, 
           function (msg) {
              $('#write').button('enable');
@@ -2905,6 +2935,7 @@ function portOutModeChanged ( controlPort ) {
              Setup[ inst + '.ports.' + controlPort + '.defaultPWM'].val = newDefPWM;
              Setup[ inst + '.ports.' + controlPort + '.smooth'].val = newSmooth;
              Setup[ inst + '.ports.' + controlPort + '.smoothSpeed'].val = newSmoothSpeed;
+             Setup[ inst + '.ports.' + controlPort + '.porogValue'].val = newPorogValue;
 
              if ( newPortType == cPortType_DimmedOut ) {
                 if ( controlPort == 10 || controlPort == 12 || controlPort == 13 ) {
@@ -3448,7 +3479,7 @@ function portOutModeChanged ( controlPort ) {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.36.2</p>
+    <p align="right">Admin Version: v0.36.3</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 

@@ -1,8 +1,12 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.36.2",
+        "version":                  "0.36.3",
         "news": {
+            "0.36.3": {
+                "en":               "Added POROGVALUE field at DIGITAL IN port",
+                "ru":               "Добавлено поле ПОРОГОВОЕ ЗНАЧЕНИЕ у порта Цифровой вход"
+            },
             "0.35.5": {
                 "en":               "Added SMOOTHSPEED field at Dimmed OUT port",
                 "ru":               "Добавлено поле СКОРОСТЬ ИЗМЕНЕНИЯ у порта Димируемый выход"

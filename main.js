@@ -610,6 +610,7 @@ function parseMegaCfgLine ( line ) {
    var fr;
    var pwmTimer = '';
    var m2;
+   var porogValue;
 
    adapter.log.debug('Распознание строки настройки: '+line);
    parts = line.split('&');
@@ -772,6 +773,7 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.defaultPWM', {val: 0, ack: true}); 
       adapter.setState( nodeName + '.smooth', {val: false, ack: true}); 
       adapter.setState( nodeName + '.smoothSpeed', {val: '1', ack: true}); 
+      adapter.setState( nodeName + '.porogValue', {val: 0, ack: true}); 
 
    } else if ( pty == cNPortType_NotConnected ) {
 /* ToDO: если порт переводим  в NC - хорошо бы его принудительно выключить xx:0 */
@@ -800,6 +802,7 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.defaultPWM', {val: 0, ack: true}); 
       adapter.setState( nodeName + '.smooth', {val: false, ack: true}); 
       adapter.setState( nodeName + '.smoothSpeed', {val: '1', ack: true}); 
+      adapter.setState( nodeName + '.porogValue', {val: 0, ack: true}); 
 
    } else if ( pty == cNPortType_Out )  {
 // pn=7&grp=&pty=1&d=0&m=0&nr=1
@@ -835,6 +838,7 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.temperature', {val: '', ack: true}); 
       adapter.setState( nodeName + '.humidity', {val: '', ack: true}); 
       adapter.setState( nodeName + '.digitalSensorMode', {val: '', ack: true}); 
+      adapter.setState( nodeName + '.porogValue', {val: 0, ack: true}); 
       if ( m == 0 ) {
          adapter.setState( nodeName + '.portOutMode', {val: cOutPortMode_SW, ack: true}); 
          adapter.setState( nodeName + '.defaultState', {val: d, ack: true}); 
@@ -922,16 +926,24 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.digitalSensorType', {val: dSRV, ack: true}); 
       adapter.setState( nodeName + '.temperature', {val: '', ack: true}); 
       adapter.setState( nodeName + '.humidity', {val: '', ack: true}); 
-      if ( m == 0 ) {
+      if ( dSRV == cDigitalSensorTypeDS18B20 ) {
+         if ( m == 0 ) {
+            mSRV = 'Norm';
+         } else if ( m == 1 ) {
+            mSRV = '>';
+         } else if ( m == 2 ) {
+            mSRV = '<';
+         } else if ( m == 3 ) {
+            mSRV = '<>';
+         }
+         porogValue = misc;
+      } else {
          mSRV = 'Norm';
-      } else if ( m == 1 ) {
-         mSRV = '>';
-      } else if ( m == 2 ) {
-         mSRV = '<';
-      } else if ( m == 3 ) {
-         mSRV = '<>';
+         porogValue = 0;
       }
       adapter.setState( nodeName + '.digitalSensorMode', {val: mSRV, ack: true}); 
+      adapter.setState( nodeName + '.porogValue', {val: porogValue, ack: true}); 
+
       adapter.setState( nodeName + '.portOutMode', {val: cOutPortMode_SW, ack: true}); 
       adapter.setState( nodeName + '.group', {val: '', ack: true}); 
 
@@ -964,6 +976,7 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.defaultPWM', {val: 0, ack: true}); 
       adapter.setState( nodeName + '.smooth', {val: false, ack: true}); 
       adapter.setState( nodeName + '.smoothSpeed', {val: '1', ack: true}); 
+      adapter.setState( nodeName + '.porogValue', {val: 0, ack: true}); 
   }
 
 
@@ -3555,6 +3568,7 @@ function savePort(obj) {
    adapter.log.debug( 'obj.message.defPWM  = '+ obj.message.defPWM  );
    adapter.log.debug( 'obj.message.smooth  = '+ obj.message.smooth  );
    adapter.log.debug( 'obj.message.smoothSpeed  = '+ obj.message.smoothSpeed  );
+   adapter.log.debug( 'obj.message.porogValue = '+ obj.message.porogValue );
 
    var portNum = obj.message.portNum;
    var room    = obj.message.room;
@@ -3582,6 +3596,7 @@ function savePort(obj) {
    var defPWM = obj.message.defPWM || 0;
    var smooth = obj.message.smooth || false;
    var smoothSpeed = obj.message.smoothSpeed || '1';
+   var porogValue = obj.message.porogValue || 0;
 
    if (defaultRunAlways == 1) {
       defaultRunAlways = true;
@@ -3959,6 +3974,16 @@ function savePort(obj) {
       adapter.setState( 'ports.' + portNum + '.smoothSpeed', {val: '1', ack: true});
    }
 
+   adapter.getState( adapter.namespace + '.ports.' + portNum + '.porogValue',
+      function (err, state ) {
+         var oldvalue = "";
+         if ( state ) oldvalue = state.val;
+         if ( oldvalue != digSensorType ) {
+            adapter.setState( 'ports.' + portNum + '.porogValue', {val: porogValue, ack: true});
+            adapter.log.info( 'ports.' + portNum + '.porogValue : '+ oldvalue + ' -> ' + porogValue );
+         }
+      }
+   );
 
    //---------- передаем данные в Мегу
    var url = 'pn=' + portNum;
@@ -4054,21 +4079,22 @@ function savePort(obj) {
 
    } else if ( portType == cPortType_DigitalSensor ) {
       //pn=28&misc=0.00&hst=0.00&ecmd=&af=&eth=&naf=&pty=3&m=0&d=3&gsmf=0&nr=1
-      url += '&misc=0.00&hst=0.00&ecmd=&af=&eth=&naf='; //!временно
+      url += '&hst=0.00&ecmd=&af=&eth=&naf='; //!временно
       url += '&pty='+cNPortType_DigitalSensor;
-      if ( digSensorMode == 'Norm' ) {
-         url += '&m=0';
-      } else if ( digSensorMode == '>' ) {
-         url += '&m=1';
-      } else if ( digSensorMode == '<' ) {
-         url += '&m=2';
-      } else if ( digSensorMode == '<>' ) {
-         url += '&m=3';
-      } else  {
-         url += '&m=0'; // ?
-      }
       if ( digSensorType == cDigitalSensorTypeDS18B20 ) {
+         if ( digSensorMode == 'Norm' ) {
+            url += '&m=0';
+         } else if ( digSensorMode == '>' ) {
+            url += '&m=1';
+         } else if ( digSensorMode == '<' ) {
+            url += '&m=2';
+         } else if ( digSensorMode == '<>' ) {
+            url += '&m=3';
+         } else  {
+            url += '&m=0'; // ?
+         }
          url += '&d=' + cNDigitalSensorTypeDS18B20;
+         url += '&misc=' + porogValue;
       } else if ( digSensorType == cDigitalSensorTypeDHT11 ) {
          url += '&d=' + cNDigitalSensorTypeDHT11;
       } else if ( digSensorType == cDigitalSensorTypeDHT22 ) {
