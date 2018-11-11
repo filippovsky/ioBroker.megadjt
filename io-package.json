@@ -1,8 +1,12 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.37.0",
+        "version":                  "0.38.0",
         "news": {
+            "0.38.0": {
+                "en":               "Added DEFAULTACTION and NETACTION fields at DIGITAL IN port",
+                "ru":               "Добавлено поле СЦЕНАРИЙ ПО УМОЛЧАНИЮ и СЕТЕВОЙ СЦЕНАРИЙ у порта Цифровой вход"
+            },
             "0.37.0": {
                 "en":               "Added HYSTERESIS field at DIGITAL IN port",
                 "ru":               "Добавлено поле ГИСТЕРЕЗИС у порта Цифровой вход"

@@ -903,10 +903,6 @@ function parseMegaCfgLine ( line ) {
       adapter.setState( nodeName + '.portType', {val: cPortType_DigitalSensor, ack: true});
       adapter.setState( nodeName + '.counter', {val: 0, ack: true});
       adapter.setState( nodeName + '.currentState', {val: '', ack: true}); // ?? либо считать реальный
-      adapter.setState( nodeName + '.defaultAction', {val: '', ack: true}); 
-      adapter.setState( nodeName + '.defaultRunAlways', {val: false, ack: true}); 
-      adapter.setState( nodeName + '.netAction', {val: '', ack: true}); 
-      adapter.setState( nodeName + '.netRunOnlyWhenServerOut', {val: false, ack: true}); 
       adapter.setState( nodeName + '.portMode', {val: cPortMode_SW, ack: true}); 
       adapter.setState( nodeName + '.send2ServerAlwaysPressRelease', {val: false, ack: true}); 
       adapter.setState( nodeName + '.tremorDefenceDisabled', {val: false, ack: true}); 
@@ -943,10 +939,18 @@ function parseMegaCfgLine ( line ) {
          }
          porogValue = misc;
          adapter.setState( nodeName + '.hysteresis', {val: hst, ack: true}); 
+         adapter.setState( nodeName + '.defaultAction', {val: ecmd, ack: true}); 
+         adapter.setState( nodeName + '.defaultRunAlways', {val: af, ack: true}); 
+         adapter.setState( nodeName + '.netAction', {val: eth, ack: true}); 
+         adapter.setState( nodeName + '.netRunOnlyWhenServerOut', {val: naf, ack: true}); 
       } else {
          mSRV = 'Norm';
          porogValue = 0;
          adapter.setState( nodeName + '.hysteresis', {val: 0, ack: true}); 
+         adapter.setState( nodeName + '.defaultAction', {val: '', ack: true}); 
+         adapter.setState( nodeName + '.defaultRunAlways', {val: false, ack: true}); 
+         adapter.setState( nodeName + '.netAction', {val: '', ack: true}); 
+         adapter.setState( nodeName + '.netRunOnlyWhenServerOut', {val: false, ack: true}); 
       }
       adapter.setState( nodeName + '.digitalSensorMode', {val: mSRV, ack: true}); 
       adapter.setState( nodeName + '.porogValue', {val: porogValue, ack: true}); 
@@ -4100,7 +4104,6 @@ function savePort(obj) {
 
    } else if ( portType == cPortType_DigitalSensor ) {
       //pn=28&misc=0.00&hst=0.00&ecmd=&af=&eth=&naf=&pty=3&m=0&d=3&gsmf=0&nr=1
-      url += '&ecmd=&af=&eth=&naf='; //!временно
       url += '&pty='+cNPortType_DigitalSensor;
       if ( digSensorType == cDigitalSensorTypeDS18B20 ) {
          if ( digSensorMode == 'Norm' ) {
@@ -4117,6 +4120,14 @@ function savePort(obj) {
          url += '&d=' + cNDigitalSensorTypeDS18B20;
          url += '&misc=' + porogValue;
          url += '&hst=' + hysteresis;
+         url += '&ecmd=' + defaultAction;
+         if ( defaultRunAlways ) {
+            url += '&af=1';
+         }
+         url += '&eth=' + netAction;
+         if ( netRunOnlyWhenServerOut ) {
+            url += '&naf=1';
+         }
       } else if ( digSensorType == cDigitalSensorTypeDHT11 ) {
          url += '&d=' + cNDigitalSensorTypeDHT11;
       } else if ( digSensorType == cDigitalSensorTypeDHT22 ) {

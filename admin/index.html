@@ -1328,6 +1328,21 @@ function DXPChanged ( controlPort ) {
                  document.getElementById( "hysteresisImgXP" + numXP ).style.visibility = "visible";
                  document.getElementById( "hysteresisDivXP" + numXP ).style.visibility = "visible";
 
+                 document.getElementById( "ecmdXP"    + numXP ).style.visibility = "visible";
+                 document.getElementById( "ecmdImgXP" + numXP ).style.visibility = "visible";
+                 document.getElementById( "ecmdDivXP" + numXP ).style.visibility = "visible";
+
+                 document.getElementById( "afXP"    + numXP ).style.visibility = "visible";
+                 document.getElementById( "afImgXP" + numXP ).style.visibility = "visible";
+                 document.getElementById( "lblafXP" + numXP ).style.visibility = "visible";
+
+                 document.getElementById( "ethXP"    + numXP ).style.visibility = "visible";
+                 document.getElementById( "ethImgXP" + numXP ).style.visibility = "visible";
+                 document.getElementById( "ethDivXP" + numXP ).style.visibility = "visible";
+
+                 document.getElementById( "nafXP"    + numXP ).style.visibility = "visible";
+                 document.getElementById( "nafImgXP" + numXP ).style.visibility = "visible";
+                 document.getElementById( "lblnafXP" + numXP ).style.visibility = "visible";
               }
            } else {
               if ( mds != undefined ) {
@@ -1342,6 +1357,22 @@ function DXPChanged ( controlPort ) {
                  document.getElementById( "hysteresisXP"    + numXP ).style.visibility = "hidden";
                  document.getElementById( "hysteresisImgXP" + numXP ).style.visibility = "hidden";
                  document.getElementById( "hysteresisDivXP" + numXP ).style.visibility = "hidden";
+
+                 document.getElementById( "ecmdXP"    + numXP ).style.visibility = "hidden";
+                 document.getElementById( "ecmdImgXP" + numXP ).style.visibility = "hidden";
+                 document.getElementById( "ecmdDivXP" + numXP ).style.visibility = "hidden";
+
+                 document.getElementById( "afXP"    + numXP ).style.visibility = "hidden";
+                 document.getElementById( "afImgXP" + numXP ).style.visibility = "hidden";
+                 document.getElementById( "lblafXP" + numXP ).style.visibility = "hidden";
+
+                 document.getElementById( "ethXP"    + numXP ).style.visibility = "hidden";
+                 document.getElementById( "ethImgXP" + numXP ).style.visibility = "hidden";
+                 document.getElementById( "ethDivXP" + numXP ).style.visibility = "hidden";
+
+                 document.getElementById( "nafXP"    + numXP ).style.visibility = "hidden";
+                 document.getElementById( "nafImgXP" + numXP ).style.visibility = "hidden";
+                 document.getElementById( "lblnafXP" + numXP ).style.visibility = "hidden";
 
               }
            }
@@ -1851,9 +1882,6 @@ function portOutModeChanged ( controlPort ) {
         spanOutMode += '<p align=justify>Режим <b>SW LINK</b> (связанный порт) используется в тех случаях, когда необходимо предотвратить на аппаратном уровне включение двух или более портов одновременно. Это актуально для управления различными приводами (рольставен, кранов, клапанов). Этот режим предполагает, что если один из связанных портов включен, то любой другой включить уже нельзя. Для того, чтобы связать два или более портов, необходимо для каждого из них выбрать режим SW LINK и указать одинаковую группу в поле Group (любое число от 0 до 99).</p>';
         spanOutMode += '<p align=justify>Режим <b>DS2413</b> предназначен для управления внешним двухканальным модулем, работающим по протоколу 1-wire. Этот режим можно установить для портов разъема XT2 или для любого порта модуля MegaD-14-IN в режиме цифрового входа (нижнее положение конфигурационного джампера). Модули на базе DS2413 можно применять в нескольких случаях: когда функциональность исполнительного модуля MegaD-8I7O избыточна и требуется всего 1-2 порта для управления нагрузками; когда требуется вынести модуль управления нагрузками на определенное расстояние (в этом случае достаточно проложить до модуля DS2413 кабель UTP).</p>';
 
-        //-----------------------------------------------------------------------------
-        // порт IN
-        if ( pty == cPortType_StandartIn ) {
            spanAct0 = '<p align=justify><b>Act</b> - Действие, которое необходимо произвести, в случае, когда сервер не указан, не отвечает или HTTP-статус ответа отличный от &quot;200 OK&quot;.</p>';
            spanAct0 += '<p align=justify>Контроллер MegaD-2561, по своей сути, является исполнителем указаний центральной управляющей ';
            spanAct0 += 'системы (сервера). В таком режиме в сетевых настройках конфигурируется IP-адрес сервера. При каждом нажатии на ';
@@ -1961,6 +1989,11 @@ function portOutModeChanged ( controlPort ) {
            spanEth0 += addEth0;
            spanNaf0 += addEth0;
 
+
+
+        //-----------------------------------------------------------------------------
+        // порт IN
+        if ( pty == cPortType_StandartIn ) {
            spanM =  '<p align=justify><b>Mode</b> - параметр, позволяющий использовать устройство в широком спектре задач. Эта опция определяет режим входа.</p>';
            spanM += '<p align=justify><b>P</b> - устройство реагирует (то есть отправляет сообщения на сервер, выполняет сценарии и т.д.) только при замыкании контакта/выключателя (Пример: <i>http://192.168.0.1/megad.php?pt=4</i>)</p>';
            spanM += '<p align=justify><b>R</b> - устройство реагирует только при размыкании контакта/выключателя. На сервер отправляется дополнительный параметр &quot;m=1&quot;. (Пример: <i>http://192.168.0.1/megad.php?pt=4&m=1</i>)</p>';
@@ -2440,6 +2473,46 @@ function portOutModeChanged ( controlPort ) {
            text += '<input id="hysteresisXP'+numXP+'" type="number" value="' + (hysteresis || '0.00' ) + '" maxsize="7" size="7" onfocus="setToolTip('+numXP+',\''+spanHysteresis+'\');"/>';
            text += '</td></tr>';
 
+           text += '<tr><td align="center" valign="middle">';
+           text +='<img id="ecmdImgXP' + numXP + '" src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanAct0+'\');" style="cursor: pointer;"></img>';
+           text += '</td><td align="left" valign="middle">';
+           text += '<div id="ecmdDivXP' + numXP + '">Сценарий по умолчанию (Act):&nbsp;</div>';
+           var ecmd = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.defaultAction' ].val;
+           text += '<input id="ecmdXP'+numXP+'" type="text" value="' + (ecmd || '' ) + '" maxsize="11" onfocus="setToolTip('+numXP+',\''+spanAct0+'\');"/>';
+           text += '</td></tr>';
+
+           text += '<tr><td align="center" valign="middle">';
+           text += '<img id="afImgXP' + numXP + '" src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanAf0+'\');" style="cursor: pointer;"></img>';
+           text += '</td><td align="left" valign="middle">';
+           var af = false;
+           if ( Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.defaultRunAlways' ].val == true || Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.defaultRunAlways' ].val == 'true' ) {
+              af = true;
+           }
+           text += '<input type="checkbox" class="checkbox" id="afXP'+numXP+'" '+ ( af ? 'checked' : '') + 
+                   ' onChange="afChanged('+controlPort+');"  onfocus="setToolTip('+numXP+',\''+spanAf0+'\');"/>&nbsp;';
+           text += '<label id="lblafXP'+numXP+'" for="afXP'+numXP+'">'+( af ? '&nbsp;Выполнять всегда, независимо от наличия сервера' : '&nbsp;Выполнять только когда сервер не указан или не отвечает.') + '</label>';
+           text += '</td></tr>';
+
+           text += '<tr><td align="center" valign="middle">';
+           text +='<img id="ethImgXP' + numXP + '" src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanEth0+'\');" style="cursor: pointer;"></img>';
+           text += '</td><td align="left" valign="middle">';
+           text += '<div id="ethDivXP' + numXP + '">Сетевой сценарий (Net):&nbsp;</div>';
+           var eth = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.netAction' ].val;
+           text += '<input id="ethXP'+numXP+'" type="text" value="' + (eth || '' ) + '" maxsize="35" onfocus="setToolTip('+numXP+',\''+spanEth0+'\');"/>';
+           text += '</td></tr>';
+
+           text += '<tr><td align="center" valign="middle">';
+           text += '<img id="nafImgXP' + numXP + '" src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanNaf0+'\');" style="cursor: pointer;"></img>';
+           text += '</td><td align="left" valign="middle">';
+           var naf = false;
+           if ( Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.netRunOnlyWhenServerOut' ].val == true || Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.netRunOnlyWhenServerOut' ].val == 'true' ) {
+              naf = true;
+           }
+           text += '<input type="checkbox" class="checkbox" id="nafXP'+numXP+'" '+ ( naf ? 'checked' : '') + 
+                   ' onChange="nafChanged('+controlPort+');"  onfocus="setToolTip('+numXP+',\''+spanNaf0+'\');"/>&nbsp;';
+           text += '<label id="lblnafXP'+numXP+'" for="nafXP'+numXP+'">'+( naf ? '&nbsp;Вызывать ТОЛЬКО при недоступности сервера' : '&nbsp;Вызывать всегда') + '</label>';
+           text += '</td></tr>';
+
         }
 
         text += '<tr><td align="center" valign="middle">&nbsp;<td align=center valign=middle>';
@@ -2661,7 +2734,7 @@ function portOutModeChanged ( controlPort ) {
        element  = document.getElementById( element_id );
        var newPortType  = element.options[element.selectedIndex].value; 
 
-       if ( newPortType == cPortType_StandartIn ) {
+       if ( newPortType == cPortType_StandartIn || ( newPortType == cPortType_DigitalSensor && newDi  )   ) {
           element_id = 'ecmdXP'+numXP;
           element  = document.getElementById( element_id );
           newDefaultAction = element.value;
@@ -2872,6 +2945,30 @@ function portOutModeChanged ( controlPort ) {
              element_id = 'hysteresisXP'+numXP;
              element  = document.getElementById( element_id );
              newHysteresis = element.value;
+
+             element_id = 'ecmdXP'+numXP;
+             element  = document.getElementById( element_id );
+             newDefaultAction = element.value;
+
+             element_id = 'afXP'+numXP;
+             element  = document.getElementById( element_id );
+             if ( element.checked ) {
+                newDefaultRunAlways = 1; 
+             } else {
+                newDefaultRunAlways = 0; 
+             }
+
+             element_id = 'ethXP'+numXP;
+             element  = document.getElementById( element_id );
+             newNetAction = element.value;
+
+             element_id = 'nafXP'+numXP;
+             element  = document.getElementById( element_id );
+             if ( element.checked ) {
+                newNetRunOnlyWhenServerOut = 1; 
+             } else {
+                newNetRunOnlyWhenServerOut = 0; 
+             }
 
           } else {
              mDS_server = 'Norm';
@@ -3509,7 +3606,7 @@ function portOutModeChanged ( controlPort ) {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.37.0</p>
+    <p align="right">Admin Version: v0.38.0</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
