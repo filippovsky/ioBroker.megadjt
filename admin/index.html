@@ -1290,6 +1290,8 @@ function checkDisplay() {
 //--------------------------------------
 function DXPChanged ( controlPort ) {
         var numXP = 0;
+        var visiblePorog  = '';
+        var visibleAction = '';
         if ( controlPort < 15 ) {
            numXP = 1;
         } else if ( controlPort < 30 ) {
@@ -1309,72 +1311,50 @@ function DXPChanged ( controlPort ) {
 /*
            text += '<option value="'+cDigitalSensorTypeDHT11+'" ' + ((dxp == cDigitalSensorTypeDHT11) ? 'selected' : '') + '>DHT11 (Температура и влажность)</option>';
            text += '<option value="'+cDigitalSensorTypeDHT22+'" ' + ((dxp == cDigitalSensorTypeDHT22) ? 'selected' : '') + '>DHT22 (Температура и влажность)</option>';
-           text += '<option value="'+cDigitalSensorTypeMarine+'" ' + ((dxp == cDigitalSensorTypeMarine) ? 'selected' : '') + '>iButton/Proximity EM Marine (считыватель ключей)</option>';
            text += '<option value="'+cDigitalSensorType1WBus+'" ' + ((dxp == cDigitalSensorType1WBus) ? 'selected' : '') + '>Шина 1-Wire</option>';
            text += '<option value="'+cDigitalSensorTypeWiegand26+'" ' + ((dxp == cDigitalSensorTypeWiegand26) ? 'selected' : '') + '>W26 (Считыватель Wiegand26)</option>';
 */
 
-           if ( d == cDigitalSensorTypeDS18B20 ) {
-              if ( mds != undefined ) {
-                 document.getElementById( "mDSXP"    + numXP ).style.visibility = "visible";
-                 document.getElementById( "mDSImgXP" + numXP ).style.visibility = "visible";
-                 document.getElementById( "mDSDivXP" + numXP ).style.visibility = "visible";
-
-                 document.getElementById( "porogValueXP"    + numXP ).style.visibility = "visible";
-                 document.getElementById( "porogValueImgXP" + numXP ).style.visibility = "visible";
-                 document.getElementById( "porogValueDivXP" + numXP ).style.visibility = "visible";
-
-                 document.getElementById( "hysteresisXP"    + numXP ).style.visibility = "visible";
-                 document.getElementById( "hysteresisImgXP" + numXP ).style.visibility = "visible";
-                 document.getElementById( "hysteresisDivXP" + numXP ).style.visibility = "visible";
-
-                 document.getElementById( "ecmdXP"    + numXP ).style.visibility = "visible";
-                 document.getElementById( "ecmdImgXP" + numXP ).style.visibility = "visible";
-                 document.getElementById( "ecmdDivXP" + numXP ).style.visibility = "visible";
-
-                 document.getElementById( "afXP"    + numXP ).style.visibility = "visible";
-                 document.getElementById( "afImgXP" + numXP ).style.visibility = "visible";
-                 document.getElementById( "lblafXP" + numXP ).style.visibility = "visible";
-
-                 document.getElementById( "ethXP"    + numXP ).style.visibility = "visible";
-                 document.getElementById( "ethImgXP" + numXP ).style.visibility = "visible";
-                 document.getElementById( "ethDivXP" + numXP ).style.visibility = "visible";
-
-                 document.getElementById( "nafXP"    + numXP ).style.visibility = "visible";
-                 document.getElementById( "nafImgXP" + numXP ).style.visibility = "visible";
-                 document.getElementById( "lblnafXP" + numXP ).style.visibility = "visible";
+           if ( mds != undefined ) {
+              if ( d == cDigitalSensorTypeDS18B20 ) {
+                 visiblePorog  = 'visible';
+                 visibleAction = 'visible';
+              } else if ( d == cDigitalSensorTypeMarine ) {
+                 visiblePorog  = 'hidden';
+                 visibleAction = 'visible';
+              } else {
+                 visiblePorog = 'hidden';
+                 visibleAction = 'hidden';
               }
-           } else {
-              if ( mds != undefined ) {
-                 document.getElementById( "mDSXP"    + numXP ).style.visibility = "hidden";
-                 document.getElementById( "mDSImgXP" + numXP ).style.visibility = "hidden";
-                 document.getElementById( "mDSDivXP" + numXP ).style.visibility = "hidden";
 
-                 document.getElementById( "porogValueXP"    + numXP ).style.visibility = "hidden";
-                 document.getElementById( "porogValueImgXP" + numXP ).style.visibility = "hidden";
-                 document.getElementById( "porogValueDivXP" + numXP ).style.visibility = "hidden";
+              document.getElementById( "mDSXP"    + numXP ).style.visibility = visiblePorog;
+              document.getElementById( "mDSImgXP" + numXP ).style.visibility = visiblePorog;
+              document.getElementById( "mDSDivXP" + numXP ).style.visibility = visiblePorog;
 
-                 document.getElementById( "hysteresisXP"    + numXP ).style.visibility = "hidden";
-                 document.getElementById( "hysteresisImgXP" + numXP ).style.visibility = "hidden";
-                 document.getElementById( "hysteresisDivXP" + numXP ).style.visibility = "hidden";
+              document.getElementById( "porogValueXP"    + numXP ).style.visibility = visiblePorog;
+              document.getElementById( "porogValueImgXP" + numXP ).style.visibility = visiblePorog;
+              document.getElementById( "porogValueDivXP" + numXP ).style.visibility = visiblePorog;
 
-                 document.getElementById( "ecmdXP"    + numXP ).style.visibility = "hidden";
-                 document.getElementById( "ecmdImgXP" + numXP ).style.visibility = "hidden";
-                 document.getElementById( "ecmdDivXP" + numXP ).style.visibility = "hidden";
+              document.getElementById( "hysteresisXP"    + numXP ).style.visibility = visiblePorog;
+              document.getElementById( "hysteresisImgXP" + numXP ).style.visibility = visiblePorog;
+              document.getElementById( "hysteresisDivXP" + numXP ).style.visibility = visiblePorog;
 
-                 document.getElementById( "afXP"    + numXP ).style.visibility = "hidden";
-                 document.getElementById( "afImgXP" + numXP ).style.visibility = "hidden";
-                 document.getElementById( "lblafXP" + numXP ).style.visibility = "hidden";
+              document.getElementById( "ecmdXP"    + numXP ).style.visibility = visibleAction;
+              document.getElementById( "ecmdImgXP" + numXP ).style.visibility = visibleAction;
+              document.getElementById( "ecmdDivXP" + numXP ).style.visibility = visibleAction;
 
-                 document.getElementById( "ethXP"    + numXP ).style.visibility = "hidden";
-                 document.getElementById( "ethImgXP" + numXP ).style.visibility = "hidden";
-                 document.getElementById( "ethDivXP" + numXP ).style.visibility = "hidden";
+              document.getElementById( "afXP"    + numXP ).style.visibility = visibleAction;
+              document.getElementById( "afImgXP" + numXP ).style.visibility = visibleAction;
+              document.getElementById( "lblafXP" + numXP ).style.visibility = visibleAction;
 
-                 document.getElementById( "nafXP"    + numXP ).style.visibility = "hidden";
-                 document.getElementById( "nafImgXP" + numXP ).style.visibility = "hidden";
-                 document.getElementById( "lblnafXP" + numXP ).style.visibility = "hidden";
+              document.getElementById( "ethXP"    + numXP ).style.visibility = visibleAction;
+              document.getElementById( "ethImgXP" + numXP ).style.visibility = visibleAction;
+              document.getElementById( "ethDivXP" + numXP ).style.visibility = visibleAction;
 
-              }
+              document.getElementById( "nafXP"    + numXP ).style.visibility = visibleAction;
+              document.getElementById( "nafImgXP" + numXP ).style.visibility = visibleAction;
+              document.getElementById( "lblnafXP" + numXP ).style.visibility = visibleAction;
+
            }
         }
     }
@@ -2945,6 +2925,13 @@ function portOutModeChanged ( controlPort ) {
              element_id = 'hysteresisXP'+numXP;
              element  = document.getElementById( element_id );
              newHysteresis = element.value;
+          } else {
+             mDS_server = 'Norm';
+             newPorogValue = 0;
+             newHysteresis = 0;
+          }
+
+          if ( newDigSensorType == cDigitalSensorTypeDS18B20 || newDigSensorType == cDigitalSensorTypeMarine ) {
 
              element_id = 'ecmdXP'+numXP;
              element  = document.getElementById( element_id );
@@ -2970,10 +2957,6 @@ function portOutModeChanged ( controlPort ) {
                 newNetRunOnlyWhenServerOut = 0; 
              }
 
-          } else {
-             mDS_server = 'Norm';
-             newPorogValue = 0;
-             newHysteresis = 0;
           }
        } else {
           newDigSensorType = ''; // ?
@@ -3606,7 +3589,7 @@ function portOutModeChanged ( controlPort ) {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.38.1</p>
+    <p align="right">Admin Version: v0.38.2</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 

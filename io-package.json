@@ -1,8 +1,12 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.38.1",
+        "version":                  "0.38.2",
         "news": {
+            "0.38.2": {
+                "en":               "Added DEFAULTACTION and NETACTION fields at IBKEYS port",
+                "ru":               "Добавлено поле СЦЕНАРИЙ ПО УМОЛЧАНИЮ и СЕТЕВОЙ СЦЕНАРИЙ у порта Цифровой вход для режима iBKeys"
+            },
             "0.38.1": {
                 "en":               "Added DEFAULTACTION and NETACTION fields at DIGITAL IN port",
                 "ru":               "Добавлено поле СЦЕНАРИЙ ПО УМОЛЧАНИЮ и СЕТЕВОЙ СЦЕНАРИЙ у порта Цифровой вход"
