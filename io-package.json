@@ -1,8 +1,12 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.36.3",
+        "version":                  "0.37.0",
         "news": {
+            "0.37.0": {
+                "en":               "Added HYSTERESIS field at DIGITAL IN port",
+                "ru":               "Добавлено поле ГИСТЕРЕЗИС у порта Цифровой вход"
+            },
             "0.36.3": {
                 "en":               "Added POROGVALUE field at DIGITAL IN port",
                 "ru":               "Добавлено поле ПОРОГОВОЕ ЗНАЧЕНИЕ у порта Цифровой вход"
