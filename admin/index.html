@@ -2404,6 +2404,7 @@ function portOutModeChanged ( controlPort ) {
         document.getElementById( "xp" + numXP + "_port_preset" ).innerHTML = text;
         portOutModeChanged ( controlPort );
         smoothChanged ( controlPort );
+        DXPChanged( controlPort ); 
     }
     //-----------------------------------------------------------------------------------
     function selectPort ( numXP, portNum ) {
@@ -3447,7 +3448,7 @@ function portOutModeChanged ( controlPort ) {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.36.1</p>
+    <p align="right">Admin Version: v0.36.2</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
