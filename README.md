@@ -3,8 +3,8 @@
 ioBroker MegaD-2561 adapter (Version by Filippovsky, based on adapter of ausHaus and BlueFox)
 =================
 
-### Current version: 0.35.5 ( 04.11.2018 21:42 MSK ) ALFA!!! PLEASE DO NOT INSTALL!!!!!
-### Текущая версия:  0.35.5 ( 04.11.2018 21:42 MSK ) АЛЬФА!!! НЕ СТАВЬТЕ!!!
+### Current version: 0.36.0 ( 11.11.2018 16:48 MSK ) ALFA!!! PLEASE DO NOT INSTALL!!!!!
+### Текущая версия:  0.36.0 ( 11.11.2018 16:48 MSK ) АЛЬФА!!! НЕ СТАВЬТЕ!!!
 
 ### ВАЖНО! Перед установкой внимательно прочтите changelog!
 ### После обновления версии - обязательно вручную перезапустите драйвер (в разделе "Настройки драйвера")
@@ -192,6 +192,10 @@ on({id:'megadjt.0.ports.0.shortClick', change: "any"}, function (obj) {
 
           
 ## Changelog
+
+### 0.36.0 (2018-11-11)
+* (filippovsky) 
+В настройках цифрового порта выбор режима порта (Нормальный/</>/<>) показывается теперь только для типа порта DS18B20
 
 ### 0.35.5 (2018-11-04)
 * (filippovsky) 

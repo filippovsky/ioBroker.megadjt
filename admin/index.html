@@ -1286,6 +1286,53 @@ function checkDisplay() {
 
     }
 
+
+//--------------------------------------
+function DXPChanged ( controlPort ) {
+        var numXP = 0;
+        if ( controlPort < 15 ) {
+           numXP = 1;
+        } else if ( controlPort < 30 ) {
+           numXP = 2;
+        } else {
+           numXP = 0;
+        }
+
+        var element_id  = 'dXP'+numXP;
+        var mds_id  = 'mDSXP'+numXP;
+
+        var element   = document.getElementById( element_id  );
+        var mds       = document.getElementById( mds_id  );
+
+        if ( element != undefined ) {
+           var d = element.options[element.selectedIndex].value; 
+/*
+           text += '<option value="'+cDigitalSensorTypeDHT11+'" ' + ((dxp == cDigitalSensorTypeDHT11) ? 'selected' : '') + '>DHT11 (Температура и влажность)</option>';
+           text += '<option value="'+cDigitalSensorTypeDHT22+'" ' + ((dxp == cDigitalSensorTypeDHT22) ? 'selected' : '') + '>DHT22 (Температура и влажность)</option>';
+           text += '<option value="'+cDigitalSensorTypeMarine+'" ' + ((dxp == cDigitalSensorTypeMarine) ? 'selected' : '') + '>iButton/Proximity EM Marine (считыватель ключей)</option>';
+           text += '<option value="'+cDigitalSensorType1WBus+'" ' + ((dxp == cDigitalSensorType1WBus) ? 'selected' : '') + '>Шина 1-Wire</option>';
+           text += '<option value="'+cDigitalSensorTypeWiegand26+'" ' + ((dxp == cDigitalSensorTypeWiegand26) ? 'selected' : '') + '>W26 (Считыватель Wiegand26)</option>';
+*/
+
+           text += '<select id="mDSXP'+numXP+'" onfocus="setToolTip('+numXP+',\''+spanSenMode+'\');">';
+
+           if ( d == cDigitalSensorTypeDS18B20 ) {
+              if ( mds != undefined ) {
+                 document.getElementById( "mDSXP"    + numXP ).style.visibility = "visible";
+                 document.getElementById( "mDSImgXP" + numXP ).style.visibility = "visible";
+                 document.getElementById( "mDSDivXP" + numXP ).style.visibility = "visible";
+              }
+           } else {
+              if ( mds != undefined ) {
+                 document.getElementById( "mDSXP"    + numXP ).style.visibility = "hidden";
+                 document.getElementById( "mDSImgXP" + numXP ).style.visibility = "hidden";
+                 document.getElementById( "mDSDivXP" + numXP ).style.visibility = "hidden";
+              }
+           }
+
+        }
+    }
+
 //--------------------------------------
 function portOutModeChanged ( controlPort ) {
         var numXP = 0;
@@ -1556,6 +1603,7 @@ function portOutModeChanged ( controlPort ) {
         var spanGroup   = '';
         var spanFreq    = '';
         var spanSmooth  = '';
+        var spanPorog   = '';
         var pwmTimer    = '1';
         var adapterInstance = adapter + '.' + instance;
         var pty = "";
@@ -1651,6 +1699,9 @@ function portOutModeChanged ( controlPort ) {
         spanPorts += '<b>&quot;Цифровой вход&quot;</b> - порт с подтягивающим резистором 4,7кОм предназначен для подключения ';
         spanPorts += 'любых цифровых датчиков и устройств, а также (в случае наличия данной функции у порта) ';
         spanPorts += 'позволяет подключать аналоговые датчики.</p>';
+        spanPorts += '<p align=justify>Порт, сконфигурированный как цифровой вход, предназначен для работы с цифровыми датчиками и устройствами, работающими по цифровым шинам. ';
+        spanPorts += 'Данный тип порта применяется для разъема XT2 контроллера MegaD-2561, а также для любых входов исполнительного модуля MegaD-IN (нижнее положение конфигурационного джампера). ';
+        spanPorts += 'В данном режиме контроллер поддерживает работу с датчиками: DHT11/DHT22 (также более известными как AM2302), датчиками DS18B20 (1W), любыми считывателями, поддерживающими протокол 1-wire (iButton, TouchMemory) и работу с DS1990A (считыватели &quot;таблеток&quot;, а также считыватели EM-Marine/Mifare в режиме эмуляции, например, CP-Z2L/CP-Z2M, Matrix-II), любыми считыватели, поддерживающими протокол Wiegand-26 (W26).</p>';
 
         text += '<table border="0" class="tablemore"><tr><td align="center" valign="middle">'; // описания портов
         text +='<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanPorts+'\');" style="cursor: pointer;"></img>';
@@ -2218,7 +2269,7 @@ function portOutModeChanged ( controlPort ) {
               text += '<tr><td align="center" valign="middle">';
               text +='<img id="smoothSpeedImgXP' + numXP + '" src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanSmooth+'\');" style="cursor: pointer;"></img>';
               text += '</td><td align="left" valign="middle">';
-              text += '<div id="smoothSpeedDivXP' + numXP + '">Скорость изменения:&nbsp;';
+              text += '<div id="smoothSpeedDivXP' + numXP + '">Скорость изменения:&nbsp;</div>';
               var smoothSpeed = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.smoothSpeed' ].val;
               text += '<input id="smoothSpeedXP'+numXP+'" type="text" value="' + (smoothSpeed || '' ) + '" maxsize="3" size="3" onfocus="setToolTip('+numXP+',\''+spanSmooth+'\');"/>';
               text += '</td></tr>';
@@ -2279,12 +2330,15 @@ function portOutModeChanged ( controlPort ) {
            spanSen += 'можно скорее всего решить, используя порты с функцией внешнего прерывания. Но это имеет смысл делать в том ';
            spanSen += 'случае, если на практике существующая реализация будет работать недостаточно хорошо.</p></li>';
 
+           spanPorog  =  '<p align=justify>';
+           spanPorog  += '';
+
            text += '<tr><td align="center" valign="middle">';
            text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanSen+'\');" style="cursor: pointer;"></img>';
            text += '</td><td align="left" valign="middle">';
            text += '<font color=red><b>ВНИМАНИЕ! Положение джампера должно быть нижнее!</b></font><br>';
            text += 'Тип устройства (DSen):&nbsp;';
-           text += '<select id="dXP'+numXP+'" onfocus="setToolTip('+numXP+',\''+spanSen+'\');">';
+           text += '<select id="dXP'+numXP+'" onfocus="setToolTip('+numXP+',\''+spanSen+'\');"  onChange="DXPChanged('+controlPort+');">';
            var dxp = '';
            dxp = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.digitalSensorType' ].val;
            text += '<option value="'+cDigitalSensorTypeDHT11+'" ' + ((dxp == cDigitalSensorTypeDHT11) ? 'selected' : '') + '>DHT11 (Температура и влажность)</option>';
@@ -2319,9 +2373,9 @@ function portOutModeChanged ( controlPort ) {
            spanSenMode += 'со значением температуры так, словно этот порт локальный. Разумеется, доступны и другие стандартные команды: выключить - &quot;0&quot;, включить - &quot;1&quot;, переключить - &quot;2&quot;.</p>';
 
            text += '<tr><td align="center" valign="middle">';
-           text += '<img src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanSenMode+'\');" style="cursor: pointer;"></img>';
+           text += '<img id="mDSImgXP' + numXP + '" src="img/emblem-notice.png" width="20px" height="20px" onClick="setToolTip('+numXP+',\''+spanSenMode+'\');" style="cursor: pointer;"></img>';
            text += '</td><td align="left" valign="middle">';
-           text += 'Режим работы (Mode):&nbsp;';
+           text += '<div id="mDSDivXP' + numXP + '">Режим работы (Mode):&nbsp;</div>';
            text += '<select id="mDSXP'+numXP+'" onfocus="setToolTip('+numXP+',\''+spanSenMode+'\');">';
            var mdsxp = '';
            mdsxp = Setup[ adapter + '.' + instance + '.ports.' + controlPort + '.digitalSensorMode' ].val;
@@ -3395,7 +3449,7 @@ function portOutModeChanged ( controlPort ) {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.35.5</p>
+    <p align="right">Admin Version: v0.36.0</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
