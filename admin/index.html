@@ -1314,8 +1314,6 @@ function DXPChanged ( controlPort ) {
            text += '<option value="'+cDigitalSensorTypeWiegand26+'" ' + ((dxp == cDigitalSensorTypeWiegand26) ? 'selected' : '') + '>W26 (Считыватель Wiegand26)</option>';
 */
 
-           text += '<select id="mDSXP'+numXP+'" onfocus="setToolTip('+numXP+',\''+spanSenMode+'\');">';
-
            if ( d == cDigitalSensorTypeDS18B20 ) {
               if ( mds != undefined ) {
                  document.getElementById( "mDSXP"    + numXP ).style.visibility = "visible";
@@ -3449,7 +3447,7 @@ function portOutModeChanged ( controlPort ) {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.36.0</p>
+    <p align="right">Admin Version: v0.36.1</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
