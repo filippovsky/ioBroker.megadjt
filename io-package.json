@@ -1,8 +1,12 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.38.2",
+        "version":                  "0.38.3",
         "news": {
+            "0.38.3": {
+                "en":               "Added firmware 4.30b8",
+                "ru":               "Добавлена прошивка версии 4.30b8"
+            },
             "0.38.2": {
                 "en":               "Added DEFAULTACTION and NETACTION fields at IBKEYS port",
                 "ru":               "Добавлено поле СЦЕНАРИЙ ПО УМОЛЧАНИЮ и СЕТЕВОЙ СЦЕНАРИЙ у порта Цифровой вход для режима iBKeys"

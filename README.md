@@ -3,11 +3,13 @@
 ioBroker MegaD-2561 adapter (Version by Filippovsky, based on adapter of ausHaus and BlueFox)
 =================
 
-### Current version: 0.38.2 ( 11.11.2018 22:33 MSK ) ALFA!!! PLEASE DO NOT INSTALL!!!!!
-### Текущая версия:  0.38.2 ( 11.11.2018 22:33 MSK ) АЛЬФА!!! НЕ СТАВЬТЕ!!!
+### Current version: 0.38.3 ( 25.11.2018 16:47 MSK ) ALFA!!! PLEASE DO NOT INSTALL!!!!!
+### Текущая версия:  0.38.3 ( 25.11.2018 16:47 MSK ) АЛЬФА!!! НЕ СТАВЬТЕ!!!
 
 ### ВАЖНО! Перед установкой внимательно прочтите changelog!
 ### После обновления версии - обязательно вручную перезапустите драйвер (в разделе "Настройки драйвера")
+
+### !! Для работы функционала прошивки контроллера - необходимо наличие на сервере установленного PHP !!
 
 ### ВНИМАНИЕ!! Этот драйвер еще не закончен. Для реальной работы его использовать пока нельзя. Можно использовать для целей общего ознакомления.
 
@@ -144,7 +146,7 @@ The device can report the changes of ports to some web server in form
 
 -------------------
 ## Русский        
-Подробную документацию можно найти здесь: [http://www.ab-log.ru/smart-house/ethernet/MegaD-2561](http://www.ab-log.ru/smart-house/ethernet/MegaD-2561)
+Подробную документацию по контроллеру можно найти здесь: [http://www.ab-log.ru/smart-house/ethernet/MegaD-2561](http://www.ab-log.ru/smart-house/ethernet/MegaD-2561)
     
 ### Отправка SMS
 Отправка SMS возможна двумя способами - средствами самой Меги (нужен GSM-модем, функционал обеспечивается прошивкой)
@@ -192,6 +194,10 @@ on({id:'megadjt.0.ports.0.shortClick', change: "any"}, function (obj) {
 
           
 ## Changelog
+
+### 0.38.3 (2018-11-25)
+* (filippovsky) 
+Добавлена версия прошивки v4.30b8
 
 ### 0.38.2 (2018-11-11)
 * (filippovsky) 
