@@ -1,8 +1,12 @@
 {
     "common": {
         "name":                     "megadjt",
-        "version":                  "0.38.3",
+        "version":                  "0.38.4",
         "news": {
+            "0.38.4": {
+                "en":               "Added firmware 4.31b1",
+                "ru":               "Добавлена прошивка версии 4.31b1"
+            },
             "0.38.3": {
                 "en":               "Added firmware 4.30b8",
                 "ru":               "Добавлена прошивка версии 4.30b8"
