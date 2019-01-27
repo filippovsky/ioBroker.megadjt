@@ -3598,7 +3598,7 @@ function portOutModeChanged ( controlPort ) {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.38.6</p>
+    <p align="right">Admin Version: v0.38.7</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
@@ -3801,6 +3801,13 @@ function portOutModeChanged ( controlPort ) {
              <td>Прошивка</td>
            </tr>
 
+           <tr>
+             <td><b>4.32b2</b></td>
+             <td>27.01.2019</td>
+             <td><p align=justify>Максимальный размер пакета с ответом сервера увеличен с 220 до 320 байт. При charset=UTF-8 в пакете не должно быть UTF-8 BOM</p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.32b2');">Прошить</button></td>
+           </tr>
            <tr>
              <td><b>4.32b1</b></td>
              <td>18.01.2019</td>

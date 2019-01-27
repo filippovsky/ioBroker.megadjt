@@ -53,7 +53,7 @@ var ports  = {};
 ///var askInternalTemp = false;
 var ask1WireTemp = false;   //1Wire
 var connected = false;
-var fw_version_actual = "4.32b1";
+var fw_version_actual = "4.32b2";
 
 var adapter = utils.adapter(  'megadjt' );
 var sms_ru  = require('sms_ru');
