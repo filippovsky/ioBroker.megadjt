@@ -3598,7 +3598,7 @@ function portOutModeChanged ( controlPort ) {
 
 <!-- you have to put your config page in a div with id adapter-container -->
 <div id="adapter-container">
-    <p align="right">Admin Version: v0.38.5</p>
+    <p align="right">Admin Version: v0.38.6</p>
 
     <div id="loading" class="loading"><center><img id="loader" src="img/Loading1.gif"></center></div> 
 
@@ -3799,6 +3799,28 @@ function portOutModeChanged ( controlPort ) {
              <td>Дата и время</td>
              <td>Описание</td>
              <td>Прошивка</td>
+           </tr>
+
+           <tr>
+             <td><b>4.32b1</b></td>
+             <td>18.01.2019</td>
+             <td><p align=justify>Исправлена ошибка, из-за которой в некоторых ситуациях могли не работать команды управления группами</p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.32b1');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.31b8</b></td>
+             <td>16.01.2019</td>
+             <td><p align=justify>Исправлена ошибка, при которой в режиме Click mode в некоторых ситуациях нельзя было управлять PWM-портом</p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.31b8');">Прошить</button></td>
+           </tr>
+           <tr>
+             <td><b>4.31b6</b></td>
+             <td>02.01.2019</td>
+             <td><p align=justify>Добавлен символ '%' для крупного шрифта дисплея SSD1306</p>
+             </td>
+             <td><button class="translate" id="updateFirmwareLatest" onClick="updateFirmware('4.31b6');">Прошить</button></td>
            </tr>
 
            <tr>
